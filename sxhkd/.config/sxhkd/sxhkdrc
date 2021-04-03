@@ -1,0 +1,44 @@
+super + t
+	$TERMINAL
+super + c
+	$BROWSER
+Caps_Lock
+	dmenu_run
+super + l
+	slockrun.sh
+Pause 
+	switchCompositing.sh
+Scroll_Lock
+	switchAudioOutput.sh
+Print
+	screenshotter.sh
+XF86AudioStop
+	killall spotifyd
+XF86AudioNext
+	playerctl --player spotifyd next
+XF86AudioPrev
+	playerctl --player spotifyd previous
+XF86AudioPlay
+	playerctl --player spotifyd play-pause
+super + v
+	/usr/bin/code
+super + d
+	/usr/bin/discord
+super + k
+	/usr/bin/keepassxc
+super + b
+	/usr/bin/lutris
+super + e
+	/usr/bin/nemo
+super + m
+	/usr/bin/spotify
+super + s
+	/usr/bin/steam
+super + ctrl + t
+	/usr/bin/teams
+super + o
+	/usr/bin/thunderbird
+super + u
+	stalonetray.sh
+super + n
+	xclip -selection c -o | xclip -selection c

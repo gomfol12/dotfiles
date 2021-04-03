@@ -1,0 +1,220 @@
+set hidden true
+set ignorecase true
+set drawbox true
+set icons true
+set previewer ~/scripts/lf/previewer.sh
+set preview true
+set tabstop 4
+set wrapscan true
+set timefmt '_2 Jan 2006 15:04:05'
+
+# custom functions
+cmd open ${{
+	case "$f" in
+		*.tar.bz|*.tar.bz2|*.tbz|*.tbz2|*.tar.gz|*.tgz|*.tar.xz|*.txz|*.zip|*.rar|*.iso)
+			mntdir="$f-archivemount"
+            [ ! -d "$mntdir" ] && {
+                mkdir "$mntdir"
+                archivemount "$f" "$mntdir"
+                echo "$mntdir" >> "/tmp/__lf_archivemount_$id"
+            }
+            lf -remote "send $id cd \"$mntdir\""
+            lf -remote "send $id reload"
+            ;;
+		
+		*.graphml) setsid -f java -jar ~/data/schule/KKS/Q2/prin/software/yed-3.20.1/yed.jar "$f" >&/dev/null ;;
+		*.doc|*.docx) setsid -f libreoffice "$f" >&/dev/null ;;
+		*.exe) setsid -f wine "$f" >&/dev/null ;;
+		*)
+		case $(file --mime-type "$f" -bL) in
+			text/*|application/json|inode/x-empty) $EDITOR "$f" ;;
+			*) setsid -f xdg-open "$f" >&/dev/null ;;
+		esac				
+    esac
+}}
+
+cmd mkdir ${{
+	printf "Directory Name: "
+	read ans
+	mkdir -p $ans
+}}
+
+cmd mkfile ${{
+	printf "File Name: "
+	read ans
+	$EDITOR $ans
+}}
+
+cmd touch ${{
+	printf "File Name: "
+	read ans
+	touch $ans
+}}
+
+cmd chmod ${{
+	printf "Mode Bits: "
+	read ans
+	
+	for file in "$fx"
+	do
+		chmod $ans $file
+	done
+
+	lf -remote 'send reload'
+}}
+
+cmd sudochmod ${{
+	printf "Mode Bits: "
+	read ans
+	
+	for file in "$fx"
+	do
+		sudo chmod $ans $file
+	done
+
+	lf -remote 'send reload'
+}}
+
+cmd sudomkfile ${{
+	printf "File Name: "
+	read ans
+	sudo $EDITOR $ans
+}}
+
+cmd unarchive ${{
+	case "$f" in
+		*.zip) unzip "$f" ;;
+		*.tar.gz) tar -xzvf "$f" ;;
+		*.tar.bz2) tar -xjvf "$f" ;;
+		*.tar) tar -xvf "$f" ;;
+		*) echo "Unsupported format" ;;
+	esac
+}}
+
+cmd zip %zip -r "$f" "$f"
+cmd tar %tar -cvf "$f.tar" "$f"
+cmd targz %tar -cvzf "$f.tar.gz" "$f"
+cmd tarbz2 %tar cjvf "$f.tar.bz2" "$f"
+
+# trash-cli
+cmd trash ${{
+	files=$(printf "$fx" | tr '\n' ';')
+	while [ "$files" ]; do
+		# extract the substring from start of string up to delimiter.
+		# this is the first "element" of the string.
+		file=${files%%;*}
+
+		trash-put "$(basename "$file")"
+		# if there's only one element left, set `files` to an empty string.
+		# this causes us to exit this `while` loop.
+		# else, we delete the first "element" of the string from files, and move onto the next.
+		if [ "$files" = "$file" ]; then
+			files=''
+		else
+			files="${files#*;}"
+		fi
+	done
+}}
+
+cmd clear_trash %trash-empty
+cmd restore_trash ${{
+	trash-restore
+}}
+
+cmd list_trash ${{
+	trash-list
+	read ans
+}}
+
+cmd yank-path $printf '%s' "$fx" | xclip -i -selection clipboard
+
+# key bindings
+# Remove some defaults
+map m
+map "'"
+map '"'
+map d
+map c
+map i
+
+# trash mappings
+map dd trash
+map tc clear_trash
+map tr restore_trash
+map tl list_trash
+
+# file openers
+map iv %sxiv.sh "$f"
+map oc %code .
+map oa ${{
+	vim ~/data/notizen/arch/archInstall.txt
+}}
+map o.l ${{
+	vim ~/.config/lf/lfrc
+}}
+
+# archive mappings
+map az zip
+map at tar
+map ag targz
+map ab tarbz2
+map au unarchive
+
+# basic
+map . set hidden!
+map DD delete
+map p paste
+map x cut
+map y copy
+map <enter> open
+map mf mkfile
+map ms sudomkfile
+map th touch
+map md mkdir
+map ch chmod
+map cs sudochmod
+map r rename
+map <f-2> rename
+map H top
+map L bottom
+map R reload
+map C clear
+map = yank-path
+
+# movement
+map gdl cd ~/dl
+map gdt cd ~/dt
+
+map gda cd ~/data
+map gdn cd ~/nbdata
+
+map gb cd ~/data/bilder
+map gdv cd ~/data/dev
+map gn cd ~/data/notizen
+
+# schule
+map gsh cd ~/data/schule
+map gsq1 cd ~/data/schule/KKS/Q1
+map gsq2 cd ~/data/schule/KKS/Q2
+map gsd cd ~/data/schule/KKS/Q2/deutsch
+map gsen cd ~/data/schule/KKS/Q2/englisch
+map gsg cd ~/data/schule/KKS/Q2/geschi
+map gsi cd ~/data/schule/KKS/Q2/itec
+map gsm cd ~/data/schule/KKS/Q2/mathe
+map gsph cd ~/data/schule/KKS/Q2/physik
+map gspo cd ~/data/schule/KKS/Q2/powi
+map gspr cd ~/data/schule/KKS/Q2/prin
+map gss cd ~/data/schule/KKS/Q2/spanisch
+map gset cd ~/data/schule/KKS/Q2/ethik
+
+map gkks cd ~/data/schule/KKS
+map gq1 cd ~/data/schule/KKS/Q1
+
+
+map gj cd ~/data/dev/java
+map gc cd ~/data/dev/c++
+
+map g.c cd ~/.config
+map g.l cd ~/.local
+
+map gsc cd ~/scripts
