@@ -25,6 +25,7 @@ cmd open ${{
 		*.graphml) setsid -f java -jar ~/data/schule/KKS/Q2/prin/software/yed-3.20.1/yed.jar "$f" >&/dev/null ;;
 		*.doc|*.docx) setsid -f libreoffice "$f" >&/dev/null ;;
 		*.exe) setsid -f wine "$f" >&/dev/null ;;
+		*.bluej) setsid -f bluej "$f" >&/dev/null ;;
 		*)
 		case $(file --mime-type "$f" -bL) in
 			text/*|application/json|inode/x-empty) $EDITOR "$f" ;;
@@ -147,10 +148,10 @@ map tl list_trash
 map iv %sxiv.sh "$f"
 map oc %code .
 map oa ${{
-	vim ~/data/notizen/arch/archInstall.txt
+	$EDITOR ~/data/notizen/arch/archInstall.txt
 }}
 map o.l ${{
-	vim ~/.config/lf/lfrc
+    $EDITOR ~/.config/lf/lfrc
 }}
 
 # archive mappings

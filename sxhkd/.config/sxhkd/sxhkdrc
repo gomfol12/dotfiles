@@ -1,5 +1,7 @@
 super + t
-	$TERMINAL
+    $TERMINAL
+shift + mod1 + Return
+    $TERMINAL
 super + c
 	$BROWSER
 Caps_Lock

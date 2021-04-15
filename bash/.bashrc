@@ -147,8 +147,10 @@ alias po="popd"
 alias mx="chmod +x"
 
 if [ "$TERM" != "linux" ]; then
+	alias v="$EDITOR"
 	alias vi="$EDITOR"
 	alias vim="$EDITOR"
+	alias nvim="$EDITOR"
 fi
 
 alias mem="free -mth"

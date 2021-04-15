@@ -12,7 +12,7 @@ export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="$HOME/.config"}
 # general
 export PATH=$PATH:$HOME/scripts
 export PATH=$PATH:$HOME/.local/bin
-export EDITOR="vim"
+export EDITOR="nvim"
 export TERMINAL="st"
 export BROWSER="brave"
 
@@ -26,7 +26,7 @@ export WINEPREFIX="$XDG_DATA_HOME"/wineprefixes/default
 export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 export ICEAUTHORITY="$XDG_CACHE_HOME"/ICEauthority
 export INPUTRC=$XDG_CONFIG_HOME/readline/inputrc
-export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+#export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export GOPATH="$XDG_DATA_HOME"/go
