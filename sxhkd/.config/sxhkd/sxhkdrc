@@ -8,7 +8,7 @@ Caps_Lock
 	dmenu_run
 super + l
 	slockrun.sh
-Pause 
+Pause
 	switchCompositing.sh
 Scroll_Lock
 	switchAudioOutput.sh
@@ -40,7 +40,9 @@ super + ctrl + t
 	/usr/bin/teams
 super + o
 	/usr/bin/thunderbird
-super + u
-	stalonetray.sh
 super + n
 	xclip -selection c -o | xclip -selection c
+super + p
+    clipmenu
+super + w
+    dmenu_websearch

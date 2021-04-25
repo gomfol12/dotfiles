@@ -13,4 +13,6 @@ numlockx &
 unclutter --timeout 5 &
 lxpolkit &
 #keynav &
+clipmenud &
 exec dwm
+

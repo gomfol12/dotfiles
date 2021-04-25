@@ -166,12 +166,15 @@ alias transdees="trans :es -s de"
 
 #alias neofetch="neofetch | lolcat"
 
+#colorscript
+#[ ! "$TERM" = "linux" ] && colorscript random
+
 # HOME cleanup
 #alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
 alias nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings'
 
 # lf
-lfcd () 
+lfcd ()
 {
 	tmp="$(mktemp)"
 	fid="$(mktemp)"

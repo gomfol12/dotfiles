@@ -14,8 +14,9 @@ Xft.lcdfilter: lcddefault
 #define	green1_def		#10a204
 #define yellow0_def		#fded02
 #define yellow1_def		#fded02
-#define	blue0_def		#0043f2
-#define	blue1_def		#0043f2
+#define	blue0_def		#3b7fff
+#define	blue1_def		#3b7fff
+!blue #0043f2
 #define	magenta0_def	#ab0082
 #define	magenta1_def	#ab0082
 #define cyan0_def		#00afd2
@@ -27,8 +28,8 @@ Xft.lcdfilter: lcddefault
 #define gray2_def		#666666
 #define gray3_def		#555555
 
-*.gray1:		gray1_def	
-*.gray2:		gray2_def	
+*.gray1:		gray1_def
+*.gray2:		gray2_def
 *.gray3:		gray3_def
 
 ! polybar
@@ -36,15 +37,22 @@ polybar.alert:			white0_def
 polybar.visible:		gray2_def
 polybar.focused:		green0_def
 polybar.background:		gray1_def
-polybar.foreground:		white0_def	
+polybar.foreground:		white0_def
 
 ! dwm
-dwm.normbgcolor:		gray1_def 
+dwm.normbgcolor:		gray1_def
 dwm.normfgcolor:		white0_def
 dwm.normbordercolor:	gray3_def
 dwm.selbgcolor:			green0_def
 dwm.selfgcolor:			white0_def
 dwm.selbordercolor:		green0_def
+
+! st
+st.background:          black0_def
+st.foreground:          white0_def
+st.selectionbg:         gray2_def
+st.selectionfg:         white0_def
+st.cursorColor:         white0_def
 
 ! black
 *.color0:		black0_def

@@ -21,7 +21,7 @@ cmd open ${{
             lf -remote "send $id cd \"$mntdir\""
             lf -remote "send $id reload"
             ;;
-		
+
 		*.graphml) setsid -f java -jar ~/data/schule/KKS/Q2/prin/software/yed-3.20.1/yed.jar "$f" >&/dev/null ;;
 		*.doc|*.docx) setsid -f libreoffice "$f" >&/dev/null ;;
 		*.exe) setsid -f wine "$f" >&/dev/null ;;
@@ -30,7 +30,7 @@ cmd open ${{
 		case $(file --mime-type "$f" -bL) in
 			text/*|application/json|inode/x-empty) $EDITOR "$f" ;;
 			*) setsid -f xdg-open "$f" >&/dev/null ;;
-		esac				
+		esac
     esac
 }}
 
@@ -55,7 +55,7 @@ cmd touch ${{
 cmd chmod ${{
 	printf "Mode Bits: "
 	read ans
-	
+
 	for file in "$fx"
 	do
 		chmod $ans $file
@@ -67,7 +67,7 @@ cmd chmod ${{
 cmd sudochmod ${{
 	printf "Mode Bits: "
 	read ans
-	
+
 	for file in "$fx"
 	do
 		sudo chmod $ans $file
@@ -127,7 +127,7 @@ cmd list_trash ${{
 	read ans
 }}
 
-cmd yank-path $printf '%s' "$fx" | xclip -i -selection clipboard
+cmd yank-path $printf '%s' "$fx" | xsel -i -b
 
 # key bindings
 # Remove some defaults
