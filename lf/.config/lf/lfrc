@@ -26,6 +26,7 @@ cmd open ${{
 		*.doc|*.docx) setsid -f libreoffice "$f" >&/dev/null ;;
 		*.exe) setsid -f wine "$f" >&/dev/null ;;
 		*.bluej) setsid -f bluej "$f" >&/dev/null ;;
+        *.xopp) setsid -f xournalpp "$f" >&/dev/null ;;
 		*)
 		case $(file --mime-type "$f" -bL) in
 			text/*|application/json|inode/x-empty) $EDITOR "$f" ;;
@@ -123,8 +124,7 @@ cmd restore_trash ${{
 }}
 
 cmd list_trash ${{
-	trash-list
-	read ans
+	trash-list | less
 }}
 
 cmd yank-path $printf '%s' "$fx" | xsel -i -b

@@ -1,4 +1,4 @@
-Xft.dpi: 93
+Xft.dpi: 96
 Xft.antialias: true
 Xft.hinting: true
 Xft.rgba: rgb
@@ -16,7 +16,6 @@ Xft.lcdfilter: lcddefault
 #define yellow1_def		#fded02
 #define	blue0_def		#3b7fff
 #define	blue1_def		#3b7fff
-!blue #0043f2
 #define	magenta0_def	#ab0082
 #define	magenta1_def	#ab0082
 #define cyan0_def		#00afd2
@@ -33,11 +32,11 @@ Xft.lcdfilter: lcddefault
 *.gray3:		gray3_def
 
 ! polybar
-polybar.alert:			white0_def
-polybar.visible:		gray2_def
-polybar.focused:		green0_def
-polybar.background:		gray1_def
-polybar.foreground:		white0_def
+polybar.urgent:			    white0_def
+polybar.focused:		    green0_def
+polybar.background:		    gray1_def
+polybar.foreground:		    white0_def
+polybar.foreground-urgent:  black0_def
 
 ! dwm
 dwm.normbgcolor:		gray1_def

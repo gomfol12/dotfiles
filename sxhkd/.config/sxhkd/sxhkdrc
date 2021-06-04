@@ -1,27 +1,18 @@
+#
+# general hotkeys
+#
+
+# terminal
 super + t
     $TERMINAL
 shift + mod1 + Return
     $TERMINAL
+
+# starting programs
 super + c
 	$BROWSER
-Caps_Lock
-	dmenu_run
 super + l
 	slockrun.sh
-Pause
-	switchCompositing.sh
-Scroll_Lock
-	switchAudioOutput.sh
-Print
-	screenshotter.sh
-XF86AudioStop
-	killall spotifyd
-XF86AudioNext
-	playerctl --player spotifyd next
-XF86AudioPrev
-	playerctl --player spotifyd previous
-XF86AudioPlay
-	playerctl --player spotifyd play-pause
 super + v
 	/usr/bin/code
 super + d
@@ -33,16 +24,160 @@ super + b
 super + e
 	/usr/bin/nemo
 super + m
-	/usr/bin/spotify
+	$TERMINAL -e "/home/$(whoami)/scripts/spt.sh"
 super + s
 	/usr/bin/steam
 super + ctrl + t
 	/usr/bin/teams
 super + o
 	/usr/bin/thunderbird
-super + n
-	xclip -selection c -o | xclip -selection c
+super + i
+    /usr/bin/libreoffice
+Pause
+	switchCompositing.sh
+Scroll_Lock
+	switchAudioOutput.sh
+Print
+	screenshotter.sh
+
+# multimedia keys
+XF86AudioStop
+	killall spotifyd
+XF86AudioNext
+	playerctl --player spotifyd next
+XF86AudioPrev
+	playerctl --player spotifyd previous
+XF86AudioPlay
+	playerctl --player spotifyd play-pause
+
+# remove formating from copied text
+ctrl + b
+    xsel -b | xsel -b
+
+# dmenu scripts
 super + p
     clipmenu
 super + w
     dmenu_websearch
+Caps_Lock
+	dmenu_run
+
+# make sxhkd reload its configuration files
+super + shift + x
+	pkill -USR1 -x sxhkd && notify-send "sxhkd" "Config reloaded"
+
+# shutdown/reboot
+super + shift + {r,d}
+    dmenu_prompt {"Are you sure you would like to reboot?" "reboot", "Are you sure you would like to shutdown" "shutdown -h now"}
+
+# restart stuff
+super + shift + o
+    ~/.config/polybar/launch.sh &
+
+#
+# bspwm hotkeys
+#
+
+# quit/restart bspwm
+mod1 + shift + z
+    dmenu_prompt {"Are you sure you would like to exit this bspwm session?" "bspc quit"}
+
+mod1 + shift + g
+	bspc wm -r
+
+# close and kill
+mod1 + shift + {c,k}
+	bspc node -{c,k}
+
+# alternate between the tiled and monocle layout
+mod1 + s
+	bspc desktop -l next
+
+#
+# state/flags
+#
+
+# set the window state
+mod1 + {space,t,shift + f,f}
+	bspc node -t {tiled,tiled,floating,fullscreen}
+
+#
+# focus/swap
+#
+
+# focus the node in the given direction
+mod1 + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+# focus the node for the given path jump
+#mod1 + {p,b,comma,period}
+#	bspc node -f @{parent,brother,first,second}
+
+# focus the last node/desktop
+mod1 + {grave,Tab}
+	bspc {node,desktop} -f last
+
+# focus or send to the given desktop
+mod1 + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+# rotate
+mod1 + {_,shift + } r
+    bspc node @/ -R {90,-90}
+
+# swap the current node and the biggest window on the focused monitor
+mod1 + a
+    bspc node -s biggest.window.local || bspc node -s last.local
+
+#
+# preselect
+#
+
+# preselect the direction
+mod1 + ctrl + {h,j,k,l}
+	bspc node -p {west,south,north,east}
+
+# preselect the ratio
+mod1 + ctrl + {1-9}
+	bspc node -o 0.{1-9}
+
+# cancel the preselection for the focused node
+mod1 + ctrl + space
+	bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+mod1 + ctrl + shift + space
+	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+# receptacles
+# create one
+mod1 + ctrl + shift + {h,j,k,l}
+    bspc node --presel-dir {west,south,north,east} -i
+
+# set the receptacle to a window
+mod1 + ctrl + shift + s
+    bspc node $(bspc query -N -n focused) -n $(bspc query -N -n .leaf.\!window -d focused)
+
+# set all nodes to the same size
+mod1 + ctrl + shift + b
+    bspc node @/ -B
+
+# kill all receptacles on focused monitor
+mod1 + ctrl + shift + d
+    for win in $(bspc query -N -n .leaf.\!window -d focused) ; do bspc node $win -k ; done;
+
+#
+# move/resize
+#
+
+# expand a window by moving one of its side outward
+super + alt + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contract a window by moving one of its side inward
+super + alt + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# move a floating window
+super + alt + ctrl {h,j,k,l}
+	bspc node -v {-20 0,0 20,0 -20,20 0}

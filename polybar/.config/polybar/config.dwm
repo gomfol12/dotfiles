@@ -14,6 +14,8 @@
 ;
 ;   The README contains a lot of information
 ;
+;   default config at /usr/share/doc/polybar/config
+;
 ;==========================================================
 
 [global/wm]
@@ -54,11 +56,14 @@ screenchange-reload = false
 
 [colors]
 foreground = ${xrdb:polybar.foreground}
-foreground-urgent = ${xrdb:polybar.foreground-urgent}
+foreground-urgent = ${xrdb:black0}
 background = ${xrdb:polybar.background}
 focused = ${xrdb:polybar.focused}
-urgent = ${xrdb:polybar.urgent}
+unfocused = ${xrdb:polybar.focused}
+visible = ${xrdb:polybar.visible}
+urgent = ${xrdb:polybar.alert}
 empty = ${xrdb:polybar.background}
+
 
 [bar/master]
 ; Use either of the following command to list available outputs:
@@ -91,7 +96,7 @@ fixed-center = false
 ; the percentage can optionally be extended with a pixel offset like so:
 ; 50%:-10, this will result in a width or height of 50% minus 10 pixels
 width = 100%
-height = 22
+height = 20
 
 ; Value used for drawing rounded corners
 ; Note: This shouldn't be used together with border-size because the border
@@ -137,7 +142,7 @@ padding = 0
 ; Number of spaces to add before/after each module
 ; Individual side values can be defined using:
 ;   module-margin-{left,right}
-module-margin = 1
+module-margin = 2
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -149,12 +154,11 @@ foreground = ${colors.foreground}
 ;   font-2 = Termsynu:size=8;-1
 ;   font-3 = FontAwesome:size=10
 ; See the Fonts wiki page for more details
-font-0 = monospace:pixelsize=10;2
+font-0 = Iosevka Medium Extended:pixelsize=10:antialias=true:autohint=true;2
 font-1 = Symbols Nerd Font:pixelsize=10:antialias=true:autohint=true;2
 font-2 = JoyPixels:pixelsize=10:antialias=true:autohint=true;2
-font-3 = Noto Sans Symbols 2:pixelsize=10:antialias=true:autohint=true;2
 
-;modules-left =
+;modules-left = dwm
 ;modules-center =
 ;modules-right = wired-network cpu gpu memory date
 
@@ -166,11 +170,11 @@ separator = |
 ; If the value is empty or undefined, the atom value
 ; will be created from the following template: polybar-[BAR]_[MONITOR]
 ; NOTE: The placeholders are not available for custom values
-wm-name = bspwm
+wm-name = dwm
 
 ; Locale used to localize various module data (e.g. date)
 ; Expects a valid libc locale, for example: sv_SE.UTF-8
-locale = de_DE.UTF-8
+;locale = en_US.UTF-8
 
 ; Position of the system tray window
 ; If empty or undefined, tray support will be disabled
@@ -207,7 +211,7 @@ inherit = bar/master
 
 monitor = ${env:MONITOR:HDMI-0}
 
-modules-left = bspwm title
+modules-left = dwm
 modules-right = wired-network cpu gpu memory date
 
 [bar/DVI-D-0]
@@ -217,42 +221,89 @@ monitor = ${env:MONITOR:DVI-D-0}
 
 tray-position = none
 
-modules-left = bspwm
+modules-left = dwm
 
-[module/bspwm]
-type = internal/bspwm
+[module/dwm]
+type = internal/dwm
+format = <label-tags> <label-layout> <label-floating> <label-title>
+; Path to dwm socket (default: /tmp/dwm.sock)
+; socket-path = /tmp/dwm.sock
 
-ws-icon-0 = 1;I
-ws-icon-1 = 2;II
-ws-icon-2 = 3;III
-ws-icon-3 = 4;IV
-ws-icon-4 = 5;V
-ws-icon-5 = 6;VI
-ws-icon-6 = 7;VII
-ws-icon-7 = 8;VIII
-ws-icon-8 = 9;IX
-ws-icon-9 = 0;X
+; Left-click to view tag, right-click to toggle tag view
+enable-tags-click = true
+; Scroll to cycle between available tags
+enable-tags-scroll = false
+; If true and enable-tags-scroll = true, scrolling will view all tags regardless if occupied
+tags-scroll-empty = false
+; If true and enable-tags-scroll = true, scrolling will cycle through tags backwards
+tags-scroll-reverse = false
+; If true and enable-tags-scroll = true, wrap active tag when scrolling
+tags-scroll-wrap = false
+; Left-click to set secondary layout, right-click to switch to previous layout
+enable-layout-click = false
+; Scroll to cycle between available layouts
+enable-layout-scroll = false
+; Wrap when scrolling and reaching begining/end of layouts
+layout-scroll-wrap = false
+; Reverse scroll direction
+layout-scroll-reverse = false
 
-label-focused = %icon%
-label-focused-foreground = ${colors.foreground}
+; If enable-layout-click = true, clicking the layout symbol will switch to this layout
+secondary-layout-symbol = [M]
+
+; Separator in between shown tags
+; label-separator = |
+
+; Title of currently focused window
+; Available tokens:
+;   %title%
+label-title = %title%
+label-title-padding = 0
+label-title-forefround = ${colors.foreground}
+label-title-background = ${colors.background}
+label-title-maxlen = 100
+
+; Symbol of current layout
+; Available tokens:
+;   %symbol%
+label-layout = %symbol%
+label-layout-padding = 0
+label-layout-foreground = ${colors.foreground}
+label-layout-background = ${colors.background}
+
+; Text to show when currently focused window is floating
+label-floating = F
+
+; States: focused, unfocused, visible, urgent, empty
+; Available tokens:
+;   %name%
+
+; focused = Selected tag on focused monitor
+label-focused = %name%
 label-focused-background = ${colors.focused}
 label-focused-padding = 1
 
-label-occupied = %icon%
-label-occupied-padding = 1
+; unfocused = Unselected tag on unselected monitor
+label-unfocused = %name%
+label-unfocused-background = ${colors.unfocused}
+label-unfocused-padding = 1
 
-label-urgent = %icon%
-label-urgent-foreground = ${colors.foreground-urgent}
+; visible = Unselected tag, but occupied tag on any monitor
+label-visible = %name%
+label-visible-background = ${colors.visible}
+label-visible-padding = 1
+
+; urgent = Unselected tag with window that has urgency hint set
+label-urgent = %name%
 label-urgent-background = ${colors.urgent}
+label-urgent-foreground = ${colors.foreground-urgent}
 label-urgent-padding = 1
 
-label-empty = %icon%
-label-empty-foreground = ${colors.foreground}
-label-empty-background = ${colors.background}
+; empty = Unselected and unoccupied tag
+; This can be set to an empty string to hide empty tags
+label-empty = %name%
+label-empty-background = ${colors.empty}
 label-empty-padding = 1
-
-; Separator in between workspaces
-; label-separator = |
 
 
 
@@ -278,27 +329,36 @@ exec = sb-gpu
 label = [GPU] %output%
 
 [module/memory]
-type = custom/script
+type = internal/memory
 interval = 10
-
-exec = sb-mem
-
-label = [MEM] %output%
+format-prefix = "[MEM] "
+format-prefix-foreground = ${colors.foreground}
+format-prefix-background = ${colors.background}
+label = %gb_used%/%gb_total%
 
 [module/wired-network]
-type = custom/script
+type = internal/network
+interface = enp27s0
 interval = 5
 
-exec = sb-internet
+format-connected = <label-connected>
+label-connected = | %downspeed:5% 祝%upspeed:5%
 
-label = %output%
+format-disconnected = <label-disconnected>
+label-disconnected = | not connected
+
+;format-packetloss = <animation-packetloss> <label-connected>
 
 [module/date]
-type = custom/script
+type = internal/date
 interval = 5
 
-exec = sb-clock
+date = %a %d %B
 
-label = %output%
+time = %H:%M
+time-alt = %H:%M:%S
+
+label = "%date%, %time% | "
+
 
 ; vim:ft=dosini

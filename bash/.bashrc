@@ -24,6 +24,11 @@ elif [ -f /etc/bash_completion ]; then
 		. /etc/bash_completion
 fi
 
+# spotify-tui completion
+if [ -f ~/.config/spotify-tui/completion ]; then
+    . ~/.config/spotify-tui/completion
+fi
+
 # git completion
 source /usr/share/git/completion/git-completion.bash
 
@@ -82,10 +87,10 @@ export GIT_PS1_SHOWSTASHSTATE=1
 
 if [ "$TERM" = "linux" ]; then
 	#PS1="${WHITE}[${USERCOLOR}\u${GREEN}@\h${WHITE}:${LBLUE}\w${WHITE}] ${NOCOLOR}"
-	PROMPT_COMMAND='__git_ps1 "${WHITE}[${USERCOLOR}\u${GREEN}@\h${WHITE}:${LBLUE}\w${WHITE}]${NOCOLOR}" " " "[%s]"'
+	PROMPT_COMMAND='__git_ps1 "${RED}[${USERCOLOR}\u${GREEN}@\h${WHITE}:${LBLUE}\w${RED}]${NOCOLOR}" " " "[%s]"'
 else
 	#PS1="${WHITE}[${USERCOLOR}\u${GREEN}@\h${WHITE}:${BLUE}\w${WHITE}]${NOCOLOR}🦄 "
-	PROMPT_COMMAND='__git_ps1 "${WHITE}[${USERCOLOR}\u${GREEN}@\h${WHITE}:${BLUE}\w${WHITE}]${NOCOLOR}" "🦄 " "[%s]"'
+	PROMPT_COMMAND='__git_ps1 "${RED}[${USERCOLOR}\u${GREEN}@\h${WHITE}:${BLUE}\w${RED}]${NOCOLOR}" "🦄 " "${RED}[${NOCOLOR}%s${RED}]${NOCOLOR}"'
 fi
 
 #alias
@@ -108,7 +113,7 @@ alias mkdir="mkdir -pv"
 alias c="clear"
 alias p="sudo pacman"
 alias sysctl="sudo systemctl"
-alias myip="curl ipinfo.io/ip"
+alias myip="curl -s ipinfo.io/ip | awk '{print}'"
 alias ka="killall"
 alias g="git"
 alias sdn="shutdown -h now"
@@ -163,6 +168,9 @@ alias transende="trans :de -s en"
 alias transesde="trans :de -s es"
 alias transdeen="trans :en -s de"
 alias transdees="trans :es -s de"
+
+alias listfonts="fc-list  | cut -d : -f1"
+alias displayfont="fontviewer.sh"
 
 #alias neofetch="neofetch | lolcat"
 

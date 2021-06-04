@@ -95,7 +95,7 @@ let mapleader="\\"
 map <C-c> :source ~/.config/nvim/init.vim<CR>
 map <C-s> :w<CR>
 
-nnoremap S :%s//g<Left><Left><Left>
+nnoremap S :%s///g<Left><Left><Left>
 
 " disable ex mode
 nnoremap Q <nop>
@@ -104,10 +104,10 @@ nnoremap Q <nop>
 nnoremap <silent> <CR> :noh<CR><CR>
 
 " windows
-nnoremap <Up> :resize +2<CR>
-nnoremap <Down> :resize -2<CR>
-nnoremap <Left> :vertical resize +2<CR>
-nnoremap <Right> :vertical resize -2<CR>
+nnoremap <Up> :resize -2<CR>
+nnoremap <Down> :resize +2<CR>
+nnoremap <Left> :vertical resize -2<CR>
+nnoremap <Right> :vertical resize +2<CR>
 
 nnoremap <C-h> <C-W>h
 nnoremap <C-j> <C-W>j
