@@ -14,7 +14,7 @@ dunst &
 nitrogen --restore &
 picom &
 sxhkd &
-dwmblocks &
+#dwmblocks &
 numlockx &
 unclutter --timeout 5 &
 lxpolkit &

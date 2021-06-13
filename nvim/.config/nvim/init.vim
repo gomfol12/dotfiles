@@ -89,7 +89,7 @@ autocmd BufWritePre * %s/\s\+$//e
 " :cmap  :cnoremap :cunmap    Command-line
 " :tmap  :tnoremap :tunmap    Terminal-Job
 
-let mapleader="\\"
+let mapleader=" "
 
 " general
 map <C-c> :source ~/.config/nvim/init.vim<CR>
@@ -119,7 +119,7 @@ nnoremap <leader>v :vsplit<Space>
 
 "formating
 map <leader>p i(<ESC>ea)<ESC>
-map <leader>c i{<ESC>ea}<ESC>
+map <leader>l i{<ESC>ea}<ESC>
 
 xnoremap K :move '<-2<CR>gv-gv
 xnoremap J :move '>+1<CR>gv-gv
@@ -135,3 +135,19 @@ nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 
+" ==================== NERDTree ====================
+" Start NERDTree and put the cursor back in the other window.
+autocmd VimEnter * NERDTree | wincmd p
+
+" Exit Vim if NERDTree is the only window left.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
+    \ quit | endif
+
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * silent NERDTreeMirror
+
+let NERDTreeNaturalSort=1

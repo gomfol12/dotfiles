@@ -109,6 +109,7 @@ alias mv="mv -iv"
 alias rm="rm -v"
 alias rmd="rm -rf"
 alias mkdir="mkdir -pv"
+alias md="mkdir"
 
 alias c="clear"
 alias p="sudo pacman"
@@ -149,7 +150,9 @@ alias .....="cd ../../../.."
 alias pu="pushd"
 alias po="popd"
 
-alias mx="chmod +x"
+alias ch="chmod"
+alias sch="sudo ch"
+alias mx="ch +x"
 
 if [ "$TERM" != "linux" ]; then
 	alias v="$EDITOR"

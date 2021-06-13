@@ -3,7 +3,7 @@ Xft.antialias: true
 Xft.hinting: true
 Xft.rgba: rgb
 Xft.autohint: false
-Xft.hintstyle: hintfull
+Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 
 #define	black0_def		#000000
@@ -34,6 +34,7 @@ Xft.lcdfilter: lcddefault
 ! polybar
 polybar.urgent:			    white0_def
 polybar.focused:		    green0_def
+polybar.occupied:           gray2_def
 polybar.background:		    gray1_def
 polybar.foreground:		    white0_def
 polybar.foreground-urgent:  black0_def
