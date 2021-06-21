@@ -7,7 +7,7 @@ Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 
 #define	black0_def		#000000
-#define	black1_def		#000000
+#define	black1_def		#888888
 #define	red0_def		#d80404
 #define	red1_def		#d80404
 #define	green0_def		#10a204

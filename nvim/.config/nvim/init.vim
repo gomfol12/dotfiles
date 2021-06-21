@@ -3,10 +3,11 @@ call plug#begin("$XDG_CONFIG_HOME/nvim/plugged")
     Plug 'tomasiser/vim-code-dark'
     Plug 'ap/vim-css-color'
 
-    Plug 'preservim/nerdtree'
-    "Plug 'Xuyuanp/nerdtree-git-plugin'
-    Plug 'ryanoasis/vim-devicons'
+    Plug 'preservim/nerdtree' |
+            \ Plug 'Xuyuanp/nerdtree-git-plugin' |
+            \ Plug 'ryanoasis/vim-devicons'
     "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+    Plug 'lambdalisue/gina.vim'
 call plug#end()
 
 " ==================== General Settings ====================
@@ -137,7 +138,7 @@ nnoremap <C-t> :NERDTreeToggle<CR>
 
 " ==================== NERDTree ====================
 " Start NERDTree and put the cursor back in the other window.
-autocmd VimEnter * NERDTree | wincmd p
+"autocmd VimEnter * NERDTree | wincmd p
 
 " Exit Vim if NERDTree is the only window left.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
@@ -151,3 +152,19 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 autocmd BufWinEnter * silent NERDTreeMirror
 
 let NERDTreeNaturalSort=1
+
+" ==================== nerdtree-git-plugin ====================
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+                \ 'Modified'  :'✹',
+                \ 'Staged'    :'✚',
+                \ 'Untracked' :'✭',
+                \ 'Renamed'   :'➜',
+                \ 'Unmerged'  :'═',
+                \ 'Deleted'   :'✖',
+                \ 'Dirty'     :'✗',
+                \ 'Ignored'   :'☒',
+                \ 'Clean'     :'✔︎',
+                \ 'Unknown'   :'?',
+                \ }
+
+let g:NERDTreeGitStatusUseNerdFonts = 1

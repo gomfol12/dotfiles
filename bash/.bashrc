@@ -176,6 +176,7 @@ alias listfonts="fc-list  | cut -d : -f1"
 alias displayfont="fontviewer.sh"
 
 #alias neofetch="neofetch | lolcat"
+alias realfetch="neofetch --source ~/data/bilder/ascii/profilepic.ans --gap -76"
 
 #colorscript
 #[ ! "$TERM" = "linux" ] && colorscript random

@@ -78,6 +78,9 @@ Pause
 Scroll_Lock
 	switchAudioOutput.sh
 
+super + n
+    colorpicker --short --one-shot --preview | xsel -b
+
 ### restart ###
 # make sxhkd reload its configuration files
 super + shift + x
