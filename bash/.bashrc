@@ -196,7 +196,7 @@ lfcd ()
 	if [ -f "$archivemount_dir" ]; then
 		cat "$archivemount_dir" | \
 			while read -r line; do
-				sudo umount "$line"
+				umount "$line"
 				rmdir "$line"
 			done
 		rm -f "$archivemount_dir" 1>/dev/null

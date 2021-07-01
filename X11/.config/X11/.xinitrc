@@ -1,4 +1,3 @@
-setxkbmap -layout "us, de(nodeadkeys)" -option "caps:ctrl_modifier, grp:win_space_toggle, grp_led:caps"
 xinput set-prop 'Sharkoon Technologies SKILLER SGM1' 'libinput Accel Speed' -1
 xinput set-prop 'Sharkoon Technologies SKILLER SGM1' 'libinput Accel Profile Enabled' 0, 0
 
@@ -10,6 +9,7 @@ xss-lock -- slockrun.sh &
 
 imwheel -b 45 &
 xrdb ~/.config/Xresources &
+xmodmap ~/.config/Xmodmap &
 dunst &
 nitrogen --restore &
 picom &

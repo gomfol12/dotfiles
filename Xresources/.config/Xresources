@@ -34,10 +34,11 @@ Xft.lcdfilter: lcddefault
 ! polybar
 polybar.urgent:			    white0_def
 polybar.focused:		    green0_def
-polybar.occupied:           gray2_def
+polybar.occupied:           green0_def
 polybar.background:		    gray1_def
 polybar.foreground:		    white0_def
 polybar.foreground-urgent:  black0_def
+polybar.empty:              gray2_def
 
 ! dwm
 dwm.normbgcolor:		gray1_def

@@ -93,10 +93,28 @@ cmd unarchive ${{
 	esac
 }}
 
-cmd zip %zip -r "$f" "$f"
-cmd tar %tar -cvf "$f.tar" "$f"
-cmd targz %tar -cvzf "$f.tar.gz" "$f"
-cmd tarbz2 %tar cjvf "$f.tar.bz2" "$f"
+cmd zip ${{
+    printf "Archive(zip) Name: "
+    read in
+
+    for file in $fx
+    do
+        name=$(echo $file | sed 's@.*/@@')
+        zip -r "$in.zip" "$name"
+    done
+}}
+cmd tar ${{
+    name=$(echo $f | sed 's@.*/@@')
+    tar -cvf "$name.tar" "$name"
+}}
+cmd targz ${{
+    name=$(echo $f | sed 's@.*/@@')
+    tar -cvzf "$name.tar.gz" "$name"
+}}
+cmd tarbz2 ${{
+    name=$(echo $f | sed 's@.*/@@')
+    tar cjvf "$name.tar.bz2" "$name"
+}}
 
 # trash-cli
 cmd trash ${{

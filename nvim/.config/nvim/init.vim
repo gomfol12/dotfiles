@@ -7,7 +7,11 @@ call plug#begin("$XDG_CONFIG_HOME/nvim/plugged")
             \ Plug 'Xuyuanp/nerdtree-git-plugin' |
             \ Plug 'ryanoasis/vim-devicons'
     "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-    Plug 'lambdalisue/gina.vim'
+    "Plug 'lambdalisue/gina.vim'
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'jackguo380/vim-lsp-cxx-highlight'
+    "Plug 'vim-syntastic/syntastic'
+    Plug 'rhysd/vim-clang-format'
 call plug#end()
 
 " ==================== General Settings ====================
@@ -34,10 +38,15 @@ set showcmd
 set ttimeout
 set ttimeoutlen=100
 set laststatus=2
-set cmdheight=1
+set cmdheight=2
 "set spelllang=en_us,de_de
 "set spell
 set termguicolors
+set nobackup
+set nowritebackup
+set hidden
+set updatetime=300
+set signcolumn=yes
 
 colorscheme codedark " colorscheme
 
@@ -101,14 +110,42 @@ nnoremap S :%s///g<Left><Left><Left>
 " disable ex mode
 nnoremap Q <nop>
 
+" quit
+nnoremap <silent> Q :q<CR>
+
+" navigate diagnostics
+nmap <silent> <leader>d <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>D <Plug>(coc-diagnostic-prev)
+
+" gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" show documentation in preview window
+nnoremap <silent> D :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
 " disable search highlighting until the next search
 nnoremap <silent> <CR> :noh<CR><CR>
 
+" rename
+nmap <silent> <leader>r  <Plug>(coc-rename)
+nmap <silent> <F2>       <Plug>(coc-rename)
+
 " windows
-nnoremap <Up> :resize -2<CR>
-nnoremap <Down> :resize +2<CR>
-nnoremap <Left> :vertical resize -2<CR>
-nnoremap <Right> :vertical resize +2<CR>
+nnoremap <silent> <Up> :resize -2<CR>
+nnoremap <silent> <Down> :resize +2<CR>
+nnoremap <silent> <Left> :vertical resize -2<CR>
+nnoremap <silent> <Right> :vertical resize +2<CR>
 
 nnoremap <C-h> <C-W>h
 nnoremap <C-j> <C-W>j
@@ -118,23 +155,47 @@ nnoremap <C-l> <C-W>l
 nnoremap <leader>h :split<Space>
 nnoremap <leader>v :vsplit<Space>
 
-"formating
+" formating
 map <leader>p i(<ESC>ea)<ESC>
 map <leader>l i{<ESC>ea}<ESC>
 
-xnoremap K :move '<-2<CR>gv-gv
-xnoremap J :move '>+1<CR>gv-gv
+xnoremap <silent> K :move '<-2<CR>gv-gv
+xnoremap <silent> J :move '>+1<CR>gv-gv
 
 map <leader>c :set formatoptions-=cro<CR>
 map <leader>C :set formatoptions=cro<CR>
 
+autocmd FileType c,cpp,objc nnoremap <leader>f :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <leader>f :ClangFormat<CR>
+
 " enable spellchecking
 map <leader>s :setlocal spell! spelllang=de_de,en_us<CR>
 
+" completion
+" use <cr> to confirm completion
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
+" use <S-Tab> to navigate back in the completion list
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
 " NERDTree
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <silent> <leader>n :NERDTreeFocus<CR>
+nnoremap <silent> <C-n> :NERDTree<CR>
+nnoremap <silent> <C-t> :NERDTreeToggle<CR>
 
 " ==================== NERDTree ====================
 " Start NERDTree and put the cursor back in the other window.
@@ -168,3 +229,26 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ }
 
 let g:NERDTreeGitStatusUseNerdFonts = 1
+
+" ==================== Coc ====================
+" fix json comment highlighting
+autocmd FileType json syntax match Comment +\/\/.\+$+
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" ==================== vim-lsp-cxx-highlight ====================
+" c++ syntax highlighting
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+
+" ==================== syntastic ====================
+let g:syntastic_cpp_checkers = ['cpplint']
+let g:syntastic_c_checkers = ['cpplint']
+let g:syntastic_cpp_cpplint_exec = 'cpplint'
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" ==================== vim-clang-format ====================
+let g:clang_format#code_style = 'gnu'
