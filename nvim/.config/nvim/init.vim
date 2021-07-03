@@ -1,7 +1,7 @@
 " ==================== Plugins(vim-plug) ====================
 call plug#begin("$XDG_CONFIG_HOME/nvim/plugged")
     Plug 'tomasiser/vim-code-dark'
-    Plug 'ap/vim-css-color'
+    "Plug 'ap/vim-css-color'
 
     Plug 'preservim/nerdtree' |
             \ Plug 'Xuyuanp/nerdtree-git-plugin' |
@@ -12,6 +12,12 @@ call plug#begin("$XDG_CONFIG_HOME/nvim/plugged")
     Plug 'jackguo380/vim-lsp-cxx-highlight'
     "Plug 'vim-syntastic/syntastic'
     Plug 'rhysd/vim-clang-format'
+    Plug 'jiangmiao/auto-pairs'
+    Plug 'ptzz/lf.vim'
+    Plug 'voldikss/vim-floaterm'
+
+    "snippets
+    Plug 'one-harsh/vscode-cpp-snippets'
 call plug#end()
 
 " ==================== General Settings ====================
@@ -47,6 +53,7 @@ set nowritebackup
 set hidden
 set updatetime=300
 set signcolumn=yes
+set shortmess+=c
 
 colorscheme codedark " colorscheme
 
@@ -123,6 +130,24 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+" CocList
+" Show all diagnostics.
+nnoremap <silent><nowait> <leader>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <leader>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <leader>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <leader>o  :<C-u>CocList outline<cr>
+" Search workleader symbols.
+nnoremap <silent><nowait> <leader>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <leader>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <leader>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <leader>b  :<C-u>CocListResume<CR>
+
 " show documentation in preview window
 nnoremap <silent> D :call <SID>show_documentation()<CR>
 
@@ -133,6 +158,16 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+
+" function and class text objects
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
 
 " disable search highlighting until the next search
 nnoremap <silent> <CR> :noh<CR><CR>
@@ -156,46 +191,83 @@ nnoremap <leader>h :split<Space>
 nnoremap <leader>v :vsplit<Space>
 
 " formating
-map <leader>p i(<ESC>ea)<ESC>
-map <leader>l i{<ESC>ea}<ESC>
+" put brackets around word
+nnoremap <leader>( viwc()<ESC>P
+nnoremap <leader>{ viwc{}<ESC>P
+nnoremap <leader>[ viwc[]<ESC>P
+
+nnoremap <leader>' viwc''<ESC>P
+nnoremap <leader>" viwc""<ESC>P
+
+" put brackets around selected text
+xnoremap <leader>( <ESC>`>a)<ESC>`<i(<ESC>
+xnoremap <leader>{ <ESC>`>a}<ESC>`<i{<ESC>
+xnoremap <leader>[ <ESC>`>a]<ESC>`<i[<ESC>
+
+xnoremap <leader>' <ESC>`>a'<ESC>`<i'<ESC>
+xnoremap <leader>" <ESC>`>a"<ESC>`<i"<ESC>
 
 xnoremap <silent> K :move '<-2<CR>gv-gv
 xnoremap <silent> J :move '>+1<CR>gv-gv
 
-map <leader>c :set formatoptions-=cro<CR>
-map <leader>C :set formatoptions=cro<CR>
+map <leader>z :set formatoptions-=cro<CR>
+map <leader>Z :set formatoptions=cro<CR>
 
-autocmd FileType c,cpp,objc nnoremap <leader>f :<C-u>ClangFormat<CR>
-autocmd FileType c,cpp,objc vnoremap <leader>f :ClangFormat<CR>
+autocmd FileType c,cpp,objc nnoremap <leader>F :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <leader>F :ClangFormat<CR>
 
 " enable spellchecking
-map <leader>s :setlocal spell! spelllang=de_de,en_us<CR>
+"map <leader>s :setlocal spell! spelllang=de_de,en_us<CR>
 
 " completion
-" use <cr> to confirm completion
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " use <tab> for trigger completion and navigate to the next complete item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
 inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
 
+"inoremap <silent><expr> <TAB>
+"      \ pumvisible() ? coc#_select_confirm() :
+"      \ coc#expandableOrJumpable() ? \"\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+"      \ <SID>check_back_space() ? \"\<TAB>" :
+"      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
 " use <S-Tab> to navigate back in the completion list
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
 
 " NERDTree
 nnoremap <silent> <leader>n :NERDTreeFocus<CR>
 nnoremap <silent> <C-n> :NERDTree<CR>
 nnoremap <silent> <C-t> :NERDTreeToggle<CR>
+
+"vim-floaterm
+let g:floaterm_keymap_prev      = '<leader>tp'
+let g:floaterm_keymap_next      = '<leader>tn'
+let g:floaterm_keymap_new       = '<leader>tf'
+let g:floaterm_keymap_toggle    = '<leader>to'
+let g:floaterm_keymap_kill      = '<leader>tk'
+
+"lf
+map <silent> <leader>f :LfCurrentFileExistingOrNewTab<CR>
 
 " ==================== NERDTree ====================
 " Start NERDTree and put the cursor back in the other window.
@@ -231,11 +303,22 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
 let g:NERDTreeGitStatusUseNerdFonts = 1
 
 " ==================== Coc ====================
+let g:coc_global_extensions = ['coc-json', 'coc-syntax', 'coc-dictionary', 'coc-html', 'coc-css', 'coc-pyright', 'coc-highlight', 'coc-snippets', 'coc-sql', 'coc-xml']
+
 " fix json comment highlighting
 autocmd FileType json syntax match Comment +\/\/.\+$+
 
 " Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd CursorHold * silent if ! coc#float#has_scroll() | call CocActionAsync('highlight') | endif
+autocmd CursorHoldI * silent if ! coc#float#has_scroll() | call CocActionAsync('showSignatureHelp') | endif
+
+" Scroll in signature help
+nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 
 " ==================== vim-lsp-cxx-highlight ====================
 " c++ syntax highlighting
@@ -252,3 +335,21 @@ let g:syntastic_check_on_wq = 0
 
 " ==================== vim-clang-format ====================
 let g:clang_format#code_style = 'gnu'
+
+" ==================== vim-floaterm ====================
+let g:floaterm_width = 1.0
+let g:floaterm_height = 0.4
+let g:floaterm_wintype = 'float'
+let g:floaterm_position = 'bottom'
+let g:floaterm_autoclose = 1
+
+hi Floaterm guibg=black
+
+" ==================== auto-pairs ====================
+let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', "`":"`", '```':'```', '"""':'"""', "'''":"'''",'<':'>'}
+
+" ==================== lf.vim ====================
+let g:lf_map_keys = 0
+
+let g:NERDTreeHijackNetrw = 0
+let g:lf_replace_netrw = 1

@@ -57,7 +57,7 @@ XF86AudioPlay
 
 ### util ###
 # remove formating from copied text
-ctrl + b
+mod1 + l
     xsel -b | xsel -b
 
 mod1 + p

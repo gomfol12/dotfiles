@@ -1,6 +1,6 @@
 set hidden true
 set ignorecase true
-set drawbox true
+#set drawbox true
 set icons true
 set previewer ~/scripts/lf/previewer.sh
 set preview true

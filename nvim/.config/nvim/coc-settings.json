@@ -1,4 +1,5 @@
 {
+    "suggest.snippetIndicator": " <snippet>",
     "languageserver": {
         "ccls": {
             "command": "ccls",
@@ -27,12 +28,22 @@
                     "snippetSupport": true
                 },
                 "index": {
-                    "onChange": true
+                    "onChange": true,
+                    "threads": 2
                 },
                 "highlight": {
                     "lsRanges" : true
                 }
             }
+        },
+        "bash": {
+            "command": "bash-language-server",
+            "args": [
+                "start"
+            ],
+            "filetypes": [
+                "sh"
+            ]
         }
     }
 }
