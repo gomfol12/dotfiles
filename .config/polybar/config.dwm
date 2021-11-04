@@ -1,0 +1,364 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;   default config at /usr/share/doc/polybar/config
+;
+;==========================================================
+
+[global/wm]
+; Adjust the _NET_WM_STRUT_PARTIAL top value
+;   Used for top aligned bars
+margin-bottom = 0
+
+; Adjust the _NET_WM_STRUT_PARTIAL bottom value
+;   Used for bottom aligned bars
+margin-top = 0
+
+[settings]
+; The throttle settings lets the eventloop swallow up til X events
+; if they happen within Y millisecond after first event was received.
+; This is done to prevent flood of update event.
+;
+; For example if 5 modules emit an update event at the same time, we really
+; just care about the last one. But if we wait too long for events to swallow
+; the bar would appear sluggish so we continue if timeout
+; expires or limit is reached.
+throttle-output = 5
+throttle-output-for = 10
+
+; Reload upon receiving XCB_RANDR_SCREEN_CHANGE_NOTIFY events
+screenchange-reload = false
+
+; Compositing operators
+; @see: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-operator-t
+;compositing-background = source
+;compositing-foreground = over
+;compositing-overline = over
+;compositing-underline = over
+;compositing-border = over
+
+; Enables pseudo-transparency for the bar
+; If set to true the bar can be transparent without a compositor.
+;pseudo-transparency = false
+
+[colors]
+foreground = ${xrdb:polybar.foreground}
+foreground-urgent = ${xrdb:black0}
+background = ${xrdb:polybar.background}
+focused = ${xrdb:polybar.focused}
+unfocused = ${xrdb:polybar.focused}
+visible = ${xrdb:polybar.visible}
+urgent = ${xrdb:polybar.alert}
+empty = ${xrdb:polybar.background}
+
+
+[bar/master]
+; Use either of the following command to list available outputs:
+; If unspecified, the application will pick the first one it finds.
+; $ polybar -m | cut -d ':' -f 1
+; $ xrandr -q | grep " connected" | cut -d ' ' -f1
+; If no monitor is given, the primary monitor is used if it exists
+;monitor = ${env:MONITOR:HDMI-0}
+
+; Require the monitor to be in connected state
+; XRandR sometimes reports my monitor as being disconnected (when in use)
+monitor-strict = false
+
+; Tell the Window Manager not to configure the window.
+; Use this to detach the bar if your WM is locking its size/position.
+; Note: With this most WMs will no longer reserve space for
+; the bar and it will overlap other windows. You need to configure
+; your WM to add a gap where the bar will be placed.
+override-redirect = false
+
+; Prefer fixed center position for the `modules-center` block.
+; The center block will stay in the middle of the bar whenever
+; possible. It can still be pushed around if other blocks need
+; more space.
+; When false, the center block is centered in the space between
+; the left and right block.
+fixed-center = false
+
+; Dimension defined as pixel value (e.g. 35) or percentage (e.g. 50%),
+; the percentage can optionally be extended with a pixel offset like so:
+; 50%:-10, this will result in a width or height of 50% minus 10 pixels
+width = 100%
+height = 20
+
+; Value used for drawing rounded corners
+; Note: This shouldn't be used together with border-size because the border
+; doesn't get rounded. For this to work you may also need to enable
+; pseudo-transparency or use a compositor like compton.
+; Individual values can be defined using:
+;   radius-{top,bottom}
+; or
+;   radius-{top,bottom}-{left,right} (unreleased)
+; Polybar always uses the most specific radius definition for each corner.
+radius = 0.0
+
+; Under-/overline pixel size and argb color
+; Individual values can be defined using:
+;   {overline,underline}-size
+;   {overline,underline}-color
+line-size = 0
+;line-color = #f00
+
+; Values applied to all borders
+; Individual side values can be defined using:
+;   border-{left,top,right,bottom}-size
+;   border-{left,top,right,bottom}-color
+; The top and bottom borders are added to the bar height, so the effective
+; window height is:
+;   height + border-top-size + border-bottom-size
+; Meanwhile the effective window width is defined entirely by the width key and
+; the border is placed within this area. So you effectively only have the
+; following horizontal space on the bar:
+;   width - border-right-size - border-left-size
+; border-size can be defined as pixel value (e.g. 35) or percentage (e.g. 50%),
+; the percentage can optionally be extended with a pixel offset like so:
+; 50%:-10, this will result in 50% minus 10 pixels. The percentage is relative
+; to the monitor width or height depending on the border direction.
+border-size = 0
+;border-color =
+
+; Number of spaces to add at the beginning/end of the bar
+; Individual side values can be defined using:
+;   padding-{left,right}
+padding = 0
+
+; Number of spaces to add before/after each module
+; Individual side values can be defined using:
+;   module-margin-{left,right}
+module-margin = 2
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+; Fonts are defined using <font-name>;<vertical-offset>
+; Font names are specified using a fontconfig pattern.
+;   font-0 = NotoSans-Regular:size=8;2
+;   font-1 = MaterialIcons:size=10
+;   font-2 = Termsynu:size=8;-1
+;   font-3 = FontAwesome:size=10
+; See the Fonts wiki page for more details
+font-0 = Iosevka Medium Extended:pixelsize=10:antialias=true:autohint=true;2
+font-1 = Symbols Nerd Font:pixelsize=10:antialias=true:autohint=true;2
+font-2 = JoyPixels:pixelsize=10:antialias=true:autohint=true;2
+
+;modules-left = dwm
+;modules-center =
+;modules-right = wired-network cpu gpu memory date
+
+; The separator will be inserted between the output of each module
+; This has the same properties as a label
+separator = |
+
+; Value to be used to set the WM_NAME atom
+; If the value is empty or undefined, the atom value
+; will be created from the following template: polybar-[BAR]_[MONITOR]
+; NOTE: The placeholders are not available for custom values
+wm-name = dwm
+
+; Locale used to localize various module data (e.g. date)
+; Expects a valid libc locale, for example: sv_SE.UTF-8
+;locale = en_US.UTF-8
+
+; Position of the system tray window
+; If empty or undefined, tray support will be disabled
+; NOTE: A center aligned tray will cover center aligned modules
+;
+; Available positions:
+;   left
+;   center
+;   right
+;   none
+tray-position = right
+
+; If true, the bar will not shift its
+; contents when the tray changes
+tray-detached = false
+
+; Tray icon max size
+tray-maxsize = 18
+
+; Enable support for inter-process messaging
+; See the Messaging wiki page for more details.
+enable-ipc = true
+
+; Requires polybar to be built with xcursor support (xcb-util-cursor)
+; Possible values are:
+; - default   : The default pointer as before, can also be an empty string (default)
+; - pointer   : Typically in the form of a hand
+; - ns-resize : Up and down arrows, can be used to indicate scrolling
+cursor-click = default
+cursor-scroll = default
+
+[bar/HDMI-0]
+inherit = bar/master
+
+monitor = ${env:MONITOR:HDMI-0}
+
+modules-left = dwm
+modules-right = wired-network cpu gpu memory date
+
+[bar/DVI-D-0]
+inherit = bar/master
+
+monitor = ${env:MONITOR:DVI-D-0}
+
+tray-position = none
+
+modules-left = dwm
+
+[module/dwm]
+type = internal/dwm
+format = <label-tags> <label-layout> <label-floating> <label-title>
+; Path to dwm socket (default: /tmp/dwm.sock)
+; socket-path = /tmp/dwm.sock
+
+; Left-click to view tag, right-click to toggle tag view
+enable-tags-click = true
+; Scroll to cycle between available tags
+enable-tags-scroll = false
+; If true and enable-tags-scroll = true, scrolling will view all tags regardless if occupied
+tags-scroll-empty = false
+; If true and enable-tags-scroll = true, scrolling will cycle through tags backwards
+tags-scroll-reverse = false
+; If true and enable-tags-scroll = true, wrap active tag when scrolling
+tags-scroll-wrap = false
+; Left-click to set secondary layout, right-click to switch to previous layout
+enable-layout-click = false
+; Scroll to cycle between available layouts
+enable-layout-scroll = false
+; Wrap when scrolling and reaching begining/end of layouts
+layout-scroll-wrap = false
+; Reverse scroll direction
+layout-scroll-reverse = false
+
+; If enable-layout-click = true, clicking the layout symbol will switch to this layout
+secondary-layout-symbol = [M]
+
+; Separator in between shown tags
+; label-separator = |
+
+; Title of currently focused window
+; Available tokens:
+;   %title%
+label-title = %title%
+label-title-padding = 0
+label-title-forefround = ${colors.foreground}
+label-title-background = ${colors.background}
+label-title-maxlen = 100
+
+; Symbol of current layout
+; Available tokens:
+;   %symbol%
+label-layout = %symbol%
+label-layout-padding = 0
+label-layout-foreground = ${colors.foreground}
+label-layout-background = ${colors.background}
+
+; Text to show when currently focused window is floating
+label-floating = F
+
+; States: focused, unfocused, visible, urgent, empty
+; Available tokens:
+;   %name%
+
+; focused = Selected tag on focused monitor
+label-focused = %name%
+label-focused-background = ${colors.focused}
+label-focused-padding = 1
+
+; unfocused = Unselected tag on unselected monitor
+label-unfocused = %name%
+label-unfocused-background = ${colors.unfocused}
+label-unfocused-padding = 1
+
+; visible = Unselected tag, but occupied tag on any monitor
+label-visible = %name%
+label-visible-background = ${colors.visible}
+label-visible-padding = 1
+
+; urgent = Unselected tag with window that has urgency hint set
+label-urgent = %name%
+label-urgent-background = ${colors.urgent}
+label-urgent-foreground = ${colors.foreground-urgent}
+label-urgent-padding = 1
+
+; empty = Unselected and unoccupied tag
+; This can be set to an empty string to hide empty tags
+label-empty = %name%
+label-empty-background = ${colors.empty}
+label-empty-padding = 1
+
+
+
+[module/title]
+type = internal/xwindow
+
+# backlight for screen brightness
+
+[module/cpu]
+type = custom/script
+interval = 10
+
+exec = sb-cpu
+
+label = [CPU] %output%
+
+[module/gpu]
+type = custom/script
+interval = 10
+
+exec = sb-gpu
+
+label = [GPU] %output%
+
+[module/memory]
+type = internal/memory
+interval = 10
+format-prefix = "[MEM] "
+format-prefix-foreground = ${colors.foreground}
+format-prefix-background = ${colors.background}
+label = %gb_used%/%gb_total%
+
+[module/wired-network]
+type = internal/network
+interface = enp27s0
+interval = 5
+
+format-connected = <label-connected>
+label-connected = | %downspeed:5% 祝%upspeed:5%
+
+format-disconnected = <label-disconnected>
+label-disconnected = | not connected
+
+;format-packetloss = <animation-packetloss> <label-connected>
+
+[module/date]
+type = internal/date
+interval = 5
+
+date = %a %d %B
+
+time = %H:%M
+time-alt = %H:%M:%S
+
+label = "%date%, %time% | "
+
+
+; vim:ft=dosini

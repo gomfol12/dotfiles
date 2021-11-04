@@ -1,0 +1,74 @@
+set nocompatible
+
+" Environment
+set undodir=$XDG_DATA_HOME/vim/undo
+set directory=$XDG_DATA_HOME/vim/swap
+set backupdir=$XDG_DATA_HOME/vim/backup
+set viewdir=$XDG_DATA_HOME/vim/view
+set viminfo+=n$XDG_DATA_HOME/vim/viminfo
+set runtimepath=$XDG_CONFIG_HOME/vim,$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
+let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc"
+
+syntax enable
+filetype plugin on
+
+" search down into subfolders
+" tab-completion
+set path+=**
+
+" display all matching files when tab complete
+set wildmenu
+
+" ctags (may need to install ctags)
+command! MakeTags !ctags -R .
+" Use ^] to jump to tag under cursor
+" Use g^] for ambiguous tags
+" Use ^t to jump back up the tag stack
+
+" Tweaks for file browsing
+let g:netrw_banner=0 " diable banner
+let g:netrm_browse_split=4 " open in prior window
+let g:netrw_altv=1 " open splits to the right
+let g:netrw_liststyle=3 " tree view
+" :edit for opening a file browser
+
+" read file in
+" nnoremap (snipped to type in) :read (file location)
+" ex: nnoremap ,html :-1read $HOME/.vim/.skeleton.html<CR>3jwf>a 
+
+" numbers left
+set number
+
+" search settings
+set nohlsearch
+set incsearch
+set nowrapscan
+
+" more settings
+set history=1000
+set ruler
+set showcmd
+set ttimeout
+set ttimeoutlen=100
+set tabstop=4 
+set softtabstop=4
+set shiftwidth=4
+set nowrap
+set encoding=utf-8
+
+" mappings
+map \p i(<ESC>ea)<ESC>
+map \c i{<ESC>ea}<ESC>
+
+" packages
+packadd! matchit " read doc
+
+" plugins
+call plug#begin("$XDG_CONFIG_HOME/vim/plugged")
+	Plug 'tomasiser/vim-code-dark'
+	Plug 'Valloric/YouCompleteMe'
+call plug#end()
+
+colorscheme codedark
+
+let g:ycm_global_ycm_extra_conf='~/.config/vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'

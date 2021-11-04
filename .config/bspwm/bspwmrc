@@ -1,0 +1,50 @@
+#! /bin/sh
+bspc rule -r "*"
+
+### monitors ###
+bspc monitor HDMI-0 -d 1 2 3 4 5 6 7 8 9
+bspc monitor DVI-D-0 -d 10 11 12 13
+
+### autostart ###
+~/.config/polybar/launch.sh &
+[ ! "$(pgrep "extraWM.sh")" ] && $SCRIPT_DIR/bspwm/extraWM.sh &
+[ ! "$(pgrep -f "st -c scratchpad")" ] && (bspc rule -a scratchpad -o desktop=8 && st -c scratchpad) &
+
+### global ###
+bspc config automatic_scheme alternate
+bspc config initial_polarity second_child
+bspc config pointer_modifier mod1
+bspc config pointer_action1 move
+bspc config pointer_action2 resize_side
+bspc config pointer_action3 resize_corner
+
+bspc config merge_overlapping_monitors true
+
+#bspc config directional_focus_tightness low
+
+bspc config border_width        2
+bspc config window_gap          0
+bspc config top_padding         24
+bspc config bottom_padding      0
+bspc config left_padding        0
+bspc config right_padding       0
+
+bspc config split_ratio          0.5
+
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+bspc config single_monocle       false
+
+bspc config normal_border_color "#555555"
+bspc config active_border_color "#555555"
+bspc config focused_border_color "#10a204"
+bspc config presel_feedback_color "#10a204"
+
+bspc wm --reorder-monitors HDMI-0 DVI-D-0
+xsetroot -cursor_name left_ptr &
+
+### rules ###
+bspc rule -a Zathura state=tiled
+bspc rule -a Steam desktop=9
+bspc rule -a discord desktop=10
+bspc rule -a pentablet state=floating

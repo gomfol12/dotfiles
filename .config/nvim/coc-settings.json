@@ -1,0 +1,49 @@
+{
+    "suggest.snippetIndicator": " <snippet>",
+    "languageserver": {
+        "ccls": {
+            "command": "ccls",
+            "args": [
+                "--log-file=/tmp/ccls.log",
+                "-v=1"
+            ],
+            "filetypes": [
+                "c",
+                "cpp",
+                "objc",
+                "objcpp"
+            ],
+            "rootPatterns": [
+                ".ccls",
+                "compile_commands.json",
+                ".vim/",
+                ".git/",
+                ".hg/"
+            ],
+            "initializationOptions": {
+                "cache": {
+                    "directory": "/tmp/ccls"
+                },
+                "client": {
+                    "snippetSupport": true
+                },
+                "index": {
+                    "onChange": true,
+                    "threads": 2
+                },
+                "highlight": {
+                    "lsRanges" : true
+                }
+            }
+        },
+        "bash": {
+            "command": "bash-language-server",
+            "args": [
+                "start"
+            ],
+            "filetypes": [
+                "sh"
+            ]
+        }
+    }
+}

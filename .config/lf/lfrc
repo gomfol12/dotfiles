@@ -1,0 +1,381 @@
+set hidden true
+set ignorecase true
+#set drawbox true
+set icons true
+set previewer ~/.local/scripts/lf/previewer.sh
+set cleaner ~/.local/scripts/lf/clear_img.sh
+set preview true
+set tabstop 4
+set wrapscan true
+set timefmt '_2 Jan 2006 15:04:05'
+
+# custom functions
+cmd open ${{
+    # quick fix for multi image selection TODO: better fix it is trash
+    if [ $(echo "$fx" | wc -l) -gt 1 ]; then
+        sxiv.sh $fx
+    else
+        opener.sh "$f" "$id" "open"
+    fi
+}}
+
+cmd open_sec ${{
+    # quick fix for multi image selection TODO: better fix it is trash
+    if [ $(echo "$fx" | wc -l) -gt 1 ]; then
+        sxiv.sh $fx
+    else
+        opener.sh "$f" "$id" "open_sec"
+    fi
+}}
+
+cmd mkdir %{{
+	printf "Directory Name: "
+	read ans
+	mkdir -p $ans
+}}
+
+cmd mkfile %{{
+	printf "File Name: "
+	read ans
+	$EDITOR $ans
+}}
+
+cmd touch %{{
+	printf "File Name: "
+	read ans
+	touch $ans
+}}
+
+cmd chmod %{{
+	printf "Mode Bits: "
+	read ans
+
+	for file in "$fx"
+	do
+		chmod $ans $file
+	done
+
+	lf -remote 'send reload'
+}}
+
+cmd sudochmod %{{
+	printf "Mode Bits: "
+	read ans
+
+	for file in "$fx"
+	do
+		sudo chmod $ans $file
+	done
+
+	lf -remote 'send reload'
+}}
+
+cmd sudomkfile %{{
+	printf "File Name: "
+	read ans
+	sudo $EDITOR $ans
+}}
+
+cmd unarchive %{{
+	case "$f" in
+		*.zip) unzip "$f" ;;
+		*.tar.gz) tar -xzvf "$f" ;;
+		*.tar.bz2) tar -xjvf "$f" ;;
+		*.tar) tar -xvf "$f" ;;
+		*) echo "Unsupported format" ;;
+	esac
+}}
+
+# TODO: better solution
+cmd zip %{{
+    printf "Archive(zip) Name: "
+    read in
+
+    files=""
+    for file in $fx
+    do
+        files+="$(echo $file | sed 's@.*/@@') "
+    done
+
+    zip -r "$in.zip" $(echo $files) >&/dev/null
+}}
+cmd tar %{{
+    printf "Archive(tar) Name: "
+    read in
+
+    files=""
+    for file in $fx
+    do
+        files+="$(echo $file | sed 's@.*/@@') "
+    done
+
+    tar -cvf "$in.tar" $(echo $files) >&/dev/null
+}}
+cmd targz %{{
+    printf "Archive(targz) Name: "
+    read in
+
+    files=""
+    for file in $fx
+    do
+        files+="$(echo $file | sed 's@.*/@@') "
+    done
+
+    tar -cvzf "$in.tar.gz" $(echo $files) >&/dev/null
+}}
+cmd tarbz2 %{{
+    printf "Archive(tarbz2) Name: "
+    read in
+
+    files=""
+    for file in $fx
+    do
+        files+="$(echo $file | sed 's@.*/@@') "
+    done
+
+    tar cjvf "$in.tar.bz2" $(echo $files) >&/dev/null
+}}
+
+# trash-cli
+cmd trash %{{
+	files=$(printf "$fx" | tr '\n' ';')
+	while [ "$files" ]; do
+		# extract the substring from start of string up to delimiter.
+		# this is the first "element" of the string.
+		file=${files%%;*}
+
+		trash-put "$(basename "$file")"
+		# if there's only one element left, set `files` to an empty string.
+		# this causes us to exit this `while` loop.
+		# else, we delete the first "element" of the string from files, and move onto the next.
+		if [ "$files" = "$file" ]; then
+			files=''
+		else
+			files="${files#*;}"
+		fi
+	done
+}}
+
+cmd clear_trash &trash-empty
+cmd restore_trash ${{
+	trash-restore
+}}
+
+cmd list_trash ${{
+	trash-list | less
+}}
+
+cmd yank-path &printf '%s' "$fx" | xclip -i -selection clipboard
+cmd yank-basename &basename -a -- $fx | head -c-1 | xclip -i -selection clipboard
+cmd yank-dirname &dirname -- "$f" | head -c-1 | xclip -i -selection clipboard
+cmd yank-basename-without-extension &basename -a -- $fx | cut -d. -f1 | head -c-1 | xclip -i -selection clipboard
+
+# dragon
+cmd dragon %dragon-drag-and-drop -a -x $fx
+cmd dragon-stay %dragon-drag-and-drop -a $fx
+cmd dragon-individual %dragon-drag-and-drop $fx
+cmd dlfile $dlfile.sh
+
+#fzf
+cmd fzf_jump ${{
+    res="$(find . -maxdepth 1 | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
+    if [ -d "$res" ]; then
+        cmd="cd"
+    else
+        cmd="select"
+    fi
+    lf -remote "send $id $cmd \"$res\""
+}}
+
+#copy progress
+cmd paste &{{
+    set -- $(cat ~/.local/share/lf/files)
+    mode="$1"
+    shift
+    case "$mode" in
+        copy)
+            rsync -av --ignore-existing --progress -- "$@" . |
+            stdbuf -i0 -o0 -e0 tr '\r' '\n' |
+            while IFS= read -r line; do
+                lf -remote "send $id echo $line"
+            done
+            ;;
+        move) mv -n -- "$@" .;;
+    esac
+    rm ~/.local/share/lf/files
+    lf -remote "send clear"
+	lf -remote 'send reload'
+}}
+
+#TODO: change to work with selected files
+cmd bulk-rename ${{
+    old="$(mktemp)"
+    new="$(mktemp)"
+    [ -n "$fs" ] && fs="$(ls)"
+    printf '%s\n' "$fs" >"$old"
+    printf '%s\n' "$fs" >"$new"
+    $EDITOR "$new"
+    [ "$(wc -l < "$new")" -ne "$(wc -l < "$old")" ] && exit
+    paste "$old" "$new" | while IFS= read -r names; do
+        src="$(printf '%s' "$names" | cut -f1)"
+        dst="$(printf '%s' "$names" | cut -f2)"
+        if [ "$src" = "$dst" ] || [ -e "$dst" ]; then
+            continue
+        fi
+        mv -- "$src" "$dst"
+    done
+    rm -- "$old" "$new"
+    lf -remote "send $id unselect"
+}}
+
+# share any file 256 MiB limit
+cmd share $curl -F"file=@$fx" https://0x0.st | xclip -selection c
+
+# show current directory in window title
+cmd on-cd &{{
+    # '&' commands run silently in background (which is what we want here),
+    # but are not connected to stdout.
+    # To make sure our escape sequence still reaches stdout we pipe it to /dev/tty
+    printf "\033]0; "lf" $(pwd | sed "s|$HOME|~|")\007" > /dev/tty
+}}
+# also run at startup
+on-cd
+
+# warn about nested instances
+%[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
+
+# key bindings
+# Remove some defaults
+map m
+map "'"
+map '"'
+map d
+map c
+map i
+map r
+
+# trash mappings
+map dd trash
+map tc clear_trash
+map tr restore_trash
+map tl list_trash
+
+# file openers
+map oc %code .
+map oa ${{
+	$EDITOR ~/doc/notizen/arch/archInstall.txt
+}}
+map o.l ${{
+    $EDITOR ~/.config/lf/lfrc
+}}
+
+# archive mappings
+map az zip
+map at tar
+map ag targz
+map ab tarbz2
+map au unarchive
+
+# dragon
+map dr dragon
+map ds dragon-stay
+map di dragon-individual
+map dl dlfile
+
+# basic
+map . set hidden!
+map DD delete
+map p paste
+map x cut
+map y copy
+map <enter> open
+map e open_sec
+map mf mkfile
+map ms sudomkfile
+map th touch
+map md mkdir
+map ch chmod
+map cs sudochmod
+map <f-2> rename
+map <c-r> bulk-rename
+map H top
+map L bottom
+map R reload
+map C clear
+map Y yank-path
+# Rename the file with a completely different name
+map rc %{{
+	# get 'basename' of the selection
+	filename="${f##*/}"
+
+    printf "New Name: "
+    read in
+    mv "$filename" "$in"
+}}
+# Edit the current filename
+map ra &{{
+	# get 'basename' of the selection
+	filename="${f##*/}"
+	# quote it so we won't deal with quotes in the lf -remote command
+	filename="$(printf '%q' "$filename")"
+	filename="${filename// /<space>}"
+
+	lf -remote "send $id push :rename<space>$filename<enter>"
+}}
+# Edit filename before the extension
+map re &{{
+    # get 'basename' of the selection
+	filename="${f##*/}"
+	# quote it so we won't deal with quotes in the lf -remote command
+	filename="$(printf '%q' "$filename")"
+	filename="${filename// /<space>}"
+
+	lf -remote "send $id push :rename<space>$filename<enter><a-b><c-b>"
+}}
+map <c-z> $ kill -STOP $PPID #put lf into background
+map <esc> quit
+map M ${{
+    mediainfo "$f" | less
+}}
+
+# movement
+map gdl cd ~/dl
+map gdt cd ~/dt
+
+map gda cd ~/doc
+map gdn cd ~/nbdoc
+
+map gb cd ~/doc/bilder
+map gdv cd ~/doc/dev
+map gn cd ~/doc/notizen
+map gj cd ~/doc/dev/java
+map gc cd ~/doc/dev/c++
+map gsc cd ~/.local/scripts
+map gp cd ~/doc/dev/projects
+
+map g.c cd ~/.config
+map g.l cd ~/.local
+
+#fzf
+map <c-f> :fzf_jump
+
+# schule
+map gsh cd ~/doc/schule
+map gsq1 cd ~/doc/schule/<schule>/Q1
+map gsq2 cd ~/doc/schule/<schule>/Q2
+map gsq3 cd ~/doc/schule/<schule>/Q3
+map gsd cd ~/doc/schule/<schule>/deutsch
+map gsen cd ~/doc/schule/<schule>/englisch
+map gsg cd ~/doc/schule/<schule>/geschi
+map gsi cd ~/doc/schule/<schule>/itec
+map gsm cd ~/doc/schule/<schule>/mathe
+map gsph cd ~/doc/schule/<schule>/physik
+map gspo cd ~/doc/schule/<schule>/powi
+map gspr cd ~/doc/schule/<schule>/prin
+map gss cd ~/doc/schule/<schule>/spanisch
+map gset cd ~/doc/schule/<schule>/ethik
+
+map gkks cd ~/doc/schule/<schule>/
+map gq1 cd ~/doc/schule/<schule>/Q1
+map gq2 cd ~/doc/schule/<schule>/Q2
+map gq3 cd ~/doc/schule/<schule>/Q3
