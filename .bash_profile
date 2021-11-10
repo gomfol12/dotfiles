@@ -39,7 +39,7 @@ export GOPATH="$XDG_DATA_HOME"/go
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 
 ### pass ###
-export PASSWORD_STORE_DIR="$HOME"/.local/passwords/password-store
+export PASSWORD_STORE_DIR="$HOME"/.local/password-store
 export PASSWORD_STORE_GENERATED_LENGTH=20
 export PASSWORD_STORE_CLIP_TIME=30
 

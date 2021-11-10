@@ -81,6 +81,7 @@ cmd unarchive %{{
 		*.zip) unzip "$f" ;;
 		*.tar.gz) tar -xzvf "$f" ;;
 		*.tar.bz2) tar -xjvf "$f" ;;
+        *.tar.xz) unxz "$f" ;;
 		*.tar) tar -xvf "$f" ;;
 		*) echo "Unsupported format" ;;
 	esac
@@ -343,7 +344,7 @@ map gdl cd ~/dl
 map gdt cd ~/dt
 
 map gda cd ~/doc
-map gdn cd ~/nbdoc
+map gdn cd ~/nbdata
 
 map gb cd ~/doc/bilder
 map gdv cd ~/doc/dev

@@ -15,40 +15,46 @@ log()
 
 list()
 {
-    #ls --color=auto -1 -F "$PASSWORD_STORE_DIR"
-    find "$PASSWORD_STORE_DIR" -not -name ".gpg-id" -type f | sed "s@$PASSWORD_STORE_DIR/@@" | sed 's@\w*\.gpg$@@' | uniq | sort
+    find "$PASSWORD_STORE_DIR" -mindepth 3 -not -name ".gpg-id" -not -path "*trash_bin*" -not -path "*.git*" -type d | sed "s@$PASSWORD_STORE_DIR/@@"
 }
 
 menu()
 {
-    selection=$(printf "fill user/pass\ncopy username\ncopy password\ncopy email\n" | dmenu)
+    selection=$(printf "fill user/pass\ncopy username\ncopy password\ncopy email\n" | dmenu -l 10)
     [ -z "$selection" ] && exit 1
 
-    acc=$(list | dmenu)
-    [ -z "$acc" ] && exit 1
+    pass_path=$(list | dmenu -l 10)
+    [ -z "$pass_path" ] && exit 1
+
+    username=$(printf "%s" "$pass_path" | sed 's@^.*/@@')
 
     clipctl disable
     sleep 1
 
     case $selection in
         "fill user/pass")
-            xdotool type --clearmodifiers "$(pass "$acc/username")"
+            xdotool type --clearmodifiers "$username"
             xdotool key Tab
-            xdotool type --clearmodifiers "$(pass "$acc/password")"
+            xdotool type --clearmodifiers "$(pass "$pass_path/password")"
             xdotool key Enter
             log "filled user/pass"
             ;;
         "copy username")
-            pass "$acc/username" | xclip -selection clipboard
+            printf "%s" "$username" | xclip -selection clipboard
             log "copied username, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
             ;;
         "copy password")
-            pass "$acc/password" | xclip -selection clipboard
+            pass "$pass_path/password" | xclip -selection clipboard
             log "copied password, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
             ;;
         "copy email")
-            pass "$acc/email" | xclip -selection clipboard
-            log "copied email, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
+            if [ -f "$PASSWORD_STORE_DIR/$pass_path/email.gpg" ]; then
+                pass "$pass_path/email" | xclip -selection clipboard
+                log "copied email, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
+            elif [ ! -f "$PASSWORD_STORE_DIR/$pass_path/email.gpg" ]; then
+                printf "%s" "$username" | xclip -selection clipboard
+                log "copied email, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
+            fi
             ;;
     esac
 
@@ -65,6 +71,7 @@ case $1 in
         if [ "$#" -eq 0 ]; then
             menu
         else
-            echo "Invalid argument";
+            printf "Invalid argument\n"
         fi
+        ;;
 esac
