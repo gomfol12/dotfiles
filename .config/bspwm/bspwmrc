@@ -5,10 +5,37 @@ bspc rule -r "*"
 bspc monitor HDMI-0 -d 1 2 3 4 5 6 7 8 9
 bspc monitor DVI-D-0 -d 10 11 12 13
 
-### autostart ###
-~/.config/polybar/launch.sh &
-[ ! "$(pgrep "extraWM.sh")" ] && $SCRIPT_DIR/bspwm/extraWM.sh &
-[ ! "$(pgrep -f "st -c scratchpad")" ] && (bspc rule -a scratchpad -o desktop=8 && st -c scratchpad) &
+### autostart/restart ###
+# stop
+for process in "xss-lock" "imwheel" "dunst" "picom" "sxhkd" "unclutter" "lxpolkit" "clipmanager" "extraWM.sh" "xcape"; do
+    if [ "$(pgrep "$process")" ]; then
+        killall -q "$process"
+    fi
+done
+# wait for processes to terminate
+sleep 1
+
+# start
+xset r rate 200 40 &
+xset dpms 300 300 600 &
+xset s 300 &
+start_polybar.sh &
+xss-lock -- betterlockscreen -l &
+imwheel -b "45" &
+dunst &
+picom &
+unclutter --timeout 5 &
+lxpolkit &
+sxhkd &
+numlockx on &
+clipmanager > /dev/null 2>&1 &
+extraWM.sh &
+setWallpaper.sh &
+xcape -e 'Super_L=Menu;Super_R=Menu' &
+
+nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings --load-config-only &
+
+[ ! "$(pgrep -f "st -c scratchpad")" ] && (bspc rule -a scratchpad -o desktop=8 && st -c scratchpad &) &
 
 ### global ###
 bspc config automatic_scheme alternate

@@ -87,7 +87,8 @@ mod1 + x
     xclip -selection c -o | xclip -selection c
 
 # open clipmenu
-mod1 + y
+# this is actually mod1 + y TODO: write own keymap
+mod1 + z
    clipmenu
 
 # open dmenu websearch
@@ -192,7 +193,7 @@ mod1 + super + k
     upDownNav.sh downFloat
 
 # focus the last node
-mod1 + {grave,n}
+mod1 + {dead_grave,n}
 	bspc node -f last
 
 # focus the last desktop
@@ -200,7 +201,7 @@ mod1 + Tab
     bspc desktop -f last
 
 # swap node with the last node
-mod1 + shift + {grave,n}
+mod1 + shift + {dead_grave,n}
     bspc node -s last
 
 # focus or send to the given desktop

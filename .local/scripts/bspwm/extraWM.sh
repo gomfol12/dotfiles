@@ -100,6 +100,10 @@ correctBorders()
         done
     fi
 }
+# correct on startup and restart
+for desktop in $(bspc query -D); do
+    correctBorders "$desktop"
+done
 
 bspc subscribe node_state | while read -r Event Monitor Desktop Node State Active; do
 

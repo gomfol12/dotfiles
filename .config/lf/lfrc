@@ -159,11 +159,21 @@ cmd trash %{{
 
 cmd clear_trash &trash-empty
 cmd restore_trash ${{
-	trash-restore
+    if [ -n "$(trash-list)" ]; then
+	    trash-restore
+    else
+        printf "trash is empty"
+        read in
+    fi
 }}
 
 cmd list_trash ${{
-	trash-list | less
+    if [ -n "$(trash-list)" ]; then
+	    trash-list | less
+    else
+        printf "trash is empty"
+        read in
+    fi
 }}
 
 cmd yank-path &printf '%s' "$fx" | xclip -i -selection clipboard
@@ -283,6 +293,11 @@ map ds dragon-stay
 map di dragon-individual
 map dl dlfile
 
+# set Wallpaper
+map sw &{{
+    setWallpaper.sh "$f"
+}}
+
 # basic
 map . set hidden!
 map DD delete
@@ -343,7 +358,7 @@ map M ${{
 map gdl cd ~/dl
 map gdt cd ~/dt
 
-map gda cd ~/doc
+map gdo cd ~/doc
 map gdn cd ~/nbdata
 
 map gb cd ~/doc/bilder

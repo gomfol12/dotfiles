@@ -306,12 +306,12 @@ pacs()
 
 yayin()
 {
-    paru -Sl | awk '{print $2($4=="" ? "" : "*")}' | fzf --multi --preview 'echo {1} | tr -d "*" | xargs -r paru -Si' | tr -d "*" | xargs -ro doas paru --sudo doas --sudoflags -- -S
+    paru -Sl | awk '{print $2($4=="" ? "" : "*")}' | fzf --multi --preview 'echo {1} | tr -d "*" | xargs -r paru -Si' | tr -d "*" | xargs -ro paru --sudo doas --sudoflags -- -S
 }
 
 yaydel()
 {
-    paru -Qq | fzf --multi --preview 'paru -Qi {1}' | xargs -ro doas paru --sudo doas --sudoflags -- -Rncs
+    paru -Qq | fzf --multi --preview 'paru -Qi {1}' | xargs -ro paru --sudo doas --sudoflags -- -Rncs
 }
 
 yays()

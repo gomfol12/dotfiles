@@ -5,17 +5,17 @@
 xss-lock -- betterlockscreen -l &
 
 imwheel -b "45" &
-xrdb ~/.config/Xresources &
-xmodmap ~/.config/Xmodmap &
+#xrdb ~/.config/Xresources &
+#xmodmap ~/.config/Xmodmap &
 dunst &
 nitrogen --restore &
 picom &
-sxhkd &
-numlockx &
+#sxhkd &
+#numlockx &
 unclutter --timeout 5 &
 lxpolkit &
 #keynav &
 nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings --load-config-only &
 clipmanager >&/dev/null &
 
-exec bspwm
+exec dbus-launch bspwm

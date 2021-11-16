@@ -2,6 +2,4 @@
 .config/gnupg/gpg-agent.conf filter=gnupg-gpg-agent.conf
 .config/lf/lfrc filter=lf-lfrc
 .config/gtk-2.0/gtkrc filter=gtk-2.0-gtkrc
-.config/nitrogen/bg-saved.cfg filter=nitrogen
-.config/nitrogen/nitrogen.cfg filter=nitrogen
 .config/spotifyd/spotifyd.conf filter=spotifyd
