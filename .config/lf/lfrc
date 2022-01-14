@@ -8,162 +8,194 @@ set preview true
 set tabstop 4
 set wrapscan true
 set timefmt '_2 Jan 2006 15:04:05'
+set shell bash
 
 # custom functions
 cmd open ${{
-    # quick fix for multi image selection TODO: better fix it is trash
-    if [ $(echo "$fx" | wc -l) -gt 1 ]; then
-        sxiv.sh $fx
-    else
-        opener.sh "$f" "$id" "open"
-    fi
+    opener.sh "$id" "open" "$fx"
 }}
 
 cmd open_sec ${{
-    # quick fix for multi image selection TODO: better fix it is trash
-    if [ $(echo "$fx" | wc -l) -gt 1 ]; then
-        sxiv.sh $fx
-    else
-        opener.sh "$f" "$id" "open_sec"
-    fi
+    opener.sh "$id" "open_sec" "$fx"
 }}
 
-cmd mkdir %{{
+cmd mkdir ${{
 	printf "Directory Name: "
-	read ans
-	mkdir -p $ans
+	read -r name
+	mkdir -p "$name"
 }}
 
-cmd mkfile %{{
+cmd mkfile ${{
 	printf "File Name: "
-	read ans
-	$EDITOR $ans
+	read -r name
+	$EDITOR "$name"
 }}
 
-cmd touch %{{
+cmd touch ${{
 	printf "File Name: "
-	read ans
-	touch $ans
+	read -r name
+	touch "$name"
 }}
 
-cmd chmod %{{
+cmd chmod ${{
+    set -f
+    printf "Files: \n%s\n" "$fx"
 	printf "Mode Bits: "
-	read ans
+	read -r bits
 
-	for file in "$fx"
-	do
-		chmod $ans $file
+    SAVEIFS=$IFS
+    IFS=$(printf "\n\b")
+	for file in $fx; do
+		chmod $bits $file
 	done
+    IFS=$SAVEIFS
 
 	lf -remote 'send reload'
 }}
 
-cmd sudochmod %{{
+cmd sudochmod ${{
+    set -f
+    printf "Files: \n%s\n" "$fx"
 	printf "Mode Bits: "
-	read ans
+	read -r bits
 
-	for file in "$fx"
-	do
-		sudo chmod $ans $file
+    SAVEIFS=$IFS
+    IFS=$(printf "\n\b")
+	for file in $fx; do
+		doas chmod $bits $file
 	done
+    IFS=$SAVEIFS
 
 	lf -remote 'send reload'
 }}
 
-cmd sudomkfile %{{
+cmd sudomkfile ${{
 	printf "File Name: "
-	read ans
-	sudo $EDITOR $ans
+	read -r name
+	doasedit.sh "$name"
 }}
 
-cmd unarchive %{{
-	case "$f" in
-		*.zip) unzip "$f" ;;
-		*.tar.gz) tar -xzvf "$f" ;;
-		*.tar.bz2) tar -xjvf "$f" ;;
-        *.tar.xz) unxz "$f" ;;
-		*.tar) tar -xvf "$f" ;;
-		*) echo "Unsupported format" ;;
-	esac
+cmd unarchive ${{
+    set -f
+    printf "Unarchive files: \n%s\n?[y|n] " "$fx"
+    read -n 1 -r
+    if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
+        if [ ! "$REPLY" = "" ]; then
+            printf "\n"
+        fi
+        printf "Aborted\n"
+        read -n 1 -s -r -p "Press any key to continue"
+        printf "\n"
+        exit 0
+    fi
+    printf "\n"
+
+    SAVEIFS=$IFS
+    IFS=$(printf "\n\b")
+	for file in $fx; do
+	    case "$file" in
+		    *.zip) unzip "$file" ;;
+		    *.tar.gz) tar -xzvf "$file" ;;
+		    *.tar.bz2) tar -xjvf "$file" ;;
+            *.tar.xz) unxz "$file" ;;
+		    *.tar) tar -xvf "$file" ;;
+		    *) printf "File: %s: Unsupported format\n" "$file" ;;
+	    esac
+	done
+    IFS=$SAVEIFS
+
+    read -n 1 -s -r -p "Press any key to continue"
+    printf "\n"
 }}
 
-# TODO: better solution
-cmd zip %{{
+# TODO: better but still not perfect
+# fix: tar: Removing leading `../' from member names
+cmd zip ${{
     printf "Archive(zip) Name: "
-    read in
+    read -r name
 
-    files=""
-    for file in $fx
-    do
-        files+="$(echo $file | sed 's@.*/@@') "
-    done
+    printf "%s" "$fx" | sed 's/.*/"&"/' | xargs -r realpath --relative-to="." | sed 's/.*/"&"/' | xargs -r 7z a -tzip "$name.zip"
+    lf -remote "send unselect"
 
-    zip -r "$in.zip" $(echo $files) >&/dev/null
+    read -n 1 -s -r -p "Press any key to continue"
+    printf "\n"
 }}
-cmd tar %{{
+cmd tar ${{
     printf "Archive(tar) Name: "
-    read in
+    read -r name
 
-    files=""
-    for file in $fx
-    do
-        files+="$(echo $file | sed 's@.*/@@') "
-    done
+    printf "%s" "$fx" | sed 's/.*/"&"/' | xargs -r realpath --relative-to="." -z | tar --null -T - -cvf "$name.tar"
+    lf -remote "send unselect"
 
-    tar -cvf "$in.tar" $(echo $files) >&/dev/null
+    read -n 1 -s -r -p "Press any key to continue"
+    printf "\n"
 }}
-cmd targz %{{
+cmd targz ${{
     printf "Archive(targz) Name: "
-    read in
+    read -r name
 
-    files=""
-    for file in $fx
-    do
-        files+="$(echo $file | sed 's@.*/@@') "
-    done
+    printf "%s" "$fx" | sed 's/.*/"&"/' | xargs -r realpath --relative-to="." -z | tar --null -T - -cvzf "$name.tar.gz"
+    lf -remote "send unselect"
 
-    tar -cvzf "$in.tar.gz" $(echo $files) >&/dev/null
+    read -n 1 -s -r -p "Press any key to continue"
+    printf "\n"
 }}
-cmd tarbz2 %{{
+cmd tarbz2 ${{
     printf "Archive(tarbz2) Name: "
-    read in
+    read -r name
 
-    files=""
-    for file in $fx
-    do
-        files+="$(echo $file | sed 's@.*/@@') "
-    done
+    printf "%s" "$fx" | sed 's/.*/"&"/' | xargs -r realpath --relative-to="." -z | tar --null -T - -cvjf "$name.tar.bz2"
+    lf -remote "send unselect"
 
-    tar cjvf "$in.tar.bz2" $(echo $files) >&/dev/null
+    read -n 1 -s -r -p "Press any key to continue"
+    printf "\n"
 }}
 
 # trash-cli
 cmd trash %{{
-	files=$(printf "$fx" | tr '\n' ';')
-	while [ "$files" ]; do
-		# extract the substring from start of string up to delimiter.
-		# this is the first "element" of the string.
-		file=${files%%;*}
-
-		trash-put "$(basename "$file")"
-		# if there's only one element left, set `files` to an empty string.
-		# this causes us to exit this `while` loop.
-		# else, we delete the first "element" of the string from files, and move onto the next.
-		if [ "$files" = "$file" ]; then
-			files=''
-		else
-			files="${files#*;}"
-		fi
+    set -f
+    SAVEIFS=$IFS
+    IFS=$(printf "\n\b")
+	for file in $fx; do
+        printf "%s\n\n" "$file"
+        trash-put "$file"
 	done
+    IFS=$SAVEIFS
+    printf "Deleted"
 }}
 
-cmd clear_trash &trash-empty
+cmd clear_trash %{{
+    trash-empty
+    printf "Trash emptied"
+}}
+
 cmd restore_trash ${{
+    set -f
+
     if [ -n "$(trash-list)" ]; then
-	    trash-restore
+        dirs=$(printf "%s" "$(dirname $(trash-list | cut -d" " -f3))" | uniq)
+        restore=0
+
+        SAVEIFS=$IFS
+        IFS=$(printf "\n\b")
+        for d in $dirs; do
+            if printf "%s" "$d" | grep -q "$PWD"; then
+                restore=1
+            fi
+        done
+        IFS=$SAVEIFS
+
+        if [ "$restore" -eq 1 ]; then
+            trash-restore
+        else
+            printf "No trashed files in current dir\n"
+            read -n 1 -s -r -p "Press any key to continue"
+            printf "\n"
+        fi
     else
-        printf "trash is empty"
-        read in
+        printf "Trash is empty\n"
+        read -n 1 -s -r -p "Press any key to continue"
+        printf "\n"
     fi
 }}
 
@@ -171,21 +203,22 @@ cmd list_trash ${{
     if [ -n "$(trash-list)" ]; then
 	    trash-list | less
     else
-        printf "trash is empty"
-        read in
+        printf "Trash is empty\n"
+        read -n 1 -s -r -p "Press any key to continue"
+        printf "\n"
     fi
 }}
 
-cmd yank-path &printf '%s' "$fx" | xclip -i -selection clipboard
-cmd yank-basename &basename -a -- $fx | head -c-1 | xclip -i -selection clipboard
-cmd yank-dirname &dirname -- "$f" | head -c-1 | xclip -i -selection clipboard
-cmd yank-basename-without-extension &basename -a -- $fx | cut -d. -f1 | head -c-1 | xclip -i -selection clipboard
+cmd yank-path %printf '%s' "$fx" | xclip -i -selection clipboard && printf "Yanked path"
+cmd yank-basename %basename -a -- $fx | head -c-1 | xclip -i -selection clipboard && printf "Yanked basename"
+cmd yank-dirname %dirname -- "$f" | head -c-1 | xclip -i -selection clipboard && printf "Yanked dirname"
+cmd yank-basename-without-extension %basename -a -- $fx | cut -d. -f1 | head -c-1 | xclip -i -selection clipboard && printf "Yanked basename without extension"
 
 # dragon
 cmd dragon %dragon-drag-and-drop -a -x $fx
 cmd dragon-stay %dragon-drag-and-drop -a $fx
 cmd dragon-individual %dragon-drag-and-drop $fx
-cmd dlfile $dlfile.sh
+cmd dlfile %dlfile.sh
 
 #fzf
 cmd fzf_jump ${{
@@ -198,31 +231,24 @@ cmd fzf_jump ${{
     lf -remote "send $id $cmd \"$res\""
 }}
 
-#copy progress
-cmd paste &{{
-    set -- $(cat ~/.local/share/lf/files)
-    mode="$1"
-    shift
+#copy/move
+cmd paste ${{
+    files=$(cat ~/.local/share/lf/files)
+    mode=$(printf "%s" "$files" | head -1)
+    files=$(printf "%s" "$files" | tail +2)
     case "$mode" in
-        copy)
-            rsync -av --ignore-existing --progress -- "$@" . |
-            stdbuf -i0 -o0 -e0 tr '\r' '\n' |
-            while IFS= read -r line; do
-                lf -remote "send $id echo $line"
-            done
-            ;;
-        move) mv -n -- "$@" .;;
+        "copy") printf "%s" "$files" | sed 's/.*/"&"/' | xargs -ro cp -ivr -t "." ;;
+        "move") printf "%s" "$files" | sed 's/.*/"&"/' | xargs -ro mv -iv -t "." ;;
     esac
     rm ~/.local/share/lf/files
     lf -remote "send clear"
 	lf -remote 'send reload'
 }}
 
-#TODO: change to work with selected files
 cmd bulk-rename ${{
     old="$(mktemp)"
     new="$(mktemp)"
-    [ -n "$fs" ] && fs="$(ls)"
+    [ -z "$fs" ] && fs="$(ls)"
     printf '%s\n' "$fs" >"$old"
     printf '%s\n' "$fs" >"$new"
     $EDITOR "$new"
@@ -255,6 +281,17 @@ on-cd
 # warn about nested instances
 %[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
 
+# dynamically set number of columns
+cmd recol ${{
+    w=$(tput cols)
+    if [ $w -le 80 ]; then
+        lf -remote "send $id set ratios 1:2"
+    else
+        lf -remote "send $id set ratios 1:2:3"
+    fi
+}}
+recol
+
 # key bindings
 # Remove some defaults
 map m
@@ -264,6 +301,7 @@ map d
 map c
 map i
 map r
+map y
 
 # trash mappings
 map dd trash
@@ -294,7 +332,7 @@ map di dragon-individual
 map dl dlfile
 
 # set Wallpaper
-map sw &{{
+map sw ${{
     setWallpaper.sh "$f"
 }}
 
@@ -303,30 +341,33 @@ map . set hidden!
 map DD delete
 map p paste
 map x cut
-map y copy
+map yy copy
+map yp yank-path
+map yb yank-basename
+map yd yank-dirname
+map ye yank-basename-without-extension
 map <enter> open
 map e open_sec
 map mf mkfile
-map ms sudomkfile
+map smf sudomkfile
 map th touch
 map md mkdir
 map ch chmod
-map cs sudochmod
+map sch sudochmod
 map <f-2> rename
 map <c-r> bulk-rename
 map H top
 map L bottom
 map R reload
 map C clear
-map Y yank-path
 # Rename the file with a completely different name
 map rc %{{
-	# get 'basename' of the selection
-	filename="${f##*/}"
+	filename=$(basename "$f")
 
     printf "New Name: "
-    read in
-    mv "$filename" "$in"
+    read -r name
+    mv "$filename" "$name"
+    printf "Renamed \'$filename\' -> \'$name\'"
 }}
 # Edit the current filename
 map ra &{{
@@ -353,12 +394,14 @@ map <esc> quit
 map M ${{
     mediainfo "$f" | less
 }}
+map col recol
 
 # movement
 map gdl cd ~/dl
 map gdt cd ~/dt
 
 map gdo cd ~/doc
+map gdc cd ~/doc
 map gdn cd ~/nbdata
 
 map gb cd ~/doc/bilder
@@ -367,6 +410,7 @@ map gn cd ~/doc/notizen
 map gj cd ~/doc/dev/java
 map gc cd ~/doc/dev/c++
 map gsc cd ~/.local/scripts
+map gsr cd ~/.local/src
 map gp cd ~/doc/dev/projects
 
 map g.c cd ~/.config

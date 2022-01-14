@@ -1,104 +1,46 @@
-Xft.dpi: 96
-Xft.antialias: true
-Xft.hinting: true
-Xft.rgba: rgb
-Xft.autohint: false
+Xft.dpi: 92
+Xft.antialias: 1
+Xft.autohint: 1
+Xft.hinting: 1
 Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
+Xft.rgba: rgb
 
-#define	black0_def		#000000
-#define	black1_def		#888888
-#define	red0_def		#d80404
-#define	red1_def		#d80404
-#define	green0_def		#10a204
-#define	green1_def		#10a204
-#define yellow0_def		#fded02
-#define yellow1_def		#fded02
-#define	blue0_def		#3b7fff
-#define	blue1_def		#3b7fff
-#define	magenta0_def	#ab0082
-#define	magenta1_def	#ab0082
-#define cyan0_def		#00afd2
-#define cyan1_def		#00afd2
-#define white0_def		#ffffff
-#define white1_def		#ffffff
+*.color0:  #000000
+*.color8:  #888888
+*.color1:  #d80404
+*.color9:  #d80404
+*.color2:  #10a204
+*.color10: #10a204
+*.color3:  #fded02
+*.color11: #fded02
+*.color4:  #3b7fff
+*.color12: #3b7fff
+*.color5:  #ab0082
+*.color13: #ab0082
+*.color6:  #00afd2
+*.color14: #00afd2
+*.color7:  #ffffff
+*.color15: #ffffff
 
-#define	gray1_def		#1a1a1a
-#define gray2_def		#666666
-#define gray3_def		#555555
-
-*.gray1:		gray1_def
-*.gray2:		gray2_def
-*.gray3:		gray3_def
-
-! polybar
-polybar.urgent:			    white0_def
-polybar.focused:		    green0_def
-polybar.occupied:           green0_def
-polybar.background:		    gray1_def
-polybar.foreground:		    white0_def
-polybar.foreground-urgent:  black0_def
-polybar.empty:              gray2_def
+*.gray1: #1a1a1a
+*.gray2: #666666
+*.gray3: #555555
 
 ! dwm
-dwm.normbgcolor:		gray1_def
-dwm.normfgcolor:		white0_def
-dwm.normbordercolor:	gray3_def
-dwm.selbgcolor:			green0_def
-dwm.selfgcolor:			white0_def
-dwm.selbordercolor:		green0_def
+!dwm.normbgcolor:		gray1_def
+!dwm.normfgcolor:		white0_def
+!dwm.normbordercolor:	gray3_def
+!dwm.selbgcolor:			green0_def
+!dwm.selfgcolor:			white0_def
+!dwm.selbordercolor:		green0_def
 
 ! st
-st.background:          black0_def
-st.foreground:          white0_def
-st.selectionbg:         gray2_def
-st.selectionfg:         white0_def
-st.cursorColor:         white0_def
+st.selectionbg: #888888
+st.selectionfg: #000000
+st.termname: st-256color
+st.shell: /bin/bash
+st.alpha: 0.9
 
-! black
-*.color0:		black0_def
-*.color8:		black1_def
-*.black0:		black0_def
-*.black1:		black1_def
-
-! red
-*.color1:		red0_def
-*.color9:		red1_def
-*.red0:			red0_def
-*.red1:			red1_def
-
-! green
-*.color2:		green0_def
-*.color10:		green1_def
-*.green0:		green0_def
-*.green1:		green1_def
-
-! yellow
-*.color3:		yellow0_def
-*.color11:		yellow1_def
-*.yellow0:		yellow0_def
-*.yellow1:		yellow1_def
-
-! blue
-*.color4:		blue0_def
-*.color12:		blue1_def
-*.blue0:		blue0_def
-*.blue1:		blue1_def
-
-! magenta
-*.color5:		magenta0_def
-*.color13:		magenta1_def
-*.magenta0:		magenta0_def
-*.magenta1:		magenta1_def
-
-! cyan
-*.color6:		cyan0_def
-*.color14:		cyan1_def
-*.cyan0:		cyan0_def
-*.cyan1:		cyan1_def
-
-! white
-*.color7:		white0_def
-*.color15:		white1_def
-*.white0:		white0_def
-*.white1:		white1_def
+! sxiv
+Sxiv.font: sans-serif:pixelsize=12

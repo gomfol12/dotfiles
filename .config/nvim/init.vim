@@ -54,6 +54,13 @@ set hidden
 set updatetime=300
 set signcolumn=yes
 set shortmess+=c
+set mouse=a
+set title
+
+" Map Ctrl-Backspace to delete the previous word in insert mode.
+" solution: https://vim.fandom.com/wiki/Map_Ctrl-Backspace_to_delete_previous_word
+noremap! <C-BS> <C-w>
+noremap! <C-h> <C-w>
 
 colorscheme codedark " colorscheme
 

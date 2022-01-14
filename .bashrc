@@ -44,10 +44,12 @@ shopt -s cdspell # make cd ignore case and small typos
 # match all files and zero or more directories and subdirectories.
 shopt -s globstar
 
-HISTSIZE=HISTFILESIZE #Infinite history
+#Infinite history
+HISTSIZE=-1
+HISTFILESIZE=-1
 
 # Don't put duplicate lines in the history and do not add lines that start with a space
-export HISTCONTROL=erasedups:ignoredups:ignorespace
+export HISTCONTROL=ignoreboth:erasedups
 
 # Causes bash to append to history instead of overwriting it so if you start a new terminal, you have old session history
 shopt -s histappend
@@ -82,6 +84,15 @@ LBLUE="\[\033[94m\]"
 
 NOCOLOR="\[\033[0m\]"
 BOLD="\[\033[1m\]"
+
+# pywal
+#if [ -f $HOME/.cache/wal/sequences ]; then
+#    cat ~/.cache/wal/sequences
+#fi
+
+if [ "$TERM" = "linux" ]; then
+    source ~/.cache/wal/colors-tty.sh
+fi
 
 ### completion ###
 # Enable bash programmable completion features in interactive shells
@@ -131,11 +142,15 @@ if [ "$TERM" = "linux" ]; then
     fi
 else
     if [ -f /usr/share/git/completion/git-prompt.sh ]; then
-	    PROMPT_COMMAND='__git_ps1 "${RED}[${NOCOLOR}${USERCOLOR}\u${NOCOLOR}${GREEN}@\h${NOCOLOR}${WHITE}:${NOCOLOR}${BLUE}\w${NOCOLOR}${RED}]${NOCOLOR}" "🦄 " "${RED}[${NOCOLOR}%s${RED}]${NOCOLOR}"'
+	    PROMPT_COMMAND='__git_ps1 "${RED}[${NOCOLOR}${USERCOLOR}\u${NOCOLOR}${GREEN}@\h${NOCOLOR}${WHITE}:${NOCOLOR}${BLUE}\w${NOCOLOR}${RED}]${NOCOLOR}" " " "${RED}[${NOCOLOR}%s${RED}]${NOCOLOR}"'
     else
-	    PS1="${RED}[${NOCOLOR}${USERCOLOR}\u${NOCOLOR}${GREEN}@\h${NOCOLOR}${WHITE}:${NOCOLOR}${BLUE}\w${NOCOLOR}${RED}]${NOCOLOR}🦄 "
+	    PS1="${RED}[${NOCOLOR}${USERCOLOR}\u${NOCOLOR}${GREEN}@\h${NOCOLOR}${WHITE}:${NOCOLOR}${BLUE}\w${NOCOLOR}${RED}]${NOCOLOR} "
     fi
 fi
+
+# prompt emojis
+# 🦄
+# 🔥
 
 ### alias ###
 alias sudo="doas"
@@ -143,6 +158,7 @@ alias sudoedit="doasedit.sh"
 alias doasedit="doasedit.sh"
 alias de="doasedit.sh"
 alias yay="paru --sudo doas --sudoflags --"
+alias y="yay"
 
 alias ls="ls -F -h --color=auto --group-directories-first"
 alias grep="grep --color=auto"
@@ -185,7 +201,6 @@ alias yt="youtube-dl --add-metadata"
 alias yta="yt -f bestaudio/best"
 
 alias f="lfcd"
-alias spt="spt.sh"
 alias ca="cal -m -3"
 alias bc="bc -l -q"
 alias da="date +'%a %d %B %Y, %R'"
@@ -237,6 +252,11 @@ alias ccopy="xclip -selection clipboard"
 alias cpaste="xclip -selection clipboard -o"
 
 alias pw="pw.sh"
+
+alias pin="pacin"
+alias yin="yayin"
+alias pas="pacs"
+alias ys="yays"
 
 ### HOME cleanup ###
 #alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'

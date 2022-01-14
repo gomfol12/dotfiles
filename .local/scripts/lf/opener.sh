@@ -17,79 +17,99 @@ spawn()
     fork "$@"
 }
 
-if [ "$#" -eq 3 ]; then
-    f=$1
-    id=$2
-    open=$3
+set -f
+id=$1
+op=$2
 
-    case "$f" in
-		*.tar.bz|*.tar.bz2|*.tbz|*.tbz2|*.tar.gz|*.tgz|*.tar.xz|*.txz|*.zip|*.rar|*.iso)
-			mntdir="$f-archivemount"
-            [ ! -d "$mntdir" ] && {
-                mkdir "$mntdir"
-                archivemount "$f" "$mntdir"
-                echo "$mntdir" >> "/tmp/__lf_archivemount_$id"
-            }
-            lf -remote "send $id cd \"$mntdir\""
-            lf -remote "send $id reload"
-            ;;
-		*.graphml)
-            if [ -n "$DISPLAY" ]; then
-                spawn yed "$f"
-            fi
-            ;;
-		*.doc|*.docx)
-            if [ -n "$DISPLAY" ]; then
-                spawn libreoffice "$f"
-            fi
-            ;;
-		*.exe)
-            if [ -n "$DISPLAY" ]; then
-                spawn wine "$f"
-            fi
-            ;;
-		*.bluej)
-            if [ -n "$DISPLAY" ]; then
-                spawn bluej "$f"
-            fi
-            ;;
-        *.xopp)
-            if [ -n "$DISPLAY" ]; then
-                spawn xournalpp "$f"
-            fi
-            ;;
-        *.html|*.htm)
-            if [ -n "$DISPLAY" ] && [ "$open" = "open_sec" ]; then
-                spawn "$BROWSER" "file://$f"
-            else
-                $EDITOR "$f"
-            fi
-            ;;
-        *)
-		    case $(file --mime-type "$f" -bL) in
-                text/*|application/json|inode/x-empty|application/octet-stream)
-                    $EDITOR "$f"
-                    ;;
-                image/x-xcf)
-                    if [ -n "$DISPLAY" ]; then
-                        spawn gimp "$f"
-                    fi
-                    ;;
-                image/*)
-                    if [ -n "$DISPLAY" ]; then
-                        spawn sxiv.sh "$f"
-                    fi
-                    ;;
-                inode/directory)
-                    if [ -n "$DISPLAY" ] && [ "$open" = "open_sec" ]; then
-                        spawn sxiv.sh "$f"
-                    fi
-                    ;;
-                *)
-                    if [ -n "$DISPLAY" ]; then
-                        spawn xdg-open "$f"
-                    fi
-		    esac
-            ;;
-    esac
+if [ -z "$id" ] || [ -z "$op" ]; then
+    printf "first two arguments id and op must be parsed\n"
+    exit 1
 fi
+
+shift 2
+files=$*
+
+if [ -z "$files" ]; then
+    printf "please provide one or more files\n"
+    exit 1
+fi
+
+f=$(printf "%s" "$files" | head -1)
+fx=$(printf "%s" "$files" | sed 's/.*/"&"/')
+
+case "$f" in
+	*.tar.bz|*.tar.bz2|*.tbz|*.tbz2|*.tar.gz|*.tgz|*.tar.xz|*.txz|*.zip|*.rar|*.iso)
+		mntdir="$f-archivemount"
+        [ ! -d "$mntdir" ] && {
+            mkdir "$mntdir"
+            archivemount "$f" "$mntdir"
+            echo "$mntdir" >> "/tmp/__lf_archivemount_$id"
+        }
+        lf -remote "send $id cd \"$mntdir\""
+        lf -remote "send $id reload"
+        ;;
+	*.graphml)
+        if [ -n "$DISPLAY" ]; then
+            spawn yed "$f"
+        fi
+        ;;
+	*.doc|*.docx)
+        if [ -n "$DISPLAY" ]; then
+            spawn libreoffice "$f"
+        fi
+        ;;
+	*.exe)
+        if [ -n "$DISPLAY" ]; then
+            spawn wine "$f"
+        fi
+        ;;
+	*.bluej)
+        if [ -n "$DISPLAY" ]; then
+            spawn bluej "$f"
+        fi
+        ;;
+    *.xopp)
+        if [ -n "$DISPLAY" ]; then
+            spawn xournalpp "$f"
+        fi
+        ;;
+    *.html|*.htm)
+        if [ -n "$DISPLAY" ] && [ "$op" = "open_sec" ]; then
+            spawn "$BROWSER" "file://$f"
+        else
+            $EDITOR "$f"
+        fi
+        ;;
+    *)
+	    case $(file --mime-type "$f" -bL) in
+            text/*|application/json|inode/x-empty|application/octet-stream)
+                printf "%s" "$fx" | xargs -ro "$EDITOR"
+                ;;
+            image/x-xcf)
+                if [ -n "$DISPLAY" ]; then
+                    spawn gimp "$f"
+                fi
+                ;;
+            image/*)
+                if [ -n "$DISPLAY" ]; then
+                    spawn sxiv.sh "$fx"
+                fi
+                ;;
+            inode/directory)
+                if [ -n "$DISPLAY" ] && [ "$op" = "open_sec" ]; then
+                    spawn sxiv.sh "$f"
+                fi
+                ;;
+            application/pdf)
+                if [ -n "$DISPLAY" ]; then
+                    spawn zathura.sh "$f"
+                fi
+                ;;
+            *)
+                if [ -n "$DISPLAY" ]; then
+                    spawn xdg-open "$f"
+                fi
+                ;;
+	    esac
+        ;;
+esac

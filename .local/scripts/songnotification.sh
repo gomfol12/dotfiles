@@ -1,22 +1,22 @@
 #!/bin/sh
-tmpDir=/tmp/songnotification
+cacheDir="$HOME/.cache/songnotification"
+player="mopidy"
 
-if [ ! -d $tmpDir ]; then
-	mkdir -p $tmpDir
+if [ ! -d "$cacheDir" ]; then
+	mkdir -p "$cacheDir"
 fi
 
-data=$(playerctl --player spotifyd metadata -f "{{mpris:artUrl}}\n{{title}}\n{{artist}}\n{{album}}")
+imgUrl=$(playerctl --player $player metadata -f "{{mpris:artUrl}}")
+filename=$(basename "$imgUrl")
 
-while [ "$data" = "No player could handle this command" ]; do
-    data=$(playerctl --player spotifyd metadata -f "{{mpris:artUrl}}\n{{title}}\n{{artist}}\n{{album}}")
-    sleep 1
-done
+title=$(playerctl --player $player metadata -f "{{xesam:title}}")
+artistAlbum=$(playerctl --player $player metadata -f "{{xesam:artist}} - {{xesam:album}}")
 
-imgurl=$(printf "%b\n" "$data" | head -1)
-filename=${imgurl##*/}
-
-if [ ! -e "$tmpDir/$filename" ]; then
-	curl "$imgurl" > /tmp/songnotification/"$filename"
+if [ -n "$filename" ]; then
+    if [ ! -f "$cacheDir/$filename" ]; then
+	    curl -s "$imgUrl" > "$cacheDir/$filename"
+    fi
+    notify-send --icon "$cacheDir/$filename" "$title" "$artistAlbum"
+else
+    notify-send "$title" "$artistAlbum"
 fi
-
-notify-send "$(printf "%b\n" "$data" | head -2 | tail -1)" "$(printf "%b\n" "$data" | tail -2 | sed 'N;s/\n/ - /')" --icon=/tmp/songnotification/"$filename"

@@ -40,7 +40,7 @@ super + e
 
 # open spt.sh
 super + m
-	$TERMINAL -e "$SCRIPT_DIR/wrapper/spt.sh"
+	$TERMINAL -e "ncmpcpp"
 
 # open steam
 super + s
@@ -66,19 +66,19 @@ super + x
 
 # kill spotifyd
 XF86AudioStop
-	killall spotifyd
+	killall mopidy
 
 # spotifyd next
 XF86AudioNext
-	playerctl --player spotifyd next
+	playerctl --player mopidy next
 
 # spotifyd previous
 XF86AudioPrev
-	playerctl --player spotifyd previous
+	playerctl --player mopidy previous
 
 # spotifyd play-pause
 XF86AudioPlay
-	playerctl --player spotifyd play-pause
+	playerctl --player mopidy play-pause
 
 ### util ###
 
@@ -105,7 +105,7 @@ Print
 
 # toggle picom
 Pause
-	togglePicom.sh
+	picom.sh -tn
 
 # switch audio output
 Scroll_Lock
@@ -123,6 +123,9 @@ super + p
 super + h
     keybindlist.sh
 
+super + f
+    emojiselect.sh
+
 ### restart ###
 
 # make sxhkd reload its configuration files
@@ -131,7 +134,7 @@ super + shift + x
 
 # relaunch polybar
 super + shift + o
-    ~/.config/polybar/launch.sh &
+    start_polybar.sh
 
 ##super + shift + m
 ## TODO: for restarting spotifyd
@@ -151,7 +154,7 @@ super + shift + g
 	bspc wm -r
 
 # close and kill
-mod1 + shift + {c,v}
+mod1 + shift + {c,k}
 	bspc node -{c,k}
 
 # alternate between the tiled and monocle layout
@@ -193,7 +196,7 @@ mod1 + super + k
     upDownNav.sh downFloat
 
 # focus the last node
-mod1 + {dead_grave,n}
+mod1 + {dead_grave,grave,n}
 	bspc node -f last
 
 # focus the last desktop

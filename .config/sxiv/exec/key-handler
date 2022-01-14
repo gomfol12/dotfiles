@@ -11,12 +11,17 @@
 # where C/M/S indicate Ctrl/Meta(Alt)/Shift modifier states and KEY is the X
 # keysym as listed in /usr/include/X11/keysymdef.h without the "XK_" prefix.
 
-while read file; do
+set -f
+
+while read -r file; do
     case "$1" in
         "C-d")
-            for i in $file; do
-                trash-put "$i"
+            SAVEIFS=$IFS
+            IFS=$(printf "\n\b")
+            for f in $file; do
+                trash-put "$f"
             done
+            IFS=$SAVEIFS
             ;;
         "C-r")
             convert -rotate 90 "$file" "$file"

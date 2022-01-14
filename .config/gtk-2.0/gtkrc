@@ -2,7 +2,7 @@
 # Any customization should be done in ~/.gtkrc-2.0.mine instead.
 
 include "<HOME>/.gtkrc-2.0.mine"
-gtk-theme-name="oomox-customGreen"
+gtk-theme-name="oomox-xresources-reverse"
 gtk-icon-theme-name="Loza-green"
 gtk-font-name="Iosevka 10"
 gtk-cursor-theme-name="Adwaita"

@@ -9,6 +9,7 @@
 export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:="$HOME/.cache"}
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="$HOME/.config"}
+export XDG_MUSIC_DIR=${XDG_MUSIC_DIR:="$HOME/doc/music"}
 
 ### general ###
 export SCRIPT_DIR="$HOME"/.local/scripts
@@ -16,7 +17,7 @@ export PATH=$PATH$( find $SCRIPT_DIR -not -path "*old*" -not -path "*grub*" -typ
 export PATH=$PATH:$HOME/.local/bin
 export EDITOR="nvim"
 export TERMINAL="st"
-export BROWSER="brave"
+export BROWSER="brave --force-device-scale-factor=1.0"
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 # disable less history
@@ -45,11 +46,20 @@ export PASSWORD_STORE_CLIP_TIME=30
 
 ### fzf ###
 export FZF_DEFAULT_OPTS="\
---no-mouse \
 --color="hl:green,gutter:-1,hl+:green,info:gray,prompt:blue,pointer:blue,marker:blue,spinner:blue,header:gray" \
 --no-bold \
 --preview-window border-sharp \
---bind "ctrl-h:preview-down,ctrl-l:preview-up""
+--bind "ctrl-h:preview-down,ctrl-l:preview-up" \
+--no-mouse"
+
+### monitors
+export PRIMARY=HDMI-0
+export SECONDARY=DVI-D-0
+
+### nvidia
+export __GL_SYNC_TO_VBLANK=1
+export __GL_SYNC_DISPLAY_DEVICE=$PRIMARY
+export VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE=$PRIMARY
 
 ### lf icons ###
 export LF_ICONS="\

@@ -53,13 +53,13 @@ screenchange-reload = false
 ;pseudo-transparency = false
 
 [colors]
-foreground = ${xrdb:polybar.foreground}
-foreground-urgent = ${xrdb:polybar.foreground-urgent}
-background = ${xrdb:polybar.background}
-focused = ${xrdb:polybar.focused}
-occupied = ${xrdb:polybar.occupied}
-urgent = ${xrdb:polybar.urgent}
-empty = ${xrdb:polybar.empty}
+foreground = ${xrdb:color7:#ffffff}
+foreground-urgent = ${xrdb:color0:#000000}
+background = ${xrdb:color0:#1a1a1a}
+focused = ${xrdb:color1:#10a204}
+occupied = ${xrdb:color1:#10a204}
+urgent = ${xrdb:color7:#ffffff}
+empty = ${xrdb:color8:#666666}
 
 [bar/master]
 ; Use either of the following command to list available outputs:
@@ -152,8 +152,6 @@ foreground = ${colors.foreground}
 ; See the Fonts wiki page for more details
 font-0 = Iosevka heavy:pixelsize=12;3
 font-1 = Symbols Nerd Font:pixelsize=12:antialias=true:autohint=true;3
-font-2 = JoyPixels:pixelsize=12:antialias=true:autohint=true;3
-font-3 = Noto Sans Symbols 2:pixelsize=12:antialias=true:autohint=true;3
 
 ;modules-left =
 ;modules-center =

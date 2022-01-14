@@ -1,16 +1,20 @@
 theme:
-    active: Gray
-    banner: LightGreen
+    active: Red
+    banner: Green
     error_border: Red
-    error_text: LightRed
-    hint: LightGreen
-    hovered: "29, 185, 84"
+    error_text: Blue
+    hint: Green
+    hovered: Red
     inactive: Gray
     playbar_background: Black
-    playbar_progress: "29, 185, 84"
+    playbar_progress: Green
+    playbar_progress_text: White
     playbar_text: White
-    selected: "29, 185, 84"
-    text: "255, 255, 255"
+    selected: Red
+    text: White
+    #header: White
+    #analysis_bar: Red
+    #analysis_bar_text: White
 
 keybindings:
     increase_volume: "="
@@ -18,4 +22,5 @@ keybindings:
 behavior:
     seek_milliseconds: 5000
     volume_increment: 5
-    tick_rate_milliseconds: 5 
+    tick_rate_milliseconds: 5
+    set_window_title: true
