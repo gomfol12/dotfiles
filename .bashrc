@@ -176,7 +176,7 @@ alias md="mkdir"
 
 alias c="clear"
 alias sysctl="sudo systemctl"
-alias myip="curl -s ipinfo.io/ip | awk '{print}'"
+alias myip="echo $(curl -s ipinfo.io/ip)"
 alias ka="killall"
 alias g="git"
 alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
