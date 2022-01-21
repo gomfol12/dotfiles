@@ -1,11 +1,15 @@
 -- ==================== NVIM init ==================== --
--- TODO: Telescope
+-- TODO: Telescope, alpha color
 
 require("plugins")
 require("mappings")
 require("settings")
 require("lsp")
 require("completion")
-require("tree")
+require("treesitter")
 require("tele")
 require("pairs")
+require("comment")
+require("start")
+require("tree")
+require("git")

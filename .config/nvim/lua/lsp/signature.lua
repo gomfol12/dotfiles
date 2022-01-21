@@ -6,8 +6,11 @@ end
 lsp_signature.setup({
     bind = true,
     handler_opts = {
-        border = "rounded",
+        border = "none",
     },
-    hint_enable = true,
-    hint_prefix = "param: "
+    hint_enable = false,
+    hint_prefix = ": ",
+    hint_scheme = "String",
+    timer_interval = 100,
+    toggle_key = "<c-x>",
 })

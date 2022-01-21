@@ -23,7 +23,7 @@ M.setup = function()
         float = {
             focusable = false,
             style = "minimal",
-            border = "rounded",
+            border = "none",
             source = "always",
             header = "",
             prefix = "",
@@ -33,11 +33,11 @@ M.setup = function()
     vim.diagnostic.config(config)
 
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = "rounded",
+        border = "none",
     })
 
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = "rounded",
+        border = "none",
     })
 end
 
@@ -55,9 +55,9 @@ local function lsp_keymaps(bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>af', ':lua vim.lsp.buf.code_action()<cr>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', ':lua vim.lsp.buf.rename()<cr>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F2>', ':lua vim.lsp.buf.rename()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", '[d', ':lua vim.diagnostic.goto_prev({ border = "rounded" })<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", ']d', ':lua vim.diagnostic.goto_next({ border = "rounded" })<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", 'gl', ':lua vim.diagnostic.open_float({ border = "rounded" })<cr>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", '[d', ':lua vim.diagnostic.goto_prev({ border = "none" })<cr>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", ']d', ':lua vim.diagnostic.goto_next({ border = "none" })<cr>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", 'gl', ':lua vim.diagnostic.open_float({ border = "none" })<cr>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, "n", '<leader>q', ':lua vim.diagnostic.setloclist()<cr>', opts)
     vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 end
@@ -77,24 +77,24 @@ local function lsp_highlight_document(client)
     end
 end
 
-local function lsp_open_float_on_highlight(client)
-    if client.resolved_capabilities.document_highlight then
-        vim.api.nvim_exec(
-            [[
-            augroup lsp_open_float_on_highlight
-                autocmd! * <buffer>
-                autocmd CursorHold <buffer> lua vim.diagnostic.open_float({ border = "rounded" })
-            augroup END
-            ]],
-            false
-        )
-    end
-end
+-- local function lsp_open_float_on_highlight(client)
+--     if client.resolved_capabilities.document_highlight then
+--         vim.api.nvim_exec(
+--             [[
+--             augroup lsp_open_float_on_highlight
+--                 autocmd! * <buffer>
+--                 autocmd CursorHold <buffer> lua vim.diagnostic.open_float({ border = "rounded" })
+--             augroup END
+--             ]],
+--             false
+--         )
+--     end
+-- end
 
 M.on_attach = function(client, bufnr)
     lsp_keymaps(bufnr)
     lsp_highlight_document(client)
-    lsp_open_float_on_highlight(client)
+    -- lsp_open_float_on_highlight(client)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

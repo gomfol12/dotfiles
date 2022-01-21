@@ -46,7 +46,7 @@ utils.map('n', '<Left>', ':vertical resize -2<CR>', { silent = true})
 utils.map('n', '<Right>', ':vertical resize +2<CR>', { silent = true})
 
 -- window splits
-utils.map('n', '<leader>h', ':split<Space>')
+utils.map('n', '<leader>s', ':split<Space>')
 utils.map('n', '<leader>v', ':vsplit<Space>')
 
 -- buffer navigation
@@ -68,7 +68,7 @@ utils.map('n', 'Q', '<nop>')
 utils.map('n', 'Q', ':q<cr>', { silent = true })
 
 -- disable search highlighting until the next search
-utils.map('n', '<cr>', ':noh<cr><cr>', { silent = true})
+utils.map('n', '<cr>', ':noh<cr><cr>', { silent = true })
 
 -- formating
 -- put brackets around word/s
@@ -102,3 +102,13 @@ utils.map('n', '<leader>fp', ':Telescope media_files<cr>')
 -- stay in indent mode
 utils.map('v', '<', '<gv')
 utils.map('v', '>', '>gv')
+
+-- comments
+utils.map('n', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@l')
+utils.map('x', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@')
+
+-- alpha
+utils.map('n', '<c-a>', ':Alpha<cr>')
+
+-- nvim tree
+utils.map('n', '<c-n>', ':NvimTreeToggle<cr>', { silent = true })

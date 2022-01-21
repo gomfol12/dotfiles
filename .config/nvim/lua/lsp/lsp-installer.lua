@@ -7,6 +7,8 @@ local servers = {
     "sumneko_lua",
     "jsonls",
     "bashls",
+    "ccls",
+    "cmake",
 }
 
 for _, name in pairs(servers) do
@@ -31,6 +33,16 @@ lsp_installer.on_server_ready(function(server)
     if server.name == "jsonls" then
         local jsonls_opts = require("lsp.settings.jsonls_lua")
         opts = vim.tbl_deep_extend("force", jsonls_opts, opts)
+    end
+
+    if server.name == "ccls" then
+        local ccls_opts = require("lsp.settings.ccls_lua")
+        opts = vim.tbl_deep_extend("force", ccls_opts, opts)
+    end
+
+    if server.name == "cmake" then
+        local cmake_opts = require("lsp.settings.cmake_lua")
+        opts = vim.tbl_deep_extend("force", cmake_opts, opts)
     end
 
     server:setup(opts)

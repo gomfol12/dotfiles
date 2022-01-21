@@ -13,16 +13,16 @@ end
 -- Use a protected call so we don't error out on first use
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
-  return
+    return
 end
 
 -- Have packer use a popup window
 packer.init {
-  display = {
-    open_fn = function()
-      return require("packer.util").float { border = "rounded" }
-    end,
-  },
+    display = {
+        open_fn = function()
+            return require("packer.util").float { border = "rounded" }
+        end,
+    },
 }
 
 return packer.startup(function(use)
@@ -31,19 +31,21 @@ return packer.startup(function(use)
     use {
         'goolord/alpha-nvim',
         requires = { 'kyazdani42/nvim-web-devicons' },
-        config = function ()
-            require'alpha'.setup(require'alpha.themes.startify'.opts)
-            local dashboard = require("alpha.themes.dashboard")
-            dashboard.section.buttons.val = {
-                dashboard.button("e", "new file", ":ene <bar> startinsert <cr>"),
-                dashboard.button("v", "neovim config", ":e ~/.config/nvim/init.lua<cr>"),
-                dashboard.button("q", "quit nvim", ":qa<cr>"),
-            }
-            --vim.api.nvim_set_keymap('n', '<c-n>', ":Alpha<cr>", { noremap = true })
-        end
     }
     use 'windwp/nvim-autopairs'
     use 'dstein64/vim-startuptime'
+    use {
+        'kyazdani42/nvim-tree.lua',
+        requires = { 'kyazdani42/nvim-web-devicons' }, -- optional, for file icons
+    }
+    use {
+        'lewis6991/gitsigns.nvim',
+        requires = { 'nvim-lua/plenary.nvim' },
+    }
+
+    -- comments
+    use 'numToStr/Comment.nvim'
+    use 'JoosepAlviste/nvim-ts-context-commentstring'
 
     -- colorscheme
     use {
@@ -59,6 +61,7 @@ return packer.startup(function(use)
         'nvim-treesitter/nvim-treesitter',
         run = ":TSUpdate"
     }
+    use 'nvim-treesitter/nvim-treesitter-textobjects'
     use 'p00f/nvim-ts-rainbow'
 
     -- LSP
