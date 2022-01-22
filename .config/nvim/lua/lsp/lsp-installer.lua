@@ -9,6 +9,8 @@ local servers = {
     "bashls",
     "ccls",
     "cmake",
+    "html",
+    "cssls",
 }
 
 for _, name in pairs(servers) do

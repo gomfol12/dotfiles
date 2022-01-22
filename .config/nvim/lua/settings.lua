@@ -56,6 +56,7 @@ utils.opt('o', 'pumheight', 10)
 vim.opt.iskeyword:append '-'
 vim.cmd('language en_US.utf-8') -- language
 cmd [[ set clipboard+=unnamedplus ]] -- use system clipboard
+vim.opt.sessionoptions:append 'globals'
 
 -- cursor
 utils.opt('w', 'cursorline', true)

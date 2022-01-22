@@ -8,3 +8,4 @@ end
 require("lsp.lsp-installer")
 require("lsp.handlers").setup()
 require("lsp.signature")
+require("lsp.null")

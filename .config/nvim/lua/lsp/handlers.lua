@@ -92,12 +92,16 @@ end
 -- end
 
 M.on_attach = function(client, bufnr)
+    -- if client.name == "ccls" or "cmake" then
+    --     client.resolved_capabilities.textDocument.completion.completionItem.snippetSupport = true
+    -- end
     lsp_keymaps(bufnr)
     lsp_highlight_document(client)
     -- lsp_open_float_on_highlight(client)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if not status_ok then

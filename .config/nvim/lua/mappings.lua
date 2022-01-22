@@ -49,9 +49,24 @@ utils.map('n', '<Right>', ':vertical resize +2<CR>', { silent = true})
 utils.map('n', '<leader>s', ':split<Space>')
 utils.map('n', '<leader>v', ':vsplit<Space>')
 
--- buffer navigation
-utils.map('n', '<S-l>', ':bnext<cr>')
-utils.map('n', '<S-h>', ':bprevious<cr>')
+-- bufferline
+utils.map('n', '<S-l>', ':BufferLineCycleNext<cr>', { silent = true })
+utils.map('n', '<S-h>', ':BufferLineCyclePrev<cr>', { silent = true })
+utils.map('n', 'gb', ':BufferLinePick<cr>', { silent = true })
+utils.map('n', 'gx', ':BufferLinePickClose<cr>', { silent = true })
+utils.map('n', '<leader>x', ':Bdelete<cr>', { silent = true })
+utils.map('n', ']b', ':BufferLineMoveNext<CR>', { silent = true })
+utils.map('n', '[b', ':BufferLineMovePrev<CR>', { silent = true })
+
+utils.map('n', '<leader>1', ':BufferLineGoToBuffer 1<cr>', { silent = true })
+utils.map('n', '<leader>2', ':BufferLineGoToBuffer 2<cr>', { silent = true })
+utils.map('n', '<leader>3', ':BufferLineGoToBuffer 3<cr>', { silent = true })
+utils.map('n', '<leader>4', ':BufferLineGoToBuffer 4<cr>', { silent = true })
+utils.map('n', '<leader>5', ':BufferLineGoToBuffer 5<cr>', { silent = true })
+utils.map('n', '<leader>6', ':BufferLineGoToBuffer 6<cr>', { silent = true })
+utils.map('n', '<leader>7', ':BufferLineGoToBuffer 7<cr>', { silent = true })
+utils.map('n', '<leader>8', ':BufferLineGoToBuffer 8<cr>', { silent = true })
+utils.map('n', '<leader>9', ':BufferLineGoToBuffer 9<cr>', { silent = true })
 
 -- Map Ctrl-Backspace to delete the previous word in insert mode.
 -- solution: https://vim.fandom.com/wiki/Map_Ctrl-Backspace_to_delete_previous_word
@@ -104,8 +119,8 @@ utils.map('v', '<', '<gv')
 utils.map('v', '>', '>gv')
 
 -- comments
-utils.map('n', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@l')
-utils.map('x', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@')
+--utils.map('n', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@l')
+--utils.map('x', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@')
 
 -- alpha
 utils.map('n', '<c-a>', ':Alpha<cr>')

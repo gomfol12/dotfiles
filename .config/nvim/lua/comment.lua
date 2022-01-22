@@ -25,29 +25,29 @@ local cfg = ({
     -- @type table
     toggler = {
         -- Line-comment toggle keymap
-        line = 'gcc',
+        line = '<leader>cc',
         -- Block-comment toggle keymap
-        block = 'gbc',
+        block = '<leader>bc',
     },
 
     -- LHS of operator-pending mappings in NORMAL + VISUAL mode
     -- @type table
     opleader = {
         -- Line-comment keymap
-        line = 'gc',
+        line = '<leader>c',
         -- Block-comment keymap
-        block = 'gb',
+        block = '<leader>b',
     },
 
     -- LHS of extra mappings
     -- @type table
     extra = {
         -- Add comment on the line above
-        above = 'gcO',
+        above = '<leader>cO',
         -- Add comment on the line below
-        below = 'gco',
+        below = '<leader>co',
         -- Add comment at the end of line
-        eol = 'gcA',
+        eol = '<leader>cA',
     },
 
     -- Create basic (operator-pending) and extended mappings for NORMAL + VISUAL mode
@@ -97,10 +97,6 @@ function _G.__toggle_contextual(vmode)
         lcs = lcs,
         rcs = rcs,
     }
-
-    if lines[1] == nil then
-        return
-    end
 
     if same_line then
         Op.linewise(params)
