@@ -12,7 +12,6 @@ cpuU=$(cat <(grep 'cpu ' /proc/stat) <(sleep 1 && grep 'cpu ' /proc/stat) | awk 
 #	cpuU=^c\#d80404^$cpuU^d^
 #fi
 
-
 #if (( $(echo "$cpuT <= 60" | bc -l) )); then
 #	cpuT=^c\#10a204^$cpuT^d^
 #elif (( $(echo "$cpuT > 60" | bc -l) && $(echo "$cpuT <= 80" | bc -l) )); then

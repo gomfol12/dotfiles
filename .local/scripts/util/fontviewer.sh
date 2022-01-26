@@ -15,7 +15,7 @@ if ! command -v dmenu >/dev/null 2>&1; then
     printf "dmenu is not installed. Install it\n"
     exit 1
 fi
-choice=$(fc-list  | cut -d : -f1 | dmenu -l 20 -p "Fontviewer: ")
+choice=$(fc-list | cut -d : -f1 | dmenu -l 20 -p "Fontviewer: ")
 
 if test -n "$choice"; then
     display "$choice"

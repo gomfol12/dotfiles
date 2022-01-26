@@ -32,30 +32,30 @@ menu()
     sleep 1
 
     case $selection in
-        "fill user/pass")
-            xdotool type --clearmodifiers "$username"
-            xdotool key Tab
-            xdotool type --clearmodifiers "$(pass "$pass_path/password")"
-            xdotool key Enter
-            log "filled user/pass"
-            ;;
-        "copy username")
+    "fill user/pass")
+        xdotool type --clearmodifiers "$username"
+        xdotool key Tab
+        xdotool type --clearmodifiers "$(pass "$pass_path/password")"
+        xdotool key Enter
+        log "filled user/pass"
+        ;;
+    "copy username")
+        printf "%s" "$username" | xclip -selection clipboard
+        log "copied username, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
+        ;;
+    "copy password")
+        pass "$pass_path/password" | xclip -selection clipboard
+        log "copied password, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
+        ;;
+    "copy email")
+        if [ -f "$PASSWORD_STORE_DIR/$pass_path/email.gpg" ]; then
+            pass "$pass_path/email" | xclip -selection clipboard
+            log "copied email, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
+        elif [ ! -f "$PASSWORD_STORE_DIR/$pass_path/email.gpg" ]; then
             printf "%s" "$username" | xclip -selection clipboard
-            log "copied username, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
-            ;;
-        "copy password")
-            pass "$pass_path/password" | xclip -selection clipboard
-            log "copied password, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
-            ;;
-        "copy email")
-            if [ -f "$PASSWORD_STORE_DIR/$pass_path/email.gpg" ]; then
-                pass "$pass_path/email" | xclip -selection clipboard
-                log "copied email, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
-            elif [ ! -f "$PASSWORD_STORE_DIR/$pass_path/email.gpg" ]; then
-                printf "%s" "$username" | xclip -selection clipboard
-                log "copied email, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
-            fi
-            ;;
+            log "copied email, will be cleared in $PASSWORD_STORE_CLIP_TIME seconds"
+        fi
+        ;;
     esac
 
     sleep 1
@@ -65,13 +65,13 @@ menu()
 }
 
 case $1 in
-    "list") list ;;
-    "menu") menu ;;
-    *)
-        if [ "$#" -eq 0 ]; then
-            menu
-        else
-            printf "Invalid argument\n"
-        fi
-        ;;
+"list") list ;;
+"menu") menu ;;
+*)
+    if [ "$#" -eq 0 ]; then
+        menu
+    else
+        printf "Invalid argument\n"
+    fi
+    ;;
 esac

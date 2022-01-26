@@ -16,7 +16,7 @@ help()
 
 check()
 {
-    pgrep -u "$(id -u)" -nf "^picom$" > /dev/null 2>&1
+    pgrep -u "$(id -u)" -nf "^picom$" >/dev/null 2>&1
 }
 
 stop()
@@ -51,10 +51,25 @@ togglenotify()
 }
 
 case "$1" in
-    "") start; exit ;;
-    "-q") check ;;
-    "-s") stop; exit ;;
-    "-t") toggle; exit ;;
-    "-tn") togglenotify; exit ;;
-    *) help; exit ;;
+"")
+    start
+    exit
+    ;;
+"-q") check ;;
+"-s")
+    stop
+    exit
+    ;;
+"-t")
+    toggle
+    exit
+    ;;
+"-tn")
+    togglenotify
+    exit
+    ;;
+*)
+    help
+    exit
+    ;;
 esac

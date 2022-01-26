@@ -7,6 +7,6 @@ if command -v sxiv >/dev/null 2>&1; then
     echo "$@" | xargs -r sxiv -a
     exit
 else
-	echo "please install sxiv"
+    echo "please install sxiv"
     exit 1
 fi

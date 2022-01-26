@@ -43,23 +43,23 @@ end
 
 local function lsp_keymaps(bufnr)
     local opts = { noremap = true, silent = true }
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', ':lua vim.lsp.buf.definition()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', ':lua vim.lsp.buf.declaration()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', ':lua vim.lsp.buf.implementation()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gw', ':lua vim.lsp.buf.document_symbol()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gw', ':lua vim.lsp.buf.workspace_symbol()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', ':lua vim.lsp.buf.references()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gt', ':lua vim.lsp.buf.type_definition()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', ':lua vim.lsp.buf.hover()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', ':lua vim.lsp.buf.signature_help()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>af', ':lua vim.lsp.buf.code_action()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', ':lua vim.lsp.buf.rename()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<F2>', ':lua vim.lsp.buf.rename()<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", '[d', ':lua vim.diagnostic.goto_prev({ border = "none" })<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", ']d', ':lua vim.diagnostic.goto_next({ border = "none" })<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", 'gl', ':lua vim.diagnostic.open_float({ border = "none" })<cr>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, "n", '<leader>q', ':lua vim.diagnostic.setloclist()<cr>', opts)
-    vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", ":lua vim.lsp.buf.definition()<cr>", opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", ":lua vim.lsp.buf.declaration()<cr>", opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":lua vim.lsp.buf.implementation()<cr>", opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "gw", ":lua vim.lsp.buf.document_symbol()<cr>", opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "gw", ":lua vim.lsp.buf.workspace_symbol()<cr>", opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", ":lua vim.lsp.buf.references()<cr>", opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "gt", ":lua vim.lsp.buf.type_definition()<cr>", opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "K", ":lua vim.lsp.buf.hover()<cr>", opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":lua vim.lsp.buf.signature_help()<cr>", opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>af", ":lua vim.lsp.buf.code_action()<cr>", opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rn", ":lua vim.lsp.buf.rename()<cr>", opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "<F2>", ":lua vim.lsp.buf.rename()<cr>", opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "[d", ':lua vim.diagnostic.goto_prev({ border = "none" })<cr>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", ':lua vim.diagnostic.goto_next({ border = "none" })<cr>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "gl", ':lua vim.diagnostic.open_float({ border = "none" })<cr>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>q", ":lua vim.diagnostic.setloclist()<cr>", opts)
+    vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
 end
 
 local function lsp_highlight_document(client)
@@ -95,6 +95,19 @@ M.on_attach = function(client, bufnr)
     -- if client.name == "ccls" or "cmake" then
     --     client.resolved_capabilities.textDocument.completion.completionItem.snippetSupport = true
     -- end
+    if client.name == "html" then
+        client.resolved_capabilities.document_formatting = false
+    end
+    if client.name == "ccls" then
+        client.resolved_capabilities.document_formatting = false
+    end
+    if client.name == "cmake" then
+        client.resolved_capabilities.document_formatting = false
+    end
+    if client.name == "jsonls" then
+        client.resolved_capabilities.document_formatting = false
+    end
+
     lsp_keymaps(bufnr)
     lsp_highlight_document(client)
     -- lsp_open_float_on_highlight(client)
@@ -102,6 +115,7 @@ end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
+--capabilities.offsetEncoding = { "utf-16" }
 
 local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if not status_ok then

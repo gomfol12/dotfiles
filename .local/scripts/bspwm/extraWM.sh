@@ -37,7 +37,6 @@ ShowBarSecondary()
     bspc config -m "$secondary" top_padding $top_padding
 }
 
-
 HideNodes()
 {
     for node in $1; do
@@ -111,7 +110,7 @@ done
 # shellcheck disable=SC2034  # Unused variables left for readability
 bspc subscribe node_state | while read -r Event Monitor Desktop Node State Active; do
 
-# Hide bar and nodes on fullscreen event on current desktop
+    # Hide bar and nodes on fullscreen event on current desktop
     if [ "$State" = "fullscreen" ]; then
         if [ "$Active" = "on" ]; then
             if [ "$Monitor" = "$primary" ]; then
@@ -130,12 +129,12 @@ bspc subscribe node_state | while read -r Event Monitor Desktop Node State Activ
         fi
     fi
 
-# correct border when going floating after single tiled
+    # correct border when going floating after single tiled
     if [ "$State" = "floating" ] && [ "$Active" = "on" ]; then
         bspc config -n "$Node" border_width $border_width
     fi
 
-# show window when a window goes floating in monocle and hide when go tiled again
+    # show window when a window goes floating in monocle and hide when go tiled again
     if [ -f "/tmp/bspwm_layout_$Desktop" ] && [ "$(cat /tmp/bspwm_layout_"$Desktop")" = "monocle" ] && [ "$State" = "floating" ]; then
         if [ "$Active" = "on" ]; then
             ShowNodes "$(bspc query -N -n .window -d "$Desktop" | head -1)"
@@ -150,17 +149,17 @@ done &
 # shellcheck disable=SC2034  # Unused variables left for readability
 bspc subscribe node_remove | while read -r Event Monitor Desktop Node; do
 
-# Show bar and nodes when no nodes are fullscreen on current desktop
+    # Show bar and nodes when no nodes are fullscreen on current desktop
     if [ -z "$(bspc query -N -n .fullscreen -d "$Desktop")" ]; then
-            if [ "$Monitor" = "$primary" ]; then
-                ShowBarPrimary
-            elif [ "$Monitor" = "$secondary" ]; then
-                ShowBarSecondary
-            fi
-            ShowAll "$Desktop"
+        if [ "$Monitor" = "$primary" ]; then
+            ShowBarPrimary
+        elif [ "$Monitor" = "$secondary" ]; then
+            ShowBarSecondary
+        fi
+        ShowAll "$Desktop"
     fi
 
-# Hide nodes when one gets removed in monocle mode
+    # Hide nodes when one gets removed in monocle mode
     Layout=$(getDesktopLayout "$Desktop")
     if [ "$Layout" = "monocle" ]; then
         # go back to tiled mode when only one or none window is left
@@ -176,8 +175,8 @@ done &
 # shellcheck disable=SC2034  # Unused variables left for readability
 bspc subscribe node_transfer | while read -r Event SrcMonitor SrcDesktop SrcNode DestMonitor DestDesktop DestNode; do
 
-# Show bar and nodes on src desktop and hide bar and nodes on dest desktop
-# If src node is in fullscreen
+    # Show bar and nodes on src desktop and hide bar and nodes on dest desktop
+    # If src node is in fullscreen
     if [ -n "$(bspc query -N -n "$SrcNode".fullscreen)" ]; then
         ShowAll "$SrcDesktop"
         HideAllButNotFocused "$DestDesktop"
@@ -194,9 +193,9 @@ bspc subscribe node_transfer | while read -r Event SrcMonitor SrcDesktop SrcNode
             HideBarSecondary
         fi
     fi
-# Nodes in fullscreen overlap each other
+    # Nodes in fullscreen overlap each other
 
-# Show/Hide nodes when transfering nodes in monocle mode
+    # Show/Hide nodes when transfering nodes in monocle mode
     if [ "$(getDesktopLayout "$SrcDesktop")" = "monocle" ]; then
         tiled=$(bspc query -N -n .tiled -d "$SrcDesktop")
 
@@ -217,13 +216,13 @@ done &
 # shellcheck disable=SC2034  # Unused variables left for readability
 bspc subscribe desktop_layout | while read -r Event Monitor Desktop Layout; do
 
-# Hide and Show nodes when switching layouts
+    # Hide and Show nodes when switching layouts
     if [ "$Layout" = "monocle" ]; then
         HideAllButNotFocused "$Desktop"
 
-    # convert floating to tiled and save floating window ids
+        # convert floating to tiled and save floating window ids
         floating=$(bspc query -N -n .floating -d "$Desktop")
-        echo "$floating" > "/tmp/bspwm_floating_$Desktop"
+        echo "$floating" >"/tmp/bspwm_floating_$Desktop"
         for node in $floating; do
             [ "$(isPopup "$node")" -eq 1 ] && continue
             bspc node "$node" -t tiled
@@ -231,7 +230,7 @@ bspc subscribe desktop_layout | while read -r Event Monitor Desktop Layout; do
 
     elif [ "$Layout" = "tiled" ]; then
 
-    # convert tiled to floating with saved floating window ids
+        # convert tiled to floating with saved floating window ids
         if [ -f "/tmp/bspwm_floating_$Desktop" ]; then
             floating=$(cat "/tmp/bspwm_floating_$Desktop")
             for node in $floating; do
@@ -245,7 +244,7 @@ bspc subscribe desktop_layout | while read -r Event Monitor Desktop Layout; do
     fi
 
     # info for the monocle navigation script
-        echo "$Layout" > "/tmp/bspwm_layout_$Desktop"
+    echo "$Layout" >"/tmp/bspwm_layout_$Desktop"
 done &
 
 # shellcheck disable=SC2034  # Unused variables left for readability

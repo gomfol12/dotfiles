@@ -6,7 +6,8 @@ xrdb -merge "$HOME/.config/Xresources"
 xrdb -merge "$HOME/.cache/wal/colors.Xresources"
 
 # restart polybar
-start_polybar.sh & wait $!
+start_polybar.sh &
+wait $!
 
 # reload bspwm colors
 bspc config normal_border_color "$color8"

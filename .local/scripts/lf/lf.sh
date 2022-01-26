@@ -4,7 +4,8 @@ set -e
 if [ -n "$DISPLAY" ]; then
     export FIFO_UEBERZUG="${TMPDIR:-/tmp}/lf-ueberzug-$$"
 
-    cleanup() {
+    cleanup()
+    {
         exec 3>&-
         rm "$FIFO_UEBERZUG"
     }

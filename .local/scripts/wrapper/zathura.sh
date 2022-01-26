@@ -3,7 +3,7 @@
 configColorGen()
 {
     . "$HOME/.cache/wal/colors.sh"
-cat <<EOF
+    cat <<EOF
 set recolor "true"
 set completion-bg "$background"
 set completion-fg "$foreground"
@@ -35,8 +35,8 @@ EOF
 
 zathuraTmpDir=$(mktemp -d)
 
-[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/zathura/zathurarc" ] && cat "${XDG_CONFIG_HOME:-$HOME/.config}/zathura/zathurarc" >> "$zathuraTmpDir/zathurarc"
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/zathura/zathurarc" ] && cat "${XDG_CONFIG_HOME:-$HOME/.config}/zathura/zathurarc" >>"$zathuraTmpDir/zathurarc"
 
-configColorGen >> "$zathuraTmpDir/zathurarc"
+configColorGen >>"$zathuraTmpDir/zathurarc"
 
 zathura --config-dir="$zathuraTmpDir" "$@" &

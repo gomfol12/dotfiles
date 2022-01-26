@@ -7,7 +7,7 @@ fi
 
 floating="$(bspc query -N -n .focused.floating -d)"
 if [ -n "$floating" ]; then
-    echo "$floating" >> /tmp/bspwm_floatFull
+    echo "$floating" >>/tmp/bspwm_floatFull
     bspc node -t fullscreen
     exit
 fi

@@ -99,9 +99,24 @@ downFloating()
 }
 
 case "$1" in
-    "up") up; exit ;;
-    "down") down; exit ;;
-    "upFloat") upFloating; exit ;;
-    "downFloat") downFloating; exit ;;
-    *) echo "Invalid option"; exit ;;
+"up")
+    up
+    exit
+    ;;
+"down")
+    down
+    exit
+    ;;
+"upFloat")
+    upFloating
+    exit
+    ;;
+"downFloat")
+    downFloating
+    exit
+    ;;
+*)
+    echo "Invalid option"
+    exit
+    ;;
 esac

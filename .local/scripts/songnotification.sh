@@ -3,7 +3,7 @@ cacheDir="$HOME/.cache/songnotification"
 player="mopidy"
 
 if [ ! -d "$cacheDir" ]; then
-	mkdir -p "$cacheDir"
+    mkdir -p "$cacheDir"
 fi
 
 imgUrl=$(playerctl --player $player metadata -f "{{mpris:artUrl}}")
@@ -14,7 +14,7 @@ artistAlbum=$(playerctl --player $player metadata -f "{{xesam:artist}} - {{xesam
 
 if [ -n "$filename" ]; then
     if [ ! -f "$cacheDir/$filename" ]; then
-	    curl -s "$imgUrl" > "$cacheDir/$filename"
+        curl -s "$imgUrl" >"$cacheDir/$filename"
     fi
     notify-send --icon "$cacheDir/$filename" "$title" "$artistAlbum"
 else

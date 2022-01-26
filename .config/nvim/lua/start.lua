@@ -66,7 +66,7 @@ local function button(sc, txt, keybind)
     }
 
     if keybind then
-        opts.keymap = {"n", sc_, keybind, { silent = true }}
+        opts.keymap = { "n", sc_, keybind, { silent = true } }
     end
 
     return {
@@ -103,11 +103,11 @@ local section = {
 
 local opts = {
     layout = {
-        {type = "padding", val = 2},
+        { type = "padding", val = 2 },
         section.header,
-        {type = "padding", val = 1},
+        { type = "padding", val = 1 },
         section.heading,
-        {type = "padding", val = 1},
+        { type = "padding", val = 1 },
         section.buttons,
         section.footer,
     },

@@ -1,27 +1,27 @@
 -- ==================== Buffer (bufferline.nvim) ==================== --
--- TODO: see :h bufferline-highlights
+-- TODO: color
 
 local status_ok, bufferline = pcall(require, "bufferline")
 if not status_ok then
     return
 end
 
-bufferline.setup {
+bufferline.setup({
     options = {
         numbers = "none", --| "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
-        close_command = "Bdelete! %d",       -- can be a string | function, see "Mouse actions"
+        close_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
         right_mouse_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
-        left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
-        middle_mouse_command = nil,          -- can be a string | function, see "Mouse actions"
+        left_mouse_command = "buffer %d", -- can be a string | function, see "Mouse actions"
+        middle_mouse_command = nil, -- can be a string | function, see "Mouse actions"
         -- NOTE: this plugin is designed with this icon in mind,
         -- and so changing this is NOT recommended, this is intended
         -- as an escape hatch for people who cannot bear it for whatever reason
-        indicator_icon = '▎',
-        buffer_close_icon = 'x',
-        modified_icon = '*',
-        close_icon = 'x',
-        left_trunc_marker = '<',
-        right_trunc_marker = '>',
+        indicator_icon = "▎",
+        buffer_close_icon = "x",
+        modified_icon = "*",
+        close_icon = "x",
+        left_trunc_marker = "<",
+        right_trunc_marker = ">",
         --- name_formatter can be used to change the buffer's label in the bufferline.
         --- Please note some names can/will break the
         --- bufferline so use this at your discretion knowing that it has
@@ -38,8 +38,8 @@ bufferline.setup {
         diagnostics = "nvim_lsp",
         diagnostics_update_in_insert = true,
         diagnostics_indicator = function(count, level, diagnostics_dict, context)
-            local icon = level:match("error") and "  " or "  "
-            return " " .. icon .. count
+            local icon = level:match("error") and " " or " "
+            return "" .. icon .. count
         end,
         -- NOTE: this will be called a lot so don't do any heavy processing here
         -- custom_filter = function(buf_number, buf_numbers)
@@ -61,7 +61,7 @@ bufferline.setup {
         --         return true
         --     end
         -- end,
-        offsets = {{filetype = "NvimTree", text = "", text_align = "left"}},
+        offsets = { { filetype = "NvimTree", text = "", text_align = "left" } },
         show_buffer_icons = true, -- disable filetype icons for buffers
         show_buffer_close_icons = false,
         show_close_icon = false,
@@ -76,98 +76,221 @@ bufferline.setup {
         --     -- add custom logic
         --     return buffer_a.modified > buffer_b.modified
         -- end
-        highlights = {
-            fill = {
-                guifg = { attribute = "fg", highlight = "#ff0000" },
-                guibg = { attribute = "bg", highlight = "TabLine" },
-            },
-            background = {
-                guifg = { attribute = "fg", highlight = "TabLine" },
-                guibg = { attribute = "bg", highlight = "TabLine" },
-            },
-
-            -- buffer_selected = {
-            --   guifg = {attribute='fg',highlight='#ff0000'},
-            --   guibg = {attribute='bg',highlight='#0000ff'},
-            --   gui = 'none'
-            --   },
-            buffer_visible = {
-                guifg = { attribute = "fg", highlight = "TabLine" },
-                guibg = { attribute = "bg", highlight = "TabLine" },
-            },
-
-            close_button = {
-                guifg = { attribute = "fg", highlight = "TabLine" },
-                guibg = { attribute = "bg", highlight = "TabLine" },
-            },
-            close_button_visible = {
-                guifg = { attribute = "fg", highlight = "TabLine" },
-                guibg = { attribute = "bg", highlight = "TabLine" },
-            },
-            -- close_button_selected = {
-            --   guifg = {attribute='fg',highlight='TabLineSel'},
-            --   guibg ={attribute='bg',highlight='TabLineSel'}
-            --   },
-
-            tab_selected = {
-                guifg = { attribute = "fg", highlight = "Normal" },
-                guibg = { attribute = "bg", highlight = "Normal" },
-            },
-            tab = {
-                guifg = { attribute = "fg", highlight = "TabLine" },
-                guibg = { attribute = "bg", highlight = "TabLine" },
-            },
-            tab_close = {
-                -- guifg = {attribute='fg',highlight='LspDiagnosticsDefaultError'},
-                guifg = { attribute = "fg", highlight = "TabLineSel" },
-                guibg = { attribute = "bg", highlight = "Normal" },
-            },
-
-            duplicate_selected = {
-                guifg = { attribute = "fg", highlight = "TabLineSel" },
-                guibg = { attribute = "bg", highlight = "TabLineSel" },
-                gui = "bold",
-            },
-            duplicate_visible = {
-                guifg = { attribute = "fg", highlight = "TabLine" },
-                guibg = { attribute = "bg", highlight = "TabLine" },
-                gui = "bold",
-            },
-            duplicate = {
-                guifg = { attribute = "fg", highlight = "TabLine" },
-                guibg = { attribute = "bg", highlight = "TabLine" },
-                gui = "bold",
-            },
-
-            modified = {
-                guifg = { attribute = "fg", highlight = "TabLine" },
-                guibg = { attribute = "bg", highlight = "TabLine" },
-            },
-            modified_selected = {
-                guifg = { attribute = "fg", highlight = "Normal" },
-                guibg = { attribute = "bg", highlight = "Normal" },
-            },
-            modified_visible = {
-                guifg = { attribute = "fg", highlight = "TabLine" },
-                guibg = { attribute = "bg", highlight = "TabLine" },
-            },
-
-            separator = {
-                guifg = { attribute = "bg", highlight = "TabLine" },
-                guibg = { attribute = "bg", highlight = "TabLine" },
-            },
-            separator_selected = {
-                guifg = { attribute = "bg", highlight = "Normal" },
-                guibg = { attribute = "bg", highlight = "Normal" },
-            },
-            -- separator_visible = {
-            --   guifg = {attribute='bg',highlight='TabLine'},
-            --   guibg = {attribute='bg',highlight='TabLine'}
-            --   },
-            indicator_selected = {
-                guifg = { attribute = "fg", highlight = "LspDiagnosticsDefaultHint" },
-                guibg = { attribute = "bg", highlight = "Normal" },
-            },
+    },
+    highlights = {
+        fill = {
+            guifg = "#ff0000",
+            guibg = "TabLine",
         },
-    }
-}
+        background = {
+            guifg = "TabLine",
+            guibg = "TabLine",
+        },
+
+        tab = {
+            guifg = "TabLine",
+            guibg = "TabLine",
+        },
+        tab_selected = {
+            guifg = "Normal",
+            guibg = "Normal",
+        },
+        tab_close = {
+            guifg = "TabLineSel",
+            guibg = "Normal",
+        },
+
+        --[[ close_button = {
+            guifg = 'TabLine',
+            guibg = 'TabLine'
+        },
+        close_button_visible = {
+            guifg = 'TabLine',
+            guibg = 'TabLine'
+        },
+        close_button_selected = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>'
+        }, ]]
+
+        buffer_visible = {
+            guifg = "TabLine",
+            guibg = "TabLine",
+        },
+        buffer_selected = {
+            guifg = "TabLine",
+            guibg = "Tabline",
+            gui = "bold",
+        },
+
+        --[[ diagnostic = {
+            guifg = 'TabLine',
+            guibg = 'TabLine',
+        },
+        diagnostic_visible = {
+            guifg = 'TabLine',
+            guibg = 'TabLine',
+        },
+        diagnostic_selected = {
+            guifg = 'TabLine',
+            guibg = 'TabLine',
+            gui = "bold"
+        }, ]]
+
+        --[[ info = {
+            guifg = '<color-value-here>',
+            guisp = '<color-value-here>',
+            guibg = '<color-value-here>'
+        },
+        info_visible = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>'
+        },
+        info_selected = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>',
+            gui = "bold,italic",
+            guisp = '<color-value-here>'
+        },
+        info_diagnostic = {
+            guifg = '<color-value-here>',
+            guisp = '<color-value-here>',
+            guibg = '<color-value-here>'
+        },
+        info_diagnostic_visible = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>'
+        },
+        info_diagnostic_selected = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>',
+            gui = "bold,italic",
+            guisp = '<color-value-here>'
+        }, ]]
+
+        --[[ warning = {
+            guifg = '<color-value-here>',
+            guisp = '<color-value-here>',
+            guibg = '<color-value-here>'
+        },
+        warning_visible = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>'
+        },
+        warning_selected = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>',
+            gui = "bold,italic",
+            guisp = '<color-value-here>'
+        },
+        warning_diagnostic = {
+            guifg = '<color-value-here>',
+            guisp = '<color-value-here>',
+            guibg = '<color-value-here>'
+        },
+        warning_diagnostic_visible = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>'
+        },
+        warning_diagnostic_selected = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>',
+            gui = "bold,italic",
+            guisp = warning_diagnostic_fg
+        }, ]]
+
+        --[[ error = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>',
+            guisp = '<color-value-here>'
+        },
+        error_visible = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>'
+        },
+        error_selected = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>',
+            gui = "bold,italic",
+            guisp = '<color-value-here>'
+        },
+        error_diagnostic = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>',
+            guisp = '<color-value-here>'
+        },
+        error_diagnostic_visible = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>'
+        },
+        error_diagnostic_selected = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>',
+            gui = "bold,italic",
+            guisp = '<color-value-here>'
+        }, ]]
+
+        modified = {
+            guifg = "TabLine",
+            guibg = "Tabline",
+        },
+        modified_visible = {
+            guifg = "TabLine",
+            guibg = "TabLine",
+        },
+        modified_selected = {
+            guifg = "Normal",
+            guibg = "Normal",
+        },
+
+        duplicate_selected = {
+            guifg = "TabLineSel",
+            gui = "bold",
+            guibg = "TabLineSel",
+        },
+        duplicate_visible = {
+            guifg = "TabLine",
+            gui = "bold",
+            guibg = "TabLine",
+        },
+        duplicate = {
+            guifg = "TabLine",
+            gui = "bold",
+            guibg = "TabLine",
+        },
+
+        --[[ separator_selected = {
+            guifg = 'Normal',
+            guibg = 'Normal'
+        }, ]]
+        --[[ separator_visible = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>'
+        }, ]]
+        --[[ separator = {
+            guifg = 'TabLine',
+            guibg = 'TabLine'
+        }, ]]
+
+        indicator_selected = {
+            guifg = "LspDiagnosticsDefaultHint",
+            guibg = "Normal",
+        },
+
+        --[[ pick_selected = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>',
+            gui = "bold,italic"
+        },
+        pick_visible = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>',
+            gui = "bold,italic"
+        },
+        pick = {
+            guifg = '<color-value-here>',
+            guibg = '<color-value-here>',
+            gui = "bold,italic"
+        } ]]
+    },
+})

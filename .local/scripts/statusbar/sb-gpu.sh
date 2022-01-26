@@ -10,7 +10,6 @@ gpuU=$(nvidia-smi --format=csv --query-gpu=utilization.gpu | tail -1 | tr -d " %
 #	gpuU=^c\#d80404^$gpuU^d^
 #fi
 
-
 #if (( $(echo "$gpuT <= 60" | bc -l) )); then
 #	gpuT=^c\#10a204^$gpuT^d^
 #elif (( $(echo "$gpuT > 60" | bc -l) && $(echo "$gpuT <= 80" | bc -l) )); then

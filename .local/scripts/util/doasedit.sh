@@ -1,8 +1,9 @@
 #!/bin/sh -e
 # original script from https://github.com/AN3223/scripts/blob/master/doasedit
 
-help() {
-	cat - >&2 <<EOF
+help()
+{
+    cat - >&2 <<EOF
 doasedit - like sudoedit, but for doas
 doasedit file...
 Every argument will be treated as a file to edit. There's no support for
@@ -19,34 +20,37 @@ if [ "$#" -eq 0 ]; then
 fi
 
 case "$1" in
-	--help|-h) help; exit 0;;
-	*) ;;
+--help | -h)
+    help
+    exit 0
+    ;;
+*) ;;
 esac
 
 export TMPDIR=/dev/shm/
 trap 'trap - EXIT HUP QUIT TERM INT ABRT; rm -f "$tmp" "$tmpcopy"' EXIT HUP QUIT TERM INT ABRT
 
 for file; do
-	case "$file" in -*) file=./"$file" ;; esac
+    case "$file" in -*) file=./"$file" ;; esac
 
-	tmp="$(mktemp)"
-	if [ -f "$file" ] && [ ! -r "$file" ]; then
-		doas cat "$file" > "$tmp"
-	elif [ -r "$file" ]; then
-		cat "$file" > "$tmp"
-	fi
+    tmp="$(mktemp)"
+    if [ -f "$file" ] && [ ! -r "$file" ]; then
+        doas cat "$file" >"$tmp"
+    elif [ -r "$file" ]; then
+        cat "$file" >"$tmp"
+    fi
 
-	tmpcopy="$(mktemp)"
-	cat "$tmp" > "$tmpcopy"
+    tmpcopy="$(mktemp)"
+    cat "$tmp" >"$tmpcopy"
 
-	${EDITOR:-vi} "$tmp"
+    ${EDITOR:-vi} "$tmp"
 
-	if cmp -s "$tmp" "$tmpcopy"; then
-		echo 'File unchanged, exiting...'
-	else
-		doas dd if="$tmp" of="$file"
-		echo 'Done, changes written'
-	fi
+    if cmp -s "$tmp" "$tmpcopy"; then
+        echo 'File unchanged, exiting...'
+    else
+        doas dd if="$tmp" of="$file"
+        echo 'Done, changes written'
+    fi
 
-	rm "$tmp" "$tmpcopy"
+    rm "$tmp" "$tmpcopy"
 done

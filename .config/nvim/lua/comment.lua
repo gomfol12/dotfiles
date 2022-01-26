@@ -5,7 +5,7 @@ if not status_ok then
     return
 end
 
-local cfg = ({
+local cfg = {
     pre_hook = function(ctx)
         local U = require("Comment.utils")
 
@@ -16,38 +16,38 @@ local cfg = ({
             location = require("ts_context_commentstring.utils").get_visual_start_location()
         end
 
-        return require("ts_context_commentstring.internal").calculate_commentstring {
+        return require("ts_context_commentstring.internal").calculate_commentstring({
             key = ctx.ctype == U.ctype.line and "__default" or "__multiline",
             location = location,
-        }
+        })
     end,
     -- LHS of toggle mappings in NORMAL + VISUAL mode
     -- @type table
     toggler = {
         -- Line-comment toggle keymap
-        line = '<leader>cc',
+        line = "<leader>cc",
         -- Block-comment toggle keymap
-        block = '<leader>bc',
+        block = "<leader>bc",
     },
 
     -- LHS of operator-pending mappings in NORMAL + VISUAL mode
     -- @type table
     opleader = {
         -- Line-comment keymap
-        line = '<leader>c',
+        line = "<leader>c",
         -- Block-comment keymap
-        block = '<leader>b',
+        block = "<leader>b",
     },
 
     -- LHS of extra mappings
     -- @type table
     extra = {
         -- Add comment on the line above
-        above = '<leader>cO',
+        above = "<leader>cO",
         -- Add comment on the line below
-        below = '<leader>co',
+        below = "<leader>co",
         -- Add comment at the end of line
-        eol = '<leader>cA',
+        eol = "<leader>cA",
     },
 
     -- Create basic (operator-pending) and extended mappings for NORMAL + VISUAL mode
@@ -65,8 +65,8 @@ local cfg = ({
         extended = false,
     },
     -- ignores empty lines
-    ignore = '^$',
-})
+    ignore = "^$",
+}
 
 comment.setup(cfg)
 
