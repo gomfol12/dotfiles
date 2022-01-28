@@ -1,3 +1,5 @@
+-- ==================== lsp_signature (lsp_signature.nvim) ==================== --
+
 local sig_status_ok, lsp_signature = pcall(require, "lsp_signature")
 if not sig_status_ok then
     return

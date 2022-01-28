@@ -1,5 +1,5 @@
 -- ==================== Settings ==================== --
--- TODO: spell check, statusline
+-- TODO: spell check
 
 local utils = require("utils")
 

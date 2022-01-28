@@ -98,7 +98,7 @@ M.on_attach = function(client, bufnr)
     if client.name == "html" then
         client.resolved_capabilities.document_formatting = false
     end
-    if client.name == "ccls" then
+    if client.name == "clangd" then
         client.resolved_capabilities.document_formatting = false
     end
     if client.name == "cmake" then
@@ -115,7 +115,8 @@ end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
---capabilities.offsetEncoding = { "utf-16" }
+-- fix for "warning: multiple different client offset_encodings detected for buffer, this is not supported yet"
+capabilities.offsetEncoding = { "utf-16" }
 
 local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if not status_ok then

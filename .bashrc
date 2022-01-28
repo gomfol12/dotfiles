@@ -34,11 +34,11 @@ fi
 [[ $- == *i* ]] && source $HOME/.local/share/blesh/ble.sh --noattach
 
 ### general ###
-set -o vi # vi keybinds
-stty -ixon #Disable ctrl-s and ctrl-q
-shopt -s autocd #Allows you to cd into directory merely by typing directory name
+set -o vi             # vi keybinds
+stty -ixon            #Disable ctrl-s and ctrl-q
+shopt -s autocd       #Allows you to cd into directory merely by typing directory name
 shopt -s checkwinsize # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS
-shopt -s cdspell # make cd ignore case and small typos
+shopt -s cdspell      # make cd ignore case and small typos
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
@@ -119,9 +119,9 @@ fi
 ### prompt ###
 USERCOLOR=""
 if [[ $EUID != 0 ]]; then
-	USERCOLOR=$GREEN # Normal user
+    USERCOLOR=$GREEN # Normal user
 else
-	USERCOLOR=$RED # Root user
+    USERCOLOR=$RED # Root user
 fi
 
 # git-prompt
@@ -136,15 +136,15 @@ fi
 
 if [ "$TERM" = "linux" ]; then
     if [ -f /usr/share/git/completion/git-prompt.sh ]; then
-	    PROMPT_COMMAND='__git_ps1 "${RED}[${NOCOLOR}${USERCOLOR}\u${NOCOLOR}${GREEN}@\h${NOCOLOR}${WHITE}:${NOCOLOR}${LBLUE}\w${NOCOLOR}${RED}]${NOCOLOR}" " " "${RED}[${NOCOLOR}%s${RED}]${NOCOLOR}"'
+        PROMPT_COMMAND='__git_ps1 "${RED}[${NOCOLOR}${USERCOLOR}\u${NOCOLOR}${GREEN}@\h${NOCOLOR}${WHITE}:${NOCOLOR}${LBLUE}\w${NOCOLOR}${RED}]${NOCOLOR}" " " "${RED}[${NOCOLOR}%s${RED}]${NOCOLOR}"'
     else
-	    PS1="${RED}[${NOCOLOR}${USERCOLOR}\u${NOCOLOR}${GREEN}@\h${NOCOLOR}${WHITE}:${NOCOLOR}${LBLUE}\w${NOCOLOR}${RED}]${NOCOLOR} "
+        PS1="${RED}[${NOCOLOR}${USERCOLOR}\u${NOCOLOR}${GREEN}@\h${NOCOLOR}${WHITE}:${NOCOLOR}${LBLUE}\w${NOCOLOR}${RED}]${NOCOLOR} "
     fi
 else
     if [ -f /usr/share/git/completion/git-prompt.sh ]; then
-	    PROMPT_COMMAND='__git_ps1 "${RED}[${NOCOLOR}${USERCOLOR}\u${NOCOLOR}${GREEN}@\h${NOCOLOR}${WHITE}:${NOCOLOR}${BLUE}\w${NOCOLOR}${RED}]${NOCOLOR}" " " "${RED}[${NOCOLOR}%s${RED}]${NOCOLOR}"'
+        PROMPT_COMMAND='__git_ps1 "${RED}[${NOCOLOR}${USERCOLOR}\u${NOCOLOR}${GREEN}@\h${NOCOLOR}${WHITE}:${NOCOLOR}${BLUE}\w${NOCOLOR}${RED}]${NOCOLOR}" " " "${RED}[${NOCOLOR}%s${RED}]${NOCOLOR}"'
     else
-	    PS1="${RED}[${NOCOLOR}${USERCOLOR}\u${NOCOLOR}${GREEN}@\h${NOCOLOR}${WHITE}:${NOCOLOR}${BLUE}\w${NOCOLOR}${RED}]${NOCOLOR} "
+        PS1="${RED}[${NOCOLOR}${USERCOLOR}\u${NOCOLOR}${GREEN}@\h${NOCOLOR}${WHITE}:${NOCOLOR}${BLUE}\w${NOCOLOR}${RED}]${NOCOLOR} "
     fi
 fi
 
@@ -224,10 +224,10 @@ alias mx="ch +x"
 
 if [ "$TERM" != "linux" ]; then
     [ -z $EDITOR ] && EDITOR=nvim
-	alias v="$EDITOR"
-	alias vi="$EDITOR"
-	alias vim="$EDITOR"
-	alias nvim="$EDITOR"
+    alias v="$EDITOR"
+    alias vi="$EDITOR"
+    alias vim="$EDITOR"
+    alias nvim="$EDITOR"
 fi
 
 alias mem="free -mth"
@@ -257,6 +257,7 @@ alias pin="pacin"
 alias yin="yayin"
 alias pas="pacs"
 alias ys="yays"
+alias pdel="pacdel"
 
 ### HOME cleanup ###
 #alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
@@ -274,39 +275,39 @@ fi
 ### lf ###
 lfcd()
 {
-	tmp="$(mktemp)"
-	fid="$(mktemp)"
-	lf.sh -command '$printf $id > '"$fid"'' -last-dir-path="$tmp" "$@"
-	id="$(cat "$fid")"
-	archivemount_dir="/tmp/__lf_archivemount_$id"
-	if [ -f "$archivemount_dir" ]; then
-		cat "$archivemount_dir" | \
-			while read -r line; do
-				umount "$line"
-				rmdir "$line"
-			done
-		rm -f "$archivemount_dir" 1>/dev/null
-	fi
-	if [ -f "$tmp" ]; then
-		dir="$(cat "$tmp")"
-		rm -f "$tmp" 1>/dev/null
-		if [ -d "$dir" ]; then
-			if [ "$dir" != "$(pwd)" ]; then
-				cd "$dir"
-			fi
-		fi
-	fi
-    printf "\033]0; $TERMINAL\007" > /dev/tty
+    tmp="$(mktemp)"
+    fid="$(mktemp)"
+    lf.sh -command '$printf $id > '"$fid"'' -last-dir-path="$tmp" "$@"
+    id="$(cat "$fid")"
+    archivemount_dir="/tmp/__lf_archivemount_$id"
+    if [ -f "$archivemount_dir" ]; then
+        cat "$archivemount_dir" |
+            while read -r line; do
+                umount "$line"
+                rmdir "$line"
+            done
+        rm -f "$archivemount_dir" 1>/dev/null
+    fi
+    if [ -f "$tmp" ]; then
+        dir="$(cat "$tmp")"
+        rm -f "$tmp" 1>/dev/null
+        if [ -d "$dir" ]; then
+            if [ "$dir" != "$(pwd)" ]; then
+                cd "$dir"
+            fi
+        fi
+    fi
+    printf "\033]0; $TERMINAL\007" >/dev/tty
 }
 
 ### functions ###
 cl()
 {
-	if [ -d "$@" ]; then
-		cd "$@" && la
-	else
-		echo "'$1' not a dir..."
-	fi
+    if [ -d "$@" ]; then
+        cd "$@" && la
+    else
+        echo "'$1' not a dir..."
+    fi
 }
 
 pacin()
@@ -351,7 +352,8 @@ fkill()
     ps auxh | fzf -m --reverse --tac --bind='ctrl-r:reload(ps auxh)' --header=$'Press CTRL-R to reload\n' | awk '{print $2}' | xargs -r kill -${1:-9}
 }
 
-fman() {
+fman()
+{
     man -k . | fzf --prompt='Man> ' | awk '{print $1}' | xargs -r man
 }
 
@@ -378,3 +380,7 @@ key()
 
 ### ble.sh bottom ###
 [[ ${BLE_VERSION-} ]] && ble-attach
+
+#if [[ $(ps --no-header --pid=$PPID --format=cmd) != "fish" && -z ${BASH_EXECUTION_STRING} ]]; then
+#    exec fish
+#fi

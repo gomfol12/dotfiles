@@ -54,7 +54,6 @@ return packer.startup(function(use)
         requires = { "kyazdani42/nvim-web-devicons" },
     })
     use("moll/vim-bbye")
-
     use("chrisbra/Colorizer")
 
     -- comments

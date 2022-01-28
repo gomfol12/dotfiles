@@ -1,6 +1,5 @@
 -- ==================== null-ls (null-ls.nvim) ==================== --
--- Install: stylua(aur), prettier, shfmt, shellcheck, uncrustify, cmake-format(aur)
--- TODO: cpp formatter
+-- Install: stylua(aur), prettier, shfmt, shellcheck, clang_format, cmake-format(aur), codespell
 
 local status_ok, null_ls = pcall(require, "null-ls")
 if not status_ok then
@@ -22,10 +21,9 @@ null_ls.setup({
         formatting.shfmt.with({
             extra_args = { "-i", "4", "-fn" },
         }),
-        -- throws waring
-        --[[ formatting.uncrustify.with({
-            extra_args = { "-c", vim.fn.expand("~/.config/nvim/uncrustify.cfg") },
-        }), ]]
+        formatting.clang_format.with({
+            extra_args = { "-style={BasedOnStyle: Microsoft}" },
+        }),
         formatting.cmake_format,
 
         diagnostics.shellcheck,
