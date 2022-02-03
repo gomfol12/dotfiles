@@ -2,6 +2,7 @@
 -- TODO: Telescope, alpha color
 
 require("plugins")
+require("impatient")
 require("mappings")
 require("settings")
 require("lsp")
@@ -15,3 +16,4 @@ require("tree")
 require("git")
 require("buffer")
 require("statusline")
+require("spell")

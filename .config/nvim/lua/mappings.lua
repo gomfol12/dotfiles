@@ -17,7 +17,7 @@
 -- visual_block_mode    x
 -- term_mode            t
 -- command_mode         c
--- TODO: show documentation in preview window, auto formating
+-- TODO: show documentation in preview window
 
 local utils = require("utils")
 
@@ -127,3 +127,7 @@ utils.map("n", "<c-a>", ":Alpha<cr>")
 
 -- nvim tree
 utils.map("n", "<c-n>", ":NvimTreeToggle<cr>", { silent = true })
+
+-- spell, Grammarous
+utils.map("n", "<leader>w", ":setlocal spell!<cr>", { silent = true })
+utils.map("n", "<leader>g", ":GrammarousCheck --lang=de<cr>")

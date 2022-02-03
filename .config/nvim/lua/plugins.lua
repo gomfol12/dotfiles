@@ -1,5 +1,5 @@
 -- ==================== Plugins ==================== --
--- TODO: alpha custom buttons dont work
+-- TODO: alpha custom buttons don't work
 
 -- Automatically install packer
 local fn = vim.fn
@@ -55,12 +55,15 @@ return packer.startup(function(use)
     })
     use("moll/vim-bbye")
     use("chrisbra/Colorizer")
+    use("lewis6991/spellsitter.nvim")
+    use("rhysd/vim-grammarous")
+    use("lewis6991/impatient.nvim")
 
     -- comments
     use("numToStr/Comment.nvim")
     use("JoosepAlviste/nvim-ts-context-commentstring")
 
-    -- colorscheme
+    -- color scheme
     use({
         "Mofiqul/vscode.nvim",
         config = function()
@@ -94,6 +97,9 @@ return packer.startup(function(use)
     use("hrsh7th/nvim-cmp")
     use("saadparwaiz1/cmp_luasnip")
     use("hrsh7th/cmp-nvim-lua")
+    use("f3fora/cmp-spell")
+    use("hrsh7th/cmp-calc")
+    use("kdheepak/cmp-latex-symbols")
 
     -- snippets
     use("L3MON4D3/LuaSnip")

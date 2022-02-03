@@ -13,12 +13,13 @@ export XDG_MUSIC_DIR=${XDG_MUSIC_DIR:="$HOME/doc/music"}
 
 ### general ###
 export SCRIPT_DIR="$HOME"/.local/scripts
-export PATH=$PATH$( find $SCRIPT_DIR -not -path "*old*" -not -path "*grub*" -type d -printf ":%p" )
+export PATH=$PATH$(find $SCRIPT_DIR -not -path "*old*" -not -path "*grub*" -type d -printf ":%p")
 export PATH=$PATH:$HOME/.local/bin
 export EDITOR="nvim"
 export TERMINAL="st"
 export BROWSER="brave --force-device-scale-factor=1.0"
 export _JAVA_AWT_WM_NONREPARENTING=1
+export PATH=$PATH:$HOME/.local/share/gem/ruby/3.0.0/bin
 
 # disable less history
 export LESSHISTFILE=-

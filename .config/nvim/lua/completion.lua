@@ -1,5 +1,5 @@
 -- ==================== Completion (nvim-cmp, luasnip) ==================== --
--- TODO: diagnostics ???
+-- TODO: diagnostics ???, spell Completion
 
 local cmp_status_ok, cmp = pcall(require, "cmp")
 if not cmp_status_ok then
@@ -99,6 +99,9 @@ cmp.setup({
                 nvim_lua = "[NVIM_LUA]",
                 luasnip = "[LUASNIP]",
                 buffer = "[BUFFER]",
+                spell = "[SPELL]",
+                calc = "[CALC]",
+                latex_symbols = "[SYM]",
                 path = "[PATH]",
             })[entry.source.name]
             return vim_item
@@ -109,6 +112,9 @@ cmp.setup({
         { name = "nvim_lua" },
         { name = "luasnip" },
         { name = "buffer" },
+        { name = "spell" },
+        { name = "calc" },
+        { name = "latex_symbols" },
         { name = "path" },
     },
     confirm_opts = {
