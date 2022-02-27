@@ -101,7 +101,7 @@ cmp.setup({
                 buffer = "[BUFFER]",
                 spell = "[SPELL]",
                 calc = "[CALC]",
-                latex_symbols = "[SYM]",
+                -- latex_symbols = "[SYM]",
                 path = "[PATH]",
             })[entry.source.name]
             return vim_item
@@ -114,7 +114,7 @@ cmp.setup({
         { name = "buffer" },
         { name = "spell" },
         { name = "calc" },
-        { name = "latex_symbols" },
+        -- { name = "latex_symbols" },
         { name = "path" },
     },
     confirm_opts = {

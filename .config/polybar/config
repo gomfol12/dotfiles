@@ -54,8 +54,8 @@ screenchange-reload = false
 
 [colors]
 foreground = ${xrdb:color7:#ffffff}
-foreground-urgent = ${xrdb:color0:#000000}
-background = ${xrdb:color0:#1a1a1a}
+foreground-urgent = ${xrdb:background:#000000}
+background = ${xrdb:background:#1a1a1a}
 focused = ${xrdb:color1:#10a204}
 occupied = ${xrdb:color1:#10a204}
 urgent = ${xrdb:color7:#ffffff}

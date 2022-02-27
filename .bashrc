@@ -5,34 +5,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-### setup ###
-# install ble.sh if it is missing
-if [ ! -d $HOME/.local/share/blesh/ ]; then
-    if [ ! -d $HOME/.local/src/ ]; then
-        mkdir -p $HOME/.local/src/
-    fi
-    cd $HOME/.local/src
-
-    git clone --recursive https://github.com/akinomyoga/ble.sh.git
-    make -C ble.sh install PREFIX=~/.local
-    cd $HOME
-fi
-
-# install fzf if it is missing
-if [ ! -d $HOME/.local/src/fzf/ ]; then
-    if [ ! -d $HOME/.local/src/ ]; then
-        mkdir -p $HOME/.local/src/
-    fi
-    cd $HOME/.local/src
-
-    git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.local/src/fzf
-    $HOME/.local/src/fzf/install --bin
-    cd $HOME
-fi
-
-### ble.sh top ###
-[[ $- == *i* ]] && source $HOME/.local/share/blesh/ble.sh --noattach
-
 ### general ###
 set -o vi             # vi keybinds
 stty -ixon            #Disable ctrl-s and ctrl-q
@@ -111,11 +83,6 @@ if [ -f /usr/share/git/completion/git-completion.bash ]; then
     __git_complete config __git_main
 fi
 
-# fzf
-if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.bash ]; then
-    source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.bash
-fi
-
 ### prompt ###
 USERCOLOR=""
 if [[ $EUID != 0 ]]; then
@@ -176,7 +143,7 @@ alias md="mkdir"
 
 alias c="clear"
 alias sysctl="sudo systemctl"
-alias myip="echo $(curl -s ipinfo.io/ip)"
+alias myip="echo \$(curl -s ipinfo.io/ip)"
 alias ka="killall"
 alias g="git"
 alias config='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
@@ -186,9 +153,7 @@ alias sdn="shutdown -h now"
 alias p="sudo pacman"
 alias pacorp="pacman -Qtdq | doas pacman -Rns -"
 
-alias untar="tar -xvf"
-alias ungz="tar -zxvf"
-alias unbz2="tar -xjvf"
+alias ex="unarchive.sh"
 alias mktar="tar -cvf"
 alias mkgz="tar -cvzf"
 alias mkbz2="tar -cjvf"
@@ -223,11 +188,11 @@ alias sch="sudo ch"
 alias mx="ch +x"
 
 if [ "$TERM" != "linux" ]; then
-    [ -z $EDITOR ] && EDITOR=nvim
-    alias v="$EDITOR"
-    alias vi="$EDITOR"
-    alias vim="$EDITOR"
-    alias nvim="$EDITOR"
+    [ -z "$EDITOR" ] && EDITOR=nvim
+    alias v="\$EDITOR"
+    alias vi="\$EDITOR"
+    alias vim="\$EDITOR"
+    alias nvim="\$EDITOR"
 fi
 
 alias mem="free -mth"
@@ -259,17 +224,21 @@ alias pas="pacs"
 alias ys="yays"
 alias pdel="pacdel"
 
+alias calc="qalc"
+
 ### HOME cleanup ###
 #alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
 alias nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings'
 
 ### GPG ###
-export GPG_TTY=$(tty)
+tty_val=$(tty)
+export GPG_TTY=$tty_val
 gpg-connect-agent updatestartuptty /bye >&/dev/null
 
 unset SSH_AGENT_PID
 if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+    socket=$(gpgconf --list-dirs agent-ssh-socket)
+    export SSH_AUTH_SOCK=$socket
 fi
 
 ### lf ###
@@ -293,17 +262,17 @@ lfcd()
         rm -f "$tmp" 1>/dev/null
         if [ -d "$dir" ]; then
             if [ "$dir" != "$(pwd)" ]; then
-                cd "$dir"
+                cd "$dir" || return
             fi
         fi
     fi
-    printf "\033]0; $TERMINAL\007" >/dev/tty
+    printf "\033]0; %s\007" "$TERMINAL" >/dev/tty
 }
 
 ### functions ###
 cl()
 {
-    if [ -d "$@" ]; then
+    if [ -d "$*" ]; then
         cd "$@" && la
     else
         echo "'$1' not a dir..."
@@ -343,13 +312,13 @@ yays()
 se()
 {
     local s
-    s=$(find $SCRIPT_DIR/ -type f | sed -n "s@$SCRIPT_DIR/@@p" | fzf --preview "highlight -i $SCRIPT_DIR/{1} --stdout --out-format=ansi -q --force")
+    s=$(find "$SCRIPT_DIR"/ -type f | sed -n "s@$SCRIPT_DIR/@@p" | fzf --preview "highlight -i $SCRIPT_DIR/{1} --stdout --out-format=ansi -q --force")
     [ -n "$s" ] && $EDITOR "$SCRIPT_DIR/$s"
 }
 
 fkill()
 {
-    ps auxh | fzf -m --reverse --tac --bind='ctrl-r:reload(ps auxh)' --header=$'Press CTRL-R to reload\n' | awk '{print $2}' | xargs -r kill -${1:-9}
+    ps auxh | fzf -m --reverse --tac --bind='ctrl-r:reload(ps auxh)' --header=$'Press CTRL-R to reload\n' | awk '{print $2}' | xargs -r kill -"${1:-9}"
 }
 
 fman()
@@ -378,9 +347,7 @@ key()
     xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
 }
 
-### ble.sh bottom ###
-[[ ${BLE_VERSION-} ]] && ble-attach
-
-#if [[ $(ps --no-header --pid=$PPID --format=cmd) != "fish" && -z ${BASH_EXECUTION_STRING} ]]; then
-#    exec fish
-#fi
+# start tmux
+if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
+    exec tmux
+fi

@@ -39,7 +39,7 @@ Xft.rgba: rgb
 st.selectionbg: #888888
 st.selectionfg: #000000
 st.termname: st-256color
-st.shell: /bin/bash
+st.shell: /bin/fish
 st.alpha: 0.9
 
 ! sxiv

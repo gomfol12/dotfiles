@@ -16,10 +16,16 @@ bspc config focused_border_color "$color1"
 bspc config presel_feedback_color "$color1"
 
 # reload discord
-pywal-discord
+#pywal-discord
 
 # regenerate gtk theme
-/opt/oomox/plugins/theme_oomox/change_color.sh /opt/oomox/scripted_colors/xresources/xresources-reverse -t ~/.local/share/themes
+/opt/oomox/plugins/theme_oomox/change_color.sh ~/.local/scripts/xresources_gtk -t ~/.local/share/themes
+
+# spotify
+if [ "$(pgrep "spotify")" ]; then
+    spicetify update
+    spicetify restart
+fi
 
 # reload st colors
-#pidof st | xargs -r kill -SIGUSR1
+pidof st | xargs -r kill -SIGUSR1

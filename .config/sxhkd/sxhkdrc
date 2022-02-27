@@ -39,8 +39,9 @@ super + e
 	/usr/bin/nemo
 
 # open spt.sh
+#$TERMINAL -e "ncmpcpp"
 super + m
-	$TERMINAL -e "ncmpcpp"
+    spotify
 
 # open steam
 super + s
@@ -66,19 +67,19 @@ super + x
 
 # kill spotifyd
 XF86AudioStop
-	killall mopidy
+	killall spotify
 
 # spotifyd next
 XF86AudioNext
-	playerctl --player mopidy next
+	playerctl --player spotify next
 
 # spotifyd previous
 XF86AudioPrev
-	playerctl --player mopidy previous
+	playerctl --player spotify previous
 
 # spotifyd play-pause
 XF86AudioPlay
-	playerctl --player mopidy play-pause
+	playerctl --player spotify play-pause
 
 ### util ###
 
@@ -154,7 +155,7 @@ super + shift + g
 	bspc wm -r
 
 # close and kill
-mod1 + shift + {c,k}
+mod1 + shift + {c,v}
 	bspc node -{c,k}
 
 # alternate between the tiled and monocle layout

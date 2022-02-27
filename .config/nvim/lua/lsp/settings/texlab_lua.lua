@@ -11,14 +11,14 @@ return {
             auxDirectory = ".",
             bibtexFormatter = "texlab",
             build = {
-                args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+                args = { "-pdflua", "-interaction=nonstopmode", "-synctex=1", "-outdir=build", "%f" },
                 executable = "latexmk",
                 forwardSearchAfter = false,
                 onSave = true,
             },
             chktex = {
-                onEdit = false,
-                onOpenAndSave = false,
+                onEdit = true,
+                onOpenAndSave = true,
             },
             diagnosticsDelay = 300,
             formatterLineLength = 80,

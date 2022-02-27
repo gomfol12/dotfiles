@@ -29,7 +29,6 @@ null_ls.setup({
         formatting.cmake_format,
 
         diagnostics.shellcheck,
-        diagnostics.chktex,
     },
     --format on save
     on_attach = function(client)

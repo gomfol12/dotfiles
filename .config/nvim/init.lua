@@ -1,5 +1,5 @@
 -- ==================== NVIM init ==================== --
--- TODO: Telescope, alpha color
+-- TODO: Telescope, alpha color, fix weird snippet bug
 
 require("plugins")
 require("impatient")

@@ -98,6 +98,6 @@ vim.cmd([[
 vim.cmd([[
   augroup xresources_user_config
     autocmd!
-    autocmd BufWritePost * silent !xrdb -merge "$HOME/.cache/wal/colors.Xresources" && xrdb -merge "$HOME/.config/Xresources"
+    autocmd BufWritePost Xresources silent !xrdb -merge "$HOME/.cache/wal/colors.Xresources" && xrdb -merge "$HOME/.config/Xresources"
   augroup end
 ]])

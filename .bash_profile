@@ -46,6 +46,7 @@ export PASSWORD_STORE_GENERATED_LENGTH=20
 export PASSWORD_STORE_CLIP_TIME=30
 
 ### fzf ###
+export PATH=$PATH:$HOME/.local/src/fzf/bin
 export FZF_DEFAULT_OPTS="\
 --color="hl:green,gutter:-1,hl+:green,info:gray,prompt:blue,pointer:blue,marker:blue,spinner:blue,header:gray" \
 --no-bold \

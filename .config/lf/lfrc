@@ -76,33 +76,7 @@ cmd sudomkfile ${{
 }}
 
 cmd unarchive ${{
-    set -f
-    printf "Unarchive files: \n%s\n?[y|n] " "$fx"
-    read -n 1 -r
-    if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
-        if [ ! "$REPLY" = "" ]; then
-            printf "\n"
-        fi
-        printf "Aborted\n"
-        read -n 1 -s -r -p "Press any key to continue"
-        printf "\n"
-        exit 0
-    fi
-    printf "\n"
-
-    SAVEIFS=$IFS
-    IFS=$(printf "\n\b")
-	for file in $fx; do
-	    case "$file" in
-		    *.zip) unzip "$file" ;;
-		    *.tar.gz) tar -xzvf "$file" ;;
-		    *.tar.bz2) tar -xjvf "$file" ;;
-            *.tar.xz) unxz "$file" ;;
-		    *.tar) tar -xvf "$file" ;;
-		    *) printf "File: %s: Unsupported format\n" "$file" ;;
-	    esac
-	done
-    IFS=$SAVEIFS
+    unarchive.sh -nl "$fx"
 
     read -n 1 -s -r -p "Press any key to continue"
     printf "\n"
