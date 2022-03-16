@@ -24,8 +24,10 @@ sleep 1
 
 # start
 xset r rate 200 40 &
-xset dpms 300 300 600 &
-xset s 300 &
+#xset dpms 300 300 600 &
+#xset s 300 &
+xset -dpms &
+xset s off &
 setWallpaper.sh &
 start_polybar.sh &
 wait $!
@@ -48,7 +50,7 @@ nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings --load-config-only &
 [ ! "$(pgrep -f "st -c scratchpad")" ] && (sleep 1 && bspc rule -a scratchpad -o desktop=8 && st -c scratchpad &) &
 
 # source the colors.
-. "${HOME}/.cache/wal/colors.sh"
+. "$SCRIPT_DIR/colors.sh"
 
 ### global ###
 bspc config automatic_scheme alternate

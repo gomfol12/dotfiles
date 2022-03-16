@@ -13,7 +13,7 @@ npairs.setup({
         java = false, -- don't check treesitter on java
     },
     fast_wrap = {
-        map = "<c-a>",
+        map = "<c-q>",
         chars = { "{", "[", "(", '"', "'" },
         pattern = string.gsub([[ [%'%"%)%>%]%)%}%,] ]], "%s+", ""),
         offset = 0, -- Offset from pattern match

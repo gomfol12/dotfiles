@@ -91,6 +91,55 @@ if status is-interactive
         end
     end
 
+    function fish_status_prompt
+        if test "$argv[1]" != 0
+            printf "exit:%s" $argv[1]
+        end
+    end
+
+    function fish_duration_prompt
+        if test $CMD_DURATION -gt 1000
+            printf "time:%.3fs" (math $CMD_DURATION / 1000)
+        end
+    end
+
+    function postexec --on-event fish_postexec
+        set -l exit_status (fish_status_prompt $status)
+        set -l duration (fish_duration_prompt)
+
+        if test -n "$exit_status"
+            and test -n "$duration"
+            printf "%s[%s%s %s%s]%s\n" \
+            (set_color red) \
+            (set_color yellow) \
+            $exit_status \
+            $duration \
+            (set_color red) \
+            (set_color normal)
+            return 0
+        end
+
+        if test -n "$exit_status"
+            printf "%s[%s%s%s]%s\n" \
+            (set_color red) \
+            (set_color yellow) \
+            $exit_status \
+            (set_color red) \
+            (set_color normal)
+            return 0
+        end
+
+        if test -n "$duration"
+            printf "%s[%s%s%s]%s\n" \
+            (set_color red) \
+            (set_color yellow) \
+            $duration \
+            (set_color red) \
+            (set_color normal)
+            return 0
+        end
+    end
+
     function fish_prompt
         set -g fish_prompt_pwd_dir_length 0
 
@@ -119,6 +168,11 @@ if status is-interactive
         (set_color red) \
         (set_color normal) \
         (fish_git_custom_prompt)
+    end
+
+    ### command not found
+    function fish_command_not_found
+        echo "fish: $argv[1]: command not found"
     end
 
     ### keybinds ###
@@ -264,9 +318,17 @@ if status is-interactive
 
     alias calc="qalc"
 
+    # because i am stupid
+    alias :q="exit"
+    alias al="la"
+
     ### HOME cleanup ###
     #alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
     alias nvidia-settings="nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings"
+
+    ### GPG ###
+    set -g GPG_TTY (tty)
+    gpg-connect-agent updatestartuptty /bye >/dev/null
 
     ### lf ###
     function lfcd

@@ -33,13 +33,13 @@ shopt -s histappend
 #export LS_COLORS=''
 
 # Color for manpages in less makes manpages a little easier to read
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_mb=$'\E[01;32m'
+export LESS_TERMCAP_md=$'\E[01;32m'
 export LESS_TERMCAP_me=$'\E[0m'
 export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;44;39m'
+export LESS_TERMCAP_so=$'\E[01;44;30m'
 export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
+export LESS_TERMCAP_us=$'\E[01;31m'
 
 # colors
 BLACK="\[\033[30m\]"
@@ -56,15 +56,6 @@ LBLUE="\[\033[94m\]"
 
 NOCOLOR="\[\033[0m\]"
 BOLD="\[\033[1m\]"
-
-# pywal
-#if [ -f $HOME/.cache/wal/sequences ]; then
-#    cat ~/.cache/wal/sequences
-#fi
-
-if [ "$TERM" = "linux" ]; then
-    source ~/.cache/wal/colors-tty.sh
-fi
 
 ### completion ###
 # Enable bash programmable completion features in interactive shells
@@ -225,6 +216,10 @@ alias ys="yays"
 alias pdel="pacdel"
 
 alias calc="qalc"
+
+# because i am stupid
+alias :q="exit"
+alias al="la"
 
 ### HOME cleanup ###
 #alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'

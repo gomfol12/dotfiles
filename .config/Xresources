@@ -6,22 +6,42 @@ Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 Xft.rgba: rgb
 
-*.color0:  #000000
-*.color8:  #888888
-*.color1:  #d80404
-*.color9:  #d80404
-*.color2:  #10a204
-*.color10: #10a204
-*.color3:  #fded02
-*.color11: #fded02
-*.color4:  #3b7fff
-*.color12: #3b7fff
-*.color5:  #ab0082
-*.color13: #ab0082
-*.color6:  #00afd2
-*.color14: #00afd2
-*.color7:  #ffffff
-*.color15: #ffffff
+! special
+*.foreground:   #a6a28c
+*.background:   #20201d
+*.cursorColor:  #a6a28c
+
+! black
+*.color0:       #20201d
+*.color8:       #7d7a68
+
+! red
+*.color1:       #d73737
+*.color9:       #d73737
+
+! green
+*.color2:       #60ac39
+*.color10:      #60ac39
+
+! yellow
+*.color3:       #cfb017
+*.color11:      #cfb017
+
+! blue
+*.color4:       #6684e1
+*.color12:      #6684e1
+
+! magenta
+*.color5:       #b854d4
+*.color13:      #b854d4
+
+! cyan
+*.color6:       #1fad83
+*.color14:      #1fad83
+
+! white
+*.color7:       #fefbec
+*.color15:      #fefbec
 
 *.gray1: #1a1a1a
 *.gray2: #666666
@@ -44,3 +64,23 @@ st.alpha: 0.9
 
 ! sxiv
 Sxiv.font: sans-serif:pixelsize=12
+
+! old schemes
+! *.color0:  #000000
+! *.color8:  #888888
+! *.color1:  #d80404
+! *.color9:  #d80404
+! *.color2:  #10a204
+! *.color10: #10a204
+! *.color3:  #fded02
+! *.color11: #fded02
+! *.color4:  #3b7fff
+! *.color12: #3b7fff
+! *.color5:  #ab0082
+! *.color13: #ab0082
+! *.color6:  #00afd2
+! *.color14: #00afd2
+! *.color7:  #ffffff
+! *.color15: #ffffff
+! *.background: #000000
+! *.foreground: #ffffff

@@ -113,6 +113,20 @@ return packer.startup(function(use)
     use("nvim-lua/popup.nvim")
     use("nvim-telescope/telescope-media-files.nvim")
 
+    -- vim tmux integration
+    use({
+        "christoomey/vim-tmux-navigator",
+        config = function()
+            vim.g.tmux_navigator_disable_when_zoomed = 1
+        end,
+    })
+    use({
+        "preservim/vimux",
+        config = function()
+            vim.g.VimuxCloseOnExit = 1
+        end,
+    })
+
     -- to add: nvim-ts-context-commentstring
 
     -- Automatically set up your configuration after cloning packer.nvim

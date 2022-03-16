@@ -1,9 +1,9 @@
 #!/bin/sh
 
-. "${HOME}/.cache/wal/colors.sh"
-
+# reload Xresources
 xrdb -merge "$HOME/.config/Xresources"
-xrdb -merge "$HOME/.cache/wal/colors.Xresources"
+
+. "$SCRIPT_DIR/colors.sh"
 
 # restart polybar
 start_polybar.sh &
@@ -15,8 +15,8 @@ bspc config active_border_color "$color8"
 bspc config focused_border_color "$color1"
 bspc config presel_feedback_color "$color1"
 
-# reload discord
-#pywal-discord
+# reload st colors
+pidof st | xargs -r kill -SIGUSR1
 
 # regenerate gtk theme
 /opt/oomox/plugins/theme_oomox/change_color.sh ~/.local/scripts/xresources_gtk -t ~/.local/share/themes
@@ -26,6 +26,3 @@ if [ "$(pgrep "spotify")" ]; then
     spicetify update
     spicetify restart
 fi
-
-# reload st colors
-pidof st | xargs -r kill -SIGUSR1

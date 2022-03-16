@@ -123,7 +123,7 @@ utils.map("v", ">", ">gv")
 --utils.map('x', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@')
 
 -- alpha
-utils.map("n", "<c-a>", ":Alpha<cr>")
+utils.map("n", "<c-b>", ":Alpha<cr>")
 
 -- nvim tree
 utils.map("n", "<c-n>", ":NvimTreeToggle<cr>", { silent = true })
@@ -131,3 +131,9 @@ utils.map("n", "<c-n>", ":NvimTreeToggle<cr>", { silent = true })
 -- spell, Grammarous
 utils.map("n", "<leader>w", ":setlocal spell!<cr>", { silent = true })
 utils.map("n", "<leader>g", ":GrammarousCheck --lang=de<cr>")
+
+-- vimux
+utils.map("n", "<leader>pp", ":VimuxPromptCommand<cr>")
+utils.map("n", "<leader>pl", ":VimuxRunLastCommand<cr>")
+utils.map("n", "<leader>pi", ":VimuxInspectRunner<cr>")
+utils.map("n", "<leader>pz", ":VimuxZoomRunner<cr>")

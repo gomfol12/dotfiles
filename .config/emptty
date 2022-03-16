@@ -10,7 +10,7 @@ for file in "/etc/profile" "$HOME/.profile" "/etc/xprofile" "$HOME/.xprofile" "$
 done
 
 # load resources
-for file in "/etc/X11/Xresources" "$HOME/.config/Xresources" "$HOME/.Xresources" "$HOME/.cache/wal/colors.Xresources"; do
+for file in "/etc/X11/Xresources" "$HOME/.config/Xresources" "$HOME/.Xresources"; do
     if [ -f "$file" ]; then
         echo "Loading resource form $file"
         xrdb -merge "$file"
