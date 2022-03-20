@@ -123,7 +123,7 @@ utils.map("v", ">", ">gv")
 --utils.map('x', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@')
 
 -- alpha
-utils.map("n", "<c-b>", ":Alpha<cr>")
+--utils.map("n", "<c-b>", ":Alpha<cr>")
 
 -- nvim tree
 utils.map("n", "<c-n>", ":NvimTreeToggle<cr>", { silent = true })

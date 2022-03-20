@@ -13,7 +13,7 @@ bspc monitor DVI-D-0 -d 10 11 12 13
 
 ### autostart/restart ###
 # stop
-for process in "xss-lock" "imwheel" "dunst" "picom" "sxhkd" "unclutter" "lxpolkit" "extraWM.sh" "xcape" "easyeffects"; do
+for process in "xss-lock" "imwheel" "picom" "sxhkd" "unclutter" "lxpolkit" "extraWM.sh" "xcape" "easyeffects"; do
     if [ "$(pgrep -u "$(id -u)" -nf "$process")" ]; then
         killall -q "$process"
     fi
@@ -33,7 +33,7 @@ start_polybar.sh &
 wait $!
 xss-lock -- betterlockscreen -l &
 imwheel -b "45" &
-dunst &
+dunst.sh &
 picom &
 unclutter --timeout 5 &
 lxpolkit &

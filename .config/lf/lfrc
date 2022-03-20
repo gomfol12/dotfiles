@@ -286,10 +286,13 @@ map tl list_trash
 # file openers
 map oc %code .
 map oa ${{
-	$EDITOR ~/doc/notizen/arch/archInstall.txt
+    $EDITOR ~/doc/notizen/arch/archInstall.txt
 }}
 map o.l ${{
     $EDITOR ~/.config/lf/lfrc
+}}
+map os ${{
+    $EDITOR ~/.local/scripts/aliases.sh
 }}
 
 # archive mappings

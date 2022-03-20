@@ -2,7 +2,7 @@
 
 configColorGen()
 {
-    . "$HOME/.cache/wal/colors.sh"
+    . "$HOME/.local/scripts/colors.sh"
     cat <<EOF
 set recolor "true"
 set completion-bg "$background"

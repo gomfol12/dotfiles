@@ -63,7 +63,7 @@ st.shell: /bin/fish
 st.alpha: 0.9
 
 ! sxiv
-Sxiv.font: sans-serif:pixelsize=12
+*.bar.font: monospace:pixelsize=14
 
 ! old schemes
 ! *.color0:  #000000

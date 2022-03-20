@@ -114,12 +114,12 @@ return packer.startup(function(use)
     use("nvim-telescope/telescope-media-files.nvim")
 
     -- vim tmux integration
-    use({
-        "christoomey/vim-tmux-navigator",
-        config = function()
-            vim.g.tmux_navigator_disable_when_zoomed = 1
-        end,
-    })
+    -- use({
+    --     "christoomey/vim-tmux-navigator",
+    --     config = function()
+    --         vim.g.tmux_navigator_disable_when_zoomed = 1
+    --     end,
+    -- })
     use({
         "preservim/vimux",
         config = function()

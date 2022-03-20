@@ -1,8 +1,18 @@
 #!/bin/sh
 
+notifyOpen()
+{
+    actionDunst=$(dunstify --action="default,Reply" "Maim" "Screenshot Taken")
+    if [ "$actionDunst" = "default" ]; then
+        sxiv.sh "$output"
+    fi
+    exit
+}
+
 notify()
 {
-    notify-send "Maim" "Screenshot Taken"
+    dunstify "Maim" "Screenshot Taken"
+    exit
 }
 
 output=~/doc/bilder/screenshots
@@ -16,8 +26,8 @@ output=$output/"$(date +%s_%d.%m.%Y-%H-%M).png"
 action=$(printf "full\nselect\nactive\nclipactive" | dmenu -p "Screenshotter:")
 
 case $action in
-"full") maim "$output" && notify || exit ;;
-"select") maim -s "$output" && notify || exit ;;
-"active") maim -i "$(xdotool getactivewindow)" "$output" && notify || exit ;;
-"clipactive") maim -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png && notify || exit ;;
+"full") maim "$output" && notifyOpen ;;
+"select") maim -s "$output" && notifyOpen ;;
+"active") maim -i "$(xdotool getactivewindow)" "$output" && notifyOpen ;;
+"clipactive") maim -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png && notify ;;
 esac
