@@ -276,6 +276,8 @@ map c
 map i
 map r
 map y
+map <c-e> clear
+map <c-y> clear
 
 # trash mappings
 map dd trash

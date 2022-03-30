@@ -58,6 +58,12 @@ return packer.startup(function(use)
     use("lewis6991/spellsitter.nvim")
     use("rhysd/vim-grammarous")
     use("lewis6991/impatient.nvim")
+    use({
+        "preservim/vimux",
+        config = function()
+            vim.g.VimuxCloseOnExit = 1
+        end,
+    })
 
     -- comments
     use("numToStr/Comment.nvim")
@@ -113,19 +119,9 @@ return packer.startup(function(use)
     use("nvim-lua/popup.nvim")
     use("nvim-telescope/telescope-media-files.nvim")
 
-    -- vim tmux integration
-    -- use({
-    --     "christoomey/vim-tmux-navigator",
-    --     config = function()
-    --         vim.g.tmux_navigator_disable_when_zoomed = 1
-    --     end,
-    -- })
-    use({
-        "preservim/vimux",
-        config = function()
-            vim.g.VimuxCloseOnExit = 1
-        end,
-    })
+    -- dap
+    use("mfussenegger/nvim-dap")
+    use("rcarriga/nvim-dap-ui")
 
     -- to add: nvim-ts-context-commentstring
 

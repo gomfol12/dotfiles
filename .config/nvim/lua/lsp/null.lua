@@ -1,6 +1,6 @@
 -- ==================== null-ls (null-ls.nvim) ==================== --
 -- Install: stylua(aur), prettier, shfmt, shellcheck, clang_format, cmake-format(aur),
--- chktex, latexindent
+-- chktex, latexindent, cppcheck
 -- TODO: latexindent.yaml, .latexmkrc
 
 local status_ok, null_ls = pcall(require, "null-ls")
@@ -29,6 +29,16 @@ null_ls.setup({
         formatting.cmake_format,
 
         diagnostics.shellcheck,
+
+        diagnostics.cppcheck.with({
+            extra_args = {
+                "--enable=all",
+                "--template=gcc",
+                "--language=c++",
+                "--suppress=missingIncludeSystem",
+                "$FILENAME",
+            },
+        }),
     },
     --format on save
     on_attach = function(client)

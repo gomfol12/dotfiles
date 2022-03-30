@@ -42,7 +42,7 @@ numlockx on &
 clipmanager >/dev/null 2>&1 &
 extraWM.sh &
 xcape -e 'Super_L=Menu;Super_R=Menu' &
-#easyeffects --gapplication-service &
+easyeffects --gapplication-service &
 
 nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings --load-config-only &
 

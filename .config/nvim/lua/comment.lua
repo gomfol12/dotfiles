@@ -27,7 +27,7 @@ local cfg = {
         -- Line-comment toggle keymap
         line = "<leader>cc",
         -- Block-comment toggle keymap
-        block = "<leader>bc",
+        block = "<leader>cb",
     },
 
     -- LHS of operator-pending mappings in NORMAL + VISUAL mode

@@ -137,3 +137,35 @@ utils.map("n", "<leader>pp", ":VimuxPromptCommand<cr>")
 utils.map("n", "<leader>pl", ":VimuxRunLastCommand<cr>")
 utils.map("n", "<leader>pi", ":VimuxInspectRunner<cr>")
 utils.map("n", "<leader>pz", ":VimuxZoomRunner<cr>")
+
+-- dap
+utils.map("n", "<F5>", ":lua require'dap'.continue()<CR>", { silent = true })
+utils.map("n", "<F10>", ":lua require'dap'.step_over()<CR>", { silent = true })
+utils.map("n", "<F11>", ":lua require'dap'.step_into()<CR>", { silent = true })
+utils.map("n", "<F12>", ":lua require'dap'.step_out()<CR>", { silent = true })
+utils.map("n", "<leader>db", ":lua require'dap'.toggle_breakpoint()<CR>", { silent = true })
+utils.map(
+    "n",
+    "<leader>dB",
+    ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
+    { silent = true }
+)
+utils.map(
+    "n",
+    "<leader>dp",
+    ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>",
+    { silent = true }
+)
+utils.map("n", "<leader>dr", ":lua require'dap'.repl.toggle()<CR>", { silent = true })
+utils.map("n", "<leader>dl", ":lua require'dap'.run_last()<CR>", { silent = true })
+utils.map("n", "<leader>di", ":lua require'dap.ui.widgets'.hover()<CR>", { silent = true })
+utils.map("n", "<leader>d?", ":lua local widgets=require'dap.ui.widgets';widgets.centered_float(widgets.scopes)<CR>")
+utils.map("n", "<leader>dR", ":lua require'dap'.clear_breakpoints()<CR>")
+utils.map("n", "<leader>dc", ":lua require'dap'.run_to_cursor()<CR>")
+utils.map("n", "<leader>dk", ":lua require'dap'.up()<CR>zz")
+utils.map("n", "<leader>dj", ":lua require'dap'.down()<CR>zz")
+utils.map("n", "<leader>dt", ":lua require'dap'.terminate()<CR>")
+
+-- dapui
+utils.map("n", "<leader>du", ":lua require'dapui'.toggle()<CR>", { silent = true })
+utils.map("v", "<leader>dh", ":lua require'dapui'.eval()<CR>", { silent = true })

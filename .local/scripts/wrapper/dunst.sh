@@ -11,7 +11,7 @@ sed -i "s/frame_color.*=.*\"#.*\"/frame_color = \"$color1\"/" "$dunstTmpFile"
 sed -i "s/background.*=.*\"#.*\"/background = \"$background\"/" "$dunstTmpFile"
 sed -i "s/foreground.*=.*\"#.*\"/foreground = \"$color7\"/" "$dunstTmpFile"
 
-if pgrep -u "$(id -u)" -nf "^/usr/bin/dunst$"; then
+if pgrep -u "$(id -u)" -nf "^dunst"; then
     killall dunst
 fi
 
