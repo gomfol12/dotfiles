@@ -7,6 +7,10 @@ end
 
 telescope.load_extension("media_files")
 
+-- To get ui-select loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+telescope.load_extension("ui-select")
+
 local actions = require("telescope.actions")
 
 telescope.setup({
@@ -101,6 +105,11 @@ telescope.setup({
             -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
             filetypes = { "png", "webp", "jpg", "jpeg" },
             find_cmd = "rg", -- find command (defaults to `fd`)
+        },
+        ["ui-select"] = {
+            require("telescope.themes").get_dropdown({
+                -- even more opts
+            }),
         },
     },
 })

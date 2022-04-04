@@ -25,6 +25,8 @@ local utils = require("utils")
 vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
 vim.g.mapleader = " "
 vim.b.mapleader = " "
+vim.g.maplocalleader = "\\"
+vim.b.maplocalleader = "\\"
 
 -- saving
 utils.map("n", "<c-s>", ":w<CR>")
@@ -49,24 +51,18 @@ utils.map("n", "<Right>", ":vertical resize +2<CR>", { silent = true })
 utils.map("n", "<leader>s", ":split<Space>")
 utils.map("n", "<leader>v", ":vsplit<Space>")
 
--- bufferline
-utils.map("n", "<S-l>", ":BufferLineCycleNext<cr>", { silent = true })
-utils.map("n", "<S-h>", ":BufferLineCyclePrev<cr>", { silent = true })
-utils.map("n", "gb", ":BufferLinePick<cr>", { silent = true })
-utils.map("n", "gx", ":BufferLinePickClose<cr>", { silent = true })
-utils.map("n", "<leader>x", ":Bdelete<cr>", { silent = true })
-utils.map("n", "]b", ":BufferLineMoveNext<CR>", { silent = true })
-utils.map("n", "[b", ":BufferLineMovePrev<CR>", { silent = true })
-
-utils.map("n", "<leader>1", ":BufferLineGoToBuffer 1<cr>", { silent = true })
-utils.map("n", "<leader>2", ":BufferLineGoToBuffer 2<cr>", { silent = true })
-utils.map("n", "<leader>3", ":BufferLineGoToBuffer 3<cr>", { silent = true })
-utils.map("n", "<leader>4", ":BufferLineGoToBuffer 4<cr>", { silent = true })
-utils.map("n", "<leader>5", ":BufferLineGoToBuffer 5<cr>", { silent = true })
-utils.map("n", "<leader>6", ":BufferLineGoToBuffer 6<cr>", { silent = true })
-utils.map("n", "<leader>7", ":BufferLineGoToBuffer 7<cr>", { silent = true })
-utils.map("n", "<leader>8", ":BufferLineGoToBuffer 8<cr>", { silent = true })
-utils.map("n", "<leader>9", ":BufferLineGoToBuffer 9<cr>", { silent = true })
+-- tabs
+utils.map("n", "<S-l>", ":tabn<CR>", { silent = true })
+utils.map("n", "<S-h>", ":tabp<CR>", { silent = true })
+utils.map("n", "<leader>tx", ":tabclose<CR>", { silent = true })
+utils.map("n", "<leader>tc", ":tabnew<CR>", { silent = true })
+utils.map("n", "<leader>to", ":tabonly<CR>", { silent = true })
+utils.map("n", "<leader>tn", ":tabn<CR>", { silent = true })
+utils.map("n", "<leader>tp", ":tabp<CR>", { silent = true })
+-- move current tab to previous position
+utils.map("n", "<leader>tmp", ":-tabmove<CR>", { silent = true })
+-- move current tab to next position
+utils.map("n", "<leader>tmn", ":+tabmove<CR>", { silent = true })
 
 -- Map Ctrl-Backspace to delete the previous word in insert mode.
 -- solution: https://vim.fandom.com/wiki/Map_Ctrl-Backspace_to_delete_previous_word
@@ -85,7 +81,7 @@ utils.map("n", "Q", ":q<cr>", { silent = true })
 -- disable search highlighting until the next search
 utils.map("n", "<cr>", ":noh<cr><cr>", { silent = true })
 
--- formating
+-- formatting
 -- put brackets around word/s
 utils.map("n", "<leader>(", "viwc()<esc>P")
 utils.map("n", "<leader>{", "viwc{}<esc>P")
@@ -110,9 +106,15 @@ utils.map("", "<leader>Z", ":set formatoptions=cro<cr>")
 -- Telescope
 utils.map("n", "<leader>ff", ":Telescope find_files<cr>")
 utils.map("n", "<leader>fg", ":Telescope live_grep<cr>")
-utils.map("n", "<leader>fb", ":Telescope buffers<cr>")
 utils.map("n", "<leader>fh", ":Telescope help_tags<cr>")
 utils.map("n", "<leader>fp", ":Telescope media_files<cr>")
+utils.map("n", "<leader>fb", ":Telescope buffers<cr>")
+-- Session Manager
+utils.map("n", "<leader>ml", ":SessionManager load_session<cr>")
+utils.map("n", "<leader>md", ":SessionManager delete_session<cr>")
+utils.map("n", "<leader>mcs", ":SessionManager save_current_session<cr>")
+utils.map("n", "<leader>mcl", ":SessionManager load_current_dir_session<cr>")
+utils.map("n", "<leader>ma", ":SessionManager load_last_session<cr>")
 
 -- stay in indent mode
 utils.map("v", "<", "<gv")
@@ -129,8 +131,8 @@ utils.map("v", ">", ">gv")
 utils.map("n", "<c-n>", ":NvimTreeToggle<cr>", { silent = true })
 
 -- spell, Grammarous
-utils.map("n", "<leader>w", ":setlocal spell!<cr>", { silent = true })
-utils.map("n", "<leader>g", ":GrammarousCheck --lang=de<cr>")
+utils.map("n", "<leader>gs", ":setlocal spell!<cr>", { silent = true })
+utils.map("n", "<leader>gg", ":GrammarousCheck --lang=de<cr>")
 
 -- vimux
 utils.map("n", "<leader>pp", ":VimuxPromptCommand<cr>")

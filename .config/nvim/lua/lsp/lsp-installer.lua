@@ -13,7 +13,7 @@ local servers = {
     "cmake",
     "html",
     "cssls",
-    "texlab",
+    -- "ltex",
 }
 
 for _, name in pairs(servers) do
@@ -50,9 +50,9 @@ lsp_installer.on_server_ready(function(server)
         opts = vim.tbl_deep_extend("force", cmake_opts, opts)
     end
 
-    if server.name == "texlab" then
-        local texlab_opts = require("lsp.settings.texlab_lua")
-        opts = vim.tbl_deep_extend("force", texlab_opts, opts)
+    if server.name == "ltex" then
+        local ltex_opts = require("lsp.settings.ltex_lua")
+        opts = vim.tbl_deep_extend("force", ltex_opts, opts)
     end
 
     server:setup(opts)

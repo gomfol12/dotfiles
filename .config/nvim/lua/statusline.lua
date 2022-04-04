@@ -11,3 +11,11 @@ cmd([[ set statusline+=\ %c:%l/%L ]])
 cmd([[ set statusline+=\ %p%% ]])
 cmd([[ set statusline+=\ [%n] ]])
 cmd([[ set statusline+=\ [%{&fileencoding},%{&ff}] ]])
+
+-- disable statusline in the NvimTree window
+cmd([[
+function! DisableST()
+  return " "
+endfunction
+au BufEnter NvimTree* setlocal statusline=%!DisableST()
+]])

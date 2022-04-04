@@ -53,7 +53,7 @@ utils.opt("w", "foldenable", false)
 utils.opt("w", "conceallevel", 0) -- so that `` is visible in markdown files'
 utils.opt("o", "pumheight", 10)
 vim.opt.iskeyword:append("-")
-vim.cmd("language en_US.utf-8") -- language
+cmd("language en_US.utf-8") -- language
 cmd([[ set clipboard+=unnamedplus ]]) -- use system clipboard
 vim.opt.sessionoptions:append("globals")
 vim.g.colorizer_auto_color = 1
@@ -61,7 +61,7 @@ vim.g.colorizer_auto_color = 1
 -- cursor
 utils.opt("w", "cursorline", true)
 --utils.opt('w', 'cursorcolumn', true)
-vim.cmd([[
+cmd([[
     highlight CursorLine ctermbg=Gray cterm=bold guibg=#333333
 ]])
 --highlight CursorColumn ctermbg=Gray cterm=bold guibg=#222222
@@ -84,10 +84,10 @@ cmd([[
 cmd([[ autocmd InsertEnter * norm zz ]])
 
 -- remove trailing whitespaces on save
-cmd([[ autocmd BufWritePre * %s/\s\+$//e ]])
+cmd([[ autocmd BufWritePre *\(.md\)\@<! %s/\s\+$//e ]])
 
 -- Autocommand that reloads neovim whenever you save the plugins.lua file
-vim.cmd([[
+cmd([[
   augroup packer_user_config
     autocmd!
     autocmd BufWritePost plugins.lua source <afile> | PackerCompile
@@ -95,9 +95,29 @@ vim.cmd([[
 ]])
 
 -- Autocommand that reloads xresources
-vim.cmd([[
+cmd([[
   augroup xresources_user_config
     autocmd!
     autocmd BufWritePost Xresources silent !xrdb -merge "$HOME/.config/Xresources"
   augroup end
+]])
+
+-- Function that adds "vfile:" in vimwiki for linking external files and opening them in a new tab
+cmd([[
+    function! VimwikiLinkHandler(link)
+        let link = a:link
+        if link =~# '^vfile:'
+            let link = link[1:]
+        else
+            return 0
+        endif
+        let link_infos = vimwiki#base#resolve_link(link)
+        if link_infos.filename == ''
+            echomsg 'Vimwiki Error: Unable to resolve link!'
+            return 0
+        else
+            exe 'tabnew ' . fnameescape(link_infos.filename)
+            return 1
+        endif
+    endfunction
 ]])

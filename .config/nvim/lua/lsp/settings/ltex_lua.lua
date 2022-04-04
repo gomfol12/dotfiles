@@ -20,16 +20,11 @@ return {
             return filetype
         end
     end,
-    root_dir = function(path)
-        -- Support git directories and git files (worktrees)
-        if util.path.is_dir(util.path.join(path, ".git")) or util.path.is_file(util.path.join(path, ".git")) then
-            return path
-        end
-    end,
+    root_dir = util.find_git_ancestor,
     single_file_support = true,
     settings = {
         ltex = {
-            enabled = { "latex", "tex", "bib", "markdown" },
+            enabled = { "bib", "markdown", "latex", "tex" },
             language = "de",
             diagnosticSeverity = "information",
             setenceCacheSize = 2000,

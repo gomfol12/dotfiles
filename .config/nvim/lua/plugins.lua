@@ -1,5 +1,6 @@
 -- ==================== Plugins ==================== --
 -- TODO: alpha custom buttons don't work
+-- Install: jdtls
 
 -- Automatically install packer
 local fn = vim.fn
@@ -49,10 +50,6 @@ return packer.startup(function(use)
         "lewis6991/gitsigns.nvim",
         requires = { "nvim-lua/plenary.nvim" },
     })
-    use({
-        "akinsho/bufferline.nvim",
-        requires = { "kyazdani42/nvim-web-devicons" },
-    })
     use("moll/vim-bbye")
     use("chrisbra/Colorizer")
     use("lewis6991/spellsitter.nvim")
@@ -64,6 +61,44 @@ return packer.startup(function(use)
             vim.g.VimuxCloseOnExit = 1
         end,
     })
+    use("nanozuki/tabby.nvim")
+    use("Shatur/neovim-session-manager")
+    use({
+        "vimwiki/vimwiki",
+        branch = "dev",
+        config = function()
+            vim.g.vimwiki_list = {
+                {
+                    path = "~/doc/vimwiki",
+                    template_path = "~/doc/vimwiki/templates/",
+                    template_default = "default",
+                    syntax = "markdown",
+                    ext = ".md",
+                    path_html = "~/doc/vimwiki/site_html",
+                    custom_wiki2html = "vimwiki_markdown",
+                    template_ext = ".tpl",
+                    auto_diary_index = 1,
+                },
+            }
+            vim.g.vimwiki_global_ext = 0
+        end,
+    })
+    use({
+        "lervag/vimtex",
+        config = function()
+            vim.g.vimtex_view_method = "zathura"
+            vim.g.vimtex_compiler_method = "latexmk"
+            vim.g.vimtex_toc_config = {
+                name = "TOC",
+                split_width = 30,
+                todo_sorted = 0,
+                show_help = 0,
+                show_numbers = 1,
+                mode = 2,
+            }
+        end,
+    })
+    use("dhruvasagar/vim-table-mode")
 
     -- comments
     use("numToStr/Comment.nvim")
@@ -77,6 +112,13 @@ return packer.startup(function(use)
             vim.cmd([[colorscheme vscode]])
         end,
     })
+    -- use({
+    --     "NLKNguyen/papercolor-theme",
+    --     config = function()
+    --         vim.g.background = "dark"
+    --         vim.cmd([[colorscheme PaperColor]])
+    --     end,
+    -- })
 
     -- Treesitter
     use({
@@ -106,6 +148,7 @@ return packer.startup(function(use)
     use("f3fora/cmp-spell")
     use("hrsh7th/cmp-calc")
     use("kdheepak/cmp-latex-symbols")
+    use("hrsh7th/cmp-omni")
 
     -- snippets
     use("L3MON4D3/LuaSnip")
@@ -118,6 +161,7 @@ return packer.startup(function(use)
     })
     use("nvim-lua/popup.nvim")
     use("nvim-telescope/telescope-media-files.nvim")
+    use("nvim-telescope/telescope-ui-select.nvim")
 
     -- dap
     use("mfussenegger/nvim-dap")

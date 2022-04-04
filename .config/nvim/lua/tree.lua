@@ -1,5 +1,5 @@
 -- ==================== Filetree (nvim-tree) ==================== --
--- TODO: trash mapping dont work???
+-- TODO: trash mapping don't work???, unbind keys like "H"
 
 local status_ok, nvim_tree = pcall(require, "nvim-tree")
 if not status_ok then
@@ -130,7 +130,7 @@ nvim_tree.setup({
                 { key = "K", action = "first_sibling" },
                 { key = "J", action = "last_sibling" },
                 { key = "I", action = "toggle_git_ignored" },
-                { key = "H", action = "toggle_dotfiles" },
+                { key = ".", action = "toggle_dotfiles" },
                 { key = "R", action = "refresh" },
                 { key = "a", action = "create" },
                 { key = "d", action = "remove" },
@@ -146,13 +146,13 @@ nvim_tree.setup({
                 { key = "[c", action = "prev_git_item" },
                 { key = "]c", action = "next_git_item" },
                 { key = "-", action = "dir_up" },
-                { key = "s", action = "system_open" },
+                { key = "u", action = "system_open" },
                 { key = "q", action = "close" },
                 { key = "g?", action = "toggle_help" },
                 { key = "W", action = "collapse_all" },
                 { key = "S", action = "search_node" },
                 { key = "<C-k>", action = "toggle_file_info" },
-                { key = ".", action = "run_file_command" },
+                { key = "fc", action = "run_file_command" },
             },
         },
     },
@@ -161,3 +161,8 @@ nvim_tree.setup({
         require_confirm = true,
     },
 })
+
+-- auto close
+vim.cmd([[
+    autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif
+]])

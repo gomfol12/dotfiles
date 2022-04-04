@@ -97,9 +97,10 @@ cmp.setup({
             vim_item.menu = ({
                 nvim_lsp = "[LSP]",
                 nvim_lua = "[NVIM_LUA]",
+                omni = "[OMNI]",
                 luasnip = "[LUASNIP]",
                 buffer = "[BUFFER]",
-                spell = "[SPELL]",
+                -- spell = "[SPELL]",
                 calc = "[CALC]",
                 -- latex_symbols = "[SYM]",
                 path = "[PATH]",
@@ -110,9 +111,10 @@ cmp.setup({
     sources = {
         { name = "nvim_lsp" },
         { name = "nvim_lua" },
+        { name = "omni" },
         { name = "luasnip" },
         { name = "buffer" },
-        { name = "spell" },
+        -- { name = "spell" },
         { name = "calc" },
         -- { name = "latex_symbols" },
         { name = "path" },

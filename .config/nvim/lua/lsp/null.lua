@@ -39,6 +39,9 @@ null_ls.setup({
                 "$FILENAME",
             },
         }),
+
+        formatting.latexindent,
+        diagnostics.chktex,
     },
     --format on save
     on_attach = function(client)
