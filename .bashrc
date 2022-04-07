@@ -65,7 +65,7 @@ fi
 
 # spotify-tui completion TODO: automatic download
 if [ -f ~/.config/spotify-tui/completion ]; then
-    source ~/.config/spotify-tui/completion
+    source "$HOME/.config/spotify-tui/completion"
 fi
 
 # git completion
@@ -111,7 +111,7 @@ fi
 # 🔥
 
 ### alias ###
-source ~/.local/scripts/aliases.sh
+source "$HOME/.config/bash/aliases.sh"
 
 ### GPG ###
 tty_val=$(tty)
@@ -211,7 +211,7 @@ fman()
 
 dot()
 {
-    configlist | fzf --preview "highlight -i $HOME/{1} --stdout --out-format=ansi -q --force" | sed "s@^@$HOME/@" | xargs -ro $EDITOR
+    configlist | fzf --preview "highlight -i $HOME/{1} --stdout --out-format=ansi -q --force" | sed "s@^@$HOME/@" | xargs -ro "$EDITOR"
 }
 
 getClassString()
@@ -229,6 +229,9 @@ key()
 {
     xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
 }
+
+# dirBook
+source "$SCRIPT_DIR/util/dirBook.sh"
 
 # start fish
 if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]; then

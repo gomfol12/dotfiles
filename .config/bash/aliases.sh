@@ -1,4 +1,4 @@
-## ==================== abbreviations ==================== ##
+#!/bin/bash
 
 alias sudo="doas"
 alias sudoedit="doasedit.sh"
@@ -26,8 +26,8 @@ alias sysctl="sudo systemctl"
 alias myip="echo (curl -s ipinfo.io/ip)"
 alias ka="killall"
 alias g="git"
-alias config="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-alias configlist="config -C $HOME ls-tree -r master --name-only"
+alias config="git --git-dir=\$HOME/.dotfiles/ --work-tree=\$HOME"
+alias configlist="config -C \$HOME ls-tree -r master --name-only"
 alias sdn="shutdown -h now"
 
 alias p="sudo pacman"
@@ -67,10 +67,10 @@ alias ch="chmod"
 alias sch="sudo ch"
 alias mx="ch +x"
 
-alias v="$EDITOR"
-alias vi="$EDITOR"
-alias vim="$EDITOR"
-alias nvim="$EDITOR"
+alias v="\$EDITOR"
+alias vi="\$EDITOR"
+alias vim="\$EDITOR"
+alias nvim="\$EDITOR"
 
 alias mem="free -mth"
 alias foldersize="du -ach --max-depth=1 | sort -h"
@@ -108,6 +108,8 @@ alias :q="exit"
 alias al="la"
 
 alias bm="bashmount"
+
+alias b="dirBook"
 
 ### HOME cleanup ###
 #alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'

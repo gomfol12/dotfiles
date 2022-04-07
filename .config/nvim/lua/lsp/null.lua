@@ -34,8 +34,8 @@ null_ls.setup({
             extra_args = {
                 "--enable=all",
                 "--template=gcc",
-                "--language=c++",
                 "--suppress=missingIncludeSystem",
+                "--suppress=unmatchedSuppression",
                 "$FILENAME",
             },
         }),

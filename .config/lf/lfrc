@@ -189,9 +189,9 @@ cmd yank-dirname %dirname -- "$f" | head -c-1 | xclip -i -selection clipboard &&
 cmd yank-basename-without-extension %basename -a -- $fx | cut -d. -f1 | head -c-1 | xclip -i -selection clipboard && printf "Yanked basename without extension"
 
 # dragon
-cmd dragon %dragon-drag-and-drop -a -x $fx
-cmd dragon-stay %dragon-drag-and-drop -a $fx
-cmd dragon-individual %dragon-drag-and-drop $fx
+cmd dragon %dragon-drop -a -x $fx
+cmd dragon-stay %dragon-drop -a $fx
+cmd dragon-individual %dragon-drop $fx
 cmd dlfile %dlfile.sh
 
 #fzf
@@ -276,8 +276,7 @@ map c
 map i
 map r
 map y
-map <c-e> clear
-map <c-y> clear
+map t
 
 # trash mappings
 map dd trash
@@ -292,9 +291,6 @@ map oa ${{
 }}
 map o.l ${{
     $EDITOR ~/.config/lf/lfrc
-}}
-map os ${{
-    $EDITOR ~/.local/scripts/aliases.sh
 }}
 
 # archive mappings
@@ -333,6 +329,10 @@ map th touch
 map md mkdir
 map ch chmod
 map sch sudochmod
+map cx %{{
+    chmod +x "$f"
+    lf -remote 'send reload'
+}}
 map <f-2> rename
 map <c-r> bulk-rename
 map H top
@@ -376,45 +376,37 @@ map M ${{
 map col recol
 
 # movement
-map gdl cd ~/dl
-map gdt cd ~/dt
+map gdl &lf -remote "send $id cd $(dirBook.sh -get download)"
+map gdt &lf -remote "send $id cd $(dirBook.sh -get desktop)"
 
-map gdo cd ~/doc
-map gdc cd ~/doc
-map gdn cd ~/nbdata
+map gdo &lf -remote "send $id cd $(dirBook.sh -get documents)"
+map gdc &lf -remote "send $id cd $(dirBook.sh -get documents)"
+map gdn &lf -remote "send $id cd $(dirBook.sh -get nbdata)"
 
-map gb cd ~/doc/bilder
-map gdv cd ~/doc/dev
-map gn cd ~/doc/notizen
-map gj cd ~/doc/dev/java
-map gc cd ~/doc/dev/c++
-map gsc cd ~/.local/scripts
-map gsr cd ~/.local/src
-map gp cd ~/doc/dev/projects
+map gb &lf -remote "send $id cd $(dirBook.sh -get bilder)"
+map gdv &lf -remote "send $id cd $(dirBook.sh -get dev)"
+map gn &lf -remote "send $id cd $(dirBook.sh -get notizen)"
+map gj &lf -remote "send $id cd $(dirBook.sh -get dev_java)"
+map gc &lf -remote "send $id cd $(dirBook.sh -get dev_c++)"
+map gsc &lf -remote "send $id cd $(dirBook.sh -get scripts)"
+map gsr &lf -remote "send $id cd $(dirBook.sh -get source)"
+map gp &lf -remote "send $id cd $(dirBook.sh -get projects)"
 
-map g.c cd ~/.config
-map g.l cd ~/.local
+map g.c &lf -remote "send $id cd $(dirBook.sh -get config)"
+map g.l &lf -remote "send $id cd $(dirBook.sh -get local)"
 
 #fzf
 map <c-f> :fzf_jump
 
 # schule
-map gsh cd ~/doc/schule
-map gsq1 cd ~/doc/schule/<schule>/Q1
-map gsq2 cd ~/doc/schule/<schule>/Q2
-map gsq3 cd ~/doc/schule/<schule>/Q3
-map gsd cd ~/doc/schule/<schule>/deutsch
-map gsen cd ~/doc/schule/<schule>/englisch
-map gsg cd ~/doc/schule/<schule>/geschi
-map gsi cd ~/doc/schule/<schule>/itec
-map gsm cd ~/doc/schule/<schule>/mathe
-map gsph cd ~/doc/schule/<schule>/physik
-map gspo cd ~/doc/schule/<schule>/powi
-map gspr cd ~/doc/schule/<schule>/prin
-map gss cd ~/doc/schule/<schule>/spanisch
-map gset cd ~/doc/schule/<schule>/ethik
+map gsh &lf -remote "send $id cd $(dirBook.sh -get schule)"
+map gsq1 &lf -remote "send $id cd $(dirBook.sh -get Q1)"
+map gsq2 &lf -remote "send $id cd $(dirBook.sh -get Q2)"
+map gsq3 &lf -remote "send $id cd $(dirBook.sh -get Q3)"
+map gsq4 &lf -remote "send $id cd $(dirBook.sh -get Q4)"
 
-map gkks cd ~/doc/schule/<schule>/
-map gq1 cd ~/doc/schule/<schule>/Q1
-map gq2 cd ~/doc/schule/<schule>/Q2
-map gq3 cd ~/doc/schule/<schule>/Q3
+map gkks &lf -remote "send $id cd $(dirBook.sh -get ak_schule)"
+map gq1 &lf -remote "send $id cd $(dirBook.sh -get Q1)"
+map gq2 &lf -remote "send $id cd $(dirBook.sh -get Q2)"
+map gq3 &lf -remote "send $id cd $(dirBook.sh -get Q3)"
+map gq4 &lf -remote "send $id cd $(dirBook.sh -get Q4)"

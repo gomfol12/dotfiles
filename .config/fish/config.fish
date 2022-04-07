@@ -19,9 +19,6 @@ set fish_cursor_insert block blink
 set fish_cursor_replace_one block blink
 set fish_cursor_visual block blink
 
-### aliases ###
-source ~/.local/scripts/aliases.sh
-
 ### GPG ###
 set -g GPG_TTY (tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
@@ -35,3 +32,6 @@ end
 function fish_title
     echo "st" (pwd | sed "s@/home/$USER@~@")
 end
+
+# dirBook
+source "$SCRIPT_DIR/util/dirBook.fish"

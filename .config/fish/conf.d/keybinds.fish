@@ -22,7 +22,7 @@ function fish_user_key_bindings
         # TODO: fix output
         bind -M $mode \cv edit_command_buffer
         bind -M $mode \cr fzf_search_history
-        bind -M $mode \ct fzf_search_dir
+        bind -M $mode \cs fzf_search_dir
         bind -e -M $mode \cE
         bind -e -M $mode \cY
 
@@ -30,6 +30,9 @@ function fish_user_key_bindings
         bind -M $mode \e\[127\;5u backward-kill-bigword
         bind -M $mode \e\[32\;2u 'commandline -i " "'
         bind -M $mode \e\[127\;2u backward-delete-char
+
+        # tmux
+        bind -M $mode \ct 'tmux'
     end
 
     bind -M insert \cf accept-autosuggestion

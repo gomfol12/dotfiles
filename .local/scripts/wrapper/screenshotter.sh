@@ -23,7 +23,7 @@ fi
 
 output=$output/"$(date +%s_%d.%m.%Y-%H-%M).png"
 
-action=$(printf "full\nselect\nactive\nclipactive" | dmenu -p "Screenshotter:")
+action=$(printf "select\nfull\nactive\nclipactive" | dmenu -p "Screenshotter:")
 
 case $action in
 "full") maim "$output" && notifyOpen ;;

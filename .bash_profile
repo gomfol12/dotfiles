@@ -13,7 +13,7 @@ export XDG_MUSIC_DIR=${XDG_MUSIC_DIR:="$HOME/doc/music"}
 
 ### general ###
 export SCRIPT_DIR="$HOME"/.local/scripts
-export PATH=$PATH$(find $SCRIPT_DIR -not -path "*old*" -not -path "*grub*" -type d -printf ":%p")
+export PATH=$PATH$(find "$SCRIPT_DIR" -not -path "*old*" -not -path "*grub*" -type d -printf ":%p")
 export PATH=$PATH:$HOME/.local/bin
 export EDITOR="nvim"
 export TERMINAL="st"
