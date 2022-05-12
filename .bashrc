@@ -63,11 +63,6 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
     source /usr/share/bash-completion/bash_completion
 fi
 
-# spotify-tui completion TODO: automatic download
-if [ -f ~/.config/spotify-tui/completion ]; then
-    source "$HOME/.config/spotify-tui/completion"
-fi
-
 # git completion
 if [ -f /usr/share/git/completion/git-completion.bash ]; then
     source /usr/share/git/completion/git-completion.bash

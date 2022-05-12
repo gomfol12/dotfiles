@@ -42,7 +42,6 @@ vim.g.nvim_tree_show_icons = {
 nvim_tree.setup({
     auto_reload_on_write = true,
     disable_netrw = true,
-    hide_root_folder = false,
     hijack_cursor = false,
     hijack_netrw = true,
     hijack_unnamed_buffer_when_opening = false,
@@ -106,6 +105,7 @@ nvim_tree.setup({
     view = {
         width = 30,
         height = 30,
+        hide_root_folder = false,
         side = "left",
         preserve_window_proportions = false,
         number = false,

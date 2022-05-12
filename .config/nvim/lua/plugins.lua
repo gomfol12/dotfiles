@@ -1,24 +1,6 @@
 -- ==================== Plugins ==================== --
--- TODO: alpha custom buttons don't work
--- Install: jdtls
+-- TODO: alpha rework
 
--- Automatically install packer
-local fn = vim.fn
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-    packer_bootstrap = fn.system({
-        "git",
-        "clone",
-        "--depth",
-        "1",
-        "https://github.com/wbthomason/packer.nvim",
-        install_path,
-    })
-    print("Installing packer close and reopen Neovim...")
-    vim.cmd([[packadd packer.nvim]])
-end
-
--- Use a protected call so we don't error out on first use
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
     return
@@ -44,7 +26,7 @@ return packer.startup(function(use)
     use("dstein64/vim-startuptime")
     use({
         "kyazdani42/nvim-tree.lua",
-        requires = { "kyazdani42/nvim-web-devicons" }, -- optional, for file icons
+        requires = { "kyazdani42/nvim-web-devicons" },
     })
     use({
         "lewis6991/gitsigns.nvim",
@@ -112,13 +94,6 @@ return packer.startup(function(use)
             vim.cmd([[colorscheme vscode]])
         end,
     })
-    -- use({
-    --     "NLKNguyen/papercolor-theme",
-    --     config = function()
-    --         vim.g.background = "dark"
-    --         vim.cmd([[colorscheme PaperColor]])
-    --     end,
-    -- })
 
     -- Treesitter
     use({
@@ -129,9 +104,8 @@ return packer.startup(function(use)
     use("p00f/nvim-ts-rainbow")
 
     -- LSP
-    use("neovim/nvim-lspconfig")
     use("williamboman/nvim-lsp-installer")
-    use("ray-x/lsp_signature.nvim")
+    use("neovim/nvim-lspconfig")
     use({
         "jose-elias-alvarez/null-ls.nvim",
         requires = { "nvim-lua/plenary.nvim" },
@@ -149,6 +123,8 @@ return packer.startup(function(use)
     use("hrsh7th/cmp-calc")
     use("kdheepak/cmp-latex-symbols")
     use("hrsh7th/cmp-omni")
+    use("hrsh7th/cmp-nvim-lsp-signature-help")
+    use("dmitmel/cmp-cmdline-history")
 
     -- snippets
     use("L3MON4D3/LuaSnip")
@@ -166,12 +142,4 @@ return packer.startup(function(use)
     -- dap
     use("mfussenegger/nvim-dap")
     use("rcarriga/nvim-dap-ui")
-
-    -- to add: nvim-ts-context-commentstring
-
-    -- Automatically set up your configuration after cloning packer.nvim
-    -- Put this at the end after all plugins
-    if packer_bootstrap then
-        require("packer").sync()
-    end
 end)

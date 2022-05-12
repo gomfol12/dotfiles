@@ -1,6 +1,6 @@
 -- ==================== null-ls (null-ls.nvim) ==================== --
 -- Install: stylua(aur), prettier, shfmt, shellcheck, clang_format, cmake-format(aur),
--- chktex, latexindent, cppcheck
+-- chktex, latexindent
 -- TODO: latexindent.yaml, .latexmkrc
 
 local status_ok, null_ls = pcall(require, "null-ls")
@@ -8,8 +8,10 @@ if not status_ok then
     return
 end
 
-local formatting = null_ls.builtins.formatting
+local code_actions = null_ls.builtins.code_actions
 local diagnostics = null_ls.builtins.diagnostics
+local formatting = null_ls.builtins.formatting
+local hover = null_ls.builtins.hover
 local completion = null_ls.builtins.completion
 
 null_ls.setup({
@@ -28,21 +30,13 @@ null_ls.setup({
         }),
         formatting.cmake_format,
 
+        code_actions.shellcheck,
         diagnostics.shellcheck,
-
-        diagnostics.cppcheck.with({
-            extra_args = {
-                "--enable=all",
-                "--template=gcc",
-                "--suppress=missingIncludeSystem",
-                "--suppress=unmatchedSuppression",
-                "$FILENAME",
-            },
-        }),
 
         formatting.latexindent,
         diagnostics.chktex,
     },
+    update_in_insert = true,
     --format on save
     on_attach = function(client)
         if client.resolved_capabilities.document_formatting then

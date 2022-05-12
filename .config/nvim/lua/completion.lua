@@ -1,5 +1,5 @@
 -- ==================== Completion (nvim-cmp, luasnip) ==================== --
--- TODO: diagnostics ???, spell Completion
+-- TODO: diagnostics ???, spell Completion, git, fzf, pandoc + markdown
 
 local cmp_status_ok, cmp = pcall(require, "cmp")
 if not cmp_status_ok then
@@ -52,7 +52,7 @@ cmp.setup({
             luasnip.lsp_expand(args.body)
         end,
     },
-    mapping = {
+    mapping = cmp.mapping.preset.insert({
         ["<C-k>"] = cmp.mapping.select_prev_item(),
         ["<C-j>"] = cmp.mapping.select_next_item(),
         ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
@@ -88,37 +88,40 @@ cmp.setup({
                 fallback()
             end
         end, { "i", "s" }),
-    },
+    }),
     formatting = {
         fields = { "kind", "abbr", "menu" },
         format = function(entry, vim_item)
             -- Kind icons
             vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
             vim_item.menu = ({
+                nvim_lsp_signature_help = "[SIG]",
                 nvim_lsp = "[LSP]",
                 nvim_lua = "[NVIM_LUA]",
                 omni = "[OMNI]",
                 luasnip = "[LUASNIP]",
-                buffer = "[BUFFER]",
                 -- spell = "[SPELL]",
                 calc = "[CALC]",
                 -- latex_symbols = "[SYM]",
                 path = "[PATH]",
+                buffer = "[BUFFER]",
             })[entry.source.name]
             return vim_item
         end,
     },
-    sources = {
+    sources = cmp.config.sources({
+        { name = "nvim_lsp_signature_help" },
         { name = "nvim_lsp" },
         { name = "nvim_lua" },
         { name = "omni" },
         { name = "luasnip" },
-        { name = "buffer" },
         -- { name = "spell" },
         { name = "calc" },
         -- { name = "latex_symbols" },
         { name = "path" },
-    },
+    }, {
+        { name = "buffer" },
+    }),
     confirm_opts = {
         behavior = cmp.ConfirmBehavior.Replace,
         select = false,
@@ -134,16 +137,46 @@ cmp.setup({
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline("/", {
-    sources = {
-        { name = "buffer" },
+    mapping = cmp.mapping.preset.cmdline(),
+    formatting = {
+        fields = { "kind", "abbr", "menu" },
+        format = function(entry, vim_item)
+            -- Kind icons
+            vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
+            vim_item.menu = ({
+                buffer = "[BUFFER]",
+                cmdline_history = "[HIST]",
+            })[entry.source.name]
+            return vim_item
+        end,
     },
+    sources = cmp.config.sources({
+        { name = "buffer" },
+    }, {
+        { name = "cmdline_history" },
+    }),
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(":", {
+    mapping = cmp.mapping.preset.cmdline(),
+    formatting = {
+        fields = { "kind", "abbr", "menu" },
+        format = function(entry, vim_item)
+            -- Kind icons
+            vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
+            vim_item.menu = ({
+                path = "[PATH]",
+                cmdline = "[CMD]",
+                cmdline_history = "[HIST]",
+            })[entry.source.name]
+            return vim_item
+        end,
+    },
     sources = cmp.config.sources({
         { name = "path" },
     }, {
         { name = "cmdline" },
+        { name = "cmdline_history" },
     }),
 })

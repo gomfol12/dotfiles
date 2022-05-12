@@ -19,155 +19,161 @@
 -- command_mode         c
 -- TODO: show documentation in preview window
 
-local utils = require("utils")
+local keymap = vim.keymap
+local g = vim.g
+local b = vim.b
 
 -- leader
-vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
-vim.g.mapleader = " "
-vim.b.mapleader = " "
-vim.g.maplocalleader = "\\"
-vim.b.maplocalleader = "\\"
+keymap.set("", "<Space>", "<Nop>", { silent = true })
+g.mapleader = " "
+b.mapleader = " "
+g.maplocalleader = "\\"
+b.maplocalleader = "\\"
 
 -- saving
-utils.map("n", "<c-s>", ":w<CR>")
-utils.map("i", "<c-s>", "<ESC>:w<CR>a")
+keymap.set("n", "<c-s>", ":w<CR>")
+keymap.set("i", "<c-s>", "<ESC>:w<CR>a")
 
 -- source
---utils.map('n', '<c-c>', ':source ~/.config/nvim/init.lua<cr>')
+--keymap.set('n', '<c-c>', ':source ~/.config/nvim/init.lua<cr>')
 
 -- window navigation
-utils.map("n", "<c-j>", "<c-w>j")
-utils.map("n", "<c-h>", "<c-w>h")
-utils.map("n", "<c-k>", "<c-w>k")
-utils.map("n", "<c-l>", "<c-w>l")
+keymap.set("n", "<c-j>", "<c-w>j")
+keymap.set("n", "<c-h>", "<c-w>h")
+keymap.set("n", "<c-k>", "<c-w>k")
+keymap.set("n", "<c-l>", "<c-w>l")
 
 -- window resize
-utils.map("n", "<Up>", ":resize -2<CR>", { silent = true })
-utils.map("n", "<Down>", ":resize +2<CR>", { silent = true })
-utils.map("n", "<Left>", ":vertical resize -2<CR>", { silent = true })
-utils.map("n", "<Right>", ":vertical resize +2<CR>", { silent = true })
+keymap.set("n", "<Up>", ":resize -2<CR>", { silent = true })
+keymap.set("n", "<Down>", ":resize +2<CR>", { silent = true })
+keymap.set("n", "<Left>", ":vertical resize -2<CR>", { silent = true })
+keymap.set("n", "<Right>", ":vertical resize +2<CR>", { silent = true })
 
 -- window splits
-utils.map("n", "<leader>s", ":split<Space>")
-utils.map("n", "<leader>v", ":vsplit<Space>")
+keymap.set("n", "<leader>s", ":split<Space>")
+keymap.set("n", "<leader>v", ":vsplit<Space>")
 
 -- tabs
-utils.map("n", "<S-l>", ":tabn<CR>", { silent = true })
-utils.map("n", "<S-h>", ":tabp<CR>", { silent = true })
-utils.map("n", "<leader>tx", ":tabclose<CR>", { silent = true })
-utils.map("n", "<leader>tc", ":tabnew<CR>", { silent = true })
-utils.map("n", "<leader>to", ":tabonly<CR>", { silent = true })
-utils.map("n", "<leader>tn", ":tabn<CR>", { silent = true })
-utils.map("n", "<leader>tp", ":tabp<CR>", { silent = true })
+keymap.set("n", "<S-l>", ":tabn<CR>", { silent = true })
+keymap.set("n", "<S-h>", ":tabp<CR>", { silent = true })
+keymap.set("n", "<leader>tx", ":tabclose<CR>", { silent = true })
+keymap.set("n", "<leader>tc", ":tabnew<CR>", { silent = true })
+keymap.set("n", "<leader>to", ":tabonly<CR>", { silent = true })
+keymap.set("n", "<leader>tn", ":tabn<CR>", { silent = true })
+keymap.set("n", "<leader>tp", ":tabp<CR>", { silent = true })
 -- move current tab to previous position
-utils.map("n", "<leader>tmp", ":-tabmove<CR>", { silent = true })
+keymap.set("n", "<leader>tmp", ":-tabmove<CR>", { silent = true })
 -- move current tab to next position
-utils.map("n", "<leader>tmn", ":+tabmove<CR>", { silent = true })
+keymap.set("n", "<leader>tmn", ":+tabmove<CR>", { silent = true })
 
 -- Map Ctrl-Backspace to delete the previous word in insert mode.
 -- solution: https://vim.fandom.com/wiki/Map_Ctrl-Backspace_to_delete_previous_word
-utils.map("!", "<C-BS>", "<C-w>")
-utils.map("!", "<C-h>", "<C-w>")
+keymap.set("!", "<C-BS>", "<C-w>")
+keymap.set("!", "<C-h>", "<C-w>")
 
 -- search replace
-utils.map("n", "S", ":%s///g<Left><Left><Left>")
+keymap.set("n", "S", ":%s///g<Left><Left><Left>")
 
 -- disable ex mode
-utils.map("n", "Q", "<nop>")
+keymap.set("n", "Q", "<nop>")
 
 -- quit
-utils.map("n", "Q", ":q<cr>", { silent = true })
+keymap.set("n", "Q", ":q<cr>", { silent = true })
 
 -- disable search highlighting until the next search
-utils.map("n", "<cr>", ":noh<cr><cr>", { silent = true })
+keymap.set("n", "<cr>", ":noh<cr><cr>", { silent = true })
+
+-- delete buffer without closing neovim
+keymap.set("n", "<leader>x", ":Bdelete<cr>")
 
 -- formatting
 -- put brackets around word/s
-utils.map("n", "<leader>(", "viwc()<esc>P")
-utils.map("n", "<leader>{", "viwc{}<esc>P")
-utils.map("n", "<leader>[", "viwc[]<esc>P")
-utils.map("n", "<leader>'", "viwc''<esc>P")
-utils.map("n", '<leader>"', 'viwc""<esc>P')
+keymap.set("n", "<leader>(", "viwc()<esc>P")
+keymap.set("n", "<leader>{", "viwc{}<esc>P")
+keymap.set("n", "<leader>[", "viwc[]<esc>P")
+keymap.set("n", "<leader>'", "viwc''<esc>P")
+keymap.set("n", '<leader>"', 'viwc""<esc>P')
 
 -- put brackets around selected
-utils.map("x", "<leader>(", "<ESC>`>a)<ESC>`<i(<ESC>")
-utils.map("x", "<leader>{", "<ESC>`>a}<ESC>`<i{<ESC>")
-utils.map("x", "<leader>[", "<ESC>`>a]<ESC>`<i[<ESC>")
-utils.map("x", "<leader>'", "<ESC>`>a'<ESC>`<i'<ESC>")
-utils.map("x", '<leader>"', '<ESC>`>a"<ESC>`<i"<ESC>')
+keymap.set("x", "<leader>(", "<ESC>`>a)<ESC>`<i(<ESC>")
+keymap.set("x", "<leader>{", "<ESC>`>a}<ESC>`<i{<ESC>")
+keymap.set("x", "<leader>[", "<ESC>`>a]<ESC>`<i[<ESC>")
+keymap.set("x", "<leader>'", "<ESC>`>a'<ESC>`<i'<ESC>")
+keymap.set("x", '<leader>"', '<ESC>`>a"<ESC>`<i"<ESC>')
 
 -- move selected text
-utils.map("x", "K", ":move '<-2<CR>gv-gv")
-utils.map("x", "J", ":move '>+1<CR>gv-gv")
+keymap.set("x", "K", ":move '<-2<CR>gv-gv")
+keymap.set("x", "J", ":move '>+1<CR>gv-gv")
 
-utils.map("", "<leader>z", ":set formatoptions-=cro<cr>")
-utils.map("", "<leader>Z", ":set formatoptions=cro<cr>")
+keymap.set("", "<leader>z", ":set formatoptions-=cro<cr>")
+keymap.set("", "<leader>Z", ":set formatoptions=cro<cr>")
 
 -- Telescope
-utils.map("n", "<leader>ff", ":Telescope find_files<cr>")
-utils.map("n", "<leader>fg", ":Telescope live_grep<cr>")
-utils.map("n", "<leader>fh", ":Telescope help_tags<cr>")
-utils.map("n", "<leader>fp", ":Telescope media_files<cr>")
-utils.map("n", "<leader>fb", ":Telescope buffers<cr>")
+keymap.set("n", "<leader>ff", ":Telescope find_files<cr>")
+keymap.set("n", "<leader>fg", ":Telescope live_grep<cr>")
+keymap.set("n", "<leader>fh", ":Telescope help_tags<cr>")
+keymap.set("n", "<leader>fp", ":Telescope media_files<cr>")
+keymap.set("n", "<leader>fb", ":Telescope buffers<cr>")
+
 -- Session Manager
-utils.map("n", "<leader>ml", ":SessionManager load_session<cr>")
-utils.map("n", "<leader>md", ":SessionManager delete_session<cr>")
-utils.map("n", "<leader>mcs", ":SessionManager save_current_session<cr>")
-utils.map("n", "<leader>mcl", ":SessionManager load_current_dir_session<cr>")
-utils.map("n", "<leader>ma", ":SessionManager load_last_session<cr>")
+keymap.set("n", "<leader>ml", ":SessionManager load_session<cr>")
+keymap.set("n", "<leader>md", ":SessionManager delete_session<cr>")
+keymap.set("n", "<leader>mcs", ":SessionManager save_current_session<cr>")
+keymap.set("n", "<leader>mcl", ":SessionManager load_current_dir_session<cr>")
+keymap.set("n", "<leader>ma", ":SessionManager load_last_session<cr>")
 
 -- stay in indent mode
-utils.map("v", "<", "<gv")
-utils.map("v", ">", ">gv")
+keymap.set("v", "<", "<gv")
+keymap.set("v", ">", ">gv")
 
 -- comments
---utils.map('n', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@l')
---utils.map('x', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@')
+--keymap.set('n', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@l')
+--keymap.set('x', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@')
 
 -- alpha
---utils.map("n", "<c-b>", ":Alpha<cr>")
+--keymap.set("n", "<c-b>", ":Alpha<cr>")
 
 -- nvim tree
-utils.map("n", "<c-n>", ":NvimTreeToggle<cr>", { silent = true })
+keymap.set("n", "<c-n>", ":NvimTreeToggle<cr>", { silent = true })
 
 -- spell, Grammarous
-utils.map("n", "<leader>gs", ":setlocal spell!<cr>", { silent = true })
-utils.map("n", "<leader>gg", ":GrammarousCheck --lang=de<cr>")
+keymap.set("n", "<leader>gs", ":setlocal spell!<cr>", { silent = true })
+keymap.set("n", "<leader>gg", ":GrammarousCheck --lang=de<cr>")
 
 -- vimux
-utils.map("n", "<leader>pp", ":VimuxPromptCommand<cr>")
-utils.map("n", "<leader>pl", ":VimuxRunLastCommand<cr>")
-utils.map("n", "<leader>pi", ":VimuxInspectRunner<cr>")
-utils.map("n", "<leader>pz", ":VimuxZoomRunner<cr>")
+keymap.set("n", "<leader>pp", ":VimuxPromptCommand<cr>")
+keymap.set("n", "<leader>pl", ":VimuxRunLastCommand<cr>")
+keymap.set("n", "<leader>pi", ":VimuxInspectRunner<cr>")
+keymap.set("n", "<leader>pz", ":VimuxZoomRunner<cr>")
 
 -- dap
-utils.map("n", "<F5>", ":lua require'dap'.continue()<CR>", { silent = true })
-utils.map("n", "<F10>", ":lua require'dap'.step_over()<CR>", { silent = true })
-utils.map("n", "<F11>", ":lua require'dap'.step_into()<CR>", { silent = true })
-utils.map("n", "<F12>", ":lua require'dap'.step_out()<CR>", { silent = true })
-utils.map("n", "<leader>db", ":lua require'dap'.toggle_breakpoint()<CR>", { silent = true })
-utils.map(
+keymap.set("n", "<F5>", ":lua require'dap'.continue()<CR>", { silent = true })
+keymap.set("n", "<F10>", ":lua require'dap'.step_over()<CR>", { silent = true })
+keymap.set("n", "<F11>", ":lua require'dap'.step_into()<CR>", { silent = true })
+keymap.set("n", "<F12>", ":lua require'dap'.step_out()<CR>", { silent = true })
+keymap.set("n", "<leader>db", ":lua require'dap'.toggle_breakpoint()<CR>", { silent = true })
+keymap.set(
     "n",
     "<leader>dB",
     ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
     { silent = true }
 )
-utils.map(
+keymap.set(
     "n",
     "<leader>dp",
     ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>",
     { silent = true }
 )
-utils.map("n", "<leader>dr", ":lua require'dap'.repl.toggle()<CR>", { silent = true })
-utils.map("n", "<leader>dl", ":lua require'dap'.run_last()<CR>", { silent = true })
-utils.map("n", "<leader>di", ":lua require'dap.ui.widgets'.hover()<CR>", { silent = true })
-utils.map("n", "<leader>d?", ":lua local widgets=require'dap.ui.widgets';widgets.centered_float(widgets.scopes)<CR>")
-utils.map("n", "<leader>dR", ":lua require'dap'.clear_breakpoints()<CR>")
-utils.map("n", "<leader>dc", ":lua require'dap'.run_to_cursor()<CR>")
-utils.map("n", "<leader>dk", ":lua require'dap'.up()<CR>zz")
-utils.map("n", "<leader>dj", ":lua require'dap'.down()<CR>zz")
-utils.map("n", "<leader>dt", ":lua require'dap'.terminate()<CR>")
+keymap.set("n", "<leader>dr", ":lua require'dap'.repl.toggle()<CR>", { silent = true })
+keymap.set("n", "<leader>dl", ":lua require'dap'.run_last()<CR>", { silent = true })
+keymap.set("n", "<leader>di", ":lua require'dap.ui.widgets'.hover()<CR>", { silent = true })
+keymap.set("n", "<leader>d?", ":lua local widgets=require'dap.ui.widgets';widgets.centered_float(widgets.scopes)<CR>")
+keymap.set("n", "<leader>dR", ":lua require'dap'.clear_breakpoints()<CR>")
+keymap.set("n", "<leader>dc", ":lua require'dap'.run_to_cursor()<CR>")
+keymap.set("n", "<leader>dk", ":lua require'dap'.up()<CR>zz")
+keymap.set("n", "<leader>dj", ":lua require'dap'.down()<CR>zz")
+keymap.set("n", "<leader>dt", ":lua require'dap'.terminate()<CR>")
 
 -- dapui
-utils.map("n", "<leader>du", ":lua require'dapui'.toggle()<CR>", { silent = true })
-utils.map("v", "<leader>dh", ":lua require'dapui'.eval()<CR>", { silent = true })
+keymap.set("n", "<leader>du", ":lua require'dapui'.toggle()<CR>", { silent = true })
+keymap.set("v", "<leader>dh", ":lua require'dapui'.eval()<CR>", { silent = true })
