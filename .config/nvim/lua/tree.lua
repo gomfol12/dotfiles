@@ -1,5 +1,5 @@
 -- ==================== Filetree (nvim-tree) ==================== --
--- TODO: trash mapping don't work???, unbind keys like "H"
+-- TODO: trash mapping don't work???, unbind keys like "H", rework
 
 local status_ok, nvim_tree = pcall(require, "nvim-tree")
 if not status_ok then

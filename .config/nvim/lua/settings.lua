@@ -1,5 +1,6 @@
 -- ==================== Settings ==================== --
 -- Default options are not included
+-- TODO: slient in autocmd dont work, remove trailing space dont work
 
 local cmd = vim.cmd
 local opt = vim.opt
@@ -26,7 +27,7 @@ opt.showmatch = true -- Highlight matching parenthesis
 opt.foldmethod = "expr" -- Folding method
 opt.foldexpr = "nvim_treesitter#foldexpr()" -- Folding is handled by treesitter
 opt.foldenable = false -- Disable Folding
-opt.colorcolumn = "80" -- Line length marker at 80 columns
+-- opt.colorcolumn = "80" -- Line length marker at 80 columns
 opt.splitright = true -- Vertical split to the right
 opt.splitbelow = true -- Horizontal split to the bottom
 opt.ignorecase = true -- Ignore case in search patterns
@@ -112,7 +113,7 @@ augroup("xresources_user_config", { clear = true })
 autocmd("BufWritePost", {
     group = "xresources_user_config",
     pattern = "Xresources",
-    command = "silent!xrdb -merge " .. os.getenv("XDG_CONFIG_HOME") .. "/Xresources",
+    command = "!xrdb -merge " .. os.getenv("XDG_CONFIG_HOME") .. "/Xresources",
 })
 
 -- Function that adds "vfile:" in vimwiki for linking external files and opening them in a new tab

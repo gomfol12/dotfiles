@@ -1,52 +1,67 @@
-#!/bin/bash
-#
-# ~/.bash_profile
-#
+#!/bin/zsh
 
-[[ -f ~/.bashrc ]] && . ~/.bashrc
-
-### xdg ###
+### XDG ###
 export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:="$HOME/.cache"}
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="$HOME/.config"}
 export XDG_MUSIC_DIR=${XDG_MUSIC_DIR:="$HOME/doc/music"}
+export XDG_STATE_HOME=${XDG_STATE_HOME:="$HOME/.local/state"}
 
-### general ###
-export SCRIPT_DIR="$HOME"/.local/scripts
-export PATH=$PATH$(find "$SCRIPT_DIR" -not -path "*old*" -not -path "*grub*" -type d -printf ":%p")
-export PATH=$PATH:$HOME/.local/bin
+### General ###
+export SCRIPT_DIR="$HOME/.local/scripts"
+export ZDOTDIR="$HOME/.config/zsh"
+export HISTFILE="$ZDOTDIR/history"
+export HISTSIZE=2147483647
+export SAVEHIST=$HISTSIZE
+export HISTTIMEFORMAT="[%F %T] "
 export EDITOR="nvim"
 export TERMINAL="st"
-export BROWSER="brave --force-device-scale-factor=1.0"
+export BROWSER="brave"
 export _JAVA_AWT_WM_NONREPARENTING=1
-export PATH=$PATH:$HOME/.local/share/gem/ruby/3.0.0/bin
-
-# disable less history
 export LESSHISTFILE=-
 
+# Color for manpages in less makes manpages a little easier to read
+export LESS_TERMCAP_mb=$'\E[01;32m'
+export LESS_TERMCAP_md=$'\E[01;32m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;30m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;31m'
+
+### PATH ###
+typeset -U path PATH
+path+=(~/.local/bin)
+path+=($(find "$SCRIPT_DIR" -not -path "*old*" -not -path "*grub*" -type d))
+path+=(~/.local/share/gem/ruby/3.0.0/bin)
+export PATH
+
 ### HOME cleanup ###
-export XINITRC="$XDG_CONFIG_HOME"/X11/.xinitrc
-export GNUPGHOME="$XDG_CONFIG_HOME"/gnupg
-export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
-export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
-export WINEPREFIX="$XDG_DATA_HOME"/wineprefixes/default
-#export WGETRC="$XDG_CONFIG_HOME"/wgetrc
-export XAUTHORITY="$XDG_RUNTIME_DIR"/.emptty-xauth
-export ICEAUTHORITY="$XDG_CACHE_HOME"/ICEauthority
-export INPUTRC=$XDG_CONFIG_HOME/readline/inputrc
+export XINITRC="$XDG_CONFIG_HOME/X11/.xinitrc"
+export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME/java"
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
+export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
+export XAUTHORITY="$XDG_RUNTIME_DIR/.emptty-xauth"
+export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
+export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
 #export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
-export CARGO_HOME="$XDG_DATA_HOME"/cargo
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
-export GOPATH="$XDG_DATA_HOME"/go
-export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export GOPATH="$XDG_DATA_HOME/go"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+export TERMINFO="$XDG_DATA_HOME/terminfo"
+export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
+export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
+export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 
 ### pass ###
-export PASSWORD_STORE_DIR="$HOME"/.local/password-store
+export PASSWORD_STORE_DIR="$HOME/.local/password-store"
 export PASSWORD_STORE_GENERATED_LENGTH=20
 export PASSWORD_STORE_CLIP_TIME=30
 
-### fzf ###
-#export PATH=$PATH:$HOME/.local/src/fzf/bin
+### FZF ###
 export FZF_DEFAULT_OPTS="\
 --color="hl:green,gutter:-1,hl+:green,info:gray,prompt:blue,pointer:blue,marker:blue,spinner:blue,header:gray" \
 --no-bold \
@@ -54,11 +69,11 @@ export FZF_DEFAULT_OPTS="\
 --bind "ctrl-h:preview-down,ctrl-l:preview-up" \
 --no-mouse"
 
-### monitors
-export PRIMARY=HDMI-0
-export SECONDARY=DVI-D-0
+### Monitors ###
+export PRIMARY="HDMI-0"
+export SECONDARY="DVI-D-0"
 
-### nvidia
+### Nvidia ###
 export __GL_SYNC_TO_VBLANK=1
 export __GL_SYNC_DISPLAY_DEVICE=$PRIMARY
 export VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE=$PRIMARY
@@ -222,9 +237,3 @@ ex=:\
 *.pdf=:\
 *.nix=:\
 "
-
-### startx ###
-# run startx on login on tty1
-#if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-#	exec startx $XINITRC
-#fi
