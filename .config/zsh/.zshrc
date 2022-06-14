@@ -15,6 +15,7 @@ setopt no_case_glob
 ### Config ###
 source "$ZDOTDIR/zsh-aliases"
 source "$ZDOTDIR/zsh-functions"
+zsh_add_file "zsh-timer"
 zsh_add_file "zsh-prompt"
 
 ### "Plugins" ###

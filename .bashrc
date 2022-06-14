@@ -229,9 +229,9 @@ key()
 source "$SCRIPT_DIR/util/dirBook.sh"
 
 # start fish
-if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]; then
-    exec fish
-fi
+# if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]; then
+#     exec fish
+# fi
 
 #if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
 #    exec tmux
