@@ -1,6 +1,6 @@
 #!/bin/sh
-gpuT=$(nvidia-smi --format=csv --query-gpu=temperature.gpu | tail -1)
-gpuU=$(nvidia-smi --format=csv --query-gpu=utilization.gpu | tail -1 | tr -d " %")
+gpuT=$(nvidia-smi --format=csv,noheader --query-gpu=temperature.gpu)
+gpuU=$(nvidia-smi --format=csv,noheader,nounits --query-gpu=utilization.gpu)
 
 #if (( $(echo "$gpuU <= 33" | bc -l) )); then
 #	gpuU=^c\#10a204^$gpuU^d^

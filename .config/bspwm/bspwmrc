@@ -49,7 +49,7 @@ easyeffects --gapplication-service &
 nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings --load-config-only &
 
 # wait for wal and start st on desktop 8
-[ ! "$(pgrep -f "st -c scratchpad")" ] && (sleep 1 && bspc rule -a scratchpad -o desktop=8 && st -c scratchpad &) &
+# [ ! "$(pgrep -f "st -c scratchpad")" ] && (sleep 1 && bspc rule -a scratchpad -o desktop=8 && st -c scratchpad &) &
 
 # source the colors.
 . "$SCRIPT_DIR/colors.sh"

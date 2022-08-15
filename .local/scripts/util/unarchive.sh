@@ -14,6 +14,7 @@ for file in $@; do
     *.tar.gz) tar xzvf "$file" ;;
     *.tar.bz2) tar xjvf "$file" ;;
     *.tar.xz) tar xJvf "$file" ;;
+    *.tar.lzma) tar -x --lzma -f "$file" ;;
     *.tar) tar xvf "$file" ;;
     *.gz) gunzip "$file" ;;
     *.bz2) bunzip2 "$file" ;;

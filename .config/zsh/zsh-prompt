@@ -12,11 +12,11 @@ precmd_exit_code_and_time()
     last_exit_code=$?
 
     if [[ -n "$COMMAND_DURATION" ]] && [[ $last_exit_code -ne 0 ]]; then
-        print -P "%F{red}[%F{yellow}${last_exit_code}%F{red}][%F{yellow}${COMMAND_DURATION}%F{red}]"
+        print -P "%F{red}[%F{yellow}${last_exit_code}%F{red}][%F{yellow}${COMMAND_DURATION}%F{red}]%f"
     elif [[ $last_exit_code -ne 0 ]]; then
-        print -P "%F{red}[%F{yellow}${last_exit_code}%F{red}]"
+        print -P "%F{red}[%F{yellow}${last_exit_code}%F{red}]%f"
     elif [[ -n "$COMMAND_DURATION" ]]; then
-        print -P "%F{red}[%F{yellow}${COMMAND_DURATION}%F{red}]"
+        print -P "%F{red}[%F{yellow}${COMMAND_DURATION}%F{red}]%f"
     fi
 }
 
@@ -32,7 +32,7 @@ zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' stagedstr '+'
 zstyle ':vcs_info:*' unstagedstr '*'
 
-zstyle ':vcs_info:git:*' formats '%F{red}[%F{green}%b%F{red}%m%u%c]'
+zstyle ':vcs_info:git:*' formats '%F{red}[%F{green}%b%F{red}%m%u%c]%f'
 
 zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-st
 

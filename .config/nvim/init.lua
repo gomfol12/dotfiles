@@ -18,7 +18,7 @@ function _G.load_config()
     require("statusline")
     require("spell")
     require("debugui")
-    require("tabline")
+    -- require("tabline")
     require("sessionManager")
 end
 

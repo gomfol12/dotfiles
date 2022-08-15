@@ -10,7 +10,7 @@ end
 packer.init({
     display = {
         open_fn = function()
-            return require("packer.util").float({ border = "rounded" })
+            return require("packer.util").float()
         end,
     },
 })
@@ -43,7 +43,7 @@ return packer.startup(function(use)
             vim.g.VimuxCloseOnExit = 1
         end,
     })
-    use("nanozuki/tabby.nvim")
+    -- use("nanozuki/tabby.nvim") -- dont work ??
     use("Shatur/neovim-session-manager")
     use({
         "vimwiki/vimwiki",

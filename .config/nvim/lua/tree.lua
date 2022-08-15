@@ -6,39 +6,6 @@ if not status_ok then
     return
 end
 
-vim.g.nvim_tree_icons = {
-    default = "",
-    symlink = "",
-    git = {
-        unstaged = "✗",
-        staged = "✓",
-        unmerged = "",
-        renamed = "➜",
-        untracked = "★",
-        deleted = "",
-        ignored = "◌",
-    },
-    folder = {
-        arrow_open = "",
-        arrow_closed = "",
-        default = "",
-        open = "",
-        empty = "",
-        empty_open = "",
-        symlink = "",
-        symlink_open = "",
-    },
-}
-
-vim.g.nvim_tree_git_hl = 1
-
-vim.g.nvim_tree_show_icons = {
-    git = 1,
-    folders = 1,
-    files = 1,
-    folder_arrows = 1,
-}
-
 nvim_tree.setup({
     auto_reload_on_write = true,
     disable_netrw = true,
@@ -55,10 +22,6 @@ nvim_tree.setup({
         auto_open = true,
     },
     ignore_ft_on_setup = {},
-    update_to_buf_dir = {
-        enable = true,
-        auto_open = true,
-    },
     diagnostics = {
         enable = true,
         show_on_dirs = true,
@@ -95,7 +58,7 @@ nvim_tree.setup({
         },
         open_file = {
             quit_on_open = false,
-            resize_window = false,
+            resize_window = true,
             window_picker = {
                 enable = true,
                 chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
@@ -111,7 +74,6 @@ nvim_tree.setup({
         number = false,
         relativenumber = false,
         signcolumn = "yes",
-        auto_resize = true,
         mappings = {
             custom_only = false,
             list = {
@@ -159,6 +121,40 @@ nvim_tree.setup({
     trash = {
         cmd = "trash",
         require_confirm = true,
+    },
+    renderer = {
+        highlight_git = true,
+        icons = {
+            show = {
+                git = true,
+                folder = true,
+                file = true,
+                folder_arrow = true,
+            },
+            glyphs = {
+                default = "",
+                symlink = "",
+                git = {
+                    unstaged = "✗",
+                    staged = "✓",
+                    unmerged = "",
+                    renamed = "➜",
+                    untracked = "★",
+                    deleted = "",
+                    ignored = "◌",
+                },
+                folder = {
+                    arrow_open = "",
+                    arrow_closed = "",
+                    default = "",
+                    open = "",
+                    empty = "",
+                    empty_open = "",
+                    symlink = "",
+                    symlink_open = "",
+                },
+            },
+        },
     },
 })
 

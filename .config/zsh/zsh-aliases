@@ -77,6 +77,7 @@ alias v="\$EDITOR"
 alias vi="\$EDITOR"
 alias vim="\$EDITOR"
 alias nvim="\$EDITOR"
+alias nano="\$EDITOR"
 
 alias mem="free -mth"
 alias foldersize="du -ach --max-depth=1 | sort -h"

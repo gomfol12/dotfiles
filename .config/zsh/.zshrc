@@ -1,5 +1,5 @@
 #!/bin/zsh
-# TODO: Title, ctrl-s
+# TODO: Title
 
 ### General ###
 setopt autocd extendedglob nomatch
@@ -11,6 +11,8 @@ setopt inc_append_history
 setopt extended_history
 setopt hist_find_no_dups
 setopt no_case_glob
+# Disable ctrl-s and ctrl-q
+stty -ixon
 
 ### Config ###
 source "$ZDOTDIR/zsh-aliases"
@@ -42,8 +44,8 @@ export KEYTIMEOUT=1
 
 bindkey -v # vi keybinds
 
-bindkey "^P" up-line-or-beginning-search
-bindkey "^N" down-line-or-beginning-search
+bindkey "^P" up-line-or-history
+bindkey "^N" down-line-or-history
 bindkey "^J" autosuggest-execute
 bindkey "^F" autosuggest-accept
 tmuxShow() { BUFFER="tmux"; zle accept-line }; zle -N tmuxShow; bindkey '^Z' tmuxShow
@@ -63,26 +65,26 @@ bindkey -r "^E"
 # to add other keys to this hash, see: man 5 terminfo
 typeset -g -A key
 
-key[Home]="${terminfo[khome]}"
-key[End]="${terminfo[kend]}"
+key[Home]="${terminfo[home]}"
+key[End]="${terminfo[uend]}"
 key[Insert]="${terminfo[kich1]}"
 key[Backspace]="${terminfo[kbs]}"
 key[Delete]="${terminfo[kdch1]}"
-key[Up]="${terminfo[kcuu1]}"
-key[Down]="${terminfo[kcud1]}"
-key[Left]="${terminfo[kcub1]}"
-key[Right]="${terminfo[kcuf1]}"
+key[Up]="${terminfo[cuu1]}"
+key[Down]="${terminfo[cud1]}"
+key[Left]="${terminfo[cub1]}"
+key[Right]="${terminfo[cuf1]}"
 key[PageUp]="${terminfo[kpp]}"
 key[PageDown]="${terminfo[knp]}"
 key[Shift-Tab]="${terminfo[kcbt]}"
 key[Control-Left]="${terminfo[kLFT5]}"
 key[Control-Right]="${terminfo[kRIT5]}"
-key[Control-Backspace]="${terminfo[kBS5]}"
-key[Shift-Backspace]="${terminfo[kBS2]}"
-key[Shift-Space]="${terminfo[kSP2]}"
+# key[Control-Backspace]="${terminfo[kBS5]}"
+# key[Shift-Backspace]="${terminfo[kBS2]}"
+# key[Shift-Space]="${terminfo[kSP2]}"
 
 # widgets
-insert_space() { zle -U " " }
+# insert_space() { zle -U " " }
 
 # setup key accordingly
 [[ -n "${key[Home]}" ]] && bindkey -- "${key[Home]}" beginning-of-line
@@ -99,9 +101,10 @@ insert_space() { zle -U " " }
 [[ -n "${key[Shift-Tab]}" ]] && bindkey -- "${key[Shift-Tab]}" reverse-menu-complete
 [[ -n "${key[Control-Left]}" ]] && bindkey -- "${key[Control-Left]}" backward-word
 [[ -n "${key[Control-Right]}" ]] && bindkey -- "${key[Control-Right]}" forward-word
-[[ -n "${key[Control-Backspace]}" ]] && bindkey -- "${key[Control-Backspace]}" backward-kill-word
-[[ -n "${key[Shift-Backspace]}" ]] && bindkey -- "${key[Shift-Backspace]}" backward-delete-char
-[[ -n "${key[Shift-Space]}" ]] && bindkey -- "${key[Shift-Space]}" insert_space
+# [[ -n "${key[Control-Backspace]}" ]] && bindkey -- "${key[Control-Backspace]}" backward-kill-word
+# [[ -n "${key[Shift-Backspace]}" ]] && bindkey -- "${key[Shift-Backspace]}" backward-delete-char
+# [[ -n "${key[Shift-Space]}" ]] && bindkey -- "${key[Shift-Space]}" insert_space
+bindkey "^H" backward-kill-word
 
 # Finally, make sure the terminal is in application mode, when zle is
 # active. Only then are the values from $terminfo valid.
@@ -118,7 +121,7 @@ if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
     zle -N up-line-or-beginning-search
     zle -N down-line-or-beginning-search
 
-    zle -N insert_space insert_space
+    # zle -N insert_space insert_space
 fi
 
 # Change cursor shape for different vi modes.
@@ -150,4 +153,5 @@ if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
     export SSH_AUTH_SOCK=$socket
 fi
 
-### Prompt ###
+### autojump ###
+[[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh

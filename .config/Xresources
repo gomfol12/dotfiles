@@ -7,9 +7,9 @@ Xft.lcdfilter: lcddefault
 Xft.rgba: rgb
 
 ! special
-*.foreground:   #a6a28c
+*.foreground:   #fefbec
 *.background:   #20201d
-*.cursorColor:  #a6a28c
+*.cursorColor:  #fefbec
 
 ! black
 *.color0:       #20201d
@@ -84,3 +84,20 @@ st.alpha: 0.9
 ! *.color15: #ffffff
 ! *.background: #000000
 ! *.foreground: #ffffff
+
+! #101218
+! #1f222d
+! #252936
+! #7780a1
+! #C0C5CE
+! #d1d4e0
+! #C9CCDB
+! #ffffff
+! #ee829f
+! #f99170
+! #ffefcc
+! #a5ffe1
+! #97e0ff
+! #97bbf7
+! #c0b7f9
+! #fcc09e
