@@ -172,7 +172,7 @@ theme.icon_theme = nil
 theme.awesome_icon = theme_assets.awesome_icon(theme.menu_height, theme.bg_focus, theme.fg_focus)
 
 -- maximized
-theme.maximized_hide_border = true
+-- theme.maximized_hide_border = true
 
 -- progressbar
 

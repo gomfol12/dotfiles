@@ -267,5 +267,11 @@ return gears.table.join(
     end, { description = "move left", group = "client" }),
     awful.key({ modkey }, "Right", function()
         awful.client.moveresize(20, 0, 0, 0)
-    end, { description = "move right", group = "client" })
+    end, { description = "move right", group = "client" }),
+
+    -- toggle bar
+    awful.key({ modkey }, "b", function()
+        local s = awful.screen.focused()
+        s.wibox.visible = not s.wibox.visible
+    end, { description = "toggle statusbar", group = "screen" })
 )

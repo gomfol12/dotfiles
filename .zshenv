@@ -37,7 +37,7 @@ path+=(~/.local/share/gem/ruby/3.0.0/bin)
 export PATH
 
 ### HOME cleanup ###
-export XINITRC="$XDG_CONFIG_HOME/X11/.xinitrc"
+export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME/java"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"

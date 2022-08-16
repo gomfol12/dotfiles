@@ -1,4 +1,8 @@
 -- ==================== awesome rc ==================== --
+-- TODO: desktop widget: system stats
+-- TODO: redo scripts: awesome wm compatibility
+-- TODO: calender, mem, network click widget
+-- TODO: gui network/bluetooth controls
 
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
@@ -75,3 +79,6 @@ require("appearance.titlebar")
 
 -- Statusbar
 require("appearance.statusbar")
+
+-- Border Management
+require("main.border")

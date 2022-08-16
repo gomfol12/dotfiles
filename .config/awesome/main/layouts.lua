@@ -9,7 +9,7 @@ local layouts = {
     awful.layout.suit.max,
     awful.layout.suit.fair,
     awful.layout.suit.floating,
-    awful.layout.suit.max.fullscreen,
+    -- awful.layout.suit.max.fullscreen,
     awful.layout.suit.corner.nw,
 
     -- awful.layout.suit.tile,
