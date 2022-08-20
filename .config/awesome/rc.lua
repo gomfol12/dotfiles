@@ -22,6 +22,8 @@ require("awful.autofocus")
 -- Vicious
 local vicious = require("vicious")
 
+local helper = require("lib.helper")
+
 -- Check if PRIMARY monitor environment variables is set
 if os.getenv("PRIMARY") == nil then
     naughty.notify({
@@ -46,7 +48,7 @@ beautiful.init(awful.util.getdir("config") .. "theme/theme.lua")
 beautiful.wallpaper = RC.vars.wallpaper
 
 -- Menu / Menubar
-RC.menu = awful.menu({ items = require("main.menu") })
+RC.menu = require("main.menu")
 menubar.geometry = { height = 25 }
 menubar.right_label = ""
 menubar.left_label = ""
@@ -82,3 +84,72 @@ require("appearance.statusbar")
 
 -- Border Management
 require("main.border")
+
+-- Hotkeys popup
+require("main.hotkeys_popup")
+
+-- Set focus to Primary Monitor only on initial startup
+if not helper.is_restart() then
+    for s in screen do
+        for out, _ in pairs(s.outputs) do
+            if out == os.getenv("PRIMARY") then
+                awful.screen.focus(s)
+            end
+        end
+    end
+end
+
+-- perverse tags on restarts
+awesome.connect_signal("exit", function(reason_restart)
+    if not reason_restart then
+        return
+    end
+
+    local file = io.open("/tmp/awesomewm-last-selected-tags", "w+")
+    if not file then
+        return
+    end
+
+    for s in screen do
+        for out, _ in pairs(s.outputs) do
+            file:write(out .. " " .. s.selected_tag.index, "\n")
+        end
+    end
+
+    file:close()
+end)
+
+awesome.connect_signal("startup", function()
+    local file = io.open("/tmp/awesomewm-last-selected-tags", "r")
+    if not file then
+        return
+    end
+
+    local selected_tags = {}
+
+    for line in file:lines() do
+        local output, tag_index = line:match("(.*) (.*)")
+        selected_tags[output] = tonumber(tag_index)
+    end
+
+    for s in screen do
+        for out, _ in pairs(s.outputs) do
+            local i = selected_tags[out]
+            s.tags[i]:view_only()
+        end
+    end
+
+    file:close()
+end)
+
+-- awesome-vim-tmux integration
+require("awesomewm-vim-tmux-navigator")({
+    up = { "k" },
+    down = { "j" },
+    left = { "h" },
+    right = { "l" },
+    mod = RC.vars.modkey,
+    mod_keysym = "Alt_L",
+    --experimental = true
+    focus = awful.client.focus.bydirection,
+})

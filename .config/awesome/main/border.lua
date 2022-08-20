@@ -51,3 +51,11 @@ client.connect_signal("property::floating", function(c)
         end
     end
 end)
+
+awesome.connect_signal("startup", function(c)
+    for _, t in pairs(root.tags()) do
+        if #t:clients() == 1 then
+            t:clients()[1].border_width = 0
+        end
+    end
+end)

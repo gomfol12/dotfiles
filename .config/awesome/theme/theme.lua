@@ -94,8 +94,8 @@ theme.prompt_fg_cursor = xrdb.foreground
 -- notifications
 theme.notification_bg = theme.bg_normal
 theme.notification_fg = theme.fg_normal
-theme.notification_width = dpi(300)
-theme.notification_height = dpi(80)
+--[[ theme.notification_width = dpi(300) ]]
+--[[ theme.notification_height = dpi(80) ]]
 
 local rnotify = require("ruled.notification")
 rnotify.connect_signal("request::rules", function()
@@ -186,8 +186,8 @@ theme.hotkeys_fg = theme.fg_normal
 theme.hotkeys_font = "InconsolataLGC Nerd Font 11"
 theme.hotkeys_description_font = "InconsolataLGC Nerd Font 11"
 theme.hotkeys_modifiers_fg = xrdb.color2
-theme.hotkeys_label_bg = xrdb.color2
-theme.hotkeys_label_fg = xrdb.color0
+-- theme.hotkeys_label_bg = xrdb.color2
+-- theme.hotkeys_label_fg = xrdb.color0
 theme.hotkeys_group_margin = 10
 
 theme.hotkeys_border_width = theme.border_width

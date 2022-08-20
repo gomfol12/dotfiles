@@ -22,7 +22,7 @@ return gears.table.join(
         awful.client.floating.toggle,
         { description = "toggle floating", group = "client" }
     ),
-    awful.key({ modkey }, "m", function(c)
+    awful.key({ modkey }, "n", function(c)
         c:swap(awful.client.getmaster())
     end, { description = "move to master", group = "client" }),
     awful.key({ modkey, "Shift" }, "w", function(c)
@@ -34,7 +34,7 @@ return gears.table.join(
     awful.key({ modkey }, "z", function(c)
         c.ontop = not c.ontop
     end, { description = "toggle keep on top", group = "client" }),
-    awful.key({ modkey }, "n", function(c)
+    awful.key({ modkey }, "m", function(c)
         -- The client currently has the input focus, so it cannot be
         -- minimized, since minimized clients can't have the focus.
         c.minimized = true

@@ -1,15 +1,23 @@
 #!/bin/sh
-#TODO: add an icon in the notification
 
 configfile=$HOME/.config/bg-saved.png
 
+awesome_set_wallpaper()
+{
+    awesome-client '
+            local wallpaper = require("appearance.wallpaper")
+            for s in screen do
+                wallpaper.set_wallpaper(s)
+            end
+'
+}
+
 if [ "$#" -eq 1 ]; then
     cp "$1" "$configfile" &&
-        feh --no-fehbg --bg-fill "$configfile" &&
-        notify-send "Wallpaper changed"
+        awesome_set_wallpaper
 elif [ "$#" -eq 0 ]; then
     if [ -f "$configfile" ]; then
-        feh --no-fehbg --bg-fill "$configfile"
+        awesome_set_wallpaper
     fi
 else
     printf "Invalid argument"

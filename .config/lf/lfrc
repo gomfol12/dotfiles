@@ -375,6 +375,16 @@ map M ${{
 }}
 map col recol
 
+# zoxide
+cmd z %{{
+    result="$(zoxide query --exclude "${PWD}" -- "$@")"
+    lf -remote "send ${id} cd '${result}'"
+}}
+cmd zi ${{
+    result="$(zoxide query -i -- "$@")"
+    lf -remote "send ${id} cd '${result}'"
+}}
+
 # movement
 map gdl &lf -remote "send $id cd $(dirBook.sh -get download)"
 map gdt &lf -remote "send $id cd $(dirBook.sh -get desktop)"

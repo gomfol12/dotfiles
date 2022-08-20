@@ -6,7 +6,9 @@ local gfs = require("gears.filesystem")
 local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 -- local menubar = require("menubar")
-local naughty = require("naughty")
+-- local naughty = require("naughty")
+
+local helper = require("lib.helper")
 
 -- vars
 local modkey = RC.vars.modkey
@@ -16,25 +18,19 @@ local terminal = RC.vars.terminal
 -- hotkey popup
 hotkeys_popup.widget.merge_duplicates = true
 
--- dmenu_prompt
-local function dmenu_prompt(question, func)
-    awful.spawn.easy_async({ "dmenu_prompt.sh", question }, function(stdout, stderr, reason, exit_code)
-        if exit_code == 0 then
-            func()
-        end
-    end)
-end
-
 return gears.table.join(
     -- awesome
-    awful.key({ modkey }, "q", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
+    awful.key({ modkey }, "q", function()
+        hotkeys_popup.show_help({}, nil, { show_awesome_keys = true })
+    end, { description = "show help for awesome only", group = "awesome" }),
+    awful.key({ modkey, "Shift" }, "q", function()
+        hotkeys_popup.show_help(nil, nil, { show_awesome_keys = false })
+    end, { description = "show help for current app", group = "awesome" }),
     awful.key({ super, "Shift" }, "g", function()
-        dmenu_prompt("Restart awesome?", function()
-            awesome.restart()
-        end)
+        awesome.restart()
     end, { description = "reload awesome", group = "awesome" }),
     awful.key({ super, "Shift" }, "z", function()
-        dmenu_prompt("Quit awesome?", function()
+        helper.dmenu_prompt("Quit awesome?", function()
             awesome.quit()
         end)
     end, { description = "quit awesome", group = "awesome" }),
@@ -170,20 +166,20 @@ return gears.table.join(
     end, { description = "lock the screen", group = "util" }),
 
     -- focus nav client
-    awful.key({ modkey }, "j", function()
-        awful.client.focus.bydirection("down")
-    end, { description = "focus by direction down", group = "client" }),
-    awful.key({ modkey }, "k", function()
-        awful.client.focus.bydirection("up")
-    end, { description = "focus by direction up", group = "client" }),
-    awful.key({ modkey }, "h", function()
-        awful.client.focus.bydirection("left")
-    end, { description = "focus by direction left", group = "client" }),
-    awful.key({ modkey }, "l", function()
-        awful.client.focus.bydirection("right")
-    end, { description = "focus by direction right", group = "client" }),
+    --[[ awful.key({ modkey }, "j", function() ]]
+    --[[     awful.client.focus.bydirection("down") ]]
+    --[[ end, { description = "focus by direction down", group = "client" }), ]]
+    --[[ awful.key({ modkey }, "k", function() ]]
+    --[[     awful.client.focus.bydirection("up") ]]
+    --[[ end, { description = "focus by direction up", group = "client" }), ]]
+    --[[ awful.key({ modkey }, "h", function() ]]
+    --[[     awful.client.focus.bydirection("left") ]]
+    --[[ end, { description = "focus by direction left", group = "client" }), ]]
+    --[[ awful.key({ modkey }, "l", function() ]]
+    --[[     awful.client.focus.bydirection("right") ]]
+    --[[ end, { description = "focus by direction right", group = "client" }), ]]
     awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
-    awful.key({ modkey, "Shift" }, "n", function()
+    awful.key({ modkey, "Shift" }, "m", function()
         local c = awful.client.restore()
         -- Focus restored client
         if c then
@@ -241,6 +237,24 @@ return gears.table.join(
     awful.key({ modkey, "Shift" }, "space", function()
         awful.layout.inc(-1)
     end, { description = "select previous", group = "layout" }),
+    awful.key({ modkey, super }, "l", function()
+        awful.tag.incmwfact(0.05)
+    end, { description = "increase master width factor", group = "layout" }),
+    awful.key({ modkey, super }, "h", function()
+        awful.tag.incmwfact(-0.05)
+    end, { description = "decrease master width factor", group = "layout" }),
+    awful.key({ modkey, super }, "i", function()
+        awful.tag.incnmaster(1, nil, true)
+    end, { description = "increase the number of master clients", group = "layout" }),
+    awful.key({ modkey, super }, "u", function()
+        awful.tag.incnmaster(-1, nil, true)
+    end, { description = "decrease the number of master clients", group = "layout" }),
+    awful.key({ modkey, super }, "n", function()
+        awful.tag.incncol(1, nil, true)
+    end, { description = "increase the number of columns", group = "layout" }),
+    awful.key({ modkey, super }, "m", function()
+        awful.tag.incncol(-1, nil, true)
+    end, { description = "decrease the number of columns", group = "layout" }),
 
     -- move resize
     awful.key({ modkey, "Shift" }, "Down", function()

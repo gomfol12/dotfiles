@@ -58,7 +58,6 @@ lfcd()
             fi
         fi
     fi
-    # printf "\033]0; %s\007" "$TERMINAL" >/dev/tty
 }
 
 # pacman

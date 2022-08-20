@@ -38,10 +38,10 @@ keymap.set("i", "<c-s>", "<ESC>:w<CR>a")
 --keymap.set('n', '<c-c>', ':source ~/.config/nvim/init.lua<cr>')
 
 -- window navigation
-keymap.set("n", "<c-j>", "<c-w>j")
-keymap.set("n", "<c-h>", "<c-w>h")
-keymap.set("n", "<c-k>", "<c-w>k")
-keymap.set("n", "<c-l>", "<c-w>l")
+-- keymap.set("n", "<c-j>", "<c-w>j")
+-- keymap.set("n", "<c-h>", "<c-w>h")
+-- keymap.set("n", "<c-k>", "<c-w>k")
+-- keymap.set("n", "<c-l>", "<c-w>l")
 
 -- window resize
 keymap.set("n", "<Up>", ":resize -2<CR>", { silent = true })
@@ -78,7 +78,7 @@ keymap.set("n", "S", ":%s///g<Left><Left><Left>")
 keymap.set("n", "Q", "<nop>")
 
 -- quit
-keymap.set("n", "Q", ":q<cr>", { silent = true })
+-- keymap.set("n", "Q", ":q<cr>", { silent = true })
 
 -- disable search highlighting until the next search
 keymap.set("n", "<cr>", ":noh<cr><cr>", { silent = true })

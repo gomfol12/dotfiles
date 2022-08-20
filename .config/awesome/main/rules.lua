@@ -44,6 +44,9 @@ function _M.get(clientkeys, clientbuttons)
                     "Wpa_gui",
                     "veromix",
                     "xtightvncviewer",
+                    "Nsxiv",
+                    "Pavucontrol",
+                    "mpv",
                 },
 
                 -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -59,6 +62,7 @@ function _M.get(clientkeys, clientbuttons)
             },
             properties = {
                 floating = true,
+                placement = awful.placement.centered,
             },
         },
 
