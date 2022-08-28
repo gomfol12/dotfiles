@@ -3,6 +3,7 @@
 -- TODO: redo scripts: awesome wm compatibility
 -- TODO: calender, mem, network click widget
 -- TODO: gui network/bluetooth controls
+-- TODO: widget icons
 
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
@@ -18,9 +19,6 @@ local beautiful = require("beautiful")
 local menubar = require("menubar")
 local naughty = require("naughty")
 require("awful.autofocus")
-
--- Vicious
-local vicious = require("vicious")
 
 local helper = require("lib.helper")
 
@@ -141,15 +139,3 @@ awesome.connect_signal("startup", function()
 
     file:close()
 end)
-
--- awesome-vim-tmux integration
-require("awesomewm-vim-tmux-navigator")({
-    up = { "k" },
-    down = { "j" },
-    left = { "h" },
-    right = { "l" },
-    mod = RC.vars.modkey,
-    mod_keysym = "Alt_L",
-    --experimental = true
-    focus = awful.client.focus.bydirection,
-})

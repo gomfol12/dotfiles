@@ -15,7 +15,7 @@ opt.completeopt = "menuone,noinsert,noselect" -- Autocomplete options
 opt.wildmode = "list:longest"
 opt.confirm = true -- Confirmation dialog
 opt.undofile = true -- Persistent undo
-opt.wrap = true
+opt.wrap = false
 opt.iskeyword:append("-")
 opt.sessionoptions:append("globals")
 opt.path:append("**") -- search down into subfolders. Tab-completion

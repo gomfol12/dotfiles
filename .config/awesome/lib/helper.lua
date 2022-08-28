@@ -45,4 +45,21 @@ function _M.dump(o)
     end
 end
 
+function _M.magiclines(s)
+    if s:sub(-1) ~= "\n" then
+        s = s .. "\n"
+    end
+    return s:gmatch("(.-)\n")
+end
+
+function _M.read_file(path)
+    local file = io.open(path, "rb") -- r read mode, b binary mode
+    if not file then
+        return nil
+    end
+    local content = file:read("*a") -- *a read whole file
+    file:close()
+    return content
+end
+
 return _M

@@ -142,12 +142,4 @@ return packer.startup(function(use)
     -- dap
     use("mfussenegger/nvim-dap")
     use("rcarriga/nvim-dap-ui")
-
-    -- awesome-vim-tmux integration
-    use({
-        "intrntbrn/awesomewm-vim-tmux-navigator",
-        config = function()
-            vim.g.tmux_navigator_insert_mode = 1
-        end,
-    })
 end)

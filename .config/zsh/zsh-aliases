@@ -112,6 +112,8 @@ alias calc="qalc"
 
 alias bm="bashmount"
 
+alias t="tmux"
+
 #alias b="dirBook"
 
 # because i am stupid

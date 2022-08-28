@@ -9,6 +9,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- local naughty = require("naughty")
 
 local helper = require("lib.helper")
+local c_widgets = require("appearance.widgets")
 
 -- vars
 local modkey = RC.vars.modkey
@@ -66,16 +67,29 @@ return gears.table.join(
 
     -- multimedia keys
     awful.key({}, "XF86AudioStop", function()
-        awful.spawn({ "killall", "spotify" })
-    end, { description = "kill spotify", group = "multimedia" }),
+        awful.spawn({ "audio.sh", "stop" })
+    end, { description = "stop", group = "multimedia" }),
     awful.key({}, "XF86AudioNext", function()
-        awful.spawn({ "playerctl", "--player", "spotify", "next" })
-    end, { description = "spotify next track", group = "multimedia" }),
+        awful.spawn({ "audio.sh", "next" })
+    end, { description = "next track", group = "multimedia" }),
     awful.key({}, "XF86AudioPrev", function()
-        awful.spawn({ "playerctl", "--player", "spotify", "previous" })
-    end, { description = "spotify previous track", group = "multimedia" }),
+        awful.spawn({ "audio.sh", "previous" })
+    end, { description = "previous track", group = "multimedia" }),
     awful.key({}, "XF86AudioPlay", function()
-        awful.spawn({ "playerctl", "--player", "spotify", "play-pause" })
+        awful.spawn({ "audio.sh", "play-pause" })
+    end, { description = "play/pause track", group = "multimedia" }),
+
+    awful.key({ "Shift" }, "XF86AudioStop", function()
+        awful.spawn({ "audio.sh", "spotify", "stop" })
+    end, { description = "spotify stop", group = "multimedia" }),
+    awful.key({ "Shift" }, "XF86AudioNext", function()
+        awful.spawn({ "audio.sh", "spotify", "next" })
+    end, { description = "spotify next track", group = "multimedia" }),
+    awful.key({ "Shift" }, "XF86AudioPrev", function()
+        awful.spawn({ "audio.sh", "spotify", "previous" })
+    end, { description = "spotify previous track", group = "multimedia" }),
+    awful.key({ "Shift" }, "XF86AudioPlay", function()
+        awful.spawn({ "audio.sh", "spotify", "play-pause" })
     end, { description = "spotify play/pause track", group = "multimedia" }),
 
     -- util
@@ -98,14 +112,13 @@ return gears.table.join(
         awful.spawn({ "picom.sh", "-tn" })
     end, { description = "toggle picom", group = "util" }),
     awful.key({}, "Scroll_Lock", function()
-        awful.spawn("switchAudioOutput.sh")
-    end, { description = "switch audio output", group = "util" }),
+        awful.spawn.easy_async({ "audio.sh", "swap" }, function()
+            c_widgets.audio_timer:emit_signal("timeout")
+        end)
+    end, { description = "swap audio output", group = "util" }),
     awful.key({ super }, "n", function()
         awful.spawn.with_shell("colorpicker --short --one-shot --preview | xclip -selection c")
     end, { description = "color picker", group = "util" }),
-    awful.key({ super }, "p", function()
-        awful.spawn("pw.sh") -- TODO: rework pw.sh script
-    end, { description = "password fill script", group = "util" }),
     awful.key({ super }, "f", function()
         awful.spawn("emojiselect.sh")
     end, { description = "emoji select", group = "util" }),
@@ -166,18 +179,22 @@ return gears.table.join(
     end, { description = "lock the screen", group = "util" }),
 
     -- focus nav client
-    --[[ awful.key({ modkey }, "j", function() ]]
-    --[[     awful.client.focus.bydirection("down") ]]
-    --[[ end, { description = "focus by direction down", group = "client" }), ]]
-    --[[ awful.key({ modkey }, "k", function() ]]
-    --[[     awful.client.focus.bydirection("up") ]]
-    --[[ end, { description = "focus by direction up", group = "client" }), ]]
-    --[[ awful.key({ modkey }, "h", function() ]]
-    --[[     awful.client.focus.bydirection("left") ]]
-    --[[ end, { description = "focus by direction left", group = "client" }), ]]
-    --[[ awful.key({ modkey }, "l", function() ]]
-    --[[     awful.client.focus.bydirection("right") ]]
-    --[[ end, { description = "focus by direction right", group = "client" }), ]]
+    awful.key({ modkey }, "j", function()
+        awful.client.focus.bydirection("down")
+        client.focus:raise()
+    end, { description = "focus by direction down", group = "client" }),
+    awful.key({ modkey }, "k", function()
+        awful.client.focus.bydirection("up")
+        client.focus:raise()
+    end, { description = "focus by direction up", group = "client" }),
+    awful.key({ modkey }, "h", function()
+        awful.client.focus.bydirection("left")
+        client.focus:raise()
+    end, { description = "focus by direction left", group = "client" }),
+    awful.key({ modkey }, "l", function()
+        awful.client.focus.bydirection("right")
+        client.focus:raise()
+    end, { description = "focus by direction right", group = "client" }),
     awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
     awful.key({ modkey, "Shift" }, "m", function()
         local c = awful.client.restore()
@@ -287,5 +304,27 @@ return gears.table.join(
     awful.key({ modkey }, "b", function()
         local s = awful.screen.focused()
         s.wibox.visible = not s.wibox.visible
-    end, { description = "toggle statusbar", group = "screen" })
+    end, { description = "toggle statusbar", group = "screen" }),
+
+    -- volume control
+    awful.key({ modkey, "Shift" }, "=", function()
+        awful.spawn.easy_async({ "audio.sh", "volume", "inc" }, function()
+            c_widgets.audio_timer:emit_signal("timeout")
+        end)
+    end, { description = "increase volume", group = "volume" }),
+    awful.key({ modkey }, "-", function()
+        awful.spawn.easy_async({ "audio.sh", "volume", "dec" }, function()
+            c_widgets.audio_timer:emit_signal("timeout")
+        end)
+    end, { description = "decrease volume", group = "volume" }),
+    awful.key({ modkey }, "=", function()
+        awful.spawn.easy_async({ "audio.sh", "volume", "100%" }, function()
+            c_widgets.audio_timer:emit_signal("timeout")
+        end)
+    end, { description = "volume to 100%", group = "volume" }),
+    awful.key({}, "F8", function()
+        awful.spawn.easy_async({ "audio.sh", "mute" }, function()
+            c_widgets.audio_timer:emit_signal("timeout")
+        end)
+    end, { description = "toggle mute", group = "volume" })
 )

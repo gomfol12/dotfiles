@@ -42,7 +42,7 @@ export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME/java"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
 export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
-export XAUTHORITY="$XDG_RUNTIME_DIR/.emptty-xauth"
+export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
 export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
 #export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
