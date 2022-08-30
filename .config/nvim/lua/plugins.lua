@@ -23,7 +23,7 @@ return packer.startup(function(use)
         requires = { "kyazdani42/nvim-web-devicons" },
     })
     use("windwp/nvim-autopairs")
-    use("dstein64/vim-startuptime")
+    --[[ use("dstein64/vim-startuptime") ]]
     use({
         "kyazdani42/nvim-tree.lua",
         requires = { "kyazdani42/nvim-web-devicons" },

@@ -126,10 +126,6 @@ keymap.set("n", "<leader>ma", ":SessionManager load_last_session<cr>")
 keymap.set("v", "<", "<gv")
 keymap.set("v", ">", ">gv")
 
--- comments
---keymap.set('n', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@l')
---keymap.set('x', '<leader>c', ':set operatorfunc=v:lua.__toggle_contextual<cr>g@')
-
 -- alpha
 --keymap.set("n", "<c-b>", ":Alpha<cr>")
 

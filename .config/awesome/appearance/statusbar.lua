@@ -41,7 +41,7 @@ for s in screen do
         if out == os.getenv("PRIMARY") then
             right_widgets = {
                 space,
-                c_widgets.updates,
+                -- c_widgets.updates,
                 c_widgets.net,
                 spacer,
                 wibox.widget.textbox(" "),
@@ -58,6 +58,7 @@ for s in screen do
                 spacer,
                 wibox.widget.textbox(" "),
                 clock,
+                spacer,
                 wibox.widget.systray(),
                 spacing = 5,
                 layout = wibox.layout.fixed.horizontal,

@@ -1,9 +1,12 @@
 -- ==================== Custom widgets ==================== --
+-- TODO: icons
 
 -- Default libs
 local awful = require("awful")
 local wibox = require("wibox")
 local gears = require("gears")
+
+local naughty = require("naughty")
 
 local helper = require("lib.helper")
 
@@ -143,15 +146,17 @@ _M.net_timer = gears.timer({
 })
 
 _M.audio, _M.audio_timer = awful.widget.watch(
-    'sh -c "audio.sh volume get && audio.sh device"',
+    'sh -c "audio.sh volume get && audio.sh device && audio.sh mute get"',
     60,
     function(widget, stdout)
-        local volume, device = stdout:match("(%d+)%%\n(.+)\n")
+        local volume, device, mute_status = stdout:match("(%d+)%%\n(.+)\nMute: (.+)\n")
         volume = tonumber(volume)
 
         local icon = "  "
         if device == "speaker" then
-            if volume < 80 and volume >= 40 then
+            if mute_status == "yes" then
+                icon = "  "
+            elseif volume < 80 and volume >= 40 then
                 icon = "墳 "
             elseif volume < 40 and volume > 0 then
                 icon = "  "
@@ -159,39 +164,43 @@ _M.audio, _M.audio_timer = awful.widget.watch(
                 icon = "  "
             end
         elseif device == "headphones" then
-            icon = "  "
+            if mute_status == "yes" then
+                icon = "MUTE "
+            else
+                icon = "  "
+            end
         end
         widget:set_text(icon .. volume .. "%")
     end
 )
 
-_M.updates = wibox.widget({
-    text = "",
-    widget = wibox.widget.textbox,
-    set_updates = function(self, val)
-        if val == 0 then
-            self.text = " |"
-            self.visible = true
-        else
-            self.visible = false
-        end
-    end,
-})
-_M.updates_timer = gears.timer({
-    timeout = 3600,
-    call_now = true,
-    autostart = true,
-    callback = function()
-        awful.spawn.easy_async_with_shell("checkupdates", function(stdout, stderr, reason, exit_code)
-            if exit_code == 1 then
-                _M.updates.updates = "Err: checkupdates"
-                return
-            end
-            if exit_code == 0 then
-                _M.updates.updates = 0
-            end
-        end)
-    end,
-})
+-- _M.updates = wibox.widget({
+--     text = "",
+--     widget = wibox.widget.textbox,
+--     set_updates = function(self, val)
+--         if val == 0 then
+--             self.text = " |"
+--             self.visible = true
+--         else
+--             self.visible = false
+--         end
+--     end,
+-- })
+-- _M.updates_timer = gears.timer({
+--     timeout = 3600,
+--     call_now = true,
+--     autostart = true,
+--     callback = function()
+--         awful.spawn.easy_async_with_shell("checkupdates", function(stdout, stderr, reason, exit_code)
+--             if exit_code == 1 then
+--                 _M.updates.updates = "Err: checkupdates"
+--                 return
+--             end
+--             if exit_code == 0 then
+--                 _M.updates.updates = 0
+--             end
+--         end)
+--     end,
+-- })
 
 return _M

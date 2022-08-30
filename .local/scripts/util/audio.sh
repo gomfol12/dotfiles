@@ -54,6 +54,22 @@ toggle_default_sink_mute()
     pactl set-sink-mute "$default_sink" toggle
 }
 
+get_default_sink_mute()
+{
+    pactl get-sink-mute "$default_sink"
+}
+
+set_default_sink_mute()
+{
+    if [ "$1" = "yes" ]; then
+        pactl set-sink-mute "$default_sink" 1
+    elif [ "$1" = "no" ]; then
+        pactl set-sink-mute "$default_sink" 0
+    else
+        echo "Invalid mute option"
+    fi
+}
+
 setup_player()
 {
     # start playerctl daemon if not already started
@@ -134,7 +150,12 @@ usage - audio.sh [command] [subcommand|value]
         dec:            decrease volume (by 5%)
         get:            get volume level
         reset:          reset to default volume level (100%)
-    mute:           toggle mute
+    mute:           mute control
+        toggle:         toggle mute
+        get:            get mute status
+        set:            set mute status
+            yes:            activate mute
+            no:             deactivate mute
     play-pause:     play-pause last audio source
     next:           next track
     previous:       previous track
@@ -168,7 +189,13 @@ case "$1" in
         ;;
     esac
     ;;
-"mute") toggle_default_sink_mute ;;
+"mute")
+    case "$2" in
+    "get") get_default_sink_mute ;;
+    "set") set_default_sink_mute "$3" ;;
+    *) toggle_default_sink_mute ;;
+    esac
+    ;;
 "play-pause" | "play_pause") play_pause ;;
 "next") next_track ;;
 "prev" | "previous") prev_track ;;

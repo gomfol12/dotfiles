@@ -119,6 +119,7 @@ alias t="tmux"
 # because i am stupid
 alias :q="exit"
 alias al="la"
+alias nivm="nvim"
 
 ### HOME cleanup ###
 alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
