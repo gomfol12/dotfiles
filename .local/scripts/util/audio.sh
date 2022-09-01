@@ -1,8 +1,9 @@
 #!/bin/sh
-#TODO: microphone noise cancel, mute
+# TODO: messy script clean up
 
 speaker="alsa_output.pci-0000_2b_00.3.analog-stereo"
 headphones="alsa_output.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.analog-stereo"
+microphone="alsa_input.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.mono-fallback"
 
 default_sink=$(pactl get-default-sink)
 players=$(playerctl --list-all --no-messages)
@@ -12,6 +13,7 @@ log()
     printf "%s\n" "$1" | xargs
 }
 
+# swap
 swap_audio_outputs()
 {
     if [ "$default_sink" = "$speaker" ]; then
@@ -22,16 +24,14 @@ swap_audio_outputs()
     fi
 }
 
-get_audio_device()
+# setup default source sink
+setup_default_source_sink()
 {
-    if [ "$default_sink" = "$speaker" ]; then
-        echo "speaker"
-    fi
-    if [ "$default_sink" = "$headphones" ]; then
-        echo "headphones"
-    fi
+    pactl set-default-sink "$speaker"
+    pactl set-default-source "$microphone"
 }
 
+# volume contorl
 set_default_sink_volume()
 {
     pactl set-sink-volume "$default_sink" "$1"
@@ -49,28 +49,65 @@ reset_volume()
     done
 }
 
-toggle_default_sink_mute()
+# mute sink
+mute()
 {
-    pactl set-sink-mute "$default_sink" toggle
-}
+    case "$1" in
+    "sink")
+        case "$2" in
+        "toggle") pactl set-sink-mute "$default_sink" toggle ;;
+        "set")
+            if [ "$3" = "on" ]; then
+                pactl set-sink-mute "$default_sink" 1
+            elif [ "$3" = "off" ]; then
+                pactl set-sink-mute "$default_sink" 0
+            else
+                log "Invalid argument. Try help for help"
+            fi
+            ;;
+        "get") pactl get-sink-mute "$default_sink" | sed "s/Mute: //" ;;
+        *) log "Invalid argument. Try help for help" ;;
+        esac
+        ;;
+    "microphone" | "mic")
+        case "$2" in
+        "toggle")
+            pactl set-source-mute "$microphone" toggle
 
-get_default_sink_mute()
-{
-    pactl get-sink-mute "$default_sink"
-}
-
-set_default_sink_mute()
-{
-    if [ "$1" = "yes" ]; then
+            mute_status=$(pactl get-source-mute "$microphone")
+            if [ "$mute_status" = "Mute: yes" ]; then
+                systemctl --user stop noisetorch
+            fi
+            if [ "$mute_status" = "Mute: no" ]; then
+                systemctl --user start noisetorch
+            fi
+            ;;
+        "set")
+            if [ "$3" = "on" ]; then
+                systemctl --user stop noisetorch
+                pactl set-source-mute "$microphone" 1
+            elif [ "$3" = "off" ]; then
+                systemctl --user start noisetorch
+                pactl set-source-mute "$microphone" 0
+            else
+                log "Invalid argument. Try help for help"
+            fi
+            ;;
+        "get") pactl get-source-mute "$microphone" | sed "s/Mute: //" ;;
+        *) log "Invalid argument. Try help for help" ;;
+        esac
+        ;;
+    "all")
         pactl set-sink-mute "$default_sink" 1
-    elif [ "$1" = "no" ]; then
-        pactl set-sink-mute "$default_sink" 0
-    else
-        echo "Invalid mute option"
-    fi
+        pactl set-source-mute "$microphone" 1
+        systemctl --user stop noisetorch
+        playerctl stop
+        ;;
+    *) log "Invalid argument. Try help for help" ;;
+    esac
 }
 
-setup_player()
+players()
 {
     # start playerctl daemon if not already started
     if [ ! "$(pgrep -u "$(id -u)" -nf "playerctld")" ]; then
@@ -83,45 +120,32 @@ setup_player()
         if [ "$1" = "play" ]; then
             sleep 2 && playerctl --player spotify play
         fi
-        return
     fi
-}
 
-play_pause()
-{
-    setup_player "play"
+    case "$1" in
+    "stop") playerctl stop ;;
+    "play-pause" | "play_pause")
+        # calculate number of playing clients
+        num_playing=0
+        for player in ${players}; do
+            if [ "$(playerctl --player "$player" status)" = "Playing" ]; then
+                num_playing=$((num_playing + 1))
+            fi
+        done
 
-    # calculate number of playing clients
-    num_playing=0
-    for player in ${players}; do
-        if [ "$(playerctl --player "$player" status)" = "Playing" ]; then
-            num_playing=$((num_playing + 1))
+        # pause all clients if more than one is playing otherwise play-pause the client
+        if [ "$num_playing" -gt 1 ]; then
+            playerctl --all-players pause
+        else
+            playerctl play-pause
         fi
-    done
-
-    # pause all clients if more than one is playing otherwise play-pause the client
-    if [ "$num_playing" -gt 1 ]; then
-        playerctl --all-players pause
-    else
-        playerctl play-pause
-    fi
-}
-
-prev_track()
-{
-    setup_player ""
-    playerctl previous
-}
-
-next_track()
-{
-    setup_player ""
-    playerctl next
-}
-
-stop()
-{
-    playerctl stop
+        ;;
+    "prev" | "previous") playerctl previous ;;
+    "next") playerctl next ;;
+    "play") playerctl play ;;
+    "pause") playerctl pause ;;
+    *) log "Invalid argument. Try help for help" ;;
+    esac
 }
 
 spotifyctl()
@@ -137,13 +161,28 @@ spotifyctl()
     esac
 }
 
+# get sink source info
+get_sink_source_info()
+{
+    if [ "$default_sink" = "$speaker" ]; then
+        echo "device: speaker"
+    fi
+    if [ "$default_sink" = "$headphones" ]; then
+        echo "device: headphones"
+    fi
+    echo "sink_volume: $(get_default_sink_volume)"
+    echo "sink_mute: $(mute "sink" "get")"
+    echo "microphone_mute: $(mute "microphone" "get")"
+}
+
 help()
 {
     cat <<EOF
 audio.sh - audio/mic control
 usage - audio.sh [command] [subcommand|value]
+    setup:          setup default devices
     swap:           swap audio output speaker/headphones
-    device:         get current audio output device
+    info:           info
     volume:         control volume
         num:            set volume level to num (leading % is needed)
         inc:            increase volume (by 5%)
@@ -151,11 +190,18 @@ usage - audio.sh [command] [subcommand|value]
         get:            get volume level
         reset:          reset to default volume level (100%)
     mute:           mute control
-        toggle:         toggle mute
-        get:            get mute status
-        set:            set mute status
-            yes:            activate mute
-            no:             deactivate mute
+        sink:           control default sink
+            toggle:         toggle mute
+            get:            get mute status
+            set:            set mute status
+                yes:            activate mute
+                no:             deactivate mute
+        microphone:     control microphone
+            toggle:         toggle mute
+            get:            get mute status
+            set:            set mute status
+                yes:            activate mute
+                no:             deactivate mute
     play-pause:     play-pause last audio source
     next:           next track
     previous:       previous track
@@ -172,8 +218,12 @@ EOF
 }
 
 case "$1" in
+"setup") setup_default_source_sink ;;
+
 "switch" | "swap") swap_audio_outputs ;;
-"device") get_audio_device ;;
+
+"info") get_sink_source_info ;;
+
 "volume")
     case "$2" in
     "inc" | "+") set_default_sink_volume "+5%" ;;
@@ -189,18 +239,21 @@ case "$1" in
         ;;
     esac
     ;;
+
 "mute")
-    case "$2" in
-    "get") get_default_sink_mute ;;
-    "set") set_default_sink_mute "$3" ;;
-    *) toggle_default_sink_mute ;;
-    esac
+    shift
+    mute "$@"
     ;;
-"play-pause" | "play_pause") play_pause ;;
-"next") next_track ;;
-"prev" | "previous") prev_track ;;
-"stop") stop ;;
+
+"stop") players "stop" ;;
+"play-pause" | "play_pause") players "play-pause" ;;
+"next") players "next" ;;
+"prev" | "previous") players "prev" ;;
+"play") players "play" ;;
+"pause") players "pause" ;;
+
 "spotify") spotifyctl "$2" ;;
+
 "help") help ;;
 *) log "Invalid argument. Try help for help" ;;
 esac

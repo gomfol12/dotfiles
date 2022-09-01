@@ -40,7 +40,7 @@ for s in screen do
     for out, _ in pairs(s.outputs) do
         if out == os.getenv("PRIMARY") then
             right_widgets = {
-                space,
+                spacer,
                 -- c_widgets.updates,
                 c_widgets.net,
                 spacer,

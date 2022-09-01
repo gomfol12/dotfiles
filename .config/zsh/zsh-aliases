@@ -28,7 +28,7 @@ alias mkdir="mkdir -pv"
 alias md="mkdir"
 
 alias c="clear"
-alias sysctl="sudo systemctl"
+# alias sysctl="sudo systemctl"
 alias myip="echo $(curl -s ipinfo.io/ip)"
 alias ka="killall"
 alias g="git"

@@ -1,6 +1,0 @@
-#!/bin/sh
-Selection=true
-Environment="xorg"
-LoginShell=/bin/zsh --login
-
-exec dbus-launch $@

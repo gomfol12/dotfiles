@@ -41,6 +41,22 @@ local sys = {
         end,
     },
     {
+        "Hibernate",
+        function()
+            helper.dmenu_prompt("Hibernate?", function()
+                awful.spawn("systemctl hibernate")
+            end)
+        end,
+    },
+    {
+        "Suspend",
+        function()
+            helper.dmenu_prompt("Suspend?", function()
+                awful.spawn("systemctl suspend")
+            end)
+        end,
+    },
+    {
         "Shutdown",
         function()
             helper.dmenu_prompt("Shutdown?", function()

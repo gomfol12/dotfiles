@@ -97,27 +97,31 @@ local tmux_keys = {
         },
     },
     ["tmux: copy cat"] = {
-        modifiers = {},
-        keys = {
-            ["/"] = "regex search",
-            n = "next search",
-            N = "prev search",
-            ["C-f"] = "file search",
-            ["C-g"] = "git status file search",
-            ["C-e"] = "SHA-1/SHA-256 hashes search",
-            ["C-u"] = "url search",
-            ["C-d"] = "number search",
-            ["C-i"] = "ip search",
-            enter = "copy selection",
-            y = "copy selection",
+        {
+            modifiers = {},
+            keys = {
+                ["/"] = "regex search",
+                n = "next search",
+                N = "prev search",
+                ["C-f"] = "file search",
+                ["C-g"] = "git status file search",
+                ["C-e"] = "SHA-1/SHA-256 hashes search",
+                ["C-u"] = "url search",
+                ["C-d"] = "number search",
+                ["C-i"] = "ip search",
+                enter = "copy selection",
+                y = "copy selection",
+            },
         },
     },
     ["tmux: tpm"] = {
-        modifiers = {},
-        keys = {
-            I = "install plugins",
-            U = "update plugins",
-            N = "uninstall plugins",
+        {
+            modifiers = {},
+            keys = {
+                I = "install plugins",
+                U = "update plugins",
+                N = "uninstall plugins",
+            },
         },
     },
 }

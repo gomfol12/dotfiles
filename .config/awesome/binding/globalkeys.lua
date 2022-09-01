@@ -36,6 +36,28 @@ return gears.table.join(
         end)
     end, { description = "quit awesome", group = "awesome" }),
 
+    -- system
+    awful.key({ super, "Shift" }, "r", function()
+        helper.dmenu_prompt("Reboot?", function()
+            awful.spawn("reboot")
+        end)
+    end, { description = "reboot system", group = "system" }),
+    awful.key({ super, "Shift" }, "d", function()
+        helper.dmenu_prompt("Shutdown?", function()
+            awful.spawn("shutdown -h now")
+        end)
+    end, { description = "shutdown system", group = "system" }),
+    awful.key({ super, "Shift" }, "t", function()
+        helper.dmenu_prompt("Hibernate?", function()
+            awful.spawn("systemctl hibernate")
+        end)
+    end, { description = "hibernate system", group = "system" }),
+    awful.key({ super, "Shift" }, "f", function()
+        helper.dmenu_prompt("Suspend?", function()
+            awful.spawn("systemctl suspend")
+        end)
+    end, { description = "suspend system", group = "system" }),
+
     -- starting programs
     awful.key({ super }, "t", function()
         awful.spawn(terminal)
@@ -323,8 +345,18 @@ return gears.table.join(
         end)
     end, { description = "volume to 100%", group = "volume" }),
     awful.key({}, "F8", function()
-        awful.spawn.easy_async({ "audio.sh", "mute" }, function()
+        awful.spawn.easy_async({ "audio.sh", "mute", "sink", "toggle" }, function()
             c_widgets.audio_timer:emit_signal("timeout")
         end)
-    end, { description = "toggle mute", group = "volume" })
+    end, { description = "toggle sink mute", group = "volume" }),
+    awful.key({}, "F7", function()
+        awful.spawn.easy_async({ "audio.sh", "mute", "microphone", "toggle" }, function()
+            c_widgets.audio_timer:emit_signal("timeout")
+        end)
+    end, { description = "toggle microphone mute", group = "volume" }),
+    awful.key({}, "F9", function()
+        awful.spawn.easy_async_with_shell("audio.sh mute all", function()
+            c_widgets.audio_timer:emit_signal("timeout")
+        end)
+    end, { description = "mute sink and microphone", group = "volume" })
 )

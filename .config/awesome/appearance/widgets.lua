@@ -1,84 +1,77 @@
 -- ==================== Custom widgets ==================== --
--- TODO: icons
+-- TODO: icons, fix audio widget not shown after boot
 
 -- Default libs
 local awful = require("awful")
-local wibox = require("wibox")
-local gears = require("gears")
-
-local naughty = require("naughty")
 
 local helper = require("lib.helper")
 
 local _M = {}
 
-_M.mem = awful.widget.watch("free", 5, function(widget, stdout)
+_M.mem = awful.widget.watch("free", 5, function(widget, stdout, stderr, reason, exit_code)
+    if exit_code ~= 0 then
+        widget:set_text("-1% (-1MiB)")
+        return
+    end
+
     local total, used = stdout:match("Mem:%s+(%d+)%s+(%d+)")
     widget:set_text(math.floor(100 / total * used) .. "% (" .. math.floor(used / 1024) .. "MiB)")
 end)
 
-_M.cpu = wibox.widget({
-    text = "0%",
-    widget = wibox.widget.textbox,
-    set_cpu = function(self, num)
-        self.text = math.floor(num + 0.5) .. "%"
-    end,
-})
-_M.cpu_timer = gears.timer({
-    timeout = 5,
-    call_now = true,
-    autostart = true,
-    callback = function()
-        awful.spawn.easy_async_with_shell(
-            -- field names for first line of /proc/stat (https://www.kernel.org/doc/Documentation/filesystems/proc.txt)
-            --      user    nice   system  idle      iowait irq   softirq  steal  guest  guest_nice
-            -- cpu  74608   2520   24433   1117073   6176   4054  0        0      0      0
-            "grep 'cpu ' /proc/stat && sleep 1 && grep 'cpu ' /proc/stat",
-            function(stdout, stderr, reason, exit_code)
-                if exit_code ~= 0 then
-                    _M.cpu.cpu = "Err: In cpu widget"
-                    return
-                end
+_M.cpu = awful.widget.watch(
+    -- field names for first line of /proc/stat (https://www.kernel.org/doc/Documentation/filesystems/proc.txt)
+    --      user    nice   system  idle      iowait irq   softirq  steal  guest  guest_nice
+    -- cpu  74608   2520   24433   1117073   6176   4054  0        0      0      0
+    "sh -c \"grep 'cpu ' /proc/stat && sleep 1 && grep 'cpu ' /proc/stat\"",
+    5,
+    function(widget, stdout, stderr, reason, exit_code)
+        if exit_code ~= 0 then
+            widget:set_text("-1%")
+            return
+        end
 
-                local data = {}
-                for line in helper.magiclines(stdout) do
-                    for word in line:gmatch("(%d+)") do
-                        table.insert(data, tonumber(word))
-                    end
-                end
-
-                -- Algorithm to calculate CPU usage percentage
-                -- PrevIdle = previdle + previowait
-                -- Idle = idle + iowait
-
-                -- PrevNonIdle = prevuser + prevnice + prevsystem + previrq + prevsoftirq + prevsteal
-                -- NonIdle = user + nice + system + irq + softirq + steal
-
-                -- PrevTotal = PrevIdle + PrevNonIdle
-                -- Total = Idle + NonIdle
-
-                -- differentiate: actual value minus the previous one
-                -- totald = Total - PrevTotal
-                -- idled = Idle - PrevIdle
-
-                -- CPU_Percentage = (totald - idled)/totald
-
-                local totald = 0
-                for i = 11, 18 do
-                    totald = totald + data[i]
-                end
-                for i = 1, 8 do
-                    totald = totald - data[i]
-                end
-                local idled = (data[14] + data[15]) - (data[4] + data[5])
-
-                _M.cpu.cpu = ((totald - idled) / totald) * 100
+        local data = {}
+        for line in helper.magiclines(stdout) do
+            for word in line:gmatch("(%d+)") do
+                table.insert(data, tonumber(word))
             end
-        )
-    end,
-})
+        end
 
-_M.cpu_temp = awful.widget.watch("sensors", 5, function(widget, stdout)
+        -- Algorithm to calculate CPU usage percentage
+        -- PrevIdle = previdle + previowait
+        -- Idle = idle + iowait
+
+        -- PrevNonIdle = prevuser + prevnice + prevsystem + previrq + prevsoftirq + prevsteal
+        -- NonIdle = user + nice + system + irq + softirq + steal
+
+        -- PrevTotal = PrevIdle + PrevNonIdle
+        -- Total = Idle + NonIdle
+
+        -- differentiate: actual value minus the previous one
+        -- totald = Total - PrevTotal
+        -- idled = Idle - PrevIdle
+
+        -- CPU_Percentage = (totald - idled)/totald
+
+        local totald = 0
+        for i = 11, 18 do
+            totald = totald + data[i]
+        end
+        for i = 1, 8 do
+            totald = totald - data[i]
+        end
+        local idled = (data[14] + data[15]) - (data[4] + data[5])
+
+        widget:set_text(math.floor(((totald - idled) / totald) * 100 + 0.5) .. "%")
+    end
+)
+
+_M.cpu_temp = awful.widget.watch("sensors", 5, function(widget, stdout, stderr, reason, exit_code)
+    if exit_code ~= 0 then
+        widget:set_text("-1°C")
+        return
+    end
+
     local temp = stdout:match("Tdie:%s*%+(%d*.%d*).-\n")
     widget:set_text(math.floor(temp + 0.5) .. "°C")
 end)
@@ -86,91 +79,107 @@ end)
 _M.gpu = awful.widget.watch(
     "nvidia-smi --format=csv,noheader,nounits --query-gpu=utilization.gpu,temperature.gpu",
     5,
-    function(widget, stdout)
+    function(widget, stdout, stderr, reason, exit_code)
+        if exit_code ~= 0 then
+            widget:set_text("-1% -1°C")
+            return
+        end
+
         local usage, temp = stdout:match("(%d+),%s(%d+)")
         widget:set_text(usage .. "% " .. temp .. "°C")
     end
 )
 
-_M.net = wibox.widget({
-    text = " 0.0MiB 祝 0.0MiB",
-    widget = wibox.widget.textbox,
-    set_net = function(self, vals)
-        if vals.state == "up" then
-            self.text = " "
-                .. string.format("%.1f", vals.received)
-                .. "MiB 祝 "
-                .. string.format("%.1f", vals.transmitted)
-                .. "MiB"
-        else
-            self.text = "not connected"
+local interface = RC.vars.netdev
+_M.net = awful.widget.watch(
+    "cat /sys/class/net/" .. interface .. "/operstate",
+    5,
+    function(widget, stdout, stderr, reason, exit_code)
+        if exit_code ~= 0 then
+            widget:set_text(" -1MiB 祝 -1MiB")
+            return
         end
-    end,
-})
-_M.net_timer = gears.timer({
-    timeout = 5,
-    call_now = true,
-    autostart = true,
-    callback = function()
-        local interface = RC.vars.netdev
 
-        awful.spawn.easy_async_with_shell("cat /sys/class/net/" .. interface .. "/statistics/rx_bytes && \
-                 cat /sys/class/net/" .. interface .. "/statistics/tx_bytes && \
+        if stdout:match("(.*)\n") == "up" then
+            awful.spawn.easy_async_with_shell(
+                "cat /sys/class/net/"
+                    .. interface
+                    .. "/statistics/rx_bytes && \
+                 cat /sys/class/net/"
+                    .. interface
+                    .. "/statistics/tx_bytes && \
                  sleep 1 && \
-                 cat /sys/class/net/" .. interface .. "/statistics/rx_bytes && \
-                 cat /sys/class/net/" .. interface .. "/statistics/tx_bytes && \
-                 cat /sys/class/net/" .. interface .. "/operstate", function(stdout, stderr, reason, exit_code)
-            if exit_code ~= 0 then
-                _M.net.net = "Err: In net widget"
-                return
-            end
+                 cat /sys/class/net/"
+                    .. interface
+                    .. "/statistics/rx_bytes && \
+                 cat /sys/class/net/"
+                    .. interface
+                    .. "/statistics/tx_bytes",
+                function(stdout2, stderr2, reason2, exit_code2)
+                    if exit_code2 ~= 0 then
+                        widget:set_text(" -1MiB 祝 -1MiB")
+                        return
+                    end
 
-            local data = {}
-            local interface_state = "unknown"
-            for line in helper.magiclines(stdout) do
-                if line == "up" then
-                    interface_state = "up"
-                    goto continue
+                    local data = {}
+                    for line in helper.magiclines(stdout2) do
+                        table.insert(data, tonumber(line))
+                    end
+
+                    -- in MiB
+                    widget:set_text(
+                        " "
+                            .. string.format("%.1f", (data[3] - data[1]) / 1024 / 1024)
+                            .. "MiB 祝 "
+                            .. string.format("%.1f", (data[4] - data[2]) / 1024 / 1024)
+                            .. "MiB"
+                    )
                 end
-                table.insert(data, tonumber(line))
-                ::continue::
-            end
-            -- in MiB
-            _M.net.net = {
-                state = interface_state,
-                received = (data[3] - data[1]) / 1024 / 1024,
-                transmitted = (data[4] - data[2]) / 1024 / 1024,
-            }
-        end)
-    end,
-})
+            )
+        else
+            widget:set_text("not connected")
+        end
+    end
+)
 
 _M.audio, _M.audio_timer = awful.widget.watch(
-    'sh -c "audio.sh volume get && audio.sh device && audio.sh mute get"',
+    'sh -c "audio.sh info"',
     60,
-    function(widget, stdout)
-        local volume, device, mute_status = stdout:match("(%d+)%%\n(.+)\nMute: (.+)\n")
-        volume = tonumber(volume)
+    function(widget, stdout, stderr, reason, exit_code)
+        if exit_code ~= 0 then
+            widget:set_text("  -1%")
+            return
+        end
 
-        local icon = "  "
+        local device, sink_volume, sink_mute, mic_mute =
+            stdout:match("device:%s(.*)\nsink_volume:%s(%d+)%%\nsink_mute:%s(.*)\nmicrophone_mute:%s(.*)\n")
+        sink_volume = tonumber(sink_volume)
+
+        local sink_icon = "  "
         if device == "speaker" then
-            if mute_status == "yes" then
-                icon = "  "
-            elseif volume < 80 and volume >= 40 then
-                icon = "墳 "
-            elseif volume < 40 and volume > 0 then
-                icon = "  "
-            elseif volume == 0 then
-                icon = "  "
+            if sink_mute == "yes" then
+                sink_icon = "  "
+            elseif sink_volume < 80 and sink_volume >= 40 then
+                sink_icon = "墳 "
+            elseif sink_volume < 40 and sink_volume > 0 then
+                sink_icon = "  "
+            elseif sink_volume == 0 then
+                sink_icon = "  "
             end
         elseif device == "headphones" then
-            if mute_status == "yes" then
-                icon = "MUTE "
+            if sink_mute == "yes" then
+                sink_icon = "MUTE "
             else
-                icon = "  "
+                sink_icon = "  "
             end
         end
-        widget:set_text(icon .. volume .. "%")
+
+        local mic_icon = " "
+        if mic_mute == "yes" then
+            mic_icon = " "
+        end
+
+        widget:set_text(sink_icon .. sink_volume .. "% " .. mic_icon)
     end
 )
 
