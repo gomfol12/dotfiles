@@ -10,7 +10,7 @@ local _M = {
     modkey = "Mod1",
     superkey = "Mod4",
 
-    wallpaper = home .. "/.config/bg-saved.png",
+    wallpaper = home .. "/.local/share/bg",
 
     netdev = "enp37s0",
 }

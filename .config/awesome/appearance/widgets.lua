@@ -15,7 +15,7 @@ _M.mem = awful.widget.watch("free", 5, function(widget, stdout, stderr, reason, 
     end
 
     local total, used = stdout:match("Mem:%s+(%d+)%s+(%d+)")
-    widget:set_text(math.floor(100 / total * used) .. "% (" .. math.floor(used / 1024) .. "MiB)")
+    widget:set_text(math.floor((used / total) * 100) .. "% (" .. math.floor(used / 1024) .. "MiB)")
 end)
 
 _M.cpu = awful.widget.watch(
@@ -144,7 +144,7 @@ _M.net = awful.widget.watch(
 
 _M.audio, _M.audio_timer = awful.widget.watch(
     'sh -c "audio.sh info"',
-    60,
+    0,
     function(widget, stdout, stderr, reason, exit_code)
         if exit_code ~= 0 then
             widget:set_text("  -1%")

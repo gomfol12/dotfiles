@@ -24,7 +24,7 @@ theme.font = "InconsolataLGC Nerd Font 11"
 
 -- general
 theme.bg_normal = xrdb.background
-theme.bg_focus = xrdb.color2
+theme.bg_focus = xrdb.color1
 theme.bg_urgent = xrdb.color7
 theme.bg_minimize = theme.color8
 theme.bg_systray = theme.bg_normal
@@ -41,7 +41,7 @@ theme.systray_icon_spacing = 5
 theme.border_width = dpi(2)
 theme.border_normal = xrdb.color8
 theme.border_focus = theme.bg_focus
-theme.border_marked = xrdb.color1
+theme.border_marked = xrdb.color2
 
 -- There are other variable sets
 -- overriding the default one when
@@ -94,8 +94,8 @@ theme.prompt_fg_cursor = xrdb.foreground
 -- notifications
 theme.notification_bg = theme.bg_normal
 theme.notification_fg = theme.fg_normal
---[[ theme.notification_width = dpi(300) ]]
---[[ theme.notification_height = dpi(80) ]]
+theme.notification_width = dpi(300)
+theme.notification_height = dpi(80)
 
 local rnotify = require("ruled.notification")
 rnotify.connect_signal("request::rules", function()
@@ -110,7 +110,7 @@ rnotify.connect_signal("request::rules", function()
         },
 
         rnotify.append_rule({
-            rule = { urgency = "normal" },
+            rule = {},
             properties = {
                 bg = theme.bg_normal,
                 fg = theme.fg_normal,

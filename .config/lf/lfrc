@@ -308,7 +308,7 @@ map dl dlfile
 
 # set Wallpaper
 map sw ${{
-    setWallpaper.sh "$f"
+    setWallpaper.sh "$f" >/dev/null 2>&1
 }}
 
 # basic

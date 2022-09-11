@@ -65,11 +65,11 @@ bindkey -r "^E"
 # to add other keys to this hash, see: man 5 terminfo
 typeset -g -A key
 
-key[Home]="${terminfo[khome]}"
+key[Home]="${terminfo[home]}"
 key[End]="${terminfo[kend]}"
 key[Insert]="${terminfo[kich1]}"
 key[Backspace]="${terminfo[kbs]}"
-key[Delete]="${terminfo[kdch1]}"
+key[Delete]="${terminfo[dch1]}"
 key[Up]="${terminfo[kcuu1]}"
 key[Down]="${terminfo[kcud1]}"
 key[Left]="${terminfo[kcub1]}"
@@ -105,6 +105,10 @@ insert_space() { zle -U " " }
 [[ -n "${key[Shift-Backspace]}" ]] && bindkey -- "${key[Shift-Backspace]}" backward-delete-char
 [[ -n "${key[Shift-Space]}" ]] && bindkey -- "${key[Shift-Space]}" insert_space
 bindkey "^H" backward-kill-word
+if [ "$TERM" = "linux" ]; then
+    bindkey "^[[A" history-beginning-search-backward
+    bindkey "^[[B" history-beginning-search-forward
+fi
 
 # Finally, make sure the terminal is in application mode, when zle is
 # active. Only then are the values from $terminfo valid.
@@ -155,3 +159,8 @@ fi
 
 ### zoxide ###
 eval "$(zoxide init zsh)"
+
+# TODO: fix
+# if [ "$TERM" = "linux" ]; then
+#     source ~/.cache/wal/colors-tty.sh
+# fi

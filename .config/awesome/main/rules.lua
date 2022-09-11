@@ -4,8 +4,16 @@
 -- Default libs
 local awful = require("awful")
 local beautiful = require("beautiful")
+local ruled = require("ruled")
 
 local _M = {}
+
+-- placement, that should be applied after setting x/y/width/height/geometry
+function ruled.client.delayed_properties.delayed_placement(c, value, props)
+    if props.delayed_placement then
+        ruled.client.extra_properties.placement(c, props.delayed_placement, props)
+    end
+end
 
 function _M.get(clientkeys, clientbuttons)
     local rules = {
@@ -44,9 +52,6 @@ function _M.get(clientkeys, clientbuttons)
                     "Wpa_gui",
                     "veromix",
                     "xtightvncviewer",
-                    "Nsxiv",
-                    "Pavucontrol",
-                    "mpv",
                 },
 
                 -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -63,6 +68,22 @@ function _M.get(clientkeys, clientbuttons)
             properties = {
                 floating = true,
                 placement = awful.placement.centered,
+            },
+        },
+
+        {
+            rule_any = {
+                class = {
+                    "mpv",
+                    "Nsxiv",
+                    "Pavucontrol",
+                },
+            },
+            properties = {
+                floating = true,
+                delayed_placement = awful.placement.centered,
+                width = awful.screen.focused().workarea.width * 0.7,
+                height = awful.screen.focused().workarea.height * 0.7,
             },
         },
 
