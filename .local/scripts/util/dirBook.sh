@@ -1,4 +1,5 @@
 #!/bin/sh
+# TODO: rework
 bookmark_file="$HOME/doc/notizen/bookmarks/dirs"
 
 if ! [ -f "$bookmark_file" ]; then

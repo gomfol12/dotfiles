@@ -407,16 +407,3 @@ map g.l &lf -remote "send $id cd $(dirBook.sh -get local)"
 
 #fzf
 map <c-f> :fzf_jump
-
-# schule
-map gsh &lf -remote "send $id cd $(dirBook.sh -get schule)"
-map gsq1 &lf -remote "send $id cd $(dirBook.sh -get Q1)"
-map gsq2 &lf -remote "send $id cd $(dirBook.sh -get Q2)"
-map gsq3 &lf -remote "send $id cd $(dirBook.sh -get Q3)"
-map gsq4 &lf -remote "send $id cd $(dirBook.sh -get Q4)"
-
-map gkks &lf -remote "send $id cd $(dirBook.sh -get ak_schule)"
-map gq1 &lf -remote "send $id cd $(dirBook.sh -get Q1)"
-map gq2 &lf -remote "send $id cd $(dirBook.sh -get Q2)"
-map gq3 &lf -remote "send $id cd $(dirBook.sh -get Q3)"
-map gq4 &lf -remote "send $id cd $(dirBook.sh -get Q4)"

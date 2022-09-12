@@ -1,4 +1,5 @@
 #!/bin/fish
+# TODO: rework
 set -g bookmark_file "$HOME/doc/notizen/bookmarks/dirs"
 
 if ! [ -f "$bookmark_file" ]

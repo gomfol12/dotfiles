@@ -1,9 +1,0 @@
-[user]
-	#email=<email>
-	#name=<name>
-[pull]
-	ff = only
-[init]
-	defaultBranch = master
-[http]
-	sslVerify = false
