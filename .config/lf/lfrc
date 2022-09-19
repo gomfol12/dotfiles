@@ -189,9 +189,9 @@ cmd yank-dirname %dirname -- "$f" | head -c-1 | xclip -i -selection clipboard &&
 cmd yank-basename-without-extension %basename -a -- $fx | cut -d. -f1 | head -c-1 | xclip -i -selection clipboard && printf "Yanked basename without extension"
 
 # dragon
-cmd dragon %dragon-drop -a -x $fx
-cmd dragon-stay %dragon-drop -a $fx
-cmd dragon-individual %dragon-drop $fx
+cmd dragon %dragon-drop -a -x "$fx"
+cmd dragon-stay %dragon-drop -a "$fx"
+cmd dragon-individual %dragon-drop "$fx"
 cmd dlfile %dlfile.sh
 
 #fzf

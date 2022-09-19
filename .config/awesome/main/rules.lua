@@ -44,6 +44,11 @@ function _M.get(clientkeys, clientbuttons)
                 class = {
                     "Arandr",
                     "Blueman-manager",
+                    "Blueman-services",
+                    "Blueman-adapters",
+                    "Blueman-applet",
+                    "Nm-connection-editor",
+                    "Nm-applet",
                     "Gpick",
                     "Kruler",
                     "MessageWin", -- kalarm.
@@ -74,9 +79,21 @@ function _M.get(clientkeys, clientbuttons)
         {
             rule_any = {
                 class = {
+                    "Dragon-drop",
+                },
+            },
+            properties = {
+                placement = awful.placement.centered,
+            },
+        },
+
+        {
+            rule_any = {
+                class = {
                     "mpv",
                     "Nsxiv",
                     "Pavucontrol",
+                    "System-config-printer.py",
                 },
             },
             properties = {

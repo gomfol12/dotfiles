@@ -104,7 +104,7 @@ insert_space() { zle -U " " }
 [[ -n "${key[Control-Backspace]}" ]] && bindkey -- "${key[Control-Backspace]}" backward-kill-word
 [[ -n "${key[Shift-Backspace]}" ]] && bindkey -- "${key[Shift-Backspace]}" backward-delete-char
 [[ -n "${key[Shift-Space]}" ]] && bindkey -- "${key[Shift-Space]}" insert_space
-bindkey "^H" backward-kill-word
+#bindkey "^H" backward-kill-word
 if [ "$TERM" = "linux" ]; then
     bindkey "^[[A" history-beginning-search-backward
     bindkey "^[[B" history-beginning-search-forward

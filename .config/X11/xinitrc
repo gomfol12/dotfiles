@@ -23,5 +23,6 @@ nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings --load-config-only &
 xsettingsd &
 nm-applet &
 blueman-applet &
+playerctld daemon &
 
 exec awesome
