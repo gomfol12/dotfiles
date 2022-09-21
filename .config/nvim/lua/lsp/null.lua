@@ -1,5 +1,5 @@
 -- ==================== null-ls (null-ls.nvim) ==================== --
--- Install: stylua(aur), prettier, shfmt, shellcheck, clang_format, cmake-format(aur),
+-- Install: stylua, prettier, shfmt, shellcheck, clang-format, cmake-format(aur),
 -- chktex, latexindent
 -- TODO: latexindent.yaml, .latexmkrc
 

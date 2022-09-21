@@ -1,5 +1,10 @@
 -- ==================== User variables ==================== --
 
+-- Default libs
+local awful = require("awful")
+
+local helper = require("lib.helper")
+
 local home = os.getenv("HOME")
 
 local _M = {
@@ -14,5 +19,23 @@ local _M = {
 
     netdev = "enp37s0",
 }
+
+-- netdev check
+awful.spawn.easy_async_with_shell(
+    'ip a | grep -E "^[[:digit:]]+" | cut -d" " -f2 | tr -d ":"',
+    function(stdout, stderr, reason, exit_code)
+        local data = {}
+        for line in helper.magiclines(stdout) do
+            table.insert(data, line)
+        end
+        for _, d in ipairs(data) do
+            if d == _M.netdev then
+                return
+            end
+        end
+        _M.netdev = data[2]
+        print(_M.netdev)
+    end
+)
 
 return _M

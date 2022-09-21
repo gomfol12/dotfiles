@@ -114,6 +114,8 @@ alias bm="bashmount"
 
 alias t="tmux"
 
+alias ip="ip -color=auto"
+
 #alias b="dirBook"
 
 # because i am stupid

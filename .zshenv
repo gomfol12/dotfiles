@@ -71,9 +71,24 @@ export FZF_DEFAULT_OPTS="\
 --bind "ctrl-h:preview-down,ctrl-l:preview-up" \
 --no-mouse"
 
+### hostname ###
+export HOSTNAME_DESKTOP="arch4live"
+export HOSTNAME_LAPTOP="laptop"
+
 ### Monitors ###
-export PRIMARY="HDMI-0"
-export SECONDARY="DVI-D-0"
+if [ "$(systemd-detect-virt)" = "kvm" ]; then
+    export PRIMARY="Virtual-1"
+    export SECONDARY=""
+fi
+
+if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
+    export PRIMARY="HDMI-0"
+    export SECONDARY="DVI-D-0"
+fi
+if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
+    export PRIMARY=""
+    export SECONDARY=""
+fi
 
 ### Nvidia ###
 export __GL_SYNC_TO_VBLANK=1
