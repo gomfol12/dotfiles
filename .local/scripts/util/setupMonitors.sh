@@ -20,7 +20,13 @@ if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
         nvidia-settings --assign CurrentMetaMode="DPY-0: nvidia-auto-select @1920x1080 +0+0 {ViewPortIn=1920x1080, ViewPortOut=1920x1080+0+0, ForceFullCompositionPipeline=On}, DPY-1: 1920x1080_144 @1920x1080 +1920+0 {ViewPortIn=1920x1080, ViewPortOut=1920x1080+0+0, ForceFullCompositionPipeline=On}" >/dev/null 2>&1
         ;;
     esac
+    exit
 fi
 if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
     xrandr --output "$PRIMARY" --mode 1920x1080 --rate 60 --primary
+    exit
+fi
+if [ "$(systemd-detect-virt)" = "kvm" ]; then
+    xrandr --output "$PRIMARY" --mode 1920x1080 --rate 60 --primary
+    exit
 fi

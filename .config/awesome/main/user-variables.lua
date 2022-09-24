@@ -24,6 +24,11 @@ local _M = {
 awful.spawn.easy_async_with_shell(
     'ip a | grep -E "^[[:digit:]]+" | cut -d" " -f2 | tr -d ":"',
     function(stdout, stderr, reason, exit_code)
+        if exit_code ~= 0 then
+            _M.netdev = ""
+            return
+        end
+
         local data = {}
         for line in helper.magiclines(stdout) do
             table.insert(data, line)
@@ -34,7 +39,6 @@ awful.spawn.easy_async_with_shell(
             end
         end
         _M.netdev = data[2]
-        print(_M.netdev)
     end
 )
 

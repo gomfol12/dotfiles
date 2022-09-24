@@ -3,7 +3,7 @@
 
 include "/home/marek/.gtkrc-2.0.mine"
 gtk-theme-name="oomox-xresources-reverse"
-gtk-icon-theme-name="oomox-xresources-reverse"
+gtk-icon-theme-name="oomox-xresources-reverse-flat"
 gtk-font-name="Iosevka 10"
 gtk-cursor-theme-name="Adwaita"
 gtk-cursor-theme-size=28

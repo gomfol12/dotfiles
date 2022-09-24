@@ -144,7 +144,7 @@ _M.net = awful.widget.watch(
 
 _M.audio, _M.audio_timer = awful.widget.watch(
     'sh -c "audio.sh info"',
-    0,
+    60,
     function(widget, stdout, stderr, reason, exit_code)
         if exit_code ~= 0 then
             widget:set_text("  -1%")

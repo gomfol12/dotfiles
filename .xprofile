@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+if [ "$SHELL" = "zsh" ]; then
+    [ -f "$HOME/.zshenv"] && . $HOME/.zshenv
+fi

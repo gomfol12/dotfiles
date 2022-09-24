@@ -7,13 +7,13 @@
 
 oomoxicons:
     # This changes depending on your iconset
-    command: "/opt/oomox/plugins/icons_numix/change_color.sh $HOME/.local/scripts/xresources_gtk"
+    command: "/opt/oomox/plugins/icons_numix/change_color.sh"
     # Path to the desired theme you want to apply
-    themepath: "$HOME/.local/scripts/xresources_gtk"
+    themepath: "$HOME/.local/scripts/xresources-reverse"
 
 oomoxgtk:
     # Path to the desired theme you want to apply
-    themepath: "$HOME/.local/scripts/xresources_gtk"
+    themepath: "$HOME/.local/scripts/xresources-reverse"
 # oomoxspotify:
 # spotifypath: "/opt/spotify/Apps"
 # enabled: "False"

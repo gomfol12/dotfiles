@@ -91,9 +91,12 @@ if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
 fi
 
 ### Nvidia ###
-export __GL_SYNC_TO_VBLANK=1
-export __GL_SYNC_DISPLAY_DEVICE=$PRIMARY
-export VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE=$PRIMARY
+if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
+    export NVIDIA=1
+    export __GL_SYNC_TO_VBLANK=1
+    export __GL_SYNC_DISPLAY_DEVICE=$PRIMARY
+    export VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE=$PRIMARY
+fi
 
 ### git ###
 export GIT_PS1_SHOWDIRTYSTATE=1

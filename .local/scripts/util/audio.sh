@@ -1,9 +1,21 @@
 #!/bin/sh
 # TODO: messy script clean up, error checking
 
-speaker="alsa_output.pci-0000_2b_00.3.analog-stereo"
-headphones="alsa_output.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.analog-stereo"
-microphone="alsa_input.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.mono-fallback"
+if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
+    speaker="alsa_output.pci-0000_2b_00.3.analog-stereo"
+    headphones="alsa_output.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.analog-stereo"
+    microphone="alsa_input.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.mono-fallback"
+fi
+if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
+    speaker=""
+    headphones=""
+    microphone=""
+fi
+
+if [ -z "$speaker" ] || [ -z "$headphones" ] || [ -z "$microphone" ]; then
+    echo "speaker, headphones, microphone variables not set"
+    exit 1
+fi
 
 default_sink=$(pactl get-default-sink)
 [ "$default_sink" = "@DEFAULT_SINK@" ] && exit 1
