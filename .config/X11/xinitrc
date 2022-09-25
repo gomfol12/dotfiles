@@ -14,7 +14,7 @@ fi
 
 xss-lock -- betterlockscreen -l &
 imwheel -b "45" &
-picom &
+picom.sh &
 unclutter --timeout 5 &
 lxpolkit &
 numlockx on &

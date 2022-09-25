@@ -22,6 +22,7 @@ wal --backend "${backend:-wal}" -n -s -i "$(readlink -f "$bg_path")" >/dev/null 
     xsettingsd >/dev/null 2>&1 &
 }
 pidof st | xargs -r kill -SIGUSR1 >/dev/null 2>&1
+[ -z "$1" ] || pywalfox update
 
 if [ -d "$HOME/.themes/$theme_name" ]; then
     if [ ! -d "$HOME/.local/share/themes/" ]; then

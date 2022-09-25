@@ -9,5 +9,5 @@ icon_theme_name="oomox-xresources-reverse-flat"
 username=marek
 
 cp -rf "/home/$username/.local/share/themes/$theme_name" /usr/share/themes/
-cp -rf "/home/$username/.local/share/icons/$icon_theme_name" /usr/share/themes/
-cp -rf "/home/$username/.local/share/bg" "/etc/lightdm/wallpaper.png"
+cp -rf "/home/$username/.local/share/icons/$icon_theme_name" /usr/share/icons/
+cp -rf "$(readlink /home/$username/.local/share/bg)" "/etc/lightdm/wallpaper.png"

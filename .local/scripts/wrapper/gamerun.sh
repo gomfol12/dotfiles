@@ -6,8 +6,8 @@ if [ "$#" -eq 0 ]; then
 fi
 
 picom.sh -s
-setupMonitors.sh disable_FFCP
+[ "$(hostname)" = "$HOSTNAME_DESKTOP" ] && setupMonitors.sh disable_FFCP
 gamemoderun "$@"
 wait
-setupMonitors.sh enable_FFCP
+[ "$(hostname)" = "$HOSTNAME_DESKTOP" ] && setupMonitors.sh enable_FFCP
 picom.sh
