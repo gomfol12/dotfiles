@@ -82,7 +82,7 @@ case "$f" in
     ;;
 *)
     case $(file --mime-type "$f" -bL) in
-    text/* | application/json | inode/x-empty | application/octet-stream)
+    text/* | application/json | inode/x-empty | application/octet-stream | application/x-sega-pico-rom)
         printf "%s" "$fx" | xargs -ro "$EDITOR"
         ;;
     image/x-xcf)
