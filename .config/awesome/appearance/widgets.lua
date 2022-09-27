@@ -75,10 +75,10 @@ _M.cpu_temp = awful.widget.watch("sensors", 5, function(widget, stdout, stderr, 
 
     local temp = -1
 
-    if os.getenv("HOST") == os.getenv("HOSTNAME_DESKTOP") then
+    if RC.vars.hostname == os.getenv("HOSTNAME_DESKTOP") then
         temp = stdout:match("Tdie:%s*%+(%d*.%d*).-\n")
     end
-    if os.getenv("HOST") == os.getenv("HOSTNAME_LAPTOP") then
+    if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
         temp = stdout:match("Package%sid%s0:%s*%+(%d*.%d*).-\n")
     end
 
