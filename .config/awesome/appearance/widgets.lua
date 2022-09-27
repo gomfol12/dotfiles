@@ -3,6 +3,7 @@
 
 -- Default libs
 local awful = require("awful")
+local wibox = require("wibox")
 
 local helper = require("lib.helper")
 
@@ -72,23 +73,36 @@ _M.cpu_temp = awful.widget.watch("sensors", 5, function(widget, stdout, stderr, 
         return
     end
 
-    local temp = stdout:match("Tdie:%s*%+(%d*.%d*).-\n")
+    local temp = -1
+
+    if os.getenv("HOST") == os.getenv("HOSTNAME_DESKTOP") then
+        temp = stdout:match("Tdie:%s*%+(%d*.%d*).-\n")
+    end
+    if os.getenv("HOST") == os.getenv("HOSTNAME_LAPTOP") then
+        temp = stdout:match("Package%sid%s0:%s*%+(%d*.%d*).-\n")
+    end
+
     widget:set_text(math.floor(temp + 0.5) .. "°C")
 end)
 
-_M.gpu = awful.widget.watch(
-    "nvidia-smi --format=csv,noheader,nounits --query-gpu=utilization.gpu,temperature.gpu",
-    5,
-    function(widget, stdout, stderr, reason, exit_code)
-        if exit_code ~= 0 then
-            widget:set_text("-1% -1°C")
-            return
-        end
+if RC.vars.hostname == os.getenv("HOSTNAME_DESKTOP") then
+    _M.gpu = awful.widget.watch(
+        "nvidia-smi --format=csv,noheader,nounits --query-gpu=utilization.gpu,temperature.gpu",
+        5,
+        function(widget, stdout, stderr, reason, exit_code)
+            if exit_code ~= 0 then
+                widget:set_text("-1% -1°C")
+                return
+            end
 
-        local usage, temp = stdout:match("(%d+),%s(%d+)")
-        widget:set_text(usage .. "% " .. temp .. "°C")
-    end
-)
+            local usage, temp = stdout:match("(%d+),%s(%d+)")
+            widget:set_text(usage .. "% " .. temp .. "°C")
+        end
+    )
+-- elseif RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+else
+    _M.gpu = wibox.widget.textbox("-1% -1°C")
+end
 
 local interface = RC.vars.netdev
 _M.net = awful.widget.watch(

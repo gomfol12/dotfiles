@@ -7,6 +7,45 @@ local helper = require("lib.helper")
 
 local home = os.getenv("HOME")
 
+-- get hostname
+local hostname = ""
+local file_hostname = io.popen("/bin/hostname")
+if file_hostname then
+    hostname = file_hostname:read("*a") or ""
+
+    hostname = string.gsub(hostname, "\n$", "")
+    file_hostname:close()
+end
+
+-- netdev check
+local netdev = ""
+if hostname == os.getenv("HOSTNAME_DESKTOP") then
+    netdev = "enp37s0"
+end
+if hostname == os.getenv("HOSTNAME_LAPTOP") then
+    netdev = "wlp170s0"
+end
+local netdev_tmp = ""
+local file_netdev = io.popen('/bin/bash -c \'ip a | grep -E "^[[:digit:]]+" | cut -d" " -f2 | tr -d ":"\'')
+if file_netdev then
+    netdev_tmp = file_netdev:read("*a") or ""
+    file_netdev:close()
+
+    local data = {}
+    for line in helper.magiclines(netdev_tmp) do
+        table.insert(data, line)
+    end
+    local already_correct = false
+    for _, d in ipairs(data) do
+        if d == netdev then
+            already_correct = true
+        end
+    end
+    if not already_correct then
+        netdev = data[2]
+    end
+end
+
 local _M = {
     terminal = os.getenv("TERMINAL"),
     editor = os.getenv("EDITOR"),
@@ -17,29 +56,9 @@ local _M = {
 
     wallpaper = home .. "/.local/share/bg",
 
-    netdev = "enp37s0",
+    netdev = netdev,
+
+    hostname = hostname,
 }
-
--- netdev check
-awful.spawn.easy_async_with_shell(
-    'ip a | grep -E "^[[:digit:]]+" | cut -d" " -f2 | tr -d ":"',
-    function(stdout, stderr, reason, exit_code)
-        if exit_code ~= 0 then
-            _M.netdev = ""
-            return
-        end
-
-        local data = {}
-        for line in helper.magiclines(stdout) do
-            table.insert(data, line)
-        end
-        for _, d in ipairs(data) do
-            if d == _M.netdev then
-                return
-            end
-        end
-        _M.netdev = data[2]
-    end
-)
 
 return _M
