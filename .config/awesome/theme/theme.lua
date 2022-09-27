@@ -20,7 +20,7 @@ local themes_path = gfs.get_themes_dir()
 -- inherit default theme
 local theme = dofile(themes_path .. "default/theme.lua")
 
-theme.font = "InconsolataLGC Nerd Font 11"
+theme.font = "Inconsolata Nerd Font 13"
 
 -- general
 theme.bg_normal = xrdb.background
@@ -66,7 +66,7 @@ theme.menu_submenu_icon = nil
 theme.menu_submenu = " "
 theme.menu_height = dpi(25)
 theme.menu_width = dpi(170)
-theme.menu_font = "InconsolataLGC Nerd Font 10"
+theme.menu_font = theme.font
 
 theme.menu_bg_normal = theme.bg_normal
 theme.menubar_fg_normal = theme.fg_normal
@@ -183,8 +183,8 @@ theme.snap_shape = gears.shape.rectangle
 -- hotkeys popup
 theme.hotkeys_bg = theme.bg_normal
 theme.hotkeys_fg = theme.fg_normal
-theme.hotkeys_font = "InconsolataLGC Nerd Font 11"
-theme.hotkeys_description_font = "InconsolataLGC Nerd Font 11"
+theme.hotkeys_font = theme.font
+theme.hotkeys_description_font = theme.font
 theme.hotkeys_modifiers_fg = xrdb.color2
 -- theme.hotkeys_label_bg = xrdb.color2
 -- theme.hotkeys_label_fg = xrdb.color0

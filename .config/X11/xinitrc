@@ -1,5 +1,12 @@
 #!/bin/zsh
-xrdb -merge "$HOME/.config/Xresources"
+if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
+    xrdb -merge "$HOME/.config/Xresources"
+elif [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
+    xrdb -merge "$HOME/.config/laptop.Xresources"
+else
+    xrdb -merge "$HOME/.config/Xresources"
+fi
+
 setWallpaper.sh
 setupMonitors.sh
 xset r rate 200 40

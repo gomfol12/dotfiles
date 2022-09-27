@@ -23,7 +23,7 @@ if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
     exit
 fi
 if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
-    xrandr --output "$PRIMARY" --mode 1920x1080 --rate 60 --primary
+    xrandr --output "$PRIMARY" --mode 2256x1504 --rate 60 --primary
     exit
 fi
 if [ "$(systemd-detect-virt)" = "kvm" ]; then

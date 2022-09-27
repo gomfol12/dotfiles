@@ -67,7 +67,16 @@ for s in screen do
     end
 
     -- Create Statusbar
-    s.wibox = awful.wibar({ position = "top", height = 25, screen = s })
+    local barheight = 25
+
+    if os.getenv("HOST") == os.getenv("HOSTNAME_LAPTOP") then
+        barheight = 30
+    end
+    if os.getenv("HOST") == os.getenv("HOSTNAME_DESKTOP") then
+        barheight = 25
+    end
+
+    s.wibox = awful.wibar({ position = "top", height = barheight, screen = s })
     s.wibox:setup({
         {
             s.taglist,
