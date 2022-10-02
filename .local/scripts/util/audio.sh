@@ -7,7 +7,7 @@ if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
     microphone="alsa_input.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.mono-fallback"
 fi
 if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
-    speaker=""
+    speaker="alsa_input.pci-0000_00_1f.3.analog-stereo"
     headphones=""
     microphone=""
 fi
