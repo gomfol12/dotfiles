@@ -16,6 +16,8 @@ local xrdb = xresources.get_current_theme()
 local gears = require("gears")
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
+local naughty = require("naughty")
+local awful = require("awful")
 
 -- inherit default theme
 local theme = dofile(themes_path .. "default/theme.lua")
@@ -92,32 +94,51 @@ theme.prompt_bg_cursor = xrdb.foreground
 theme.prompt_fg_cursor = xrdb.foreground
 
 -- notifications
-theme.notification_bg = theme.bg_normal
-theme.notification_fg = theme.fg_normal
-theme.notification_width = dpi(300)
-theme.notification_height = dpi(80)
+naughty.config.defaults.ontop = true
+naughty.config.defaults.icon_size = dpi(128)
+naughty.config.defaults.screen = awful.screen.focused()
+naughty.config.defaults.timeout = 3
+naughty.config.defaults.title = "System Notification"
+naughty.config.defaults.position = "top_right"
+naughty.config.defaults.border_width = theme.border_width
+naughty.config.defaults.border_color = theme.border_focus
+naughty.config.defaults.max_width = dpi(400)
+naughty.config.defaults.margin = dpi(8)
+naughty.config.defaults.shape = function(cr, w, h)
+    gears.shape.rectangle(cr, w, h)
+end
 
-local rnotify = require("ruled.notification")
-rnotify.connect_signal("request::rules", function()
-    rnotify.append_rule({
+naughty.config.padding = dpi(8)
+naughty.config.spacing = dpi(8)
+
+local ruled = require("ruled")
+ruled.notification.connect_signal("request::rules", function()
+    ruled.notification.append_rule({
         rule = { urgency = "critical" },
         properties = {
+            font = theme.font,
             bg = "#ff0000",
             fg = "#ffffff",
-            border_width = theme.border_width,
-            border_color = theme.border_focus,
             timeout = 0,
         },
-
-        rnotify.append_rule({
-            rule = {},
-            properties = {
-                bg = theme.bg_normal,
-                fg = theme.fg_normal,
-                border_width = theme.border_width,
-                border_color = theme.border_focus,
-            },
-        }),
+    })
+    ruled.notification.append_rule({
+        rule = { urgency = "normal" },
+        properties = {
+            font = theme.font,
+            bg = theme.bg_normal,
+            fg = theme.fg_normal,
+            opacity = 0.9,
+        },
+    })
+    ruled.notification.append_rule({
+        rule = { urgency = "low" },
+        properties = {
+            font = theme.font,
+            bg = theme.bg_normal,
+            fg = theme.fg_normal,
+            opacity = 0.9,
+        },
     })
 end)
 

@@ -6,7 +6,6 @@ local gfs = require("gears.filesystem")
 local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup")
 -- local menubar = require("menubar")
--- local naughty = require("naughty")
 
 local helper = require("lib.helper")
 local c_widgets = require("appearance.widgets")

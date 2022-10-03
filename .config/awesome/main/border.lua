@@ -1,8 +1,6 @@
 -- ==================== Border Management ==================== --
 
 local beautiful = require("beautiful")
-local n = require("naughty")
-local h = require("lib.helper")
 
 local function correct_border(tag)
     if tag.layout["name"] == "floating" then

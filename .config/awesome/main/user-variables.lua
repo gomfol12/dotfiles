@@ -1,8 +1,6 @@
 -- ==================== User variables ==================== --
 
 -- Default libs
-local awful = require("awful")
-
 local helper = require("lib.helper")
 
 local home = os.getenv("HOME")
@@ -59,6 +57,8 @@ local _M = {
     netdev = netdev,
 
     hostname = hostname,
+
+    batdev = "BAT1",
 }
 
 return _M

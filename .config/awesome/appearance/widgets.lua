@@ -9,6 +9,7 @@ local helper = require("lib.helper")
 
 local _M = {}
 
+-- Mem widget
 _M.mem = awful.widget.watch("free", 5, function(widget, stdout, stderr, reason, exit_code)
     if exit_code ~= 0 then
         widget:set_text("-1% (-1MiB)")
@@ -19,6 +20,7 @@ _M.mem = awful.widget.watch("free", 5, function(widget, stdout, stderr, reason, 
     widget:set_text(math.floor((used / total) * 100) .. "% (" .. math.floor(used / 1024) .. "MiB)")
 end)
 
+-- CPU widget
 _M.cpu = awful.widget.watch(
     -- field names for first line of /proc/stat (https://www.kernel.org/doc/Documentation/filesystems/proc.txt)
     --      user    nice   system  idle      iowait irq   softirq  steal  guest  guest_nice
@@ -67,6 +69,7 @@ _M.cpu = awful.widget.watch(
     end
 )
 
+-- CPU temp widget
 _M.cpu_temp = awful.widget.watch("sensors", 5, function(widget, stdout, stderr, reason, exit_code)
     if exit_code ~= 0 then
         widget:set_text("-1°C")
@@ -85,6 +88,7 @@ _M.cpu_temp = awful.widget.watch("sensors", 5, function(widget, stdout, stderr, 
     widget:set_text(math.floor(temp + 0.5) .. "°C")
 end)
 
+-- GPU widget only desktop
 if RC.vars.hostname == os.getenv("HOSTNAME_DESKTOP") then
     _M.gpu = awful.widget.watch(
         "nvidia-smi --format=csv,noheader,nounits --query-gpu=utilization.gpu,temperature.gpu",
@@ -99,11 +103,9 @@ if RC.vars.hostname == os.getenv("HOSTNAME_DESKTOP") then
             widget:set_text(usage .. "% " .. temp .. "°C")
         end
     )
--- elseif RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
-else
-    _M.gpu = wibox.widget.textbox("-1% -1°C")
 end
 
+-- Network widget
 local interface = RC.vars.netdev
 _M.net = awful.widget.watch(
     "cat /sys/class/net/" .. interface .. "/operstate",
@@ -156,6 +158,7 @@ _M.net = awful.widget.watch(
     end
 )
 
+-- Audio widget
 _M.audio, _M.audio_timer = awful.widget.watch(
     'sh -c "audio.sh info"',
     60,
@@ -196,6 +199,39 @@ _M.audio, _M.audio_timer = awful.widget.watch(
         widget:set_text(sink_icon .. sink_volume .. "% " .. mic_icon)
     end
 )
+
+-- Battery widget only laptop
+local batdev = RC.vars.batdev
+if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+    _M.bat = awful.widget.watch(
+        "cat /sys/class/power_supply/"
+            .. batdev
+            .. "/charge_full && cat /sys/class/power_supply/"
+            .. batdev
+            .. "/charge_now",
+        60,
+        function(widget, stdout, stderr, reason, exit_code)
+            if exit_code ~= 0 then
+                widget:set_text("-1%")
+                return
+            end
+
+            local charge_full, charge_now = stdout:match("(%d+)\n(%d+)")
+            widget:set_text(string.format("%.1f", (100 / tonumber(charge_full)) * tonumber(charge_now)) .. "%")
+        end
+    )
+end
+
+if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+    _M.brightness = awful.widget.watch("brillo", 60, function(widget, stdout, stderr, reason, exit_code)
+        if exit_code ~= 0 then
+            widget:set_text("-1%")
+            return
+        end
+        local brightness = stdout:match("(%d*.%d*)")
+        widget:set_text(brightness .. "%")
+    end)
+end
 
 -- _M.updates = wibox.widget({
 --     text = "",

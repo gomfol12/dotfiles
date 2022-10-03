@@ -36,33 +36,74 @@ for s in screen do
         layout = wibox.layout.fixed.horizontal,
     }
 
+    local right_widgets_bottom = {
+        spacing = 5,
+        layout = wibox.layout.fixed.horizontal,
+    }
+
     -- Set different right_widgets widget for PRIMARY Monitor
     for out, _ in pairs(s.outputs) do
         if out == os.getenv("PRIMARY") then
-            right_widgets = {
-                spacer,
-                -- c_widgets.updates,
-                c_widgets.net,
-                spacer,
-                wibox.widget.textbox(" "),
-                c_widgets.cpu,
-                c_widgets.cpu_temp,
-                spacer,
-                wibox.widget.textbox(" "),
-                c_widgets.gpu,
-                spacer,
-                wibox.widget.textbox(" "),
-                c_widgets.mem,
-                spacer,
-                c_widgets.audio,
-                spacer,
-                wibox.widget.textbox(" "),
-                clock,
-                spacer,
-                wibox.widget.systray(),
-                spacing = 5,
-                layout = wibox.layout.fixed.horizontal,
-            }
+            if RC.vars.hostname == os.getenv("HOSTNAME_DESKTOP") then
+                right_widgets = {
+                    spacer,
+                    c_widgets.net,
+                    spacer,
+                    wibox.widget.textbox(" "),
+                    c_widgets.cpu,
+                    c_widgets.cpu_temp,
+                    spacer,
+                    wibox.widget.textbox(" "),
+                    c_widgets.gpu,
+                    spacer,
+                    wibox.widget.textbox(" "),
+                    c_widgets.mem,
+                    spacer,
+                    c_widgets.audio,
+                    spacer,
+                    wibox.widget.systray(),
+                    spacer,
+                    wibox.widget.textbox(" "),
+                    c_widgets.bat,
+                    clock,
+                    spacer,
+                    spacing = 5,
+                    layout = wibox.layout.fixed.horizontal,
+                }
+            elseif RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+                right_widgets = {
+                    spacer,
+                    wibox.widget.textbox(" "),
+                    c_widgets.brightness,
+                    spacer,
+                    wibox.widget.textbox(" "),
+                    c_widgets.bat,
+                    spacer,
+                    c_widgets.audio,
+                    spacer,
+                    wibox.widget.systray(),
+                    spacer,
+                    wibox.widget.textbox(" "),
+                    clock,
+                    spacer,
+                    spacing = 5,
+                    layout = wibox.layout.fixed.horizontal,
+                }
+                right_widgets_bottom = {
+                    spacer,
+                    c_widgets.net,
+                    spacer,
+                    wibox.widget.textbox(" "),
+                    c_widgets.cpu,
+                    c_widgets.cpu_temp,
+                    spacer,
+                    wibox.widget.textbox(" "),
+                    c_widgets.mem,
+                    spacer,
+                    spacing = 5,
+                    layout = wibox.layout.fixed.horizontal,
+                }
+            end
         end
     end
 
@@ -88,4 +129,14 @@ for s in screen do
         right_widgets,
         layout = wibox.layout.align.horizontal,
     })
+
+    if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+        s.wibox_bottom = awful.wibar({ position = "bottom", height = barheight, screen = s })
+        s.wibox_bottom:setup({
+            nil,
+            nil,
+            right_widgets_bottom,
+            layout = wibox.layout.align.horizontal,
+        })
+    end
 end
