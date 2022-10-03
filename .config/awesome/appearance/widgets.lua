@@ -1,5 +1,5 @@
 -- ==================== Custom widgets ==================== --
--- TODO: icons, fix audio widget not shown after boot
+-- TODO: icons
 
 -- Default libs
 local awful = require("awful")
@@ -9,8 +9,15 @@ local helper = require("lib.helper")
 
 local _M = {}
 
+local update_timeout = 5
+if RC.vars.hostname == os.getenv("HOSTNAME_DESKTOP") then
+    update_timeout = 5
+elseif RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+    update_timeout = 10
+end
+
 -- Mem widget
-_M.mem = awful.widget.watch("free", 5, function(widget, stdout, stderr, reason, exit_code)
+_M.mem = awful.widget.watch("free", update_timeout, function(widget, stdout, stderr, reason, exit_code)
     if exit_code ~= 0 then
         widget:set_text("-1% (-1MiB)")
         return
@@ -26,7 +33,7 @@ _M.cpu = awful.widget.watch(
     --      user    nice   system  idle      iowait irq   softirq  steal  guest  guest_nice
     -- cpu  74608   2520   24433   1117073   6176   4054  0        0      0      0
     "sh -c \"grep 'cpu ' /proc/stat && sleep 1 && grep 'cpu ' /proc/stat\"",
-    5,
+    update_timeout,
     function(widget, stdout, stderr, reason, exit_code)
         if exit_code ~= 0 then
             widget:set_text("-1%")
@@ -70,7 +77,7 @@ _M.cpu = awful.widget.watch(
 )
 
 -- CPU temp widget
-_M.cpu_temp = awful.widget.watch("sensors", 5, function(widget, stdout, stderr, reason, exit_code)
+_M.cpu_temp = awful.widget.watch("sensors", update_timeout, function(widget, stdout, stderr, reason, exit_code)
     if exit_code ~= 0 then
         widget:set_text("-1°C")
         return
@@ -92,7 +99,7 @@ end)
 if RC.vars.hostname == os.getenv("HOSTNAME_DESKTOP") then
     _M.gpu = awful.widget.watch(
         "nvidia-smi --format=csv,noheader,nounits --query-gpu=utilization.gpu,temperature.gpu",
-        5,
+        update_timeout,
         function(widget, stdout, stderr, reason, exit_code)
             if exit_code ~= 0 then
                 widget:set_text("-1% -1°C")
@@ -109,7 +116,7 @@ end
 local interface = RC.vars.netdev
 _M.net = awful.widget.watch(
     "cat /sys/class/net/" .. interface .. "/operstate",
-    5,
+    update_timeout,
     function(widget, stdout, stderr, reason, exit_code)
         if exit_code ~= 0 then
             widget:set_text(" -1MiB 祝 -1MiB")
@@ -221,7 +228,7 @@ end
 if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
     _M.brightness, _M.brightness_timer = awful.widget.watch(
         "brillo",
-        60,
+        0,
         function(widget, stdout, stderr, reason, exit_code)
             if exit_code ~= 0 then
                 widget:set_text("-1%")

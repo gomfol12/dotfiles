@@ -355,6 +355,12 @@ return gears.table.join(
         local s = awful.screen.focused()
         s.wibox.visible = not s.wibox.visible
     end, { description = "toggle statusbar", group = "screen" }),
+    awful.key({ modkey, "Shift" }, "b", function()
+        if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+            local s = awful.screen.focused()
+            s.wibox_bottom.visible = not s.wibox_bottom.visible
+        end
+    end, { description = "toggle statusbar bottom", group = "screen" }),
 
     -- volume control
     awful.key({ modkey, "Shift" }, "=", function()

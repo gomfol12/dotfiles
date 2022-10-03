@@ -1,5 +1,4 @@
 -- ==================== Rules ==================== --
--- TODO: add rules when necessary
 
 -- Default libs
 local awful = require("awful")

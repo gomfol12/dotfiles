@@ -1,5 +1,5 @@
 -- ==================== Statusbar ==================== --
--- TODO: layoutbox icons, better separator
+-- TODO: layoutbox icons, better separator, more battery/brightness icons, charging icon
 
 -- Default libs
 local awful = require("awful")
@@ -76,7 +76,7 @@ for s in screen do
                     wibox.widget.textbox(" "),
                     c_widgets.brightness,
                     spacer,
-                    wibox.widget.textbox(" "),
+                    wibox.widget.textbox("  "),
                     c_widgets.bat,
                     spacer,
                     c_widgets.audio,
