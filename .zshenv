@@ -21,7 +21,6 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export LESSHISTFILE=-
 export QT_QPA_PLATFORMTHEME=gtk2
 #export QT_QPA_PLATFORMTHEME=qt5ct
-export QT_AUTO_SCREEN_SCALE_FACTOR=1
 
 # Color for manpages in less makes manpages a little easier to read
 export LESS_TERMCAP_mb=$'\E[01;32m'
@@ -60,9 +59,9 @@ export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
 export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 
 ### pass ###
-export PASSWORD_STORE_DIR="$HOME/.local/password-store"
-export PASSWORD_STORE_GENERATED_LENGTH=20
-export PASSWORD_STORE_CLIP_TIME=30
+#export PASSWORD_STORE_DIR="$HOME/.local/password-store"
+#export PASSWORD_STORE_GENERATED_LENGTH=20
+#export PASSWORD_STORE_CLIP_TIME=30
 
 ### FZF ###
 export FZF_DEFAULT_OPTS="\
@@ -96,6 +95,14 @@ if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
     export __GL_SYNC_TO_VBLANK=1
     export __GL_SYNC_DISPLAY_DEVICE=$PRIMARY
     export VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE=$PRIMARY
+fi
+
+### Laptop Scaling ###
+if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
+    export QT_AUTO_SCREEN_SCALE_FACTOR=1
+    # WARNING: Don't do this. Baaaaad
+    export GDK_SCALE=2
+    export GDK_DPI_SCALE=0.5
 fi
 
 ### git ###

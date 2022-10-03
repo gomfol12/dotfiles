@@ -19,7 +19,11 @@ wal --backend "${backend:-wal}" -n -s -i "$(readlink -f "$bg_path")" >/dev/null 
     if [ "$(pgrep -u "$(id -u)" -nf "xsettingsd")" ]; then
         killall xsettingsd
     fi
-    xsettingsd >/dev/null 2>&1 &
+    if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
+        xsettingsd --config ~/.config/xsettingsd/xsettingsd-laptop.conf >/dev/null 2>&1 &
+    else
+        xsettingsd >/dev/null 2>&1 &
+    fi
 }
 pidof st | xargs -r kill -SIGUSR1 >/dev/null 2>&1
 [ -z "$1" ] || pywalfox update

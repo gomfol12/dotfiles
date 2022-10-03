@@ -28,9 +28,14 @@ numlockx on &
 clipmanager >/dev/null 2>&1 &
 xcape -e 'Super_L=Menu;Super_R=Menu' &
 easyeffects --gapplication-service &
-xsettingsd &
 nm-applet &
 blueman-applet &
 playerctld daemon &
+
+if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
+    xsettingsd --config ~/.config/xsettingsd/xsettingsd-laptop.conf &
+else
+    xsettingsd &
+fi
 
 exec awesome

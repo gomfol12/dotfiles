@@ -89,18 +89,22 @@ mute()
 
             mute_status=$(pactl get-source-mute "$microphone")
             if [ "$mute_status" = "Mute: yes" ]; then
-                systemctl --user stop noisetorch
+                noisetorch -u
             fi
             if [ "$mute_status" = "Mute: no" ]; then
-                systemctl --user start noisetorch
+                if ! pactl list sources | grep -q "Name: NoiseTorch.*"; then
+                    noisetorch -i -s "$microphone" -t 65
+                fi
             fi
             ;;
         "set")
             if [ "$3" = "on" ]; then
-                systemctl --user stop noisetorch
+                noisetorch -u
                 pactl set-source-mute "$microphone" 1
             elif [ "$3" = "off" ]; then
-                systemctl --user start noisetorch
+                if ! pactl list sources | grep -q "Name: NoiseTorch.*"; then
+                    noisetorch -i -s "$microphone" -t 65
+                fi
                 pactl set-source-mute "$microphone" 0
             else
                 log "Invalid argument. Try help for help"
@@ -113,7 +117,7 @@ mute()
     "all")
         pactl set-sink-mute "$default_sink" 1
         pactl set-source-mute "$microphone" 1
-        systemctl --user stop noisetorch
+        noisetorch -u
         playerctl stop
         ;;
     *) log "Invalid argument. Try help for help" ;;
