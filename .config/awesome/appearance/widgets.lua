@@ -204,11 +204,7 @@ _M.audio, _M.audio_timer = awful.widget.watch(
 local batdev = RC.vars.batdev
 if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
     _M.bat = awful.widget.watch(
-        "cat /sys/class/power_supply/"
-            .. batdev
-            .. "/charge_full && cat /sys/class/power_supply/"
-            .. batdev
-            .. "/charge_now",
+        "cat /sys/class/power_supply/" .. batdev .. "/charge_full /sys/class/power_supply/" .. batdev .. "/charge_now",
         60,
         function(widget, stdout, stderr, reason, exit_code)
             if exit_code ~= 0 then
@@ -217,20 +213,24 @@ if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
             end
 
             local charge_full, charge_now = stdout:match("(%d+)\n(%d+)")
-            widget:set_text(string.format("%.1f", (100 / tonumber(charge_full)) * tonumber(charge_now)) .. "%")
+            widget:set_text(string.format("%.1f%%", (100 / tonumber(charge_full)) * tonumber(charge_now)))
         end
     )
 end
 
 if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
-    _M.brightness = awful.widget.watch("brillo", 60, function(widget, stdout, stderr, reason, exit_code)
-        if exit_code ~= 0 then
-            widget:set_text("-1%")
-            return
+    _M.brightness, _M.brightness_timer = awful.widget.watch(
+        "brillo",
+        60,
+        function(widget, stdout, stderr, reason, exit_code)
+            if exit_code ~= 0 then
+                widget:set_text("-1%")
+                return
+            end
+            local brightness = stdout:match("(%d*.%d*)")
+            widget:set_text(brightness .. "%")
         end
-        local brightness = stdout:match("(%d*.%d*)")
-        widget:set_text(brightness .. "%")
-    end)
+    )
 end
 
 -- _M.updates = wibox.widget({

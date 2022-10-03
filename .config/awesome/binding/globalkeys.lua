@@ -201,22 +201,30 @@ return gears.table.join(
 
     awful.key({}, "XF86MonBrightnessUp", function()
         if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
-            awful.spawn({ "brillo", "-q", "-u 150000", "-A 5" })
+            awful.spawn.easy_async({ "brillo", "-q", "-u 150000", "-A 5" }, function()
+                c_widgets.brightness_timer:emit_signal("timeout")
+            end)
         end
     end, { description = "increase mon brightness by 5", group = "util" }),
     awful.key({}, "XF86MonBrightnessDown", function()
         if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
-            awful.spawn({ "brillo", "-q", "-u 150000", "-U 5" })
+            awful.spawn.easy_async({ "brillo", "-q", "-u 150000", "-U 5" }, function()
+                c_widgets.brightness_timer:emit_signal("timeout")
+            end)
         end
     end, { description = "decrease mon brightness by 5", group = "util" }),
     awful.key({ "Shift" }, "XF86MonBrightnessUp", function()
         if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
-            awful.spawn({ "brillo", "-q", "-u 150000", "-A 1" })
+            awful.spawn.easy_async({ "brillo", "-q", "-u 150000", "-A 1" }, function()
+                c_widgets.brightness_timer:emit_signal("timeout")
+            end)
         end
     end, { description = "increase mon brightness by 1", group = "util" }),
     awful.key({ "Shift" }, "XF86MonBrightnessDown", function()
         if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
-            awful.spawn({ "brillo", "-q", "-u 150000", "-U 1" })
+            awful.spawn.easy_async({ "brillo", "-q", "-u 150000", "-U 1" }, function()
+                c_widgets.brightness_timer:emit_signal("timeout")
+            end)
         end
     end, { description = "decrease mon brightness by 1", group = "util" }),
 
