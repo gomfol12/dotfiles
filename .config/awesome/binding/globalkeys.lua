@@ -199,6 +199,26 @@ return gears.table.join(
     awful.key({ super }, "l", function()
         awful.spawn({ "betterlockscreen", "-l" })
     end, { description = "lock the screen", group = "util" }),
+    awful.key({}, "XF86MonBrightnessUp", function()
+        if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+            awful.spawn({ "brillo", "-q", "-u 150000", "-A 5" })
+        end
+    end, { description = "increase mon brightness by 5", group = "util" }),
+    awful.key({}, "XF86MonBrightnessUp", function()
+        if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+            awful.spawn({ "brillo", "-q", "-u 150000", "-U 5" })
+        end
+    end, { description = "decrease mon brightness by 5", group = "util" }),
+    awful.key({ "Shift" }, "XF86MonBrightnessUp", function()
+        if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+            awful.spawn({ "brillo", "-q", "-u 150000", "-A 1" })
+        end
+    end, { description = "increase mon brightness by 1", group = "util" }),
+    awful.key({ "Shift" }, "XF86MonBrightnessUp", function()
+        if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+            awful.spawn({ "brillo", "-q", "-u 150000", "-U 1" })
+        end
+    end, { description = "decrease mon brightness by 1", group = "util" }),
 
     -- focus nav client
     awful.key({ modkey }, "j", function()

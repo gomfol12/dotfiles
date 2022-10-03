@@ -14,6 +14,17 @@ local formatting = null_ls.builtins.formatting
 local hover = null_ls.builtins.hover
 local completion = null_ls.builtins.completion
 
+local lsp_formatting = function(bufnr)
+    vim.lsp.buf.format({
+        filter = function(client)
+            return client.name == "null-ls"
+        end,
+        bufnr = bufnr,
+    })
+end
+
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
 null_ls.setup({
     sources = {
         formatting.stylua.with({
@@ -38,14 +49,16 @@ null_ls.setup({
     },
     update_in_insert = true,
     --format on save
-    on_attach = function(client)
-        if client.resolved_capabilities.document_formatting then
-            vim.cmd([[
-            augroup LspFormatting
-                autocmd! * <buffer>
-                autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
-            augroup END
-            ]])
+    on_attach = function(client, bufnr)
+        if client.supports_method("textDocument/formatting") then
+            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                group = augroup,
+                buffer = bufnr,
+                callback = function()
+                    lsp_formatting(bufnr)
+                end,
+            })
         end
     end,
 })
