@@ -228,19 +228,27 @@ return gears.table.join(
     -- focus nav client
     awful.key({ modkey }, "j", function()
         awful.client.focus.bydirection("down")
-        client.focus:raise()
+        if client.focus then
+            client.focus:raise()
+        end
     end, { description = "focus by direction down", group = "client" }),
     awful.key({ modkey }, "k", function()
         awful.client.focus.bydirection("up")
-        client.focus:raise()
+        if client.focus then
+            client.focus:raise()
+        end
     end, { description = "focus by direction up", group = "client" }),
     awful.key({ modkey }, "h", function()
         awful.client.focus.bydirection("left")
-        client.focus:raise()
+        if client.focus then
+            client.focus:raise()
+        end
     end, { description = "focus by direction left", group = "client" }),
     awful.key({ modkey }, "l", function()
         awful.client.focus.bydirection("right")
-        client.focus:raise()
+        if client.focus then
+            client.focus:raise()
+        end
     end, { description = "focus by direction right", group = "client" }),
     awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
     awful.key({ modkey, "Shift" }, "m", function()
