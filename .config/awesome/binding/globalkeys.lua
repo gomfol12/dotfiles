@@ -120,9 +120,6 @@ return gears.table.join(
     awful.key({ modkey }, "y", function()
         awful.spawn("clipmenu")
     end, { description = "open clipboard history", group = "util" }),
-    awful.key({ super }, "w", function()
-        awful.spawn("dmenu_websearch.sh")
-    end, { description = "dmenu web search", group = "util" }),
     awful.key({}, "Menu", function()
         awful.spawn("dmenu_run")
     end, { description = "dmenu run", group = "util" }),

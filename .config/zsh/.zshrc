@@ -13,6 +13,9 @@ setopt hist_find_no_dups
 setopt no_case_glob
 # Disable ctrl-s and ctrl-q
 stty -ixon
+if [ "$TERM" = "linux" ]; then
+    setterm -cursor on
+fi
 
 ### Config ###
 source "$ZDOTDIR/zsh-aliases"

@@ -20,7 +20,6 @@ if test $NVIDIA; then
 fi
 
 xss-lock -- betterlockscreen -l &
-imwheel -b "45" &
 picom.sh &
 unclutter --timeout 5 &
 lxpolkit &
@@ -35,6 +34,7 @@ playerctld daemon &
 if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
     xsettingsd --config ~/.config/xsettingsd/xsettingsd-laptop.conf &
 else
+    imwheel -b "45" &
     xsettingsd &
 fi
 

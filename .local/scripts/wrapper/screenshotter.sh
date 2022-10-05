@@ -1,17 +1,15 @@
 #!/bin/sh
+# TODO: click action on notification to open screenshot with sxiv
 
 notifyOpen()
 {
-    actionDunst=$(dunstify --action="default,Reply" "Maim" "Screenshot Taken")
-    if [ "$actionDunst" = "default" ]; then
-        sxiv.sh "$output"
-    fi
+    notify-send "Maim" "Screenshot Taken"
     exit
 }
 
 notify()
 {
-    dunstify "Maim" "Screenshot Taken"
+    notify-send "Maim" "Screenshot Taken"
     exit
 }
 

@@ -26,7 +26,8 @@ wal --backend "${backend:-wal}" -n -s -i "$(readlink -f "$bg_path")" >/dev/null 
     fi
 }
 pidof st | xargs -r kill -SIGUSR1 >/dev/null 2>&1
-[ -z "$1" ] || pywalfox update
+[ -z "$1" ] || pywalfox update >/dev/null 2>&1
+[ -z "$1" ] || betterlockscreen -u "$1" >/dev/null 2>&1
 
 if [ -d "$HOME/.themes/$theme_name" ]; then
     if [ ! -d "$HOME/.local/share/themes/" ]; then

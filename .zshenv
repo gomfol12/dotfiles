@@ -85,7 +85,7 @@ if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
     export SECONDARY="DVI-D-0"
 fi
 if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
-    export PRIMARY="eDP-1"
+    export PRIMARY="eDP1"
     export SECONDARY=""
 fi
 
