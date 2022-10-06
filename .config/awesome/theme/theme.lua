@@ -22,7 +22,11 @@ local awful = require("awful")
 -- inherit default theme
 local theme = dofile(themes_path .. "default/theme.lua")
 
-theme.font = "Inconsolata Nerd Font 13"
+if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+    theme.font = "Inconsolata Nerd Font 12"
+else
+    theme.font = "Inconsolata Nerd Font 13"
+end
 
 -- general
 theme.bg_normal = xrdb.background

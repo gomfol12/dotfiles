@@ -55,7 +55,7 @@ st.shell: /bin/zsh
 st.alpha: 0.9
 
 ! sxiv
-*.bar.font: Inconsolata Nerd Font:pixelsize=16
+*.bar.font: Inconsolata Nerd Font:pixelsize=32
 
 ! old schemes
 ! *.color0:  #000000
