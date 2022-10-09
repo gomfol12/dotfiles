@@ -6,7 +6,7 @@ if not status_ok then
 end
 
 dapui.setup({
-    icons = { expanded = "▾", collapsed = "▸" },
+    icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
     mappings = {
         -- Use a table to apply multiple mappings
         expand = { "<CR>", "<2-LeftMouse>" },
@@ -16,9 +16,7 @@ dapui.setup({
         repl = "r",
         toggle = "t",
     },
-    -- Expand lines larger than the window
-    -- Requires >= 0.7
-    expand_lines = vim.fn.has("nvim-0.7"),
+    expand_lines = vim.fn.has("nvim-0.7") == 1,
     -- Layouts define sections of the screen to place windows.
     -- The position can be "left", "right", "top" or "bottom".
     -- The size specifies the height/width depending on position. It can be an Int
@@ -47,6 +45,20 @@ dapui.setup({
             position = "bottom",
         },
     },
+    controls = {
+        enabled = true,
+        element = "repl",
+        icons = {
+            pause = "",
+            play = "",
+            step_into = "",
+            step_over = "",
+            step_out = "",
+            step_back = "",
+            run_last = "↻",
+            terminate = "□",
+        },
+    },
     floating = {
         max_height = nil, -- These can be integers or a float between 0 and 1.
         max_width = nil, -- Floats will be treated as percentage of your screen.
@@ -57,7 +69,8 @@ dapui.setup({
     },
     windows = { indent = 1 },
     render = {
-        max_type_length = nil, -- Can be integer or nil.
+        max_type_length = nil,
+        max_value_lines = 100,
     },
 })
 

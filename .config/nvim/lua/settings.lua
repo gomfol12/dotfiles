@@ -1,6 +1,5 @@
 -- ==================== Settings ==================== --
 -- Default options are not included
--- TODO: slient in autocmd dont work, remove trailing space dont work
 
 local cmd = vim.cmd
 local opt = vim.opt
@@ -90,15 +89,14 @@ autocmd("TextYankPost", {
 
 -- vertically center document when entering insert mode
 autocmd("InsertEnter", {
-    pattern = "*",
     command = "norm zz",
 })
 
 -- remove trailing whitespaces on save
-autocmd("BufWritePre", {
-    pattern = "*(.md)@<!",
-    command = "%s/s+$//e",
-})
+-- autocmd("BufWritePre", {
+--     pattern = "*",
+--     command = ":%s/\\s\\+$//e",
+-- })
 
 -- Autocmd for PackerCompile on save in plugins.lua
 augroup("packer_user_config", { clear = true })
@@ -110,11 +108,19 @@ autocmd("BufWritePost", {
 
 -- Autocommand that reloads xresources
 augroup("xresources_user_config", { clear = true })
-autocmd("BufWritePost", {
-    group = "xresources_user_config",
-    pattern = "Xresources",
-    command = "!xrdb -merge " .. os.getenv("XDG_CONFIG_HOME") .. "/Xresources",
-})
+if os.getenv("HOST") == os.getenv("HOSTNAME_LAPTOP") then
+    autocmd("BufWritePost", {
+        group = "xresources_user_config",
+        pattern = "Xresources",
+        command = "silent! !xrdb -merge " .. os.getenv("XDG_CONFIG_HOME") .. "/laptop.Xresources",
+    })
+else
+    autocmd("BufWritePost", {
+        group = "xresources_user_config",
+        pattern = "Xresources",
+        command = "silent! !xrdb -merge " .. os.getenv("XDG_CONFIG_HOME") .. "/Xresources",
+    })
+end
 
 -- Function that adds "vfile:" in vimwiki for linking external files and opening them in a new tab
 cmd([[
@@ -135,3 +141,9 @@ cmd([[
         endif
     endfunction
 ]])
+
+-- Mason Autoupdate after packer
+vim.api.nvim_create_autocmd("User", {
+    pattern = "PackerCompileDone",
+    command = ":MasonUpdateAll",
+})

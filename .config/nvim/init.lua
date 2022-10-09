@@ -20,6 +20,8 @@ function _G.load_config()
     require("debugui")
     -- require("tabline")
     require("sessionManager")
+    require("color")
+    require("mason-update-all").setup()
 end
 
 if vim.fn.isdirectory(packer_install_path) == 0 then

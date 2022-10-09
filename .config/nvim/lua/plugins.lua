@@ -33,8 +33,6 @@ return packer.startup(function(use)
         requires = { "nvim-lua/plenary.nvim" },
     })
     use("moll/vim-bbye")
-    use("chrisbra/Colorizer")
-    use("lewis6991/spellsitter.nvim")
     use("rhysd/vim-grammarous")
     use("lewis6991/impatient.nvim")
     use({
@@ -80,7 +78,22 @@ return packer.startup(function(use)
             }
         end,
     })
-    use("dhruvasagar/vim-table-mode")
+    use({
+        "dhruvasagar/vim-table-mode",
+        config = function()
+            vim.g.table_mode_corner = "|"
+        end,
+    })
+    use("NvChad/nvim-colorizer.lua")
+    use("superhawk610/ascii-blocks.nvim")
+    use({
+        "ggandor/leap.nvim",
+        requires = { "tpope/vim-repeat" },
+        config = function()
+            require("leap").set_default_keymaps()
+            vim.cmd("autocmd ColorScheme * lua require('leap').init_highlight(true)")
+        end,
+    })
 
     -- comments
     use("numToStr/Comment.nvim")
@@ -104,11 +117,27 @@ return packer.startup(function(use)
     use("p00f/nvim-ts-rainbow")
 
     -- LSP
-    use("williamboman/nvim-lsp-installer")
+    use("williamboman/mason.nvim")
+    use("williamboman/mason-lspconfig.nvim")
     use("neovim/nvim-lspconfig")
     use({
         "jose-elias-alvarez/null-ls.nvim",
         requires = { "nvim-lua/plenary.nvim" },
+    })
+    use("jayp0521/mason-null-ls.nvim")
+    use("RubixDev/mason-update-all")
+    use("p00f/clangd_extensions.nvim")
+
+    -- dap
+    use("mfussenegger/nvim-dap")
+    use("rcarriga/nvim-dap-ui")
+
+    -- overseer
+    use({
+        "stevearc/overseer.nvim",
+        config = function()
+            require("overseer").setup({ templates = { "builtin", "user.cpp_build" } })
+        end,
     })
 
     -- cmp
@@ -138,8 +167,4 @@ return packer.startup(function(use)
     use("nvim-lua/popup.nvim")
     use("nvim-telescope/telescope-media-files.nvim")
     use("nvim-telescope/telescope-ui-select.nvim")
-
-    -- dap
-    use("mfussenegger/nvim-dap")
-    use("rcarriga/nvim-dap-ui")
 end)

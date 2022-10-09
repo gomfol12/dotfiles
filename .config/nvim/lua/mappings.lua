@@ -72,7 +72,7 @@ keymap.set("!", "<C-BS>", "<C-w>")
 keymap.set("!", "<C-h>", "<C-w>")
 
 -- search replace
-keymap.set("n", "S", ":%s///g<Left><Left><Left>")
+-- keymap.set("n", "S", ":%s///g<Left><Left><Left>")
 
 -- disable ex mode
 keymap.set("n", "Q", "<nop>")

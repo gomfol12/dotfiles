@@ -129,10 +129,19 @@ hotkeys_popup.add_hotkeys(tmux_keys)
 
 local nvim_rule_any = { name = { "nvim", "NVIM" } }
 local nvim_keys = {
-    ["nvim: test"] = {
+    ["nvim: vim-table-mode"] = {
         {
-            modifiers = { "Mod1" },
-            keys = { t = "test" },
+            modifiers = { "Leader" },
+            keys = {
+                tm = "Toggle Table Mode",
+                tt = "Tableize",
+                tdd = "delete row",
+                tdc = "delete column",
+                tic = "insert column",
+                tfa = "add formula",
+                tfe = "eval formula",
+                ["t?"] = "get current cell name",
+            },
         },
     },
 }
