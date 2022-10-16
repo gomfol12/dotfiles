@@ -143,7 +143,13 @@ cmd([[
 ]])
 
 -- Mason Autoupdate after packer
-vim.api.nvim_create_autocmd("User", {
+autocmd("User", {
     pattern = "PackerCompileDone",
     command = ":MasonUpdateAll",
+})
+
+-- Disable automatic comment insertion
+autocmd("FileType", {
+    pattern = "*",
+    command = "setlocal formatoptions-=c formatoptions-=r formatoptions-=o",
 })

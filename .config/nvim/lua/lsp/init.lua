@@ -1,17 +1,10 @@
 -- ==================== LSP (mason.nvim, mason-lspconfig.nvim, lspconfig.nvim, cmp-nvim-lsp.nvim) ==================== --
 
 local mason_ok, mason = pcall(require, "mason")
-if not mason_ok then
-    return
-end
-
 local mason_lsp_ok, mason_lsp_config = pcall(require, "mason-lspconfig")
-if not mason_lsp_ok then
-    return
-end
-
 local lsp_ok, lsp_config = pcall(require, "lspconfig")
-if not lsp_ok then
+
+if not mason_ok and not mason_lsp_ok and not lsp_ok then
     return
 end
 
@@ -53,7 +46,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local cmp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if cmp_status_ok then
-    capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
+    capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 end
 
 -- Keybinds
@@ -109,6 +102,7 @@ lsp_config.bashls.setup(opts)
 lsp_config.cmake.setup(opts)
 lsp_config.html.setup(opts)
 lsp_config.cssls.setup(opts)
+lsp_config.marksman.setup(opts)
 --lsp_config.ltex.setup(vim.tbl_deep_extend("force", require("lsp.settings.ltex_lua"), opts))
 
 require("clangd_extensions").setup({
@@ -116,12 +110,12 @@ require("clangd_extensions").setup({
         on_attach = function(client, bufnr)
             highlight(client, bufnr)
             keybinds(bufnr)
-            local augroup = vim.api.nvim_create_augroup("LspClangSymbolInfo", { clear = true })
-            vim.api.nvim_create_autocmd("CursorHold", {
-                group = augroup,
-                buffer = bufnr,
-                command = ":ClangdSymbolInfo",
-            })
+            -- local augroup = vim.api.nvim_create_augroup("LspClangSymbolInfo", { clear = true })
+            -- vim.api.nvim_create_autocmd("CursorHold", {
+            --     group = augroup,
+            --     buffer = bufnr,
+            --     command = ":ClangdSymbolInfo",
+            -- })
         end,
         capabilities = capabilities,
     },

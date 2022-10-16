@@ -49,7 +49,7 @@ bindkey -v # vi keybinds
 
 bindkey "^P" up-line-or-history
 bindkey "^N" down-line-or-history
-bindkey "^J" autosuggest-execute
+bindkey "^N" autosuggest-execute
 bindkey "^F" autosuggest-accept
 tmuxShow() { BUFFER="tmux"; zle accept-line }; zle -N tmuxShow; bindkey '^Z' tmuxShow
 lfShow() { BUFFER="f"; zle accept-line }; zle -N lfShow; bindkey '^G' lfShow
@@ -63,6 +63,12 @@ exit_zsh() { exit }; zle -N exit_zsh; bindkey '^D' exit_zsh
 # disable spamming of '^Y' '^E' when scrolling
 bindkey -r "^Y"
 bindkey -r "^E"
+
+# disable keys for vim tmux integration
+bindkey -r "^h"
+bindkey -r "^j"
+bindkey -r "^k"
+bindkey -r "^l"
 
 # create a zkbd compatible hash;
 # to add other keys to this hash, see: man 5 terminfo

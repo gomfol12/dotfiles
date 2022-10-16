@@ -22,6 +22,7 @@ function _G.load_config()
     require("sessionManager")
     require("color")
     require("mason-update-all").setup()
+    require("task")
 end
 
 if vim.fn.isdirectory(packer_install_path) == 0 then

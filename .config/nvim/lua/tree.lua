@@ -112,7 +112,7 @@ nvim_tree.setup({
                 { key = "g?", action = "toggle_help" },
                 { key = "W", action = "collapse_all" },
                 { key = "S", action = "search_node" },
-                { key = "<C-k>", action = "toggle_file_info" },
+                { key = "<C-i>", action = "toggle_file_info" },
                 { key = "fc", action = "run_file_command" },
             },
         },

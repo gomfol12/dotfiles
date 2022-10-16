@@ -94,6 +94,16 @@ return packer.startup(function(use)
             vim.cmd("autocmd ColorScheme * lua require('leap').init_highlight(true)")
         end,
     })
+    use({
+        "aserowy/tmux.nvim",
+        config = function()
+            require("tmux").setup({
+                copy_sync = {
+                    enable = false,
+                },
+            })
+        end,
+    })
 
     -- comments
     use("numToStr/Comment.nvim")
@@ -133,12 +143,7 @@ return packer.startup(function(use)
     use("rcarriga/nvim-dap-ui")
 
     -- overseer
-    use({
-        "stevearc/overseer.nvim",
-        config = function()
-            require("overseer").setup({ templates = { "builtin", "user.cpp_build" } })
-        end,
-    })
+    use("stevearc/overseer.nvim")
 
     -- cmp
     use("hrsh7th/cmp-nvim-lsp")

@@ -46,7 +46,7 @@ dapui.setup({
         },
     },
     controls = {
-        enabled = true,
+        enabled = false,
         element = "repl",
         icons = {
             pause = "",

@@ -38,16 +38,24 @@ keymap.set("i", "<c-s>", "<ESC>:w<CR>a")
 --keymap.set('n', '<c-c>', ':source ~/.config/nvim/init.lua<cr>')
 
 -- window navigation
-keymap.set("n", "<c-j>", "<c-w>j")
-keymap.set("n", "<c-h>", "<c-w>h")
-keymap.set("n", "<c-k>", "<c-w>k")
-keymap.set("n", "<c-l>", "<c-w>l")
+-- keymap.set("n", "<c-j>", "<c-w>j")
+-- keymap.set("n", "<c-h>", "<c-w>h")
+-- keymap.set("n", "<c-k>", "<c-w>k")
+-- keymap.set("n", "<c-l>", "<c-w>l")
+keymap.set("n", "<c-j>", "lua require('tmux').move_bottom()<cr>", { silent = true })
+keymap.set("n", "<c-h>", "lua require('tmux').move_left()<cr>", { silent = true })
+keymap.set("n", "<c-k>", "lua require('tmux').move_top()<cr>", { silent = true })
+keymap.set("n", "<c-l>", "lua require('tmux').move_right()<cr>", { silent = true })
 
 -- window resize
-keymap.set("n", "<Up>", ":resize -2<CR>", { silent = true })
-keymap.set("n", "<Down>", ":resize +2<CR>", { silent = true })
-keymap.set("n", "<Left>", ":vertical resize -2<CR>", { silent = true })
-keymap.set("n", "<Right>", ":vertical resize +2<CR>", { silent = true })
+-- keymap.set("n", "<c-Up>", ":resize -2<CR>", { silent = true })
+-- keymap.set("n", "<c-Down>", ":resize +2<CR>", { silent = true })
+-- keymap.set("n", "<c-Left>", ":vertical resize +2<CR>", { silent = true })
+-- keymap.set("n", "<c-Right>", ":vertical resize -2<CR>", { silent = true })
+keymap.set("n", "<c-Up>", ":lua require('tmux').resize_top()<cr>", { silent = true })
+keymap.set("n", "<c-Down>", ":lua require('tmux').resize_bottom()<cr>", { silent = true })
+keymap.set("n", "<c-Left>", ":lua require('tmux').resize_left()<cr>", { silent = true })
+keymap.set("n", "<c-Right>", ":lua require('tmux').resize_right()<cr>", { silent = true })
 
 -- window splits
 keymap.set("n", "<leader>s", ":split<Space>")
@@ -173,3 +181,9 @@ keymap.set("n", "<leader>dt", ":lua require'dap'.terminate()<CR>")
 -- dapui
 keymap.set("n", "<leader>du", ":lua require'dapui'.toggle()<CR>", { silent = true })
 keymap.set("v", "<leader>dh", ":lua require'dapui'.eval()<CR>", { silent = true })
+
+-- overseer
+keymap.set("n", "<leader>ot", ":OverseerToggle<CR>", { silent = true })
+keymap.set("n", "<leader>bb", ":OverseerRun<CR>", { silent = true })
+keymap.set("n", "<leader>bl", ":OverseerRestartLast<CR>", { silent = true })
+keymap.set("n", "<leader>oa", ":OverseerQuickAction<CR>", { silent = true })
