@@ -104,6 +104,8 @@ return packer.startup(function(use)
             })
         end,
     })
+    use("vim-pandoc/vim-pandoc-syntax")
+    use("vim-pandoc/vim-pandoc")
 
     -- comments
     use("numToStr/Comment.nvim")
