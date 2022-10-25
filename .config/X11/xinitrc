@@ -38,4 +38,6 @@ else
     xsettingsd &
 fi
 
+nextcloud --background &
+
 exec awesome

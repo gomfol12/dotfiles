@@ -1,6 +1,6 @@
 #!/bin/sh
 # TODO: rework
-bookmark_file="$HOME/doc/notizen/bookmarks/dirs"
+bookmark_file="$HOME/doc/bookmarks/dirs"
 
 if ! [ -f "$bookmark_file" ]; then
     touch "$bookmark_file"
