@@ -114,7 +114,7 @@ for s in screen do
         barheight = 25
     end
     if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
-        barheight = 50
+        barheight = 45
     end
 
     s.wibox = awful.wibar({ position = "top", height = barheight, screen = s })

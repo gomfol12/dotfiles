@@ -6,6 +6,17 @@ if not status_ok then
     return
 end
 
+local mason_dap_ok, mason_dap = pcall(require, "mason-nvim-dap")
+if not mason_dap_ok then
+    return
+end
+
+mason_dap.setup({
+    -- ensure_installed = {
+    --     "javadbg",
+    -- },
+})
+
 vim.fn.sign_define("DapBreakpoint", { text = "👉", texthl = "", linehl = "", numhl = "" })
 vim.fn.sign_define("DapStopped", { text = "✋", texthl = "", linehl = "", numhl = "" })
 

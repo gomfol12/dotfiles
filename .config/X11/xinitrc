@@ -10,16 +10,21 @@ fi
 setWallpaper.sh
 setupMonitors.sh
 xset r rate 200 40
-#xset dpms 300 300 600
-#xset s 300
-xset -dpms
+# xset dpms 300 300 600
+# xset s 300
+if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
+    xset +dpms
+    xset dpms 300 300 600
+else
+    xset -dpms
+fi
 xset s off
 
 if test $NVIDIA; then
     nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings --load-config-only &
 fi
 
-xss-lock -- betterlockscreen -l &
+# xss-lock -- betterlockscreen -l &
 picom.sh &
 unclutter --timeout 5 &
 lxpolkit &
@@ -33,6 +38,7 @@ playerctld daemon &
 
 if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
     xsettingsd --config ~/.config/xsettingsd/xsettingsd-laptop.conf &
+    libinput-gestures &
 else
     imwheel -b "45" &
     xsettingsd &

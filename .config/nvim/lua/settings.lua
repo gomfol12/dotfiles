@@ -68,6 +68,10 @@ cmd([[
 -- ========== Plugin Settings ========== --
 g.colorizer_auto_color = 1
 
+-- disable netrw
+g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
+
 -- file browsing
 g.netrw_banner = 0 -- disable banner
 g.netrm_browse_split = 4 -- open in prior window
@@ -108,10 +112,10 @@ autocmd("BufWritePost", {
 
 -- Autocommand that reloads xresources
 augroup("xresources_user_config", { clear = true })
-if os.getenv("HOST") == os.getenv("HOSTNAME_LAPTOP") then
+if require("utils").getHost() == os.getenv("HOSTNAME_LAPTOP") then
     autocmd("BufWritePost", {
         group = "xresources_user_config",
-        pattern = "Xresources",
+        pattern = "laptop.Xresources",
         command = "silent! !xrdb -merge " .. os.getenv("XDG_CONFIG_HOME") .. "/laptop.Xresources",
     })
 else

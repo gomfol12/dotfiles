@@ -17,4 +17,31 @@ function utils.map(mode, lhs, rhs, opts)
     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
+function utils.getHost()
+    local hostname = ""
+    local file_hostname = io.popen("/bin/hostname")
+    if file_hostname then
+        hostname = file_hostname:read("*a") or ""
+
+        hostname = string.gsub(hostname, "\n$", "")
+        file_hostname:close()
+    end
+    return hostname
+end
+
+function utils.dump(o)
+    if type(o) == "table" then
+        local s = "{ "
+        for k, v in pairs(o) do
+            if type(k) ~= "number" then
+                k = '"' .. k .. '"'
+            end
+            s = s .. "[" .. k .. "] = " .. utils.dump(v) .. ","
+        end
+        return s .. "} "
+    else
+        return tostring(o)
+    end
+end
+
 return utils

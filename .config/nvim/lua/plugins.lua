@@ -139,10 +139,12 @@ return packer.startup(function(use)
     use("jayp0521/mason-null-ls.nvim")
     use("RubixDev/mason-update-all")
     use("p00f/clangd_extensions.nvim")
+    use("mfussenegger/nvim-jdtls")
 
     -- dap
     use("mfussenegger/nvim-dap")
     use("rcarriga/nvim-dap-ui")
+    use("jayp0521/mason-nvim-dap.nvim")
 
     -- overseer
     use("stevearc/overseer.nvim")
