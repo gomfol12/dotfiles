@@ -10,5 +10,6 @@ colorizer.setup({
         "*",
         css = { css = true },
         html = { names = false },
+        java = { names = false },
     },
 })
