@@ -176,5 +176,6 @@ countdown()
         time="$(( $start - `date +%s` ))"
         printf '\r%s ' "$(date -u -d "@$time" +%H:%M:%S)"
     done
+    play -q -n synth 0.15 sine 880 vol 0.5
     printf '\nCountdown finished\n'
 }
