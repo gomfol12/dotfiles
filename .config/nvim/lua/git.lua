@@ -5,6 +5,12 @@ if not status_ok then
     return
 end
 
+-- git blame
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "*",
+    command = ":highlight Blamer guifg=grey",
+})
+
 gitsigns.setup({
     signs = {
         add = { hl = "GitSignsAdd", text = "▎", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
