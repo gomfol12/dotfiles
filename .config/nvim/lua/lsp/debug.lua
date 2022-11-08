@@ -12,9 +12,10 @@ if not mason_dap_ok then
 end
 
 mason_dap.setup({
-    -- ensure_installed = {
-    --     "javadbg",
-    -- },
+    ensure_installed = {
+        "javadbg",
+        "javatest",
+    },
 })
 
 vim.fn.sign_define("DapBreakpoint", { text = "👉", texthl = "", linehl = "", numhl = "" })

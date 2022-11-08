@@ -1,12 +1,12 @@
 -- ==================== NVIM init ==================== --
--- TODO: Telescope, alpha color, fix weird snippet bug
+-- TODO: Telescope, alpha color
 
 local packer_install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
 function _G.load_config()
     require("mappings")
     require("settings")
-    require("lsp")
+    require("lsp")()
     require("completion")
     require("treesitter")
     require("tele")

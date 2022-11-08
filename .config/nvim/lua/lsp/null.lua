@@ -39,9 +39,9 @@ null_ls.setup({
         formatting.shfmt.with({
             extra_args = { "-i", "4", "-fn" },
         }),
-        -- formatting.clang_format.with({
-        --     extra_args = { "-style={BasedOnStyle: Microsoft}" },
-        -- }),
+        formatting.clang_format.with({
+            extra_args = { "-style={BasedOnStyle: Microsoft}" },
+        }),
         formatting.cmake_format,
 
         code_actions.shellcheck,

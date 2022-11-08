@@ -1,5 +1,4 @@
 -- ==================== Plugins ==================== --
--- TODO: alpha rework
 
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
@@ -75,6 +74,16 @@ return packer.startup(function(use)
         config = function()
             vim.g.vimtex_view_method = "zathura"
             vim.g.vimtex_compiler_method = "latexmk"
+            vim.g.vimtex_compiler_latexmk = {
+                options = {
+                    "-pdf",
+                    "-shell-escape",
+                    "-verbose",
+                    "-file-line-error",
+                    "-synctex=1",
+                    "-interaction=nonstopmode",
+                },
+            }
             vim.g.vimtex_toc_config = {
                 name = "TOC",
                 split_width = 30,
