@@ -14,12 +14,6 @@ end
 
 local workspace_dir = home .. "/ndoc/java/"
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-local cmp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if cmp_status_ok then
-    capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-end
-
 local extendedClientCapabilities = jdtls.extendedClientCapabilities
 extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
@@ -61,7 +55,7 @@ local config = {
         workspace_dir,
     },
 
-    capabilities = capabilities,
+    capabilities = require("lsp").capabilities,
 
     root_dir = root_dir,
 
