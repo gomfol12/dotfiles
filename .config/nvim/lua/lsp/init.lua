@@ -99,7 +99,7 @@ local opts = {
     capabilities = _M.capabilities,
 }
 
-return setmetatable({}, {
+return setmetatable(_M, {
     __call = function()
         lsp_config.sumneko_lua.setup(vim.tbl_deep_extend("force", require("lsp.settings.sumneko_lua"), opts))
         lsp_config.jsonls.setup(vim.tbl_deep_extend("force", require("lsp.settings.jsonls_lua"), opts))
