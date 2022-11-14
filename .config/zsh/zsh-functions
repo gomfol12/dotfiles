@@ -179,3 +179,7 @@ countdown()
     play -q -n synth 0.15 sine 880 vol 0.5
     printf '\nCountdown finished\n'
 }
+
+function newalias(){
+    echo "alias $1='$2'" >> "$ZDOTDIR/zsh-aliases" && source "$ZDOTDIR/.zshrc";
+}

@@ -143,6 +143,7 @@ return packer.startup(function(use)
     })
     use("nvim-treesitter/nvim-treesitter-textobjects")
     use("p00f/nvim-ts-rainbow")
+    use("nvim-treesitter/playground")
 
     -- LSP
     use("williamboman/mason.nvim")
