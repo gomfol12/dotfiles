@@ -52,6 +52,9 @@ if cmp_status_ok then
     _M.capabilities = cmp_nvim_lsp.default_capabilities(_M.capabilities)
 end
 
+-- fix for clangd
+_M.capabilities.offsetEncoding = { "utf-16" }
+
 -- Keybinds
 function _M.keybinds(bufnr)
     local opts = { silent = true, buffer = bufnr }
@@ -126,11 +129,11 @@ return setmetatable(_M, {
             },
             extensions = {
                 -- Automatically set inlay hints (type hints)
-                autoSetHints = false,
+                autoSetHints = true,
                 -- These apply to the default ClangdSetInlayHints command
                 inlay_hints = {
                     -- Only show inlay hints for the current line
-                    only_current_line = false,
+                    only_current_line = true,
                     -- Event which triggers a refersh of the inlay hints.
                     -- You can make this "CursorMoved" or "CursorMoved,CursorMovedI" but
                     -- not that this may cause  higher CPU usage.
@@ -144,9 +147,9 @@ return setmetatable(_M, {
                     -- prefix for all the other hints (type, chaining)
                     other_hints_prefix = "=> ",
                     -- whether to align to the length of the longest line in the file
-                    max_len_align = false,
+                    max_len_align = true,
                     -- padding from the left if max_len_align is true
-                    max_len_align_padding = 1,
+                    max_len_align_padding = 4,
                     -- whether to align to the extreme right or not
                     right_align = false,
                     -- padding from the right if right_align is true

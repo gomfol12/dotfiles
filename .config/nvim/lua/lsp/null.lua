@@ -51,15 +51,18 @@ null_ls.setup({
         diagnostics.chktex,
     },
     update_in_insert = true,
-    --format on save
+    -- format on save
     on_attach = function(client, bufnr)
         if client.supports_method("textDocument/formatting") then
+            local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
             vim.api.nvim_create_autocmd("BufWritePre", {
+                group = augroup,
                 buffer = bufnr,
                 callback = function()
                     vim.lsp.buf.format({
-                        filter = function()
-                            return client.name == "null-ls"
+                        filter = function(filter_client)
+                            return filter_client.name == "null-ls"
                         end,
                         bufnr = bufnr,
                     })
