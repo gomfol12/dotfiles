@@ -187,3 +187,6 @@ keymap.set("n", "<leader>ot", ":OverseerToggle<CR>", { silent = true })
 keymap.set("n", "<leader>bb", ":OverseerRun<CR>", { silent = true })
 keymap.set("n", "<leader>bl", ":OverseerRestartLast<CR>", { silent = true })
 keymap.set("n", "<leader>oa", ":OverseerQuickAction<CR>", { silent = true })
+
+-- neogen
+keymap.set("n", "<Leader>nf", ":lua require('neogen').generate()<CR>", { silent = true })

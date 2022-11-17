@@ -185,6 +185,15 @@ return packer.startup(function(use)
     use("L3MON4D3/LuaSnip")
     use("rafamadriz/friendly-snippets")
 
+    -- javadoc
+    use({
+        "danymat/neogen",
+        config = function()
+            require("neogen").setup({ snippet_engine = "luasnip" })
+        end,
+        requires = "nvim-treesitter/nvim-treesitter",
+    })
+
     -- Telescope
     use({
         "nvim-telescope/telescope.nvim",
