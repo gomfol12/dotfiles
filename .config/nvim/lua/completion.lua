@@ -1,5 +1,5 @@
 -- ==================== Completion (nvim-cmp, luasnip) ==================== --
--- TODO: diagnostics ???, spell Completion, git, fzf, pandoc + markdown
+-- TODO: diagnostics ???, git, fzf, pandoc + markdown
 
 local cmp_status_ok, cmp = pcall(require, "cmp")
 if not cmp_status_ok then
@@ -70,19 +70,16 @@ cmp.setup({
         end,
     },
     mapping = cmp.mapping.preset.insert({
-        ["<C-k>"] = cmp.mapping.select_prev_item(),
-        ["<C-j>"] = cmp.mapping.select_next_item(),
-        ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
-        ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
-        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-        ["<C-y>"] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-        ["<C-e>"] = cmp.mapping({
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-        }),
-        -- Accept currently selected item. If none selected, `select` first item.
-        -- Set `select` to `false` to only confirm explicitly selected items.
-        ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item()),
+        ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item()),
+        ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4)),
+        ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4)),
+        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete()),
+        ["<C-e>"] = cmp.mapping(cmp.mapping.abort()),
+        ["<CR>"] = cmp.mapping(cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
+        })),
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_next_item()
@@ -115,9 +112,10 @@ cmp.setup({
                 nvim_lua = "[NVIM_LUA]",
                 omni = "[OMNI]",
                 luasnip = "[LUASNIP]",
-                -- spell = "[SPELL]",
+                git = "[GIT]",
+                rg = "[RG]",
                 calc = "[CALC]",
-                -- latex_symbols = "[SYM]",
+                dynamic = "[DYNAMIC]",
                 path = "[PATH]",
                 buffer = "[BUFFER]",
             })[entry.source.name]
@@ -130,24 +128,14 @@ cmp.setup({
         { name = "nvim_lua" },
         { name = "omni" },
         { name = "luasnip" },
-        -- { name = "spell" },
+        { name = "git" },
+        { name = "rg" },
         { name = "calc" },
-        -- { name = "latex_symbols" },
+        { name = "dynamic" },
         { name = "path" },
     }, {
         { name = "buffer" },
     }),
-    confirm_opts = {
-        behavior = cmp.ConfirmBehavior.Replace,
-        select = false,
-    },
-    --[[ documentation = {
-        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-    }, ]]
-    experimental = {
-        ghost_text = false,
-        native_menu = false,
-    },
     sorting = {
         comparators = {
             cmp.config.compare.offset,
@@ -161,6 +149,7 @@ cmp.setup({
         },
     },
 })
+require("cmp_git").setup()
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline("/", {
@@ -206,4 +195,27 @@ cmp.setup.cmdline(":", {
         { name = "cmdline" },
         { name = "cmdline_history" },
     }),
+})
+
+local Date = require("cmp_dynamic.utils.date")
+require("cmp_dynamic").setup({
+    {
+        label = "today",
+        insertText = 1,
+        cb = {
+            function()
+                return os.date("%Y/%m/%d")
+            end,
+        },
+    },
+    {
+        label = "next Monday",
+        insertText = 1,
+        cb = {
+            function()
+                return Date.new():add_date(7):day(1):format("%Y/%m/%d")
+            end,
+        },
+        resolve = true, -- default: false
+    },
 })

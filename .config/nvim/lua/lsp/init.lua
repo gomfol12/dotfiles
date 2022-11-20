@@ -45,11 +45,11 @@ mason_lsp_config.setup({
     automatic_installation = true,
 })
 
-_M.capabilities = vim.lsp.protocol.make_client_capabilities()
+-- _M.capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local cmp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 if cmp_status_ok then
-    _M.capabilities = cmp_nvim_lsp.default_capabilities(_M.capabilities)
+    _M.capabilities = cmp_nvim_lsp.default_capabilities()
 end
 
 -- fix for clangd
