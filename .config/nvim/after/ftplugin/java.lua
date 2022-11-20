@@ -55,7 +55,7 @@ local config = {
         workspace_dir,
     },
 
-    capabilities = require("lsp").capabilities,
+    capabilities = vim.lsp.protocol.make_client_capabilities(),
 
     root_dir = root_dir,
 

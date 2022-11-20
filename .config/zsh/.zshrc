@@ -74,11 +74,11 @@ bindkey -r "^l"
 # to add other keys to this hash, see: man 5 terminfo
 typeset -g -A key
 
-key[Home]="${terminfo[home]}"
+key[Home]="${terminfo[khome]}"
 key[End]="${terminfo[kend]}"
 key[Insert]="${terminfo[kich1]}"
 key[Backspace]="${terminfo[kbs]}"
-key[Delete]="${terminfo[dch1]}"
+key[Delete]="${terminfo[kdch1]}"
 key[Up]="${terminfo[kcuu1]}"
 key[Down]="${terminfo[kcud1]}"
 key[Left]="${terminfo[kcub1]}"
@@ -173,3 +173,8 @@ eval "$(zoxide init zsh)"
 # if [ "$TERM" = "linux" ]; then
 #     source ~/.cache/wal/colors-tty.sh
 # fi
+
+### tmux ###
+if command -v tmux &>/dev/null && [ -z "${TMUX}" ]; then
+    tmux attach || tmux >/dev/null 2>&1
+fi
