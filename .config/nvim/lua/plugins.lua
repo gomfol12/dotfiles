@@ -31,13 +31,6 @@ return packer.startup(function(use)
         "lewis6991/gitsigns.nvim",
         requires = { "nvim-lua/plenary.nvim" },
     })
-    use({
-        "APZelos/blamer.nvim",
-        config = function()
-            vim.g.blamer_enabled = 1
-            vim.g.blamer_date_format = "%d.%m.%Y %H:%M"
-        end,
-    })
     use("moll/vim-bbye")
     use("rhysd/vim-grammarous")
     use("lewis6991/impatient.nvim")
