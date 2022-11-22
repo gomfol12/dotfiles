@@ -105,6 +105,46 @@ function _M.get(clientkeys, clientbuttons)
             },
         },
 
+        {
+            rule_any = {
+                class = {
+                    "Steam",
+                },
+            },
+            properties = {
+                floating = true,
+                delayed_placement = awful.placement.centered,
+                width = awful.screen.focused().workarea.width * 0.7,
+                height = awful.screen.focused().workarea.height * 0.7,
+                screen = 1,
+                tag = "9",
+            },
+        },
+
+        {
+            rule_any = {
+                class = {
+                    "firefox",
+                },
+            },
+            properties = {
+                screen = 1,
+                tag = "2",
+            },
+        },
+
+        {
+            rule_any = {
+                class = {
+                    "discord",
+                },
+            },
+            properties = {
+                screen = 2,
+                tag = "1",
+            },
+        },
+
         -- Add titlebars to normal clients and dialogs
         -- {
         --     rule_any = {
