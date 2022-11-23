@@ -175,6 +175,6 @@ eval "$(zoxide init zsh)"
 # fi
 
 ### tmux ###
-if command -v tmux &>/dev/null && [ -z "${TMUX}" ]; then
-    tmux attach || tmux >/dev/null 2>&1
+if command -v tmux &>/dev/null && [ -z "${TMUX}" ] && [ -n "$DISPLAY" ]; then
+    tmux
 fi

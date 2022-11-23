@@ -133,3 +133,4 @@ if test $NVIDIA; then
 fi
 
 # auto gen alias
+alias hc='cd ~ && clear'
