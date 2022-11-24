@@ -1,7 +1,21 @@
 -- ==================== NVIM init ==================== --
--- TODO: Telescope, alpha color
+-- TODO: Telescope, alpha color, lualine
 
 local packer_install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+
+if vim.fn.empty(vim.fn.glob(packer_install_path)) > 0 then
+    vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. packer_install_path)
+    vim.cmd([[packadd packer.nvim]])
+    require("plugins")
+    require("packer").sync()
+
+    print("==================================")
+    print("    Plugins are being installed")
+    print("    Wait until Packer completes,")
+    print("       then restart nvim")
+    print("==================================")
+    return
+end
 
 function _G.load_config()
     require("mappings")
@@ -25,13 +39,7 @@ function _G.load_config()
     require("task")
 end
 
-if vim.fn.isdirectory(packer_install_path) == 0 then
-    vim.fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", packer_install_path })
-    require("plugins")
-    require("packer").sync()
-    vim.cmd([[autocmd User PackerComplete ++once lua load_config()]])
-else
-    require("impatient")
-    require("plugins")
-    _G.load_config()
-end
+require("impatient")
+require("plugins")
+load_config()
+vim.cmd([[autocmd User PackerComplete ++once lua load_config()]])

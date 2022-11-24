@@ -22,7 +22,7 @@ return packer.startup(function(use)
         requires = { "kyazdani42/nvim-web-devicons" },
     })
     use("windwp/nvim-autopairs")
-    --[[ use("dstein64/vim-startuptime") ]]
+    use("dstein64/vim-startuptime")
     use({
         "kyazdani42/nvim-tree.lua",
         requires = { "kyazdani42/nvim-web-devicons" },
@@ -34,12 +34,6 @@ return packer.startup(function(use)
     use("moll/vim-bbye")
     use("rhysd/vim-grammarous")
     use("lewis6991/impatient.nvim")
-    use({
-        "preservim/vimux",
-        config = function()
-            vim.g.VimuxCloseOnExit = 1
-        end,
-    })
     -- use("nanozuki/tabby.nvim") -- dont work ??
     use("Shatur/neovim-session-manager")
     use({
@@ -115,10 +109,21 @@ return packer.startup(function(use)
     })
     use("vim-pandoc/vim-pandoc-syntax")
     use("vim-pandoc/vim-pandoc")
+    use({
+        "lukas-reineke/indent-blankline.nvim",
+        setup = function()
+            require("indent_blankline").setup()
+        end,
+    })
+    use({
+        "j-hui/fidget.nvim",
+        config = function()
+            require("fidget").setup()
+        end,
+    })
 
     -- comments
     use("numToStr/Comment.nvim")
-    use("JoosepAlviste/nvim-ts-context-commentstring")
 
     -- color scheme
     use({
@@ -132,52 +137,68 @@ return packer.startup(function(use)
     -- Treesitter
     use({
         "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
+        run = function()
+            pcall(require("nvim-treesitter.install").update({ with_sync = true }))
+        end,
+        requires = {
+            "p00f/nvim-ts-rainbow",
+            "nvim-treesitter/playground",
+        },
     })
-    use("nvim-treesitter/nvim-treesitter-textobjects")
-    use("p00f/nvim-ts-rainbow")
-    use("nvim-treesitter/playground")
+    use({ "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" })
 
     -- LSP
-    use("williamboman/mason.nvim")
-    use("williamboman/mason-lspconfig.nvim")
-    use("neovim/nvim-lspconfig")
     use({
-        "jose-elias-alvarez/null-ls.nvim",
-        requires = { "nvim-lua/plenary.nvim" },
-    })
-    use("jayp0521/mason-null-ls.nvim")
-    use("RubixDev/mason-update-all")
-    use("p00f/clangd_extensions.nvim")
-    use("mfussenegger/nvim-jdtls")
+        "neovim/nvim-lspconfig",
+        requires = {
+            "williamboman/mason.nvim",
+            "williamboman/mason-lspconfig.nvim",
+            "jayp0521/mason-null-ls.nvim",
+            "jayp0521/mason-nvim-dap.nvim",
+            "RubixDev/mason-update-all",
 
-    -- dap
-    use("mfussenegger/nvim-dap")
-    use("rcarriga/nvim-dap-ui")
-    use("jayp0521/mason-nvim-dap.nvim")
+            "p00f/clangd_extensions.nvim",
+
+            "mfussenegger/nvim-jdtls",
+
+            "jose-elias-alvarez/null-ls.nvim",
+            "nvim-lua/plenary.nvim",
+
+            "mfussenegger/nvim-dap",
+            "rcarriga/nvim-dap-ui",
+        },
+    })
 
     -- overseer
     use("stevearc/overseer.nvim")
 
     -- cmp
-    use("hrsh7th/cmp-nvim-lsp")
-    use("hrsh7th/cmp-buffer")
-    use("hrsh7th/cmp-path")
-    use("hrsh7th/cmp-cmdline")
-    use("hrsh7th/nvim-cmp")
-    use("saadparwaiz1/cmp_luasnip")
-    use("hrsh7th/cmp-nvim-lua")
-    use("hrsh7th/cmp-calc")
-    use("hrsh7th/cmp-omni")
-    use("hrsh7th/cmp-nvim-lsp-signature-help")
-    use("dmitmel/cmp-cmdline-history")
-    use("uga-rosa/cmp-dynamic")
-    use({ "petertriho/cmp-git", requires = "nvim-lua/plenary.nvim" })
-    use("lukas-reineke/cmp-rg")
+    use({
+        "hrsh7th/nvim-cmp",
+        requires = {
+            "hrsh7th/cmp-nvim-lsp-signature-help",
+            "hrsh7th/cmp-nvim-lsp",
+            "saadparwaiz1/cmp_luasnip",
+
+            "lukas-reineke/cmp-rg",
+            "petertriho/cmp-git",
+            "nvim-lua/plenary.nvim",
+            "hrsh7th/cmp-calc",
+            "uga-rosa/cmp-dynamic",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-buffer",
+
+            "hrsh7th/cmp-cmdline",
+            "dmitmel/cmp-cmdline-history",
+
+            "hrsh7th/cmp-omni",
+        },
+    })
 
     -- snippets
-    use("L3MON4D3/LuaSnip")
-    use("rafamadriz/friendly-snippets")
+    use({ "L3MON4D3/LuaSnip", requires = {
+        "rafamadriz/friendly-snippets",
+    } })
 
     -- javadoc
     use({
@@ -191,9 +212,13 @@ return packer.startup(function(use)
     -- Telescope
     use({
         "nvim-telescope/telescope.nvim",
-        requires = { { "nvim-lua/plenary.nvim" } },
+        requires = {
+            "nvim-lua/plenary.nvim",
+
+            "nvim-lua/popup.nvim",
+            "nvim-telescope/telescope-ui-select.nvim",
+
+            "JoosepAlviste/nvim-ts-context-commentstring",
+        },
     })
-    use("nvim-lua/popup.nvim")
-    use("nvim-telescope/telescope-media-files.nvim")
-    use("nvim-telescope/telescope-ui-select.nvim")
 end)

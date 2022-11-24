@@ -1,5 +1,5 @@
 -- ==================== Completion (nvim-cmp, luasnip) ==================== --
--- TODO: diagnostics ???, git, fzf, pandoc + markdown
+-- TODO: pandoc + markdown
 
 local cmp_status_ok, cmp = pcall(require, "cmp")
 if not cmp_status_ok then
@@ -70,16 +70,16 @@ cmp.setup({
         end,
     },
     mapping = cmp.mapping.preset.insert({
-        ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item()),
-        ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item()),
-        ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4)),
-        ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4)),
-        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete()),
-        ["<C-e>"] = cmp.mapping(cmp.mapping.abort()),
-        ["<CR>"] = cmp.mapping(cmp.mapping.confirm({
+        ["<C-k>"] = cmp.mapping.select_prev_item(),
+        ["<C-j>"] = cmp.mapping.select_next_item(),
+        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-e>"] = cmp.mapping.abort(),
+        ["<CR>"] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
-        })),
+        }),
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_next_item()
@@ -109,11 +109,9 @@ cmp.setup({
             vim_item.menu = ({
                 nvim_lsp_signature_help = "[SIG]",
                 nvim_lsp = "[LSP]",
-                nvim_lua = "[NVIM_LUA]",
-                omni = "[OMNI]",
                 luasnip = "[LUASNIP]",
-                git = "[GIT]",
                 rg = "[RG]",
+                git = "[GIT]",
                 calc = "[CALC]",
                 dynamic = "[DYNAMIC]",
                 path = "[PATH]",
@@ -125,11 +123,9 @@ cmp.setup({
     sources = cmp.config.sources({
         { name = "nvim_lsp_signature_help" },
         { name = "nvim_lsp" },
-        { name = "nvim_lua" },
-        { name = "omni" },
         { name = "luasnip" },
-        { name = "git" },
         { name = "rg" },
+        { name = "git" },
         { name = "calc" },
         { name = "dynamic" },
         { name = "path" },
@@ -194,6 +190,26 @@ cmp.setup.cmdline(":", {
     }, {
         { name = "cmdline" },
         { name = "cmdline_history" },
+    }),
+})
+
+cmp.setup.filetype("tex", {
+    formatting = {
+        fields = { "kind", "abbr", "menu" },
+        format = function(entry, vim_item)
+            -- Kind icons
+            vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
+            vim_item.menu = ({
+                omni = "[OMNI]",
+                buffer = "[BUFFER]",
+            })[entry.source.name]
+            return vim_item
+        end,
+    },
+    sources = cmp.config.sources({
+        { name = "omni" },
+    }, {
+        { name = "buffer" },
     }),
 })
 

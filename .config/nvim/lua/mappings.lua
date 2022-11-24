@@ -17,7 +17,6 @@
 -- visual_block_mode    x
 -- term_mode            t
 -- command_mode         c
--- TODO: show documentation in preview window
 
 local keymap = vim.keymap
 local g = vim.g
@@ -94,6 +93,12 @@ keymap.set("n", "<cr>", ":noh<cr><cr>", { silent = true })
 -- delete buffer without closing neovim
 keymap.set("n", "<leader>x", ":Bdelete<cr>")
 
+-- Remap for dealing with word wrap
+vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set("v", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set("v", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
 -- formatting
 -- put brackets around word/s
 keymap.set("n", "<leader>(", "viwc()<esc>P")
@@ -117,11 +122,18 @@ keymap.set("", "<leader>z", ":set formatoptions-=cro<cr>")
 keymap.set("", "<leader>Z", ":set formatoptions=cro<cr>")
 
 -- Telescope
-keymap.set("n", "<leader>ff", ":Telescope find_files<cr>")
-keymap.set("n", "<leader>fg", ":Telescope live_grep<cr>")
-keymap.set("n", "<leader>fh", ":Telescope help_tags<cr>")
-keymap.set("n", "<leader>fp", ":Telescope media_files<cr>")
-keymap.set("n", "<leader>fb", ":Telescope buffers<cr>")
+vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files)
+vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep)
+vim.keymap.set("n", "<leader>fh", require("telescope.builtin").help_tags)
+vim.keymap.set("n", "<leader>fb", require("telescope.builtin").buffers)
+vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles)
+vim.keymap.set("n", "<leader>/", function()
+    require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+        winblend = 10,
+        previewer = false,
+    }))
+end)
+vim.keymap.set("n", "<leader>fd", require("telescope.builtin").diagnostics)
 
 -- Session Manager
 keymap.set("n", "<leader>ml", ":SessionManager load_session<cr>")
