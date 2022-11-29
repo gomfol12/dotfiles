@@ -67,11 +67,11 @@ return packer.startup(function(use)
             pcall(require("nvim-treesitter.install").update({ with_sync = true }))
         end,
         requires = {
-            "p00f/nvim-ts-rainbow",
             "nvim-treesitter/playground",
         },
     })
     use({ "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" })
+    use({ "p00f/nvim-ts-rainbow", after = "nvim-treesitter" })
 
     -- LSP
     use({

@@ -2,8 +2,10 @@
 -- TODO: Telescope, alpha color, lualine
 
 local packer_install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+local bootstrap = false
 
 if vim.fn.empty(vim.fn.glob(packer_install_path)) > 0 then
+    bootstrap = true
     vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. packer_install_path)
     vim.cmd([[packadd packer.nvim]])
     require("plugins")
@@ -14,10 +16,12 @@ if vim.fn.empty(vim.fn.glob(packer_install_path)) > 0 then
     print("    Wait until Packer completes,")
     print("       then restart nvim")
     print("==================================")
-    return
 end
 
 function _G.load_config()
+    require("impatient")
+    require("plugins")
+
     require("mappings")
     require("settings")
     require("lsp")()
@@ -40,7 +44,7 @@ function _G.load_config()
     require("plugin_conf")
 end
 
-require("impatient")
-require("plugins")
-load_config()
+if not bootstrap then
+    load_config()
+end
 vim.cmd([[autocmd User PackerComplete ++once lua load_config()]])
