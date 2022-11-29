@@ -31,7 +31,19 @@ alias c="clear"
 # alias sysctl="sudo systemctl"
 alias myip="echo $(curl -s ipinfo.io/ip)"
 alias ka="killall"
+
 alias g="git"
+alias gs="g status"
+alias gc="g commit -a"
+alias ga="g add"
+alias gall="g add *"
+alias gal="g add *"
+alias gaa="g add *"
+alias gp="g push"
+alias gpu="g pull"
+alias gr="g remote"
+alias grv="g remote -v"
+
 alias config="git --git-dir=\$HOME/.dotfiles/ --work-tree=\$HOME"
 alias configlist="config -C \$HOME ls-tree -r master --name-only"
 alias sdn="shutdown -h now"
@@ -80,6 +92,7 @@ alias nvim="\$EDITOR"
 alias nano="\$EDITOR"
 
 alias mem="free -mth"
+alias thissize="du -ach --max-depth=0"
 alias foldersize="du -ach --max-depth=1 | sort -h"
 alias df="df -Th --total"
 
@@ -117,6 +130,8 @@ alias t="tmux"
 alias ip="ip -color=auto"
 
 alias wiki="dmenu_arch_wiki_search.sh"
+
+alias treesize="ncdu --exclude \"/.snapshots /home/.snapshots /var/log/.snapshots\""
 
 #alias b="dirBook"
 
