@@ -26,7 +26,6 @@ opt.showmatch = true -- Highlight matching parenthesis
 opt.foldmethod = "expr" -- Folding method
 opt.foldexpr = "nvim_treesitter#foldexpr()" -- Folding is handled by treesitter
 opt.foldenable = false -- Disable Folding
--- opt.colorcolumn = "80" -- Line length marker at 80 columns
 opt.splitright = true -- Vertical split to the right
 opt.splitbelow = true -- Horizontal split to the bottom
 opt.ignorecase = true -- Ignore case in search patterns
@@ -77,6 +76,47 @@ g.netrw_banner = 0 -- disable banner
 g.netrm_browse_split = 4 -- open in prior window
 g.netrw_altv = 1 -- open splits to the right
 g.netrw_liststyle = 3 -- tree view
+
+-- vimwiki
+vim.g.vimwiki_list = {
+    {
+        path = "~/doc/vimwiki",
+        template_path = "~/doc/vimwiki/templates/",
+        template_default = "default",
+        syntax = "markdown",
+        ext = ".md",
+        path_html = "~/doc/vimwiki/site_html",
+        custom_wiki2html = "vimwiki_markdown",
+        template_ext = ".tpl",
+        auto_diary_index = 1,
+    },
+}
+vim.g.vimwiki_global_ext = 0
+
+-- vimtex
+vim.g.vimtex_view_method = "zathura"
+vim.g.vimtex_compiler_method = "latexmk"
+vim.g.vimtex_compiler_latexmk = {
+    options = {
+        "-pdf",
+        "-shell-escape",
+        "-verbose",
+        "-file-line-error",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+    },
+}
+vim.g.vimtex_toc_config = {
+    name = "TOC",
+    split_width = 30,
+    todo_sorted = 0,
+    show_help = 0,
+    show_numbers = 1,
+    mode = 2,
+}
+
+-- vim table mode
+vim.g.table_mode_corner = "|"
 
 -- ========== Autocmds ========== --
 local augroup = vim.api.nvim_create_augroup
@@ -157,3 +197,11 @@ autocmd("FileType", {
     pattern = "*",
     command = "setlocal formatoptions-=c formatoptions-=r formatoptions-=o",
 })
+
+-- Line length marker at 80 columns
+for _, k in pairs({ "vimwiki", "tex", "markdown" }) do
+    autocmd("FileType", {
+        pattern = k,
+        command = 'lua vim.opt.colorcolumn = "80"',
+    })
+end

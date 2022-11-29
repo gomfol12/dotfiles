@@ -36,91 +36,17 @@ return packer.startup(function(use)
     use("lewis6991/impatient.nvim")
     -- use("nanozuki/tabby.nvim") -- dont work ??
     use("Shatur/neovim-session-manager")
-    use({
-        "vimwiki/vimwiki",
-        branch = "dev",
-        config = function()
-            vim.g.vimwiki_list = {
-                {
-                    path = "~/doc/vimwiki",
-                    template_path = "~/doc/vimwiki/templates/",
-                    template_default = "default",
-                    syntax = "markdown",
-                    ext = ".md",
-                    path_html = "~/doc/vimwiki/site_html",
-                    custom_wiki2html = "vimwiki_markdown",
-                    template_ext = ".tpl",
-                    auto_diary_index = 1,
-                },
-            }
-            vim.g.vimwiki_global_ext = 0
-        end,
-    })
-    use({
-        "lervag/vimtex",
-        config = function()
-            vim.g.vimtex_view_method = "zathura"
-            vim.g.vimtex_compiler_method = "latexmk"
-            vim.g.vimtex_compiler_latexmk = {
-                options = {
-                    "-pdf",
-                    "-shell-escape",
-                    "-verbose",
-                    "-file-line-error",
-                    "-synctex=1",
-                    "-interaction=nonstopmode",
-                },
-            }
-            vim.g.vimtex_toc_config = {
-                name = "TOC",
-                split_width = 30,
-                todo_sorted = 0,
-                show_help = 0,
-                show_numbers = 1,
-                mode = 2,
-            }
-        end,
-    })
-    use({
-        "dhruvasagar/vim-table-mode",
-        config = function()
-            vim.g.table_mode_corner = "|"
-        end,
-    })
+    use({ "vimwiki/vimwiki", branch = "dev" })
+    use("lervag/vimtex")
+    use("dhruvasagar/vim-table-mode")
     use("NvChad/nvim-colorizer.lua")
     use("superhawk610/ascii-blocks.nvim")
-    use({
-        "ggandor/leap.nvim",
-        requires = { "tpope/vim-repeat" },
-        config = function()
-            require("leap").set_default_keymaps()
-            vim.cmd("autocmd ColorScheme * lua require('leap').init_highlight(true)")
-        end,
-    })
-    use({
-        "aserowy/tmux.nvim",
-        config = function()
-            require("tmux").setup({
-                copy_sync = {
-                    enable = false,
-                },
-            })
-        end,
-    })
+    use({ "ggandor/leap.nvim", requires = { "tpope/vim-repeat" } })
+    use("aserowy/tmux.nvim")
     use("vim-pandoc/vim-pandoc-syntax")
     use("vim-pandoc/vim-pandoc")
-    use({
-        "lukas-reineke/indent-blankline.nvim",
-        setup = function()
-            require("indent_blankline").setup()
-        end,
-    })
-    use({
-        "j-hui/fidget.nvim",
-        config = function()
-            require("fidget").setup()
-        end,
-    })
+    use("lukas-reineke/indent-blankline.nvim")
+    use("j-hui/fidget.nvim")
 
     -- comments
     use("numToStr/Comment.nvim")
@@ -203,9 +129,6 @@ return packer.startup(function(use)
     -- javadoc
     use({
         "danymat/neogen",
-        config = function()
-            require("neogen").setup({ snippet_engine = "luasnip" })
-        end,
         requires = "nvim-treesitter/nvim-treesitter",
     })
 

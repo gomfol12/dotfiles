@@ -1,13 +1,12 @@
 -- ==================== Completion (nvim-cmp, luasnip) ==================== --
 -- TODO: pandoc + markdown
 
-local cmp_status_ok, cmp = pcall(require, "cmp")
-if not cmp_status_ok then
-    return
-end
+local cmp_ok, cmp = pcall(require, "cmp")
+local snip_ok, luasnip = pcall(require, "luasnip")
+local cmp_git_ok, cmp_git = pcall(require, "cmp_git")
+local cmp_dynamic_ok, cmp_dynamic = pcall(require, "cmp_dynamic")
 
-local snip_status_ok, luasnip = pcall(require, "luasnip")
-if not snip_status_ok then
+if not cmp_ok and not snip_ok and not cmp_git_ok and not cmp_dynamic_ok then
     return
 end
 
@@ -145,7 +144,7 @@ cmp.setup({
         },
     },
 })
-require("cmp_git").setup()
+cmp_git.setup()
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline("/", {
@@ -214,13 +213,13 @@ cmp.setup.filetype("tex", {
 })
 
 local Date = require("cmp_dynamic.utils.date")
-require("cmp_dynamic").setup({
+cmp_dynamic.setup({
     {
         label = "today",
         insertText = 1,
         cb = {
             function()
-                return os.date("%Y/%m/%d")
+                return os.date("%d.%m.%Y")
             end,
         },
     },
@@ -229,9 +228,18 @@ require("cmp_dynamic").setup({
         insertText = 1,
         cb = {
             function()
-                return Date.new():add_date(7):day(1):format("%Y/%m/%d")
+                return Date.new():add_date(7):day(1):format("%d.%m.%Y")
             end,
         },
         resolve = true, -- default: false
+    },
+    {
+        label = "time",
+        insertText = 1,
+        cb = {
+            function()
+                return os.date("%R")
+            end,
+        },
     },
 })

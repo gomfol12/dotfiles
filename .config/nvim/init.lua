@@ -37,6 +37,7 @@ function _G.load_config()
     require("color")
     require("mason-update-all").setup()
     require("task")
+    require("plugin_conf")
 end
 
 require("impatient")

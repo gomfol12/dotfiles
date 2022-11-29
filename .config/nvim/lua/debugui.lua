@@ -1,7 +1,9 @@
 -- ==================== dapui (nvim-dap-ui) ==================== --
 
-local status_ok, dapui = pcall(require, "dapui")
-if not status_ok then
+local dapui_ok, dapui = pcall(require, "dapui")
+local dap_ok, dap = pcall(require, "dap")
+
+if not dapui_ok and not dap_ok then
     return
 end
 
@@ -74,7 +76,6 @@ dapui.setup({
     },
 })
 
-local dap = require("dap")
 dap.listeners.after.event_initialized["dapui_config"] = function()
     dapui.open()
 end

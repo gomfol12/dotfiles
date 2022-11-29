@@ -5,8 +5,9 @@ local _M = {}
 local mason_ok, mason = pcall(require, "mason")
 local mason_lsp_ok, mason_lsp_config = pcall(require, "mason-lspconfig")
 local lsp_ok, lsp_config = pcall(require, "lspconfig")
+local cmp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 
-if not mason_ok and not mason_lsp_ok and not lsp_ok then
+if not mason_ok and not mason_lsp_ok and not lsp_ok and not cmp_ok then
     return
 end
 
@@ -45,12 +46,7 @@ mason_lsp_config.setup({
     automatic_installation = true,
 })
 
--- _M.capabilities = vim.lsp.protocol.make_client_capabilities()
-
-local cmp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if cmp_status_ok then
-    _M.capabilities = cmp_nvim_lsp.default_capabilities()
-end
+_M.capabilities = cmp_nvim_lsp.default_capabilities()
 
 -- fix for clangd
 _M.capabilities.offsetEncoding = { "utf-16" }

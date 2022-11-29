@@ -1,13 +1,10 @@
 -- ==================== dap (nvim-dap) ==================== --
 -- NOTE: install lldb
 
-local status_ok, dap = pcall(require, "dap")
-if not status_ok then
-    return
-end
-
+local dap_ok, dap = pcall(require, "dap")
 local mason_dap_ok, mason_dap = pcall(require, "mason-nvim-dap")
-if not mason_dap_ok then
+
+if not dap_ok and not mason_dap_ok then
     return
 end
 
