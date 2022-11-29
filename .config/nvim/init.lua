@@ -11,11 +11,11 @@ if vim.fn.empty(vim.fn.glob(packer_install_path)) > 0 then
     require("plugins")
     require("packer").sync()
 
-    print("==================================")
-    print("    Plugins are being installed")
-    print("    Wait until Packer completes,")
-    print("       then restart nvim")
-    print("==================================")
+    print("================================================")
+    print("|    Plugins and LSPs are being installed      |")
+    print("|    Wait until Packer and Mason completes,    |")
+    print("|        then restart nvim                     |")
+    print("================================================")
 end
 
 function _G.load_config()
