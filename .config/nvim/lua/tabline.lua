@@ -5,57 +5,38 @@ if not status_ok then
     return
 end
 
--- tabby.setup({
---     tabline = require("tabby.presets").active_wins_at_tail,
--- })
-
-local filename = require("tabby.filename")
-local util = require("tabby.util")
-
-local hl_tabline = util.extract_nvim_hl("TabLine")
-local hl_tabline_sel = util.extract_nvim_hl("TabLineSel")
-
-local tabline = {
-    hl = "TabLineFill",
-    layout = "active_wins_at_tail",
-    active_tab = {
-        label = function(tabid)
-            return {
-                "  " .. vim.api.nvim_tabpage_get_number(tabid) .. "  ",
-                hl = { fg = hl_tabline_sel.fg, bg = hl_tabline_sel.bg, style = "bold" },
-            }
-        end,
-        right_sep = { " ", hl = "TabLineFill" },
-    },
-    inactive_tab = {
-        label = function(tabid)
-            return {
-                "  " .. vim.api.nvim_tabpage_get_number(tabid) .. "  ",
-                hl = { fg = hl_tabline.fg, bg = hl_tabline.bg, style = "bold" },
-            }
-        end,
-        right_sep = { " ", hl = "TabLineFill" },
-    },
-    top_win = {
-        label = function(winid)
-            return {
-                " > " .. filename.unique(winid) .. " ",
-                hl = "TabLine",
-            }
-        end,
-        left_sep = { " ", hl = "TabLineFill" },
-    },
-    win = {
-        label = function(winid)
-            return {
-                " - " .. filename.unique(winid) .. " ",
-                hl = "TabLine",
-            }
-        end,
-        left_sep = { " ", hl = "TabLineFill" },
-    },
+local theme = {
+    fill = "TabLineFill",
+    -- Also you can do this: fill = { fg='#f2e9de', bg='#907aa9', style='italic' }
+    head = "TabLine",
+    current_tab = "TabLineSel",
+    tab = "TabLine",
+    win = "TabLine",
+    tail = "TabLine",
 }
 
-tabby.setup({
-    tabline = tabline,
-})
+require("tabby.tabline").set(function(line)
+    return {
+        line.tabs().foreach(function(tab)
+            local hl = tab.is_current() and theme.current_tab or theme.tab
+            return {
+                tab.is_current() and " " or " ",
+                tab.number(),
+                tab.name(),
+                tab.close_btn(" "),
+                hl = hl,
+                margin = " ",
+            }
+        end),
+        line.spacer(),
+        line.wins_in_tab(line.api.get_current_tab()).foreach(function(win)
+            return {
+                win.is_current() and " " or " ",
+                win.buf_name(),
+                hl = theme.win,
+                margin = " ",
+            }
+        end),
+        hl = theme.fill,
+    }
+end)

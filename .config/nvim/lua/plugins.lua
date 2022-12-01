@@ -34,7 +34,7 @@ return packer.startup(function(use)
     use("moll/vim-bbye")
     use("rhysd/vim-grammarous")
     use("lewis6991/impatient.nvim")
-    -- use("nanozuki/tabby.nvim") -- dont work ??
+    use("nanozuki/tabby.nvim") -- dont work ??
     use("Shatur/neovim-session-manager")
     use({ "vimwiki/vimwiki", branch = "dev" })
     use("lervag/vimtex")
