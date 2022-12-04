@@ -49,6 +49,8 @@ opt.tabstop = indent -- 1 tab == 4 spaces
 opt.softtabstop = indent
 opt.smartindent = true -- Autoindent new lines
 
+-- opt.showtabline = 2 -- Always show tabline
+
 -- ========== Performance ========== --
 opt.history = 1000 -- Remember N lines in history
 opt.lazyredraw = true -- Faster scrolling

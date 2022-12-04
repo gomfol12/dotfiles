@@ -43,6 +43,7 @@ alias gp="g push"
 alias gpu="g pull"
 alias gr="g remote"
 alias grv="g remote -v"
+alias gd="g diff"
 
 alias config="git --git-dir=\$HOME/.dotfiles/ --work-tree=\$HOME"
 alias configlist="config -C \$HOME ls-tree -r master --name-only"
@@ -150,3 +151,4 @@ fi
 
 # auto gen alias
 alias hc='cd ~ && clear'
+alias reload="source "$ZDOTDIR/.zshrc""

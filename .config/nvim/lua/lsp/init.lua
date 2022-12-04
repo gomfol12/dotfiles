@@ -36,6 +36,7 @@ vim.diagnostic.config({
         source = "always",
         header = "",
         prefix = "",
+        border = "single",
     },
 })
 
@@ -88,6 +89,12 @@ function _M.highlight(client, bufnr)
             command = ":lua vim.lsp.buf.clear_references()",
         })
     end
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = "single",
+    })
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signatureHelp, {
+        border = "single",
+    })
 end
 
 local opts = {

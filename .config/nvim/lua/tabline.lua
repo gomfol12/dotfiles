@@ -7,7 +7,7 @@ end
 
 local theme = {
     fill = "TabLineFill",
-    -- Also you can do this: fill = { fg='#f2e9de', bg='#907aa9', style='italic' }
+    -- fill = { fg = "#b2b2b2", bg = "#080808", style = "italic" },
     head = "TabLine",
     current_tab = "TabLineSel",
     tab = "TabLine",
@@ -15,26 +15,38 @@ local theme = {
     tail = "TabLine",
 }
 
+-- function get_tabpage_win_num(tabid)
+--     local names = {}
+--     for i in pairs(vim.api.nvim_tabpage_list_wins(tabid)) do
+--         table.insert(names, vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(i)))
+--     end
+
+--     print(require("utils").dump(names))
+
+--     -- local test = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(vim.api.nvim_tabpage_list_wins(tabid)[1]))
+--     return 0
+-- end
+
 require("tabby.tabline").set(function(line)
     return {
         line.tabs().foreach(function(tab)
             local hl = tab.is_current() and theme.current_tab or theme.tab
             return {
-                tab.is_current() and " " or " ",
-                tab.number(),
-                tab.name(),
-                tab.close_btn(" "),
+                " " .. tab.number() .. " [" .. #vim.api.nvim_tabpage_list_wins(tab.id) .. "] ",
                 hl = hl,
-                margin = " ",
             }
         end),
         line.spacer(),
         line.wins_in_tab(line.api.get_current_tab()).foreach(function(win)
+            local hl = win.is_current() and theme.current_tab or theme.tab
             return {
-                win.is_current() and " " or " ",
-                win.buf_name(),
-                hl = theme.win,
-                margin = " ",
+                " "
+                    .. vim.api.nvim_win_get_buf(win.id)
+                    .. ": "
+                    .. win.buf_name()
+                    .. " "
+                    .. (vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(win.id), "modified") and "[+] " or ""),
+                hl = hl,
             }
         end),
         hl = theme.fill,

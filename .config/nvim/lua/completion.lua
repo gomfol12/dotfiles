@@ -62,7 +62,15 @@ local kind_icons = {
     TypeParameter = " ",
 }
 
+local winhighlight = {
+    winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel",
+}
+
 cmp.setup({
+    window = {
+        completion = cmp.config.window.bordered(winhighlight),
+        documentation = cmp.config.window.bordered(winhighlight),
+    },
     snippet = {
         expand = function(args)
             luasnip.lsp_expand(args.body)
