@@ -47,6 +47,7 @@ return packer.startup(function(use)
     use("vim-pandoc/vim-pandoc")
     use("lukas-reineke/indent-blankline.nvim")
     use("j-hui/fidget.nvim")
+    use("github/copilot.vim")
 
     -- comments
     use("numToStr/Comment.nvim")

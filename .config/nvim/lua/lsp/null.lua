@@ -18,6 +18,7 @@ mason_null_ls.setup({
         "clang_format",
         "latexindent",
         "chktex",
+        -- "checkstyle",
     },
 })
 
@@ -46,6 +47,10 @@ null_ls.setup({
 
         formatting.latexindent,
         diagnostics.chktex,
+
+        -- diagnostics.checkstyle.with({
+        --     extra_args = { "-c", "/sun_checks.xml" },
+        -- }),
     },
     update_in_insert = true,
     -- format on save

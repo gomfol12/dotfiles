@@ -221,7 +221,7 @@ cmp.setup.filetype("tex", {
 })
 
 local Date = require("cmp_dynamic.utils.date")
-cmp_dynamic.setup({
+cmp_dynamic.register({
     {
         label = "today",
         insertText = 1,
