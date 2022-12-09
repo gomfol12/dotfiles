@@ -113,8 +113,8 @@ return setmetatable(_M, {
         lsp_config.cmake.setup(opts)
         lsp_config.html.setup(opts)
         lsp_config.cssls.setup(opts)
+        lsp_config.ltex.setup(vim.tbl_deep_extend("force", require("lsp.settings.ltex_lua"), opts))
         -- lsp_config.marksman.setup(opts)
-        -- lsp_config.ltex.setup(vim.tbl_deep_extend("force", require("lsp.settings.ltex_lua"), opts))
 
         require("clangd_extensions").setup({
             server = {

@@ -24,13 +24,13 @@ return {
     single_file_support = true,
     settings = {
         ltex = {
-            enabled = { "bib", "markdown", "latex", "tex" },
-            language = "de",
+            enabled = { "latex", "tex", "bib", "markdown" },
+            language = "en",
             diagnosticSeverity = "information",
             setenceCacheSize = 2000,
             additionalRules = {
                 enablePickyRules = true,
-                motherTongue = "de",
+                motherTongue = "en",
             },
             trace = { server = "verbose" },
             dictionary = {},

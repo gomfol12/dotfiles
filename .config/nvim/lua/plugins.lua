@@ -45,6 +45,12 @@ return packer.startup(function(use)
     use("aserowy/tmux.nvim")
     use("vim-pandoc/vim-pandoc-syntax")
     use("vim-pandoc/vim-pandoc")
+    use({
+        "iamcco/markdown-preview.nvim",
+        run = function()
+            vim.fn["mkdp#util#install"]()
+        end,
+    })
     use("lukas-reineke/indent-blankline.nvim")
     use("j-hui/fidget.nvim")
     use("github/copilot.vim")
