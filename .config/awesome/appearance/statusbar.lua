@@ -47,6 +47,8 @@ for s in screen do
             if RC.vars.hostname == os.getenv("HOSTNAME_DESKTOP") then
                 right_widgets = {
                     spacer,
+                    c_widgets.weather,
+                    spacer,
                     c_widgets.net,
                     spacer,
                     wibox.widget.textbox(" "),
@@ -90,6 +92,8 @@ for s in screen do
                     layout = wibox.layout.fixed.horizontal,
                 }
                 right_widgets_bottom = {
+                    spacer,
+                    c_widgets.weather,
                     spacer,
                     c_widgets.net,
                     spacer,

@@ -240,6 +240,15 @@ if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
     )
 end
 
+_M.weather = awful.widget.watch("weather.sh", 900, function(widget, stdout, stderr, reason, exit_code)
+    if exit_code ~= 0 then
+        widget:set_text("no weather data")
+        return
+    end
+
+    widget:set_text(stdout:match("(.*)\n"))
+end)
+
 -- _M.updates = wibox.widget({
 --     text = "",
 --     widget = wibox.widget.textbox,
