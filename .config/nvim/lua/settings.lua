@@ -121,7 +121,7 @@ vim.g.vimtex_toc_config = {
 vim.g.table_mode_corner = "|"
 
 -- copilot
-vim.g.copilot_no_tab_map = true
+-- vim.g.copilot_no_tab_map = true
 
 -- ========== Autocmds ========== --
 local augroup = vim.api.nvim_create_augroup

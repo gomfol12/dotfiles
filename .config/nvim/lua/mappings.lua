@@ -204,4 +204,4 @@ keymap.set("n", "<leader>oa", ":OverseerQuickAction<CR>", { silent = true })
 keymap.set("n", "<Leader>nf", ":lua require('neogen').generate()<CR>", { silent = true })
 
 -- copilot
-vim.cmd([[imap <silent><script><expr> <C-q> copilot#Accept("\<CR>")]])
+-- vim.cmd([[imap <silent><script><expr> <C-q> copilot#Accept("\<CR>")]])
