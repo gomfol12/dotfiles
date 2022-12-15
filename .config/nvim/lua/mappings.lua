@@ -23,7 +23,7 @@ local g = vim.g
 local b = vim.b
 
 -- leader
-keymap.set("", "<Space>", "<Nop>", { silent = true })
+-- keymap.set("", "<Space>", "<Nop>", { silent = true })
 g.mapleader = " "
 b.mapleader = " "
 g.maplocalleader = "\\"
@@ -61,17 +61,15 @@ keymap.set("n", "<leader>s", ":split<Space>")
 keymap.set("n", "<leader>v", ":vsplit<Space>")
 
 -- tabs
-keymap.set("n", "<S-l>", ":tabn<CR>", { silent = true })
-keymap.set("n", "<S-h>", ":tabp<CR>", { silent = true })
 keymap.set("n", "<leader>tx", ":tabclose<CR>", { silent = true })
 keymap.set("n", "<leader>tc", ":tabnew<CR>", { silent = true })
 keymap.set("n", "<leader>to", ":tabonly<CR>", { silent = true })
-keymap.set("n", "<leader>tn", ":tabn<CR>", { silent = true })
-keymap.set("n", "<leader>tp", ":tabp<CR>", { silent = true })
--- move current tab to previous position
-keymap.set("n", "<leader>tmp", ":-tabmove<CR>", { silent = true })
+keymap.set("n", "<S-l>", ":tabn<CR>", { silent = true })
+keymap.set("n", "<S-h>", ":tabp<CR>", { silent = true })
 -- move current tab to next position
-keymap.set("n", "<leader>tmn", ":+tabmove<CR>", { silent = true })
+keymap.set("n", "<leader>tn", ":+tabmove<CR>", { silent = true })
+-- move current tab to previous position
+keymap.set("n", "<leader>tp", ":-tabmove<CR>", { silent = true })
 
 -- Map Ctrl-Backspace to delete the previous word in insert mode.
 -- solution: https://vim.fandom.com/wiki/Map_Ctrl-Backspace_to_delete_previous_word

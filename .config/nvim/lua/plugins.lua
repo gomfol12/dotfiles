@@ -54,6 +54,7 @@ return packer.startup(function(use)
     use("lukas-reineke/indent-blankline.nvim")
     use("j-hui/fidget.nvim")
     -- use("github/copilot.vim")
+    use("folke/which-key.nvim")
 
     -- comments
     use("numToStr/Comment.nvim")

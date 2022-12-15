@@ -56,7 +56,8 @@ opt.history = 1000 -- Remember N lines in history
 opt.lazyredraw = true -- Faster scrolling
 opt.synmaxcol = 320 -- Max column for syntax highlight
 opt.updatetime = 300 -- ms to wait for trigger an event
-opt.ttimeoutlen = 100 -- ms to wait for a mapped sequence to complete
+opt.ttimeoutlen = 100 -- ms to wait for a key code sequence to complete
+opt.timeoutlen = 500 -- ms to wait for a mapped sequence to complete
 
 -- ========== Cursor ========== --
 opt.cursorline = true
