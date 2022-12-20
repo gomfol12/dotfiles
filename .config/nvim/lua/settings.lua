@@ -124,6 +124,9 @@ vim.g.table_mode_corner = "|"
 -- copilot
 -- vim.g.copilot_no_tab_map = true
 
+-- undotree
+vim.g.undotree_WindowLayout = 3
+
 -- ========== Autocmds ========== --
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd

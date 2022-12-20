@@ -30,8 +30,8 @@ g.maplocalleader = "\\"
 b.maplocalleader = "\\"
 
 -- saving
-keymap.set("n", "<c-s>", ":w<CR>")
-keymap.set("i", "<c-s>", "<ESC>:w<CR>a")
+keymap.set("n", "<c-s>", ":w<CR>", { desc = "Save current file" })
+keymap.set("i", "<c-s>", "<ESC>:w<CR>a", { desc = "Save current file" })
 
 -- source
 --keymap.set('n', '<c-c>', ':source ~/.config/nvim/init.lua<cr>')
@@ -41,40 +41,40 @@ keymap.set("i", "<c-s>", "<ESC>:w<CR>a")
 -- keymap.set("n", "<c-h>", "<c-w>h")
 -- keymap.set("n", "<c-k>", "<c-w>k")
 -- keymap.set("n", "<c-l>", "<c-w>l")
-keymap.set("n", "<c-j>", "lua require('tmux').move_bottom()<cr>", { silent = true })
-keymap.set("n", "<c-h>", "lua require('tmux').move_left()<cr>", { silent = true })
-keymap.set("n", "<c-k>", "lua require('tmux').move_top()<cr>", { silent = true })
-keymap.set("n", "<c-l>", "lua require('tmux').move_right()<cr>", { silent = true })
+keymap.set("n", "<c-j>", "lua require('tmux').move_bottom()<cr>", { silent = true, desc = "Move down" })
+keymap.set("n", "<c-h>", "lua require('tmux').move_left()<cr>", { silent = true, desc = "Move left" })
+keymap.set("n", "<c-k>", "lua require('tmux').move_top()<cr>", { silent = true, desc = "Move up" })
+keymap.set("n", "<c-l>", "lua require('tmux').move_right()<cr>", { silent = true, desc = "Move right" })
 
 -- window resize
 -- keymap.set("n", "<c-Up>", ":resize -2<CR>", { silent = true })
 -- keymap.set("n", "<c-Down>", ":resize +2<CR>", { silent = true })
 -- keymap.set("n", "<c-Left>", ":vertical resize +2<CR>", { silent = true })
 -- keymap.set("n", "<c-Right>", ":vertical resize -2<CR>", { silent = true })
-keymap.set("n", "<c-Up>", ":lua require('tmux').resize_top()<cr>", { silent = true })
-keymap.set("n", "<c-Down>", ":lua require('tmux').resize_bottom()<cr>", { silent = true })
-keymap.set("n", "<c-Left>", ":lua require('tmux').resize_left()<cr>", { silent = true })
-keymap.set("n", "<c-Right>", ":lua require('tmux').resize_right()<cr>", { silent = true })
+keymap.set("n", "<c-Up>", ":lua require('tmux').resize_top()<cr>", { silent = true, desc = "Resize up" })
+keymap.set("n", "<c-Down>", ":lua require('tmux').resize_bottom()<cr>", { silent = true, desc = "Resize down" })
+keymap.set("n", "<c-Left>", ":lua require('tmux').resize_left()<cr>", { silent = true, desc = "Resize left" })
+keymap.set("n", "<c-Right>", ":lua require('tmux').resize_right()<cr>", { silent = true, desc = "Resize right" })
 
 -- window splits
-keymap.set("n", "<leader>s", ":split<Space>")
-keymap.set("n", "<leader>v", ":vsplit<Space>")
+keymap.set("n", "<leader>s", ":split<Space>", { desc = "split" })
+keymap.set("n", "<leader>v", ":vsplit<Space>", { desc = "vsplit" })
 
 -- tabs
-keymap.set("n", "<leader>tx", ":tabclose<CR>", { silent = true })
-keymap.set("n", "<leader>tc", ":tabnew<CR>", { silent = true })
-keymap.set("n", "<leader>to", ":tabonly<CR>", { silent = true })
-keymap.set("n", "<S-l>", ":tabn<CR>", { silent = true })
-keymap.set("n", "<S-h>", ":tabp<CR>", { silent = true })
+keymap.set("n", "<leader>tx", ":tabclose<CR>", { silent = true, desc = "Close tab" })
+keymap.set("n", "<leader>tc", ":tabnew<CR>", { silent = true, desc = "New tab" })
+keymap.set("n", "<leader>to", ":tabonly<CR>", { silent = true, desc = "Only tab" })
+keymap.set("n", "<S-l>", ":tabn<CR>", { silent = true, desc = "Next tab" })
+keymap.set("n", "<S-h>", ":tabp<CR>", { silent = true, desc = "Prev tab" })
 -- move current tab to next position
-keymap.set("n", "<leader>tn", ":+tabmove<CR>", { silent = true })
+keymap.set("n", "<leader>tn", ":+tabmove<CR>", { silent = true, desc = "Move to next tab" })
 -- move current tab to previous position
-keymap.set("n", "<leader>tp", ":-tabmove<CR>", { silent = true })
+keymap.set("n", "<leader>tp", ":-tabmove<CR>", { silent = true, desc = "Move to prev tab" })
 
 -- Map Ctrl-Backspace to delete the previous word in insert mode.
 -- solution: https://vim.fandom.com/wiki/Map_Ctrl-Backspace_to_delete_previous_word
-keymap.set("!", "<C-BS>", "<C-w>")
-keymap.set("!", "<C-h>", "<C-w>")
+keymap.set("!", "<C-BS>", "<C-w>", { silent = true, desc = "Fix Ctrl-Backspace" })
+keymap.set("!", "<C-h>", "<C-w>", { silent = true, desc = "Fix Ctrl-Backspace" })
 
 -- search replace
 -- keymap.set("n", "S", ":%s///g<Left><Left><Left>")
@@ -86,10 +86,10 @@ keymap.set("n", "Q", "<nop>")
 -- keymap.set("n", "Q", ":q<cr>", { silent = true })
 
 -- disable search highlighting until the next search
-keymap.set("n", "<cr>", ":noh<cr><cr>", { silent = true })
+keymap.set("n", "<cr>", ":noh<cr><cr>", { silent = true, desc = "No highlight" })
 
 -- delete buffer without closing neovim
-keymap.set("n", "<leader>x", ":Bdelete<cr>")
+keymap.set("n", "<leader>x", ":Bdelete<cr>", { desc = "Delete buffer" })
 
 -- Remap for dealing with word wrap
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -99,22 +99,22 @@ vim.keymap.set("v", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 
 -- formatting
 -- put brackets around word/s
-keymap.set("n", "<leader>(", "viwc()<esc>P")
-keymap.set("n", "<leader>{", "viwc{}<esc>P")
-keymap.set("n", "<leader>[", "viwc[]<esc>P")
-keymap.set("n", "<leader>'", "viwc''<esc>P")
-keymap.set("n", '<leader>"', 'viwc""<esc>P')
+keymap.set("n", "<leader>(", "viwc()<esc>P", { silent = true, desc = "() around word" })
+keymap.set("n", "<leader>{", "viwc{}<esc>P", { silent = true, desc = "{} around word" })
+keymap.set("n", "<leader>[", "viwc[]<esc>P", { silent = true, desc = "[] around word" })
+keymap.set("n", "<leader>'", "viwc''<esc>P", { silent = true, desc = "'' around word" })
+keymap.set("n", '<leader>"', 'viwc""<esc>P', { silent = true, desc = '"" around word' })
 
 -- put brackets around selected
-keymap.set("x", "<leader>(", "<ESC>`>a)<ESC>`<i(<ESC>")
-keymap.set("x", "<leader>{", "<ESC>`>a}<ESC>`<i{<ESC>")
-keymap.set("x", "<leader>[", "<ESC>`>a]<ESC>`<i[<ESC>")
-keymap.set("x", "<leader>'", "<ESC>`>a'<ESC>`<i'<ESC>")
-keymap.set("x", '<leader>"', '<ESC>`>a"<ESC>`<i"<ESC>')
+keymap.set("x", "<leader>(", "<ESC>`>a)<ESC>`<i(<ESC>", { silent = true, desc = "() around selected word" })
+keymap.set("x", "<leader>{", "<ESC>`>a}<ESC>`<i{<ESC>", { silent = true, desc = "{} around selected word" })
+keymap.set("x", "<leader>[", "<ESC>`>a]<ESC>`<i[<ESC>", { silent = true, desc = "[] around selected word" })
+keymap.set("x", "<leader>'", "<ESC>`>a'<ESC>`<i'<ESC>", { silent = true, desc = "'' around selected word" })
+keymap.set("x", '<leader>"', '<ESC>`>a"<ESC>`<i"<ESC>', { silent = true, desc = '"" around selected word' })
 
 -- move selected text
-keymap.set("x", "K", ":move '<-2<CR>gv-gv")
-keymap.set("x", "J", ":move '>+1<CR>gv-gv")
+keymap.set("x", "K", ":move '<-2<CR>gv-gv", { silent = true, desc = "Move selected text" })
+keymap.set("x", "J", ":move '>+1<CR>gv-gv", { silent = true, desc = "Move selected text" })
 
 keymap.set("", "<leader>z", ":set formatoptions-=cro<cr>")
 keymap.set("", "<leader>Z", ":set formatoptions=cro<cr>")
@@ -203,3 +203,6 @@ keymap.set("n", "<Leader>nf", ":lua require('neogen').generate()<CR>", { silent 
 
 -- copilot
 -- vim.cmd([[imap <silent><script><expr> <C-q> copilot#Accept("\<CR>")]])
+
+-- undotree
+keymap.set("n", "<F4>", ":UndotreeToggle<cr>", { silent = true, desc = "UndoTreeToggle" })

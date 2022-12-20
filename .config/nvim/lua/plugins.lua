@@ -55,6 +55,7 @@ return packer.startup(function(use)
     use("j-hui/fidget.nvim")
     -- use("github/copilot.vim")
     use("folke/which-key.nvim")
+    use("mbbill/undotree")
 
     -- comments
     use("numToStr/Comment.nvim")
