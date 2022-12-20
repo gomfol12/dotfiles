@@ -1,6 +1,7 @@
 -- ==================== LSP (mason.nvim, mason-lspconfig.nvim, lspconfig.nvim, cmp-nvim-lsp.nvim) ==================== --
 
 local _M = {}
+local U = require("utils")
 
 local mason_ok, mason = pcall(require, "mason")
 local mason_lsp_ok, mason_lsp_config = pcall(require, "mason-lspconfig")
@@ -53,25 +54,26 @@ _M.capabilities = cmp_nvim_lsp.default_capabilities()
 _M.capabilities.offsetEncoding = { "utf-16" }
 
 -- Keybinds
+-- stylua: ignore
 function _M.keybinds(bufnr)
     local opts = { silent = true, buffer = bufnr }
-    vim.keymap.set("n", "gd", ":lua vim.lsp.buf.definition()<cr>", opts)
-    vim.keymap.set("n", "gD", ":lua vim.lsp.buf.declaration()<cr>", opts)
-    vim.keymap.set("n", "gi", ":lua vim.lsp.buf.implementation()<cr>", opts)
-    vim.keymap.set("n", "gw", ":lua vim.lsp.buf.document_symbol()<cr>", opts)
-    vim.keymap.set("n", "gw", ":lua vim.lsp.buf.workspace_symbol()<cr>", opts)
-    vim.keymap.set("n", "gr", ":lua vim.lsp.buf.references()<cr>", opts)
-    vim.keymap.set("n", "gt", ":lua vim.lsp.buf.type_definition()<cr>", opts)
-    vim.keymap.set("n", "K", ":lua vim.lsp.buf.hover()<cr>", opts)
-    vim.keymap.set("n", "gs", ":lua vim.lsp.buf.signature_help()<cr>", opts)
-    vim.keymap.set("n", "<leader>ca", ":lua vim.lsp.buf.code_action()<cr>", opts)
-    vim.keymap.set("n", "<leader>rn", ":lua vim.lsp.buf.rename()<cr>", opts)
-    vim.keymap.set("n", "<F2>", ":lua vim.lsp.buf.rename()<cr>", opts)
-    vim.keymap.set("n", "<leader>m", ":lua vim.lsp.buf.formatting()<cr>", opts)
-    vim.keymap.set("n", "[d", ":lua vim.diagnostic.goto_prev()<cr>", opts)
-    vim.keymap.set("n", "]d", ":lua vim.diagnostic.goto_next()<cr>", opts)
-    vim.keymap.set("n", "gl", ":lua vim.diagnostic.open_float()<cr>", opts)
-    vim.keymap.set("n", "<leader>q", ":lua vim.diagnostic.setloclist()<cr>", opts)
+    vim.keymap.set("n", "gd", ":lua vim.lsp.buf.definition()<cr>", U.concat(opts, { desc = "LSP: go to definition" }))
+    vim.keymap.set("n", "gD", ":lua vim.lsp.buf.declaration()<cr>", U.concat(opts, { desc = "LSP: go to declaration" }))
+    vim.keymap.set("n", "gi", ":lua vim.lsp.buf.implementation()<cr>", U.concat(opts, { desc = "LSP: go to implementation" }))
+    vim.keymap.set("n", "gw", ":lua vim.lsp.buf.document_symbol()<cr>", U.concat(opts, { desc = "LSP: list document symbols " }))
+    vim.keymap.set("n", "gq", ":lua vim.lsp.buf.workspace_symbol()<cr>", U.concat(opts, { desc = "LSP: query document symbol" }))
+    vim.keymap.set("n", "gr", ":lua vim.lsp.buf.references()<cr>", U.concat(opts, { desc = "LSP: references" }))
+    vim.keymap.set("n", "gt", ":lua vim.lsp.buf.type_definition()<cr>", U.concat(opts, { desc = "LSP: type definition" }))
+    vim.keymap.set("n", "K", ":lua vim.lsp.buf.hover()<cr>",  U.concat(opts, { desc = "LSP: hover info" }))
+    -- vim.keymap.set("n", "gs", ":lua vim.lsp.buf.signature_help()<cr>",  U.concat(opts, { desc = "LSP: signature help" }))
+    vim.keymap.set("n", "<leader>ca", ":lua vim.lsp.buf.code_action()<cr>",  U.concat(opts, { desc = "LSP: code action" }))
+    vim.keymap.set("n", "<leader>rn", ":lua vim.lsp.buf.rename()<cr>",  U.concat(opts, { desc = "LSP: rename" }))
+    vim.keymap.set("n", "<F2>", ":lua vim.lsp.buf.rename()<cr>",  U.concat(opts, { desc = "LSP: rename" }))
+    vim.keymap.set("n", "<leader>m", ":lua vim.lsp.buf.formatting()<cr>",  U.concat(opts, { desc = "LSP: format" }))
+    vim.keymap.set("n", "[d", ":lua vim.diagnostic.goto_prev()<cr>", U.concat(opts, { desc = "LSP: diagnostic next" }))
+    vim.keymap.set("n", "]d", ":lua vim.diagnostic.goto_next()<cr>",  U.concat(opts, { desc = "LSP: diagnostic prev" }))
+    vim.keymap.set("n", "gl", ":lua vim.diagnostic.open_float()<cr>",  U.concat(opts, { desc = "LSP: diagnostic cursor" }))
+    vim.keymap.set("n", "<leader>q", ":lua vim.diagnostic.setloclist()<cr>", U.concat(opts, { desc = "LSP: diagnostic all" }))
 end
 
 -- Auto highlighting
