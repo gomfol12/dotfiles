@@ -22,6 +22,7 @@ function _G.load_config()
     require("impatient")
     require("plugins")
 
+    require("which")
     require("mappings")
     require("settings")
     require("lsp")()
