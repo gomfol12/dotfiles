@@ -127,6 +127,9 @@ vim.g.table_mode_corner = "|"
 -- undotree
 vim.g.undotree_WindowLayout = 3
 
+-- Goyo
+vim.g.goyo_width = 100
+
 -- ========== Autocmds ========== --
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd

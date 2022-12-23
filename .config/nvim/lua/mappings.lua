@@ -225,6 +225,7 @@ keymap.set("n", "<Leader>nf", require("neogen").generate, { silent = true, desc 
 -- undotree
 keymap.set("n", "<F4>", ":UndotreeToggle<cr>", { silent = true, desc = "UndoTreeToggle" })
 
+-- ToggleTerm`
 ToggleTerm = function(direction)
     local command = "ToggleTerm"
     if direction == "horizontal" then
@@ -250,6 +251,9 @@ keymap.set("n", "<leader>th", [[:lua ToggleTerm("horizontal")<cr>]], { noremap =
 keymap.set("n", "<leader>tv", [[:lua ToggleTerm("vertical")<cr>]], { noremap = true, silent = true, desc = "ToggleTerm vertically" })
 keymap.set("i", "<C-\\>", "<esc>:lua ToggleTerm()<cr>", { noremap = true, silent = true, desc = "ToggleTerm" })
 keymap.set("t", "<C-\\>", "<C-\\><C-n>:lua ToggleTerm()<cr>", { noremap = true, silent = true, desc = "ToggleTerm" })
+
+-- Goyo
+keymap.set("n", "<leader>go", ":Goyo<cr>", { silent = true, desc = "Goyo" })
 
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })
