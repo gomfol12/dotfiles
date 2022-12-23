@@ -45,7 +45,10 @@ function utils.dump(o)
 end
 
 function utils.concat(t1, t2)
-    local t = t1
+    local t = {}
+    for k, v in pairs(t1) do
+        t[k] = v
+    end
     for k, v in pairs(t2) do
         t[k] = v
     end

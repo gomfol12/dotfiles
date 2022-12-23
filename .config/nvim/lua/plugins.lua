@@ -22,7 +22,6 @@ return packer.startup(function(use)
         requires = { "kyazdani42/nvim-web-devicons" },
     })
     use("windwp/nvim-autopairs")
-    use("dstein64/vim-startuptime")
     use({
         "kyazdani42/nvim-tree.lua",
         requires = { "kyazdani42/nvim-web-devicons" },
@@ -34,7 +33,7 @@ return packer.startup(function(use)
     use("moll/vim-bbye")
     use("rhysd/vim-grammarous")
     use("lewis6991/impatient.nvim")
-    use("nanozuki/tabby.nvim") -- dont work ??
+    use("nanozuki/tabby.nvim")
     use("Shatur/neovim-session-manager")
     use({ "vimwiki/vimwiki", branch = "dev" })
     use("lervag/vimtex")
@@ -56,6 +55,9 @@ return packer.startup(function(use)
     -- use("github/copilot.vim")
     use("folke/which-key.nvim")
     use("mbbill/undotree")
+    use("rcarriga/nvim-notify")
+    use("kwkarlwang/bufresize.nvim")
+    use({ "akinsho/toggleterm.nvim", tag = "*" })
 
     -- comments
     use("numToStr/Comment.nvim")

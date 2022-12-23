@@ -61,10 +61,25 @@ keymap.set("n", "<c-k>", "lua require('tmux').move_top()<cr>", { silent = true, 
 keymap.set("n", "<c-l>", "lua require('tmux').move_right()<cr>", { silent = true, desc = "Move right" })
 
 -- window resize
-keymap.set("n", "<c-Up>", ":lua require('tmux').resize_top()<cr>", { silent = true, desc = "Resize up" })
-keymap.set("n", "<c-Down>", ":lua require('tmux').resize_bottom()<cr>", { silent = true, desc = "Resize down" })
-keymap.set("n", "<c-Left>", ":lua require('tmux').resize_left()<cr>", { silent = true, desc = "Resize left" })
-keymap.set("n", "<c-Right>", ":lua require('tmux').resize_right()<cr>", { silent = true, desc = "Resize right" })
+keymap.set("n", "<c-Up>", function()
+    require("tmux").resize_top()
+    require("bufresize").register()
+end, { silent = true, desc = "Resize up" })
+
+keymap.set("n", "<c-Down>", function()
+    require("tmux").resize_bottom()
+    require("bufresize").register()
+end, { silent = true, desc = "Resize down" })
+
+keymap.set("n", "<c-Left>", function()
+    require("tmux").resize_left()
+    require("bufresize").register()
+end, { silent = true, desc = "Resize left" })
+
+keymap.set("n", "<c-Right>", function()
+    require("tmux").resize_right()
+    require("bufresize").register()
+end, { silent = true, desc = "Resize right" })
 
 -- window splits
 keymap.set("n", "<leader>s", ":split<Space>", { desc = "split" })
@@ -130,57 +145,73 @@ keymap.set("n", "<leader>mcl", ":SessionManager load_current_dir_session<cr>", {
 keymap.set("n", "<leader>ma", ":SessionManager load_last_session<cr>", { desc = "SM: load last" })
 
 -- nvim tree
-keymap.set("n", "<c-n>", ":NvimTreeToggle<cr>", { silent = true, desc = "NvimTree toggle" })
+keymap.set("n", "<c-n>", function()
+    vim.api.nvim_command("NvimTreeToggle")
+    require("bufresize").register()
+end, { silent = true, desc = "NvimTree toggle" })
 
 -- Grammarous
 keymap.set("n", "<leader>gg", ":GrammarousCheck --lang=de<cr>", { desc = "Grammarous check" })
 
 -- dap
-keymap.set("n", "<F5>", ":lua require'dap'.continue()<CR>", { silent = true, desc = "Debug: continue" })
-keymap.set("n", "<F10>", ":lua require'dap'.step_over()<CR>", { silent = true, desc = "Debug: step over" })
-keymap.set("n", "<F11>", ":lua require'dap'.step_into()<CR>", { silent = true, desc = "Debug: step into" })
-keymap.set("n", "<F12>", ":lua require'dap'.step_out()<CR>", { silent = true, desc = "Debug: step out" })
-keymap.set(
-    "n",
-    "<leader>db",
-    ":lua require'dap'.toggle_breakpoint()<CR>",
-    { silent = true, desc = "Debug: toggle breakpoint" }
-)
-keymap.set(
-    "n",
-    "<leader>dB",
-    ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
-    { silent = true, desc = "Debug: set breakpoint condition" }
-)
-keymap.set(
-    "n",
-    "<leader>dp",
-    ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>",
-    { silent = true, desc = "Debug: set breakpoint log message" }
-)
-keymap.set("n", "<leader>dr", ":lua require'dap'.repl.toggle()<CR>", { silent = true, desc = "Debug: repl toggle" })
-keymap.set("n", "<leader>dl", ":lua require'dap'.run_last()<CR>", { silent = true, desc = "Debug: run last" })
-keymap.set("n", "<leader>di", ":lua require'dap.ui.widgets'.hover()<CR>", { silent = true, desc = "Debug: hover" })
-keymap.set(
-    "n",
-    "<leader>d?",
-    ":lua local widgets=require'dap.ui.widgets';widgets.centered_float(widgets.scopes)<CR>",
-    { silent = true, desc = "Debug: local scopes" }
-)
-keymap.set(
-    "n",
-    "<leader>dR",
-    ":lua require'dap'.clear_breakpoints()<CR>",
-    { silent = true, desc = "Debug: clear breakpoints" }
-)
-keymap.set("n", "<leader>dc", ":lua require'dap'.run_to_cursor()<CR>", { silent = true, desc = "Debug: run to cursor" })
-keymap.set("n", "<leader>dk", ":lua require'dap'.up()<CR>zz", { silent = true, desc = "Debug: up" })
-keymap.set("n", "<leader>dj", ":lua require'dap'.down()<CR>zz", { silent = true, desc = "Debug: down" })
-keymap.set("n", "<leader>dt", ":lua require'dap'.terminate()<CR>", { silent = true, desc = "Debug: terminate" })
+local dapw = require("dap.ui.widgets")
+local dap = require("dap")
+local dapui = require("dapui")
+
+-- Start debugging session
+vim.keymap.set("n", "<leader>ds", function()
+    dap.continue()
+    dapui.toggle()
+    require("bufresize").register()
+    require("notify")("Debugger session started", "info")
+end, { desc = "Debug: start session" })
+
+keymap.set("n", "<F5>", dap.continue, { silent = true, desc = "Debug: continue" })
+keymap.set("n", "<F10>", dap.step_over, { silent = true, desc = "Debug: step over" })
+keymap.set("n", "<F11>", dap.step_into, { silent = true, desc = "Debug: step into" })
+keymap.set("n", "<F12>", dap.step_out, { silent = true, desc = "Debug: step out" })
+keymap.set("n", "<leader>dc", dap.continue, { silent = true, desc = "Debug: continue" })
+keymap.set("n", "<leader>dn", dap.step_over, { silent = true, desc = "Debug: step over" })
+keymap.set("n", "<leader>di", dap.step_into, { silent = true, desc = "Debug: step into" })
+keymap.set("n", "<leader>do", dap.step_out, { silent = true, desc = "Debug: step out" })
+
+keymap.set("n", "<leader>db", dap.toggle_breakpoint, { silent = true, desc = "Debug: toggle breakpoint" })
+-- stylua: ignore
+keymap.set("n", "<leader>dB", function () dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, { silent = true, desc = "Debug: set breakpoint condition" })
+-- stylua: ignore
+keymap.set("n", "<leader>dp", function () dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end, { silent = true, desc = "Debug: set breakpoint log message" })
+keymap.set("n", "<leader>dr", dap.repl.toggle, { silent = true, desc = "Debug: repl toggle" })
+keymap.set("n", "<leader>dl", dap.run_last, { silent = true, desc = "Debug: run last" })
+keymap.set("n", "<leader>dh", dapw.hover, { silent = true, desc = "Debug: hover" })
+keymap.set("n", "<leader>d?", function()
+    dapw.centered_float(dapw.scopes)
+end, { silent = true, desc = "Debug: local scopes" })
+
+keymap.set("n", "<leader>dR", function()
+    dap.clear_breakpoints()
+    require("notify")("Breakpoints cleared", "warn")
+end, { silent = true, desc = "Debug: clear breakpoints" })
+
+keymap.set("n", "<leader>dq", dap.run_to_cursor, { silent = true, desc = "Debug: run to cursor" })
+keymap.set("n", "<leader>dk", dap.up, { silent = true, desc = "Debug: up" })
+keymap.set("n", "<leader>dj", dap.down, { silent = true, desc = "Debug: down" })
+keymap.set("n", "<leader>dt", dap.terminate, { silent = true, desc = "Debug: terminate" })
+
+-- Close debugger and clear breakpoints
+vim.keymap.set("n", "<leader>de", function()
+    dap.clear_breakpoints()
+    dapui.toggle()
+    dap.terminate()
+    require("notify")("Debugger session ended", "warn")
+end)
 
 -- dapui
-keymap.set("n", "<leader>du", ":lua require'dapui'.toggle()<CR>", { silent = true, desc = "Debug: UI toggle" })
-keymap.set("v", "<leader>dh", ":lua require'dapui'.eval()<CR>", { silent = true, desc = "Debug: UI eval" })
+keymap.set("n", "<leader>du", function()
+    dapui.toggle()
+    require("bufresize").register()
+end, { silent = true, desc = "Debug: UI toggle" })
+
+keymap.set("v", "<leader>dh", dapui.eval, { silent = true, desc = "Debug: UI eval" })
 
 -- overseer
 keymap.set("n", "<leader>ot", ":OverseerToggle<CR>", { silent = true, desc = "Overseer toggle" })
@@ -189,10 +220,36 @@ keymap.set("n", "<leader>bl", ":OverseerRestartLast<CR>", { silent = true, desc 
 keymap.set("n", "<leader>oa", ":OverseerQuickAction<CR>", { silent = true, desc = "Overseer quick action" })
 
 -- neogen
-keymap.set("n", "<Leader>nf", ":lua require('neogen').generate()<CR>", { silent = true, desc = "Neogen generate" })
+keymap.set("n", "<Leader>nf", require("neogen").generate, { silent = true, desc = "Neogen generate" })
 
 -- undotree
 keymap.set("n", "<F4>", ":UndotreeToggle<cr>", { silent = true, desc = "UndoTreeToggle" })
+
+ToggleTerm = function(direction)
+    local command = "ToggleTerm"
+    if direction == "horizontal" then
+        command = command .. " direction=horizontal size=20"
+    elseif direction == "vertical" then
+        command = command .. " direction=vertical size=" .. vim.o.columns * 0.4
+    end
+    if vim.bo.filetype == "toggleterm" then
+        require("bufresize").block_register()
+        vim.api.nvim_command(command)
+        require("bufresize").resize_close()
+    else
+        require("bufresize").block_register()
+        vim.api.nvim_command(command)
+        require("bufresize").resize_open()
+        vim.cmd([[execute "normal! i"]])
+    end
+end
+keymap.set("n", "<C-\\>", ":lua ToggleTerm()<cr>", { noremap = true, silent = true, desc = "ToggleTerm" })
+-- stylua: ignore
+keymap.set("n", "<leader>th", [[:lua ToggleTerm("horizontal")<cr>]], { noremap = true, silent = true, desc = "ToggleTerm horizontally" })
+-- stylua: ignore
+keymap.set("n", "<leader>tv", [[:lua ToggleTerm("vertical")<cr>]], { noremap = true, silent = true, desc = "ToggleTerm vertically" })
+keymap.set("i", "<C-\\>", "<esc>:lua ToggleTerm()<cr>", { noremap = true, silent = true, desc = "ToggleTerm" })
+keymap.set("t", "<C-\\>", "<C-\\><C-n>:lua ToggleTerm()<cr>", { noremap = true, silent = true, desc = "ToggleTerm" })
 
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })

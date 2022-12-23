@@ -43,6 +43,8 @@ function _G.load_config()
     require("mason-update-all").setup()
     require("task")
     require("plugin_conf")
+    require("buf")
+    require("term")
 end
 
 if not bootstrap then
