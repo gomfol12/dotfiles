@@ -59,6 +59,7 @@ return packer.startup(function(use)
     use("kwkarlwang/bufresize.nvim")
     use({ "akinsho/toggleterm.nvim", tag = "*" })
     use("junegunn/goyo.vim")
+    use("stevearc/dressing.nvim")
 
     -- comments
     use("numToStr/Comment.nvim")
