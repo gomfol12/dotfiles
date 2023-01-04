@@ -1,8 +1,6 @@
 auto-reload yes
 
-# external-url-viewer "linkhandler.sh"
-# pager "pager.sh"
-# html-renderer "/bin/cat"
+pager "pager.sh"
 
 color background          default default
 color listnormal          default default
@@ -33,7 +31,7 @@ bind-key l open
 bind-key BACKSPACE quit
 bind-key SPACE macro-prefix
 
-macro e set pager "pager.sh"; open; set pager "internal"
+macro e set pager "internal"; open; set pager "pager.sh"
 
 highlight all "---.*---" default
 highlight feedlist ".*(0/0))" black

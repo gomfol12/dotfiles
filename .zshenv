@@ -23,7 +23,7 @@ export QT_QPA_PLATFORMTHEME=gtk2
 #export QT_QPA_PLATFORMTHEME=qt5ct
 
 # Color for manpages in less makes manpages a little easier to read
-export LESS='-iSrsM +Gg'
+export LESS='-iSrsMF'
 export LESS_TERMCAP_mb=$'\E[01;32m'
 export LESS_TERMCAP_md=$'\E[01;32m'
 export LESS_TERMCAP_me=$'\E[0m'

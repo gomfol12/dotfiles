@@ -61,8 +61,22 @@ while read -r line; do
     fi
 done <"$1" 1>/dev/null &
 
+highlight=$(sed 's/\(http[s]*:\/\/[^ ]*\)/\\033[32m\1\\033[0m/g;
+s/\(^Title:.*$\)/\\033[34;1m\1\\033[0m/g;
+s/\(^Feed:.*$\)/\\033[36m\1\\033[0m/g;
+s/\(^Author:.*$\)/\\033[36m\1\\033[0m/g;
+s/\(\[[0-9][0-9]*\]\)/\\033[35m\1\\033[0m/g' "$1")
+
+lesskey=$(mktemp)
+echo "#command" >> "$lesskey"
+grep -o '\[[0-9]\]: https://[^ ]*' "$1" | sed -u 's/\[\([0-9]\)\]: \(.*\)/\1 shell $BROWSER "\2" \&\& xdotool key Return\\n/' >> "$lesskey"
+grep -o 'Link: https://[^ ]*' "$1" | sed -u 's/Link: \(.*\)/o shell $BROWSER "\1" \&\& xdotool key Return\\n/' >> "$lesskey"
+
+# shellcheck disable=2034
+LESS="-irsMR +Gg"
 if [ "$dont_draw" == false ]; then
-    less "$1" && "$SCRIPT_DIR/newsboat/clear_img.sh"
+    # less "$1" && "$SCRIPT_DIR/newsboat/clear_img.sh"
+    echo -e "$highlight" | less --lesskey-src="$lesskey" && "$SCRIPT_DIR/newsboat/clear_img.sh"
 else
-    less "$1"
+    echo -e "$highlight" | less --lesskey-src="$lesskey"
 fi
