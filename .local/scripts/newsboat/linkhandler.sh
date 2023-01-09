@@ -1,6 +1,7 @@
 #!/bin/bash
 
 url=$1
+program=$2
 
 hash()
 {
@@ -10,12 +11,18 @@ hash()
 
 case $url in
 *mkv | *webm | *youtube.com/watch* | *youtube.com/playlist* | *youtube.com/shorts* | *youtu.be* | *v.redd.it*) setsid -f mpv -quiet "$url" >/dev/null 2>&1 ;;
-*png | *jpg | *jpeg | *gif)
+*png | *jpg | *jpg?* | *jpeg | *gif)
     cache="$(hash "$url")"
     if [ ! -f "$cache" ]; then
         curl -sL "$url" >"$cache"
     fi
     setsid -f sxiv.sh "$cache" >/dev/null 2>&1
     ;;
-*) $BROWSER "$url" ;;
+*)
+    if [ -n "$program" ]; then
+        "$program" "$url"
+    else
+        "$BROWSER" "$url"
+    fi
+    ;;
 esac

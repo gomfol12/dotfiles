@@ -69,8 +69,11 @@ s/\(\[[0-9][0-9]*\]\)/\\033[35m\1\\033[0m/g' "$1")
 
 lesskey=$(mktemp)
 echo "#command" >>"$lesskey"
-grep -o '\[[0-9]\]: https://[^ ]*' "$1" | sed -u 's/\[\([0-9]\)\]: \(.*\)/\1 shell $BROWSER "\2" \&\& xdotool key Return\\n/' >>"$lesskey"
-grep -o 'Link: https://[^ ]*' "$1" | sed -u 's/Link: \(.*\)/o shell $BROWSER "\1" \&\& xdotool key Return\\n/' >>"$lesskey"
+echo "\kb quit" >>"$lesskey"
+grep -o '\[[0-9]\]: https://[^ ]*' "$1" | sed -u 's/\[\([0-9]\)\]: \(.*\)/\1 shell linkhandler.sh "\2" \&\& xdotool key Return\\n/' >>"$lesskey"
+grep -o 'Link: https://[^ ]*' "$1" | sed -u 's/Link: \(.*\)/o shell linkhandler.sh "\1" \&\& xdotool key Return\\n/' >>"$lesskey"
+grep -o 'Link: https://[^ ]*' "$1" | sed -u 's/Link: \(.*\)/^o shell "$BROWSER" "\1" \&\& xdotool key Return\\n/' >>"$lesskey"
+grep -o 'Link: https://[^ ]*' "$1" | sed -u 's/Link: \(.*\)/b shell "$BROWSER" "\1" \&\& xdotool key Return\\n/' >>"$lesskey"
 
 # shellcheck disable=2034
 LESS="-irsMR +Gg"
