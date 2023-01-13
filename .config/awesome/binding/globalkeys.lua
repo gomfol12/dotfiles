@@ -127,7 +127,7 @@ return gears.table.join(
         awful.spawn("screenshotter.sh")
     end, { description = "screenshotter", group = "util" }),
     awful.key({}, "Pause", function()
-        awful.spawn({ "picom.sh", "-tn" })
+        awful.spawn({ "compositor.sh", "-tn" })
     end, { description = "toggle picom", group = "util" }),
     awful.key({}, "Scroll_Lock", function()
         awful.spawn.easy_async({ "audio.sh", "swap" }, function()

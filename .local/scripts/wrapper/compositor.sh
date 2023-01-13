@@ -1,33 +1,35 @@
 #!/bin/sh
 #
 # Start a composition manager.
-# (picom in this case)
+
+compositor_command="xcompmgr -cfCF -D10 -I.1 -O.1"
+compositor_name="xcompmgr"
 
 help()
 {
     echo "Composition Manager:"
-    echo "   (re)start:      picom.sh"
-    echo "   stop:           picom.sh -s"
-    echo "   toggle:         picom.sh -t"
-    echo "   toggle(notify): picom.sh -tn"
-    echo "   query:          picom.sh -q"
+    echo "   (re)start:      compositor.sh"
+    echo "   stop:           compositor.sh -s"
+    echo "   toggle:         compositor.sh -t"
+    echo "   toggle(notify): compositor.sh -tn"
+    echo "   query:          compositor.sh -q"
     echo "                   returns 0 if composition manager is running, else 1"
 }
 
 check()
 {
-    pgrep -u "$(id -u)" -nf "^picom$" >/dev/null 2>&1
+    pgrep -u "$(id -u)" -nf "^$compositor_name" >/dev/null 2>&1
 }
 
 stop()
 {
-    check && killall picom
+    check && killall "$compositor_name"
 }
 
 start()
 {
     stop
-    picom &
+    $compositor_command &
 }
 
 toggle()
@@ -43,10 +45,10 @@ togglenotify()
 {
     if check; then
         stop
-        notify-send "picom killed"
+        notify-send "$compositor_name killed"
     else
         start
-        notify-send "picom started"
+        notify-send "$compositor_name started"
     fi
 }
 

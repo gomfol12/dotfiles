@@ -7,9 +7,9 @@ fi
 
 export ALSOFT_DRIVERS=pulse
 
-picom.sh -s
+compositor.sh -s
 [ "$(hostname)" = "$HOSTNAME_DESKTOP" ] && setupMonitors.sh disable_FFCP
 gamemoderun "$@"
 wait
 [ "$(hostname)" = "$HOSTNAME_DESKTOP" ] && setupMonitors.sh enable_FFCP
-picom.sh
+compositor.sh
