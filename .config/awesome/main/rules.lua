@@ -112,36 +112,8 @@ function _M.get(clientkeys, clientbuttons)
                 },
             },
             properties = {
-                floating = true,
-                delayed_placement = awful.placement.centered,
-                width = awful.screen.focused().workarea.width * 0.7,
-                height = awful.screen.focused().workarea.height * 0.7,
                 screen = 1,
                 tag = "9",
-            },
-        },
-
-        {
-            rule_any = {
-                class = {
-                    "firefox",
-                },
-            },
-            properties = {
-                screen = 1,
-                tag = "2",
-            },
-        },
-
-        {
-            rule_any = {
-                class = {
-                    "discord",
-                },
-            },
-            properties = {
-                screen = 2,
-                tag = "1",
             },
         },
 
@@ -154,11 +126,55 @@ function _M.get(clientkeys, clientbuttons)
         --         titlebars_enabled = true,
         --     },
         -- },
-
-        -- Set Firefox to always map on the tag named "2" on screen 1.
-        -- { rule = { class = "Firefox" },
-        --   properties = { screen = 1, tag = "2" } },
     }
+
+    if RC.vars.hostname == os.getenv("HOSTNAME_DESKTOP") then
+        table.insert(rules, {
+            rule_any = {
+                class = {
+                    "discord",
+                },
+            },
+            properties = {
+                screen = 2,
+                tag = "1",
+            },
+        })
+        table.insert(rules, {
+            rule_any = {
+                class = {
+                    "Spotify",
+                },
+            },
+            properties = {
+                screen = 2,
+                tag = "2",
+            },
+        })
+    end
+
+    if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
+        table.insert(rules, {
+            rule_any = {
+                class = {
+                    "discord",
+                },
+            },
+            properties = {
+                tag = "8",
+            },
+        })
+        table.insert(rules, {
+            rule_any = {
+                class = {
+                    "Spotify",
+                },
+            },
+            properties = {
+                tag = "7",
+            },
+        })
+    end
 
     return rules
 end
