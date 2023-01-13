@@ -18,7 +18,14 @@ telescope.setup({
         ["ui-select"] = {
             require("telescope.themes").get_dropdown({}),
         },
+        fzf = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = "ignore_case", -- or "smart_case" or "respect_case"
+        },
     },
 })
 
 telescope.load_extension("ui-select")
+telescope.load_extension("fzf")
