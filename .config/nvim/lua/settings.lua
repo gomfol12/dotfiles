@@ -16,7 +16,8 @@ opt.confirm = true -- Confirmation dialog
 opt.undofile = true -- Persistent undo
 opt.wrap = true
 opt.iskeyword:append("-")
-opt.sessionoptions:append("globals")
+-- opt.sessionoptions:append("globals")
+opt.sessionoptions:remove("buffers")
 opt.path:append("**") -- search down into subfolders. Tab-completion
 opt.shortmess:append("c")
 
@@ -41,6 +42,13 @@ opt.list = true
 opt.listchars = "tab:>-,trail:-,precedes:<,extends:>,nbsp:+"
 opt.conceallevel = 1
 opt.pumheight = 10 -- Max number of items to show in the popup menu
+
+-- vim.o.foldcolumn = "1"
+-- vim.o.foldlevel = 99
+-- vim.o.foldlevelstart = 99
+-- vim.o.foldenable = true
+-- vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+-- vim.o.statuscolumn = "%=%r%s%C"
 
 -- ========== Tabs, indent ========== --
 opt.expandtab = true -- Use spaces instead of tabs
@@ -217,3 +225,51 @@ for _, k in pairs({ "vimwiki", "tex", "markdown" }) do
         command = 'lua vim.opt.colorcolumn = "80"',
     })
 end
+
+-- ========== Useful functions ========== --
+local function usercmd(alias, command)
+    return vim.api.nvim_create_user_command(alias, command, { nargs = 0 })
+end
+
+-- Search
+usercmd("Search", function()
+    local search = vim.fn.input("Search: ")
+    local pickers = require("telescope.pickers")
+    local finders = require("telescope.finders")
+    local conf = require("telescope.config").values
+    local actions = require("telescope.actions")
+    local action_state = require("telescope.actions.state")
+
+    -- our picker function: colors
+    local searcher = function(opts)
+        opts = opts or {}
+        pickers
+            .new(opts, {
+                prompt_title = "OmniSearch",
+                finder = finders.new_table({
+                    results = {
+                        { "Brave Search", ("search.brave.com/search\\?q\\=" .. search:gsub(" ", "+")) },
+                        { "Youtube", ("https://www.youtube.com/results\\?search_query\\=" .. search:gsub(" ", "+")) },
+                        { "Github", ("https://github.com/search\\?q\\=" .. search:gsub(" ", "+")) },
+                        { "Stack Overflow", ("www.stackoverflow.com/search\\?q\\=" .. search:gsub(" ", "+")) },
+                        { "Wikipedia", ("https://en.wikipedia.org/w/index.php\\?search\\=" .. search:gsub(" ", "+")) },
+                        { "Google Search", ("www.google.com/search\\?q\\=" .. search:gsub(" ", "+")) },
+                    },
+                    entry_maker = function(entry)
+                        return { value = entry, display = entry[1], ordinal = entry[1] }
+                    end,
+                }),
+                sorter = conf.generic_sorter(opts),
+                attach_mappings = function(prompt_bufnr, map)
+                    actions.select_default:replace(function()
+                        actions.close(prompt_bufnr)
+                        local selection = action_state.get_selected_entry()
+                        vim.cmd(("silent execute '!" .. os.getenv("BROWSER") .. " %s &'"):format(selection["value"][2]))
+                    end)
+                    return true
+                end,
+            })
+            :find()
+    end
+    searcher(require("telescope.themes").get_dropdown({}))
+end)

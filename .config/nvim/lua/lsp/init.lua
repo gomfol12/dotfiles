@@ -190,10 +190,10 @@ return setmetatable(_M, {
                     },
                 },
                 memory_usage = {
-                    border = "none",
+                    border = "single",
                 },
                 symbol_info = {
-                    border = "none",
+                    border = "single",
                 },
             },
         })

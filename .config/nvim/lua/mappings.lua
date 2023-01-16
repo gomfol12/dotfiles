@@ -63,22 +63,22 @@ keymap.set("n", "<c-l>", "lua require('tmux').move_right()<cr>", { silent = true
 -- window resize
 keymap.set("n", "<c-Up>", function()
     require("tmux").resize_top()
-    require("bufresize").register()
+    -- require("bufresize").register()
 end, { silent = true, desc = "Resize up" })
 
 keymap.set("n", "<c-Down>", function()
     require("tmux").resize_bottom()
-    require("bufresize").register()
+    -- require("bufresize").register()
 end, { silent = true, desc = "Resize down" })
 
 keymap.set("n", "<c-Left>", function()
     require("tmux").resize_left()
-    require("bufresize").register()
+    -- require("bufresize").register()
 end, { silent = true, desc = "Resize left" })
 
 keymap.set("n", "<c-Right>", function()
     require("tmux").resize_right()
-    require("bufresize").register()
+    -- require("bufresize").register()
 end, { silent = true, desc = "Resize right" })
 
 -- window splits
@@ -125,7 +125,9 @@ keymap.set("v", ">", ">gv", { desc = "Indent right" })
 -- plugins
 -- Telescope
 vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files, { desc = "Find files" })
-vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep, { desc = "Live grep" })
+-- stylua: ignore
+vim.keymap.set("n", "<leader><leader>f", require('telescope').extensions.frecency.frecency, { desc = "Find frequent files" })
+vim.keymap.set("n", "<leader>rg", require("telescope.builtin").live_grep, { desc = "Live grep" })
 vim.keymap.set("n", "<leader>fh", require("telescope.builtin").help_tags, { desc = "Help tags" })
 vim.keymap.set("n", "<leader>fb", require("telescope.builtin").buffers, { desc = "Find buffers" })
 vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "Find old files" })
@@ -137,17 +139,17 @@ vim.keymap.set("n", "<leader>/", function()
 end, { desc = "Fuzzy search current buffer" })
 vim.keymap.set("n", "<leader>fd", require("telescope.builtin").diagnostics, { desc = "Find diagnostics" })
 
--- Session Manager
-keymap.set("n", "<leader>ml", ":SessionManager load_session<cr>", { desc = "SM: load" })
-keymap.set("n", "<leader>md", ":SessionManager delete_session<cr>", { desc = "SM: delete" })
-keymap.set("n", "<leader>mcs", ":SessionManager save_current_session<cr>", { desc = "SM: save current" })
-keymap.set("n", "<leader>mcl", ":SessionManager load_current_dir_session<cr>", { desc = "SM: load current dir" })
-keymap.set("n", "<leader>ma", ":SessionManager load_last_session<cr>", { desc = "SM: load last" })
+-- Session Manager(Possession)
+keymap.set("n", "<leader>pl", ":Sload ", { desc = "SM: load" })
+keymap.set("n", "<leader>ps", ":Ssave ", { desc = "SM: save" })
+keymap.set("n", "<leader>pc", ":Sclose<cr>", { desc = "SM: close" })
+keymap.set("n", "<leader>pd", ":Sdelete ", { desc = "SM: delete" })
+keymap.set("n", "<leader>pp", require("telescope").extensions.possession.list, { desc = "SM: list" })
 
 -- nvim tree
 keymap.set("n", "<c-n>", function()
     vim.api.nvim_command("NvimTreeToggle")
-    require("bufresize").register()
+    -- require("bufresize").register()
 end, { silent = true, desc = "NvimTree toggle" })
 
 -- Grammarous
@@ -162,7 +164,7 @@ local dapui = require("dapui")
 vim.keymap.set("n", "<leader>ds", function()
     dap.continue()
     dapui.toggle()
-    require("bufresize").register()
+    -- require("bufresize").register()
     require("notify")("Debugger session started", "info")
 end, { desc = "Debug: start session" })
 
@@ -208,15 +210,15 @@ end)
 -- dapui
 keymap.set("n", "<leader>du", function()
     dapui.toggle()
-    require("bufresize").register()
+    -- require("bufresize").register()
 end, { silent = true, desc = "Debug: UI toggle" })
 
 keymap.set("v", "<leader>dh", dapui.eval, { silent = true, desc = "Debug: UI eval" })
 
 -- overseer
 keymap.set("n", "<leader>ot", ":OverseerToggle<CR>", { silent = true, desc = "Overseer toggle" })
-keymap.set("n", "<leader>bb", ":OverseerRun<CR>", { silent = true, desc = "Overseer run" })
-keymap.set("n", "<leader>bl", ":OverseerRestartLast<CR>", { silent = true, desc = "Overseer restart last" })
+keymap.set("n", "<leader>ob", ":OverseerRun<CR>", { silent = true, desc = "Overseer run" })
+keymap.set("n", "<leader>ol", ":OverseerRestartLast<CR>", { silent = true, desc = "Overseer restart last" })
 keymap.set("n", "<leader>oa", ":OverseerQuickAction<CR>", { silent = true, desc = "Overseer quick action" })
 
 -- neogen
@@ -234,13 +236,13 @@ ToggleTerm = function(direction)
         command = command .. " direction=vertical size=" .. vim.o.columns * 0.4
     end
     if vim.bo.filetype == "toggleterm" then
-        require("bufresize").block_register()
+        -- require("bufresize").block_register()
         vim.api.nvim_command(command)
-        require("bufresize").resize_close()
+        -- require("bufresize").resize_close()
     else
-        require("bufresize").block_register()
+        -- require("bufresize").block_register()
         vim.api.nvim_command(command)
-        require("bufresize").resize_open()
+        -- require("bufresize").resize_open()
         vim.cmd([[execute "normal! i"]])
     end
 end
@@ -254,6 +256,14 @@ keymap.set("t", "<C-\\>", "<C-\\><C-n>:lua ToggleTerm()<cr>", { noremap = true, 
 
 -- Goyo
 keymap.set("n", "<leader>go", ":Goyo<cr>", { silent = true, desc = "Goyo" })
+
+-- leap-ast
+vim.keymap.set({ "n", "x", "o" }, "m", function()
+    require("leap-ast").leap()
+end, { desc = "Leap AST" })
+
+-- Search
+vim.keymap.set("n", "<leader>b", ":Search<cr>", { desc = "Search" })
 
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })

@@ -20,22 +20,22 @@ function _G.set_terminal_keymaps()
 
     vim.keymap.set("t", "<c-Up>", function()
         require("tmux").resize_top()
-        require("bufresize").register()
+        -- require("bufresize").register()
     end, { silent = true, desc = "Resize up" })
 
     vim.keymap.set("t", "<c-Down>", function()
         require("tmux").resize_bottom()
-        require("bufresize").register()
+        -- require("bufresize").register()
     end, { silent = true, desc = "Resize down" })
 
     vim.keymap.set("t", "<c-Left>", function()
         require("tmux").resize_left()
-        require("bufresize").register()
+        -- require("bufresize").register()
     end, { silent = true, desc = "Resize left" })
 
     vim.keymap.set("t", "<c-Right>", function()
         require("tmux").resize_right()
-        require("bufresize").register()
+        -- require("bufresize").register()
     end, { silent = true, desc = "Resize right" })
 end
 

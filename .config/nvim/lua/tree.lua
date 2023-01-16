@@ -23,6 +23,8 @@ nvim_tree.setup({
                 { key = "D", action = "remove" },
                 { key = "<C-k>", action = "" },
                 { key = "i", action = "toggle_file_info" },
+                { key = "<C-v>", action = "vsplit" },
+                { key = "<C-s>", action = "split" },
             },
         },
     },

@@ -371,6 +371,7 @@ map re &{{
 map <c-z> $ kill -STOP $PPID #put lf into background
 map <esc> quit
 map M ${{
+    LESS="-irsMR +Gg"
     mediainfo "$f" | less
 }}
 map col recol

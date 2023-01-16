@@ -34,13 +34,19 @@ return packer.startup(function(use)
     use("rhysd/vim-grammarous")
     use("lewis6991/impatient.nvim")
     use("nanozuki/tabby.nvim")
-    use("Shatur/neovim-session-manager")
+    use({
+        "jedrzejboczar/possession.nvim",
+        requires = { "nvim-lua/plenary.nvim" },
+    })
     use({ "vimwiki/vimwiki", branch = "dev" })
     use("lervag/vimtex")
     use("dhruvasagar/vim-table-mode")
     use("NvChad/nvim-colorizer.lua")
     use("superhawk610/ascii-blocks.nvim")
     use({ "ggandor/leap.nvim", requires = { "tpope/vim-repeat" } })
+    use({ "ggandor/leap-spooky.nvim", requires = { "ggandor/leap.nvim" } })
+    use({ "ggandor/flit.nvim", requires = { "ggandor/leap.nvim" } })
+    use({ "ggandor/leap-ast.nvim", requires = { "ggandor/leap.nvim" } })
     use("aserowy/tmux.nvim")
     use("vim-pandoc/vim-pandoc-syntax")
     use("vim-pandoc/vim-pandoc")
@@ -56,7 +62,7 @@ return packer.startup(function(use)
     use("folke/which-key.nvim")
     use("mbbill/undotree")
     use("rcarriga/nvim-notify")
-    use("kwkarlwang/bufresize.nvim")
+    -- use("kwkarlwang/bufresize.nvim")
     use({ "akinsho/toggleterm.nvim", tag = "*" })
     use("junegunn/goyo.vim")
     use("stevearc/dressing.nvim")
@@ -163,6 +169,9 @@ return packer.startup(function(use)
             "nvim-telescope/telescope-ui-select.nvim",
 
             "JoosepAlviste/nvim-ts-context-commentstring",
+
+            "nvim-telescope/telescope-frecency.nvim",
+            "kkharji/sqlite.lua",
         },
     })
     use({
