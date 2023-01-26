@@ -3,6 +3,15 @@
 open_weather_map_api_key=""
 location=""
 
+format_val()
+{
+    if [ "$(echo "$1 >= -0.5 && $1 <= 0" | bc)" -ge 1 ]; then
+        printf "%.0f" "$(echo "$1 * (($1 > 0) - ($1 < 0))" | bc)"
+    else
+        printf "%.0f" "$1"
+    fi
+}
+
 setup()
 {
     while read -p "openweathermap.org API key: " -r open_weather_map_api_key; do
@@ -111,7 +120,7 @@ pressure:        %.f hPa
 humidity:        %.f%%
 wind speed:      %.f m/s
 cloudiness:      %.f%%
-" "$icon" "$temp" "$temp_feels_like" "$weather_description" "$temp" "$temp_feels_like" "$temp_min" "$temp_max" "$pressure" "$humidity" "$wind_speed" "$cloudiness"
+" "$icon" "$(format_val "$temp")" "$(format_val "$temp_feels_like")" "$weather_description" "$(format_val "$temp")" "$(format_val "$temp_feels_like")" "$(format_val "$temp_min")" "$(format_val "$temp_max")" "$pressure" "$humidity" "$wind_speed" "$cloudiness"
 }
 
 case "$1" in
