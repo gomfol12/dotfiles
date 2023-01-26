@@ -31,6 +31,7 @@ keymap.set("n", "Q", "<nop>", { desc = "Disable ex mode" })
 
 -- disable search highlighting until the next search
 keymap.set("n", "<cr>", ":noh<cr><cr>", { silent = true, desc = "No highlight" })
+keymap.set("n", "<leader>nh", ":noh<cr><cr>", { silent = true, desc = "No highlight" })
 
 -- delete buffer without closing neovim
 keymap.set("n", "<leader>x", ":Bdelete<cr>", { desc = "Delete buffer" })

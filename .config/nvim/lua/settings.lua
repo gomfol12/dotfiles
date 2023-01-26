@@ -226,6 +226,16 @@ for _, k in pairs({ "vimwiki", "tex", "markdown" }) do
     })
 end
 
+autocmd("BufRead,BufNewFile", {
+    pattern = "/tmp/calcurse*",
+    command = "set filetype=markdown",
+})
+
+autocmd("BufRead,BufNewFile", {
+    pattern = "~/.local/share/calcurse/notes/*",
+    command = "set filetype=markdown",
+})
+
 -- ========== Useful functions ========== --
 local function usercmd(alias, command)
     return vim.api.nvim_create_user_command(alias, command, { nargs = 0 })
