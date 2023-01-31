@@ -116,8 +116,18 @@ keymap.set("x", '<leader>"', '<ESC>`>a"<ESC>`<i"<ESC>', { silent = true, desc = 
 keymap.set("x", "K", ":move '<-2<CR>gv-gv", { silent = true, desc = "Move selected text" })
 keymap.set("x", "J", ":move '>+1<CR>gv-gv", { silent = true, desc = "Move selected text" })
 
-keymap.set("", "<leader>z", ":set formatoptions-=cro<cr>", { desc = "Remove format options" })
-keymap.set("", "<leader>Z", ":set formatoptions=cro<cr>", { desc = "Add format options" })
+keymap.set("n", "<leader>z", ":set formatoptions-=cro<cr>", { desc = "Remove format options" })
+keymap.set("n", "<leader>Z", ":set formatoptions=cro<cr>", { desc = "Add format options" })
+
+-- format
+keymap.set("n", "<leader>l", function()
+    vim.lsp.buf.format({
+        filter = function(filter_client)
+            return filter_client.name == "null-ls"
+        end,
+        bufnr = 0,
+    })
+end, { desc = "Format" })
 
 -- stay in indent mode
 keymap.set("v", "<", "<gv", { desc = "Indent left" })
