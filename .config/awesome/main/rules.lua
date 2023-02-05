@@ -39,6 +39,7 @@ function _M.get(clientkeys, clientbuttons)
                     "DTA", -- Firefox addon DownThemAll.
                     "copyq", -- Includes session name in class.
                     "pinentry",
+                    "floatterm",
                 },
                 class = {
                     "Arandr",

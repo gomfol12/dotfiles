@@ -271,6 +271,13 @@ return gears.table.join(
         end
     end, { description = "decrease mon brightness by 1", group = "util" }),
 
+    awful.key({ modkey }, "F12", function()
+        awful.spawn("mount.sh")
+    end, { description = "mount.sh" }),
+    awful.key({ modkey }, "F11", function()
+        awful.spawn("mount.sh")
+    end, { description = "umount.sh" }),
+
     -- focus nav client
     awful.key({ modkey }, "j", function()
         awful.client.focus.global_bydirection("down")
