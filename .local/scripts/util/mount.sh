@@ -56,7 +56,7 @@ if ! command -v simple-mtpfs dmenu >/dev/null 2>&1; then
     exit 1
 fi
 
-mount()
+_mount()
 {
     # get all connected android devices
     phones=$(simple-mtpfs -l 2>/dev/null | sed "s/^/📱 /")
@@ -123,7 +123,7 @@ $normal_parts" | sed "/^$/d;s/ *$//")
     esac
 }
 
-umount()
+_umount()
 {
     # get all mounted android phones
     mounted_phones=$(grep simple-mtpfs /etc/mtab | awk '{print "📱 " $2}')
@@ -142,6 +142,12 @@ $mounted_drives" | sed "/^$/d;s/ *$//")
     test -n "$chosen"
 
     case "$chosen" in
+    📱*)
+        # umount android device
+        chosen=$(echo "$chosen" | cut -d" " -f2)
+        umount "$chosen"
+        notify-send "\"$chosen\" has been unmounted."
+        ;;
     💾*)
         # umount drives
         chosen=$(echo "$chosen" | cut -d" " -f2)
@@ -166,9 +172,9 @@ case "$1" in
 "umount") ;;
 *)
     if echo "$0" | grep -qE "[^u]mount.sh"; then
-        mount
+        _mount
     elif echo "$0" | grep -qE "umount.sh"; then
-        umount
+        _umount
     fi
     ;;
 esac

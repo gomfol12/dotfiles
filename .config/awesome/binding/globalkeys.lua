@@ -275,7 +275,7 @@ return gears.table.join(
         awful.spawn("mount.sh")
     end, { description = "mount.sh" }),
     awful.key({ modkey }, "F11", function()
-        awful.spawn("mount.sh")
+        awful.spawn("umount.sh")
     end, { description = "umount.sh" }),
 
     -- focus nav client
