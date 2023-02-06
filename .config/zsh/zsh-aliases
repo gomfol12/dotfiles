@@ -119,6 +119,7 @@ alias pw="pw.sh"
 
 alias pin="pacin"
 alias yin="parin"
+alias yedit="parin --fm lf.sh --review"
 alias pas="pacs"
 alias yas="pars"
 alias pdel="pacdel"
