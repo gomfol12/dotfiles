@@ -110,7 +110,7 @@ local opts = {
 
 return setmetatable(_M, {
     __call = function()
-        lsp_config.sumneko_lua.setup(vim.tbl_deep_extend("force", require("lsp.settings.sumneko_lua"), opts))
+        lsp_config.lua_ls.setup(vim.tbl_deep_extend("force", require("lsp.settings.lua_ls"), opts))
         lsp_config.jsonls.setup(vim.tbl_deep_extend("force", require("lsp.settings.jsonls_lua"), opts))
         lsp_config.bashls.setup(opts)
         lsp_config.cmake.setup(opts)

@@ -43,6 +43,7 @@ export PATH
 export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME/java"
+export _JAVA_OPTIONS=-Djavafx.cachedir="$XDG_CACHE_HOME"/openjfx
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
 export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
 #export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
@@ -58,6 +59,7 @@ export TERMINFO="$XDG_DATA_HOME/terminfo"
 export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
 export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
 export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
+export ANDROID_HOME="$XDG_DATA_HOME/android"
 
 ### pass ###
 #export PASSWORD_STORE_DIR="$HOME/.local/password-store"

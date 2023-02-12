@@ -144,7 +144,7 @@ alias al="la"
 alias nivm="nvim"
 
 ### HOME cleanup ###
-alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
+alias wget='wget --hsts-file='"$XDG_DATA_HOME/wget-hsts"''
 
 if test $NVIDIA; then
     alias nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings'

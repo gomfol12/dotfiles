@@ -12,7 +12,8 @@ if root_dir == "" then
     return
 end
 
-local workspace_dir = home .. "/ndoc/java/"
+local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+local workspace_dir = home .. "/.local/share/jdtls/" .. project_name
 
 local extendedClientCapabilities = jdtls.extendedClientCapabilities
 extendedClientCapabilities.resolveAdditionalTextEditsSupport = true

@@ -60,6 +60,7 @@ function _M.get(clientkeys, clientbuttons)
                     "h*-Main",
                     "MultiMC",
                     "PolyMC",
+                    "SFML",
                 },
 
                 -- Note that the name property shown in xprop might be set slightly after creation of the client
