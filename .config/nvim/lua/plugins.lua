@@ -66,26 +66,28 @@ return packer.startup(function(use)
     use({ "akinsho/toggleterm.nvim", tag = "*" })
     use("junegunn/goyo.vim")
     use("stevearc/dressing.nvim")
+    use({ "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" })
 
     -- comments
     use("numToStr/Comment.nvim")
 
     -- color scheme
-    -- use({
-    --     "Mofiqul/vscode.nvim",
-    --     config = function()
-    --         vim.g.vscode_style = "dark"
-    --         vim.cmd([[colorscheme vscode]])
-    --     end,
-    -- })
     use({
-        "bluz71/vim-moonfly-colors",
+        "Mofiqul/vscode.nvim",
         config = function()
-            vim.g.moonflyItalics = false
-            vim.g.moonflyNormalFloat = true
-            vim.cmd([[colorscheme moonfly]])
+            vim.g.vscode_style = "dark"
+            vim.cmd([[colorscheme vscode]])
         end,
     })
+    -- use({
+    --     "bluz71/vim-moonfly-colors",
+    --     config = function()
+    --         vim.g.moonflyItalics = false
+    --         vim.g.moonflyNormalFloat = true
+    --         vim.g.moonflyCursorColor = true
+    --         vim.cmd([[colorscheme moonfly]])
+    --     end,
+    -- })
 
     -- Treesitter
     use({

@@ -276,6 +276,18 @@ end, { desc = "Leap AST" })
 -- Search
 vim.keymap.set("n", "<leader>b", ":Search<cr>", { desc = "Search" })
 
+-- Fold
+vim.keymap.set("n", "zR", require("ufo").openAllFolds)
+vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
+vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds)
+vim.keymap.set("n", "zm", require("ufo").closeFoldsWith)
+vim.keymap.set("n", "U", function()
+    local winid = require("ufo").peekFoldedLinesUnderCursor()
+    if not winid then
+        vim.lsp.buf.hover()
+    end
+end)
+
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })
 

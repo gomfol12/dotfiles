@@ -1,5 +1,3 @@
-local utils = {}
-
 -- local scopes = { o = vim.o, b = vim.bo, w = vim.wo }
 
 -- function utils.opt(scope, key, value)
@@ -17,7 +15,9 @@ local utils = {}
 --     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 -- end
 
-function utils.getHost()
+local _M = {}
+
+function _M.getHost()
     local hostname = ""
     local file_hostname = io.popen("/bin/hostname")
     if file_hostname then
@@ -29,22 +29,7 @@ function utils.getHost()
     return hostname
 end
 
-function utils.dump(o)
-    if type(o) == "table" then
-        local s = "{ "
-        for k, v in pairs(o) do
-            if type(k) ~= "number" then
-                k = '"' .. k .. '"'
-            end
-            s = s .. "[" .. k .. "] = " .. utils.dump(v) .. ","
-        end
-        return s .. "} "
-    else
-        return tostring(o)
-    end
-end
-
-function utils.concat(t1, t2)
+function _M.concat(t1, t2)
     local t = {}
     for k, v in pairs(t1) do
         t[k] = v
@@ -55,4 +40,23 @@ function utils.concat(t1, t2)
     return t
 end
 
-return utils
+function _G.dump(o)
+    if type(o) == "table" then
+        local s = "{ "
+        for k, v in pairs(o) do
+            if type(k) ~= "number" then
+                k = '"' .. k .. '"'
+            end
+            s = s .. "[" .. k .. "] = " .. _G.dump(v) .. ","
+        end
+        return s .. "} "
+    else
+        return tostring(o)
+    end
+end
+
+function _G.put(...)
+    return vim.pretty_print(...)
+end
+
+return _M

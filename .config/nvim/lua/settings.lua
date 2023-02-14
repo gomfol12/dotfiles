@@ -24,9 +24,6 @@ opt.shortmess:append("c")
 -- ========== UI ========== --
 opt.number = true -- Show line number
 opt.showmatch = true -- Highlight matching parenthesis
-opt.foldmethod = "expr" -- Folding method
-opt.foldexpr = "nvim_treesitter#foldexpr()" -- Folding is handled by treesitter
-opt.foldenable = false -- Disable Folding
 opt.splitright = true -- Vertical split to the right
 opt.splitbelow = true -- Horizontal split to the bottom
 opt.ignorecase = true -- Ignore case in search patterns
@@ -36,19 +33,22 @@ opt.termguicolors = true -- Enable 24-bit RGB colors
 opt.laststatus = 3 -- Set global statusline
 opt.relativenumber = true
 opt.cmdheight = 2 -- Wider cmd for better readability
-opt.signcolumn = "yes"
+opt.signcolumn = "yes" -- sign column for line numbers, diagnostics and stuff
 opt.title = true
 opt.list = true
 opt.listchars = "tab:>-,trail:-,precedes:<,extends:>,nbsp:+"
 opt.conceallevel = 1
 opt.pumheight = 10 -- Max number of items to show in the popup menu
 
--- vim.o.foldcolumn = "1"
--- vim.o.foldlevel = 99
--- vim.o.foldlevelstart = 99
--- vim.o.foldenable = true
--- vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
--- vim.o.statuscolumn = "%=%r%s%C"
+-- folding
+opt.foldcolumn = "1"
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true
+opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+opt.numberwidth = 3
+require("statuscolumn")
+vim.o.statuscolumn = "%!v:lua.get_statuscolumn()"
 
 -- ========== Tabs, indent ========== --
 opt.expandtab = true -- Use spaces instead of tabs

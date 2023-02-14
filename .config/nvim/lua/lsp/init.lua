@@ -27,6 +27,9 @@ vim.diagnostic.config({
     virtual_text = false,
     signs = {
         active = signs,
+        severity = {
+            min = vim.diagnostic.severity.INFO,
+        },
     },
     update_in_insert = true,
     underline = true,
@@ -52,6 +55,12 @@ _M.capabilities = cmp_nvim_lsp.default_capabilities()
 
 -- fix for clangd
 _M.capabilities.offsetEncoding = { "utf-16" }
+
+-- folding
+_M.capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true,
+}
 
 -- Keybinds
 -- stylua: ignore
@@ -200,5 +209,6 @@ return setmetatable(_M, {
 
         require("lsp.null")
         require("lsp.debug")
+        require("lsp.fold")
     end,
 })
