@@ -5,8 +5,8 @@ if [ "$#" -eq 0 ]; then
     exit 1
 fi
 
-export ALSOFT_DRIVERS=pulse
-export MANGOHUD=1
+# export ALSOFT_DRIVERS=pulse
+# export MANGOHUD=1
 
 compositor.sh -s
 [ "$(hostname)" = "$HOSTNAME_DESKTOP" ] && setupMonitors.sh disable_FFCP

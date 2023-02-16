@@ -21,11 +21,25 @@ end
 _G.get_statuscolumn = function()
     local sign = get_signs()
 
+    local git
+    if sign.git and sign.git.texthl and sign.git.text then
+        git = "%#" .. sign.git.texthl .. "#" .. sign.git.text .. "%*"
+    else
+        git = "  "
+    end
+
+    local diagnostics
+    if sign.diagnostics and sign.diagnostics.texthl and sign.diagnostics.text then
+        diagnostics = "%#" .. sign.diagnostics.texthl .. "#" .. sign.diagnostics.text .. "%*"
+    else
+        diagnostics = "  "
+    end
+
     local content = {
-        sign.git and ("%#" .. sign.git.texthl .. "#" .. sign.git.text .. "%*") or "  ", -- git
-        sign.diagnostics and ("%#" .. sign.diagnostics.texthl .. "#" .. sign.diagnostics.text .. "%*") or "  ", -- diagnostics
+        git,
+        diagnostics,
         "%=", -- sep
-        "%{&nu?(&rnu&&v:relnum?v:relnum:v:lnum):''}", --num
+        "%{(v:virtnum == 0)?(&nu?(&rnu&&v:relnum?v:relnum:v:lnum):''):''}", --num
         " ",
         "%C", -- fold
     }
