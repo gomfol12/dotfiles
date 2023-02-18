@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
     xrdb -merge "$HOME/.config/Xresources"
 elif [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
@@ -20,7 +20,7 @@ else
 fi
 xset s off
 
-if test $NVIDIA; then
+if test "$NVIDIA"; then
     nvidia-settings --config="$XDG_CONFIG_HOME"/nvidia/settings --load-config-only &
 fi
 
@@ -45,4 +45,11 @@ else
     xsettingsd &
 fi
 
-exec awesome
+if [ -d /etc/X11/xinit/xinitrc.d ] ; then
+ for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
+  [ -x "$f" ] && . "$f"
+ done
+ unset f
+fi
+
+exec dbus-launch awesome

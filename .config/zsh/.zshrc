@@ -13,9 +13,6 @@ setopt hist_find_no_dups
 setopt no_case_glob
 # Disable ctrl-s and ctrl-q
 stty -ixon
-if [ "$TERM" = "linux" ]; then
-    setterm -cursor on
-fi
 
 ### Config ###
 source "$ZDOTDIR/zsh-aliases"
@@ -65,10 +62,12 @@ bindkey -r "^Y"
 bindkey -r "^E"
 
 # disable keys for vim tmux integration
-bindkey -r "^h"
-bindkey -r "^j"
-bindkey -r "^k"
-bindkey -r "^l"
+if [ -n "${TMUX}" ] && [ ! "$TERM" = "linux" ]; then
+    bindkey -r "^h"
+    bindkey -r "^j"
+    bindkey -r "^k"
+    bindkey -r "^l"
+fi
 
 # create a zkbd compatible hash;
 # to add other keys to this hash, see: man 5 terminfo
@@ -113,7 +112,7 @@ insert_space() { zle -U " " }
 [[ -n "${key[Control-Backspace]}" ]] && bindkey -- "${key[Control-Backspace]}" backward-kill-word
 [[ -n "${key[Shift-Backspace]}" ]] && bindkey -- "${key[Shift-Backspace]}" backward-delete-char
 [[ -n "${key[Shift-Space]}" ]] && bindkey -- "${key[Shift-Space]}" insert_space
-#bindkey "^H" backward-kill-word
+
 if [ "$TERM" = "linux" ]; then
     bindkey "^[[A" history-beginning-search-backward
     bindkey "^[[B" history-beginning-search-forward
@@ -168,11 +167,6 @@ fi
 
 ### zoxide ###
 eval "$(zoxide init zsh)"
-
-# TODO: fix
-# if [ "$TERM" = "linux" ]; then
-#     source ~/.cache/wal/colors-tty.sh
-# fi
 
 ### tmux ###
 if command -v tmux &>/dev/null && [ -z "${TMUX}" ] && [ -n "$DISPLAY" ]; then

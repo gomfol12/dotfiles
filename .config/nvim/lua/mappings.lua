@@ -288,6 +288,9 @@ vim.keymap.set("n", "U", function()
     end
 end)
 
+-- copilot
+vim.cmd([[imap <silent><script><expr> <C-q> copilot#Accept("\<CR>")]])
+
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })
 
