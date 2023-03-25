@@ -20,6 +20,7 @@ opt.iskeyword:append("-")
 opt.sessionoptions:remove("buffers")
 opt.path:append("**") -- search down into subfolders. Tab-completion
 opt.shortmess:append("c")
+opt.jumpoptions:append("view")
 
 -- ========== UI ========== --
 opt.number = true -- Show line number
@@ -107,6 +108,7 @@ vim.g.vimwiki_global_ext = 0
 -- vimtex
 vim.g.vimtex_view_method = "zathura"
 vim.g.vimtex_compiler_method = "latexmk"
+vim.g.vimtex_compiler_engine = "lualatex"
 vim.g.vimtex_compiler_latexmk = {
     options = {
         "-pdf",

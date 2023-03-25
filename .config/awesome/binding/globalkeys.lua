@@ -102,7 +102,7 @@ return gears.table.join(
     end, { description = "start nemo", group = "programs" }),
 
     awful.key({ super }, "m", function()
-        awful.spawn("/usr/bin/spotify")
+        awful.spawn("/usr/bin/spotify-launcher")
     end, { description = "start spotify", group = "programs" }),
 
     awful.key({ super }, "s", function()

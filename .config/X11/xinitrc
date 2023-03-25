@@ -29,7 +29,7 @@ compositor.sh &
 unclutter --timeout 5 &
 lxpolkit &
 numlockx on &
-clipmanager >/dev/null 2>&1 &
+clipctl run &
 xcape -e 'Super_L=Menu;Super_R=Menu' &
 easyeffects --gapplication-service &
 nm-applet &
@@ -45,11 +45,11 @@ else
     xsettingsd &
 fi
 
-if [ -d /etc/X11/xinit/xinitrc.d ] ; then
- for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
-  [ -x "$f" ] && . "$f"
- done
- unset f
+if [ -d /etc/X11/xinit/xinitrc.d ]; then
+    for f in /etc/X11/xinit/xinitrc.d/?*.sh; do
+        [ -x "$f" ] && . "$f"
+    done
+    unset f
 fi
 
-exec dbus-launch awesome
+exec awesome

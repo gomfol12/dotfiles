@@ -153,3 +153,4 @@ fi
 # auto gen alias
 alias hc='cd ~ && clear'
 alias reload="source "$ZDOTDIR/.zshrc""
+alias cacl='calc'
