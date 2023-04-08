@@ -5,9 +5,15 @@ history_file="$HOME/.cache/cdw_history"
 programm_name="cdw.sh"
 
 if ! [ -f "$shortcut_file" ]; then
+    if ! [ -d "$HOME/doc/bookmarks/" ]; then
+        mkdir -p "$HOME/doc/bookmarks/"
+    fi
     touch "$shortcut_file"
 fi
 if ! [ -f "$history_file" ]; then
+    if ! [ -d "$HOME/.cache/" ]; then
+        mkdir -p "$HOME/.cache/"
+    fi
     touch "$history_file"
 fi
 
