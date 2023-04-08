@@ -165,8 +165,10 @@ if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
     export SSH_AUTH_SOCK=$socket
 fi
 
-### zoxide ###
-eval "$(zoxide init zsh)"
+### cdw.sh ###
+if [ -f "$SCRIPT_DIR/util/cdw.sh" ]; then
+    source "$SCRIPT_DIR/util/cdw.sh"
+fi
 
 ### tmux ###
 if command -v tmux &>/dev/null && [ -z "${TMUX}" ] && [ -n "$DISPLAY" ]; then
