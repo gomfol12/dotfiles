@@ -45,6 +45,8 @@ function _G.load_config()
     require("plugin_conf")
     require("buf")
     require("term")
+    require("statuscolumn")
+    require("toggle-checkbox")
 end
 
 if not bootstrap then

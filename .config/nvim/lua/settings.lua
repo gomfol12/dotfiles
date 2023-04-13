@@ -48,8 +48,9 @@ opt.foldlevelstart = 99
 opt.foldenable = true
 opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 opt.numberwidth = 3
-require("statuscolumn")
-vim.o.statuscolumn = "%!v:lua.get_statuscolumn()"
+-- old see statuscolumn.lua
+-- require("statuscolumn")
+-- vim.o.statuscolumn = "%!v:lua.get_statuscolumn()"
 
 -- ========== Tabs, indent ========== --
 opt.expandtab = true -- Use spaces instead of tabs

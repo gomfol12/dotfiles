@@ -68,6 +68,8 @@ return packer.startup(function(use)
     use("stevearc/dressing.nvim")
     use({ "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" })
 
+    use("luukvbaal/statuscol.nvim")
+
     -- comments
     use("numToStr/Comment.nvim")
 
@@ -77,6 +79,27 @@ return packer.startup(function(use)
         config = function()
             vim.g.vscode_style = "dark"
             vim.cmd([[colorscheme vscode]])
+            -- temp colorscheme fix for nvim 0.9
+            local links = {
+                ["@lsp.type.namespace"] = "@namespace",
+                ["@lsp.type.type"] = "@type",
+                ["@lsp.type.class"] = "@type",
+                ["@lsp.type.enum"] = "@type",
+                ["@lsp.type.interface"] = "@type",
+                ["@lsp.type.struct"] = "@structure",
+                ["@lsp.type.parameter"] = "@parameter",
+                ["@lsp.type.variable"] = "@variable",
+                ["@lsp.type.property"] = "@property",
+                ["@lsp.type.enumMember"] = "@constant",
+                ["@lsp.type.function"] = "@function",
+                ["@lsp.type.method"] = "@method",
+                ["@lsp.type.macro"] = "@macro",
+                ["@lsp.type.decorator"] = "@function",
+            }
+            for newgroup, oldgroup in pairs(links) do
+                vim.api.nvim_set_hl(0, newgroup, { link = oldgroup, default = true })
+            end
+            -- end temp
         end,
     })
     -- use({
@@ -100,7 +123,7 @@ return packer.startup(function(use)
         },
     })
     use({ "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" })
-    use({"HiPhish/nvim-ts-rainbow2", after = "nvim-treesitter"})
+    use({ "HiPhish/nvim-ts-rainbow2", after = "nvim-treesitter" })
 
     -- LSP
     use({

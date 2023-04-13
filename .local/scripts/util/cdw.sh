@@ -128,9 +128,9 @@ EOF
         if ! [ -d "$arg1" ] && grep "^name:$arg1:" "$shortcut_file" -q; then
             dir_change "$(grep "^name:$arg1:" "$shortcut_file" | cut -d':' -f4)" "nosave"
         else
-            if ! [ "$arg1" = ".." ] && grep -E 'name:[^:]+'"$arg1"':' "$history_file" -q; then
+            if ! [ "$arg1" = ".." ] && ! [ "$arg1" = "." ] && grep -E 'name:[^:]+'"$arg1"':' "$history_file" -q; then
                 dir_change "$(grep -E 'name:[^:]+'"$arg1"':' "$history_file" | cut -d':' -f8 | tail -1)" "nosave"
-            elif ! [ "$arg1" = ".." ] && grep "path:.*$arg1$" "$history_file" -q; then
+            elif ! [ "$arg1" = ".." ] && ! [ "$arg1" = "." ] && grep "path:.*$arg1$" "$history_file" -q; then
                 dir_change "$(grep "path:.*$arg1$" "$history_file" | cut -d':' -f8 | tail -1)" "nosave"
             else
                 dir_change "$arg1"

@@ -291,6 +291,8 @@ end)
 -- copilot
 vim.cmd([[imap <silent><script><expr> <C-q> copilot#Accept("\<CR>")]])
 
+vim.keymap.set("n", "ct", require("toggle-checkbox").toggle, { silent = true, desc = "Toggle checkbox" })
+
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })
 
