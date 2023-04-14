@@ -48,6 +48,7 @@ opt.foldlevelstart = 99
 opt.foldenable = true
 opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 opt.numberwidth = 3
+
 -- old see statuscolumn.lua
 -- require("statuscolumn")
 -- vim.o.statuscolumn = "%!v:lua.get_statuscolumn()"
@@ -111,6 +112,7 @@ vim.g.vimtex_view_method = "zathura"
 vim.g.vimtex_compiler_method = "latexmk"
 vim.g.vimtex_compiler_engine = "lualatex"
 vim.g.vimtex_compiler_latexmk = {
+    build_dir = "build",
     options = {
         "-pdf",
         "-shell-escape",
@@ -128,6 +130,7 @@ vim.g.vimtex_toc_config = {
     show_numbers = 1,
     mode = 2,
 }
+vim.g.vimtex_fold_enabled = true
 
 -- vim table mode
 vim.g.table_mode_corner = "|"

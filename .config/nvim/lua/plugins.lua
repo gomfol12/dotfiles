@@ -157,6 +157,7 @@ return packer.startup(function(use)
             "rcarriga/nvim-dap-ui",
         },
     })
+    use("ray-x/lsp_signature.nvim")
 
     -- overseer
     use("stevearc/overseer.nvim")
@@ -165,7 +166,7 @@ return packer.startup(function(use)
     use({
         "hrsh7th/nvim-cmp",
         requires = {
-            "hrsh7th/cmp-nvim-lsp-signature-help",
+            -- "hrsh7th/cmp-nvim-lsp-signature-help",
             "hrsh7th/cmp-nvim-lsp",
             "saadparwaiz1/cmp_luasnip",
 

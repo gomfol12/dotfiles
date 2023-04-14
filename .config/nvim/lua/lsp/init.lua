@@ -128,6 +128,7 @@ return setmetatable(_M, {
         -- lsp_config.ltex.setup(vim.tbl_deep_extend("force", require("lsp.settings.ltex_lua"), opts))
         -- lsp_config.marksman.setup(opts)
         lsp_config.svlangserver.setup(vim.tbl_deep_extend("force", require("lsp.settings.svlangserver_lua"), opts))
+        lsp_config.texlab.setup(opts)
 
         require("clangd_extensions").setup({
             server = {
@@ -210,5 +211,7 @@ return setmetatable(_M, {
         require("lsp.null")
         require("lsp.debug")
         require("lsp.fold")
+        local cfg = {}
+        require("lsp_signature").setup(cfg)
     end,
 })

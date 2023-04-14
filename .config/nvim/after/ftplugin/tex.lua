@@ -10,3 +10,5 @@ keymap.set("n", "<leader>ls", ":VimtexStop<CR>", { silent = true, desc = "Vimtex
 keymap.set("n", "<leader>lc", ":VimtexClean<CR>", { silent = true, desc = "Vimtex clean" })
 keymap.set("n", "<leader>le", ":VimtexErrors<CR>", { silent = true, desc = "Vimtex errors" })
 keymap.set("n", "<leader>lv", ":VimtexView<CR>", { silent = true, desc = "Vimtex view" })
+
+vim.cmd(":autocmd BufNewFile,BufRead *.tex VimtexCompile")

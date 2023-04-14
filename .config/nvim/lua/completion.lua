@@ -124,7 +124,7 @@ cmp.setup({
             -- Kind icons
             vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
             vim_item.menu = ({
-                nvim_lsp_signature_help = "[SIG]",
+                -- nvim_lsp_signature_help = "[SIG]",
                 nvim_lsp = "[LSP]",
                 luasnip = "[LUASNIP]",
                 rg = "[RG]",
@@ -138,7 +138,7 @@ cmp.setup({
         end,
     },
     sources = cmp.config.sources({
-        { name = "nvim_lsp_signature_help" },
+        -- { name = "nvim_lsp_signature_help" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
         { name = "rg" },
@@ -210,25 +210,25 @@ cmp.setup.cmdline(":", {
     }),
 })
 
-cmp.setup.filetype("tex", {
-    formatting = {
-        fields = { "kind", "abbr", "menu" },
-        format = function(entry, vim_item)
-            -- Kind icons
-            vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
-            vim_item.menu = ({
-                omni = "[OMNI]",
-                buffer = "[BUFFER]",
-            })[entry.source.name]
-            return vim_item
-        end,
-    },
-    sources = cmp.config.sources({
-        { name = "omni" },
-    }, {
-        { name = "buffer" },
-    }),
-})
+-- cmp.setup.filetype("tex", {
+--     formatting = {
+--         fields = { "kind", "abbr", "menu" },
+--         format = function(entry, vim_item)
+--             -- Kind icons
+--             vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
+--             vim_item.menu = ({
+--                 omni = "[OMNI]",
+--                 buffer = "[BUFFER]",
+--             })[entry.source.name]
+--             return vim_item
+--         end,
+--     },
+--     sources = cmp.config.sources({
+--         { name = "omni" },
+--     }, {
+--         { name = "buffer" },
+--     }),
+-- })
 
 local Date = require("cmp_dynamic.utils.date")
 cmp_dynamic.register({
