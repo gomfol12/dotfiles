@@ -291,7 +291,26 @@ end)
 -- copilot
 vim.cmd([[imap <silent><script><expr> <C-q> copilot#Accept("\<CR>")]])
 
+-- toggle checkbox
 vim.keymap.set("n", "ct", require("toggle-checkbox").toggle, { silent = true, desc = "Toggle checkbox" })
+
+-- advanced git search
+-- stylua: ignore
+vim.keymap.set("n", "<leader>gbf", require("telescope").extensions.advanced_git_search.diff_branch_file, { desc = "Git: diff branch file" })
+-- stylua: ignore
+vim.api.nvim_create_user_command("DiffCommitLine", "lua require('telescope').extensions.advanced_git_search.diff_commit_line()", { range = true })
+vim.keymap.set("v", "<leader>gcl", ":DiffCommitLine<cr>", { desc = "Git: diff commit line" })
+vim.keymap.set("n", "<leader>gcl", ":DiffCommitLine<cr>", { desc = "Git: diff commit line" })
+-- stylua: ignore
+vim.keymap.set("n", "<leader>gcf", require("telescope").extensions.advanced_git_search.diff_commit_file, { desc = "Git: diff commit file" })
+-- stylua: ignore
+vim.keymap.set("n", "<leader>gl", require("telescope").extensions.advanced_git_search.search_log_content_file, { desc = "Git: search log file" })
+-- stylua: ignore
+vim.keymap.set("n", "<leader>gcb", require("telescope").extensions.advanced_git_search.changed_on_branch, { desc = "Git: changed on branch" })
+-- stylua: ignore
+vim.keymap.set("n", "<leader>gcr", require("telescope").extensions.advanced_git_search.checkout_reflog, { desc = "Git: checkout reflog" })
+-- stylua: ignore
+vim.keymap.set("n", "<leader>ga", require("telescope").extensions.advanced_git_search.show_custom_functions, { desc = "Git: all advanced_git_search" })
 
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })
