@@ -133,7 +133,7 @@ vim.g.vimtex_toc_config = {
 vim.g.vimtex_fold_enabled = true
 
 -- vim table mode
-vim.g.table_mode_corner = "|"
+vim.g.table_mode_corner = "+"
 
 -- copilot
 vim.g.copilot_no_tab_map = true
