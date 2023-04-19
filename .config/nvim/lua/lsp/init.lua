@@ -211,7 +211,5 @@ return setmetatable(_M, {
         require("lsp.null")
         require("lsp.debug")
         require("lsp.fold")
-        local cfg = {}
-        require("lsp_signature").setup(cfg)
     end,
 })

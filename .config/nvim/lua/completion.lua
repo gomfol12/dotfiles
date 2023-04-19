@@ -124,7 +124,7 @@ cmp.setup({
             -- Kind icons
             vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
             vim_item.menu = ({
-                -- nvim_lsp_signature_help = "[SIG]",
+                nvim_lsp_signature_help = "[SIG]",
                 nvim_lsp = "[LSP]",
                 luasnip = "[LUASNIP]",
                 rg = "[RG]",
@@ -138,7 +138,7 @@ cmp.setup({
         end,
     },
     sources = cmp.config.sources({
-        -- { name = "nvim_lsp_signature_help" },
+        { name = "nvim_lsp_signature_help" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
         { name = "rg" },
