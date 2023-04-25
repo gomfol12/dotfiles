@@ -111,4 +111,28 @@ return {
     s("uninotemath", {
         t(markdown_template_math),
     }),
+    s("sum_inf", {
+        t("\\sum_{n=0}^\\infty"),
+    }),
+    s("\\sum_inf", {
+        t("\\sum_{n=0}^\\infty"),
+    }),
+    s("\\N", {
+        t("\\mathds{N}"),
+    }),
+    s("\\Z", {
+        t("\\mathds{Z}"),
+    }),
+    s("\\Q", {
+        t("\\mathds{R}"),
+    }),
+    s("\\R", {
+        t("\\mathds{R}"),
+    }),
+    s("\\C", {
+        t("\\mathds{C}"),
+    }),
+    s("\\K", {
+        t("\\mathds{K}"),
+    }),
 }
