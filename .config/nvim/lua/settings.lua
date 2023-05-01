@@ -144,6 +144,9 @@ vim.g.undotree_WindowLayout = 3
 -- Goyo
 vim.g.goyo_width = 100
 
+-- vim-pandoc
+vim.cmd([[let g:pandoc#command#custom_open = 'zathura.sh']])
+
 -- ========== Autocmds ========== --
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd

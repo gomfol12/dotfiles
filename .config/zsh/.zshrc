@@ -11,6 +11,7 @@ setopt inc_append_history
 setopt extended_history
 setopt hist_find_no_dups
 setopt no_case_glob
+setopt globdots
 # Disable ctrl-s and ctrl-q
 stty -ixon
 
@@ -32,6 +33,9 @@ autoload -Uz compinit
 zstyle ':completion:*' menu select
 zstyle ':completion::complete:*' gain-privileges 1
 zstyle ':completion:*' rehash true
+zstyle ':completion:*' completer _complete _ignored _files
+
+# zstyle ':completion:*' special-dirs true
 
 # fzf
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh

@@ -173,7 +173,6 @@ return packer.startup(function(use)
             "petertriho/cmp-git",
             "nvim-lua/plenary.nvim",
             "hrsh7th/cmp-calc",
-            "uga-rosa/cmp-dynamic",
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-buffer",
 

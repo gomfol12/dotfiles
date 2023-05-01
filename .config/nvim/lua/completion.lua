@@ -4,9 +4,8 @@
 local cmp_ok, cmp = pcall(require, "cmp")
 local snip_ok, luasnip = pcall(require, "luasnip")
 local cmp_git_ok, cmp_git = pcall(require, "cmp_git")
-local cmp_dynamic_ok, cmp_dynamic = pcall(require, "cmp_dynamic")
 
-if not cmp_ok and not snip_ok and not cmp_git_ok and not cmp_dynamic_ok then
+if not cmp_ok and not snip_ok and not cmp_git_ok then
     return
 end
 
@@ -130,7 +129,6 @@ cmp.setup({
                 rg = "[RG]",
                 git = "[GIT]",
                 calc = "[CALC]",
-                dynamic = "[DYNAMIC]",
                 path = "[PATH]",
                 buffer = "[BUFFER]",
             })[entry.source.name]
@@ -144,7 +142,6 @@ cmp.setup({
         { name = "rg" },
         { name = "git" },
         { name = "calc" },
-        { name = "dynamic" },
         { name = "path" },
     }, {
         { name = "buffer" },
@@ -229,97 +226,3 @@ cmp.setup.cmdline(":", {
 --         { name = "buffer" },
 --     }),
 -- })
-
-local Date = require("cmp_dynamic.utils.date")
-cmp_dynamic.register({
-    {
-        label = "today",
-        insertText = 1,
-        cb = {
-            function()
-                return os.date("%d.%m.%Y")
-            end,
-        },
-    },
-    {
-        label = "heute",
-        insertText = 1,
-        cb = {
-            function()
-                return os.date("%d.%m.%Y")
-            end,
-        },
-    },
-    {
-        label = "Montag",
-        insertText = 1,
-        cb = {
-            function()
-                return Date.new():day(1):format("%d.%m.%Y")
-            end,
-        },
-    },
-    {
-        label = "Dienstag",
-        insertText = 1,
-        cb = {
-            function()
-                return Date.new():day(2):format("%d.%m.%Y")
-            end,
-        },
-    },
-    {
-        label = "Mittwoch",
-        insertText = 1,
-        cb = {
-            function()
-                return Date.new():day(3):format("%d.%m.%Y")
-            end,
-        },
-    },
-    {
-        label = "Donnerstag",
-        insertText = 1,
-        cb = {
-            function()
-                return Date.new():day(4):format("%d.%m.%Y")
-            end,
-        },
-    },
-    {
-        label = "Freitag",
-        insertText = 1,
-        cb = {
-            function()
-                return Date.new():day(5):format("%d.%m.%Y")
-            end,
-        },
-    },
-    {
-        label = "Samstag",
-        insertText = 1,
-        cb = {
-            function()
-                return Date.new():day(6):format("%d.%m.%Y")
-            end,
-        },
-    },
-    {
-        label = "Sonntag",
-        insertText = 1,
-        cb = {
-            function()
-                return Date.new():add_date(7):day(0):format("%d.%m.%Y")
-            end,
-        },
-    },
-    {
-        label = "time",
-        insertText = 1,
-        cb = {
-            function()
-                return os.date("%R")
-            end,
-        },
-    },
-})
