@@ -94,6 +94,32 @@ local markdown_template_math = {
     "---",
 }
 
+local markdown_template_math_extended = {
+    "---",
+    "title: title",
+    "author: author",
+    "header-includes:",
+    "    \\usepackage[a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}",
+    "    \\usepackage{csquotes}",
+    "    \\usepackage[german]{babel}",
+    "    \\usepackage{dsfont}",
+    "    \\usepackage{upgreek}",
+    "    \\usepackage{amsmath}",
+    "    \\usepackage{mathrsfs}",
+    "    \\usepackage{amsthm}",
+    "    \\usepackage{amssymb}",
+    "",
+    "    \\newcommand{\\N}{\\ensuremath{\\mathds{N}}}",
+    "    \\newcommand{\\Z}{\\ensuremath{\\mathds{Z}}}",
+    "    \\newcommand{\\Q}{\\ensuremath{\\mathds{Q}}}",
+    "    \\newcommand{\\R}{\\ensuremath{\\mathds{R}}}",
+    "    \\newcommand{\\C}{\\ensuremath{\\mathds{C}}}",
+    "    \\newcommand{\\I}{\\ensuremath{\\mathfrak{I}}}",
+    "    \\newcommand{\\B}{\\ensuremath{\\mathds{B}}}",
+    "    \\newcommand{\\E}{\\ensuremath{\\mathscr{E}}}",
+    "---",
+}
+
 return {
     s("trig", {
         i(1),
@@ -110,6 +136,9 @@ return {
     }),
     s("uninotemath", {
         t(markdown_template_math),
+    }),
+    s("uninotemathextended", {
+        t(markdown_template_math_extended),
     }),
     s("sum_inf", {
         t("\\sum_{n=0}^\\infty"),
@@ -134,5 +163,14 @@ return {
     }),
     s("\\K", {
         t("\\mathds{K}"),
+    }),
+    s("\\limn", {
+        t("\\lim \\limits_{n \\to \\infty}"),
+    }),
+    s("\\limi", {
+        t("\\lim \\limits_{ \\to \\infty}"),
+    }),
+    s("\\lim", {
+        t("\\lim \\limits_{ \\to }"),
     }),
 }

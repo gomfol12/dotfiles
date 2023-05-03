@@ -25,7 +25,7 @@ npairs.setup({
     map_c_w = false, -- map <c-w> to delete a pair if possible
     fast_wrap = {
         map = "<c-a>",
-        chars = { "{", "[", "(", '"', "'" },
+        chars = { "{", "[", "(", '"', "'", "$" },
         pattern = [=[[%'%"%)%>%]%)%}%,]]=],
         end_key = "$",
         keys = "qwertyuiopzxcvbnmasdfghjkl",
@@ -34,6 +34,49 @@ npairs.setup({
         highlight_grey = "Comment",
     },
 })
+
+-- rules
+local rule = require("nvim-autopairs.rule")
+local cond = require("nvim-autopairs.conds")
+
+npairs.add_rules({
+    rule("$", "$", { "tex", "latex", "pandoc" })
+        :with_pair(cond.not_after_regex("%%"))
+        :with_pair(cond.not_before_regex("%%", 999))
+        :with_cr(cond.none()),
+})
+
+npairs.add_rules({
+    rule("\\[", "\\]", { "tex", "latex", "pandoc" })
+        :with_pair(cond.not_after_regex("%%"))
+        :with_pair(cond.not_before_regex("%%", 999))
+        :with_cr(cond.none()),
+})
+
+-- space between brackets
+local brackets = { { "(", ")" }, { "[", "]" }, { "{", "}" } }
+npairs.add_rules({
+    rule(" ", " "):with_pair(function(opts)
+        local pair = opts.line:sub(opts.col - 1, opts.col)
+        return vim.tbl_contains({
+            brackets[1][1] .. brackets[1][2],
+            brackets[2][1] .. brackets[2][2],
+            brackets[3][1] .. brackets[3][2],
+        }, pair)
+    end),
+})
+for _, bracket in pairs(brackets) do
+    npairs.add_rules({
+        rule(bracket[1] .. " ", " " .. bracket[2])
+            :with_pair(function()
+                return false
+            end)
+            :with_move(function(opts)
+                return opts.prev_char:match(".%" .. bracket[2]) ~= nil
+            end)
+            :use_key(bracket[2]),
+    })
+end
 
 -- If you want insert `(` after select function or method item
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
