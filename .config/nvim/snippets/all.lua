@@ -140,11 +140,17 @@ return {
     s("uninotemathextended", {
         t(markdown_template_math_extended),
     }),
-    s("sum_inf", {
+    s("\\sumkn", {
+        t("\\sum_{k=0}^n"),
+    }),
+    s("\\sumn", {
         t("\\sum_{n=0}^\\infty"),
     }),
-    s("\\sum_inf", {
-        t("\\sum_{n=0}^\\infty"),
+    s("\\sumi", {
+        t("\\sum_{}^\\infty"),
+    }),
+    s("\\sum", {
+        t("\\sum_{}^"),
     }),
     s("\\N", {
         t("\\mathds{N}"),

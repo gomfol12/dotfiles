@@ -117,8 +117,8 @@ export GIT_PS1_SHOWSTASHSTATE=1
 
 ### lf icons ###
 export LF_ICONS="\
-di=:\
-fi=:\
+di=:\
+fi=:\
 ln=:\
 or=:\
 ex=:\
