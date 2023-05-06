@@ -245,6 +245,24 @@ autocmd("BufRead,BufNewFile", {
     command = "set filetype=markdown",
 })
 
+-- speeddating
+autocmd("BufEnter", {
+    pattern = "*",
+    command = [[
+    SpeedDatingFormat %d%[/-\\.]%m%1%Y
+    SpeedDatingFormat %d%[/-\\.]%m%1%Y +%H:%M
+    SpeedDatingFormat %d%[/-\\.]%m%1%Y +%H:%M:%S
+    SpeedDatingFormat %d%[/-\\.]%m%1%Y+%H:%M
+    SpeedDatingFormat %d%[/-\\.]%m%1%Y+%H:%M:%S
+    SpeedDatingFormat %d%[/-\\.]%m%1%Y %H:%M
+    SpeedDatingFormat %d%[/-\\.]%m%1%Y %H:%M:%S
+    SpeedDatingFormat %H:%M
+    SpeedDatingFormat %H:%M:%S
+    SpeedDatingFormat %H %M
+    SpeedDatingFormat %H %M %S
+    ]],
+})
+
 -- ========== Useful functions ========== --
 local function usercmd(alias, command)
     return vim.api.nvim_create_user_command(alias, command, { nargs = 0 })

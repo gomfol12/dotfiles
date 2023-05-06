@@ -120,7 +120,7 @@ local markdown_template_math_extended = {
     "---",
 }
 
-return {
+local _snippets = {
     s("trig", {
         i(1),
         t("text"),
@@ -180,3 +180,30 @@ return {
         t("\\lim \\limits_{ \\to }"),
     }),
 }
+
+-- date snippets
+local dates = {
+    "today",
+    "tomorrow",
+    "next monday",
+    "next tuesday",
+    "next wednesday",
+    "next thursday",
+    "next friday",
+    "next saturday",
+    "next sunday",
+    "next week",
+    "next month",
+}
+for _, date in pairs(dates) do
+    table.insert(
+        _snippets,
+        s("d_" .. date:gsub(" ", "-"), {
+            f(function(args, snip, user_arg_1)
+                return vim.fn.trim(vim.fn.system("date -d '" .. date .. "' +'%d.%m.%Y '"))
+            end, {}),
+        })
+    )
+end
+
+return _snippets

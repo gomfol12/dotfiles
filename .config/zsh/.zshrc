@@ -28,14 +28,19 @@ zsh_add_plugin "zsh-users/zsh-autosuggestions"
 zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
 
 ### Completion ###
-# TODO: what is compinstall
-#zstyle :compinstall filename '$ZDOTDIR/zshrc'
+setopt menu_complete
+setopt glob_complete
 
 autoload -Uz compinit
 zstyle ':completion:*' menu select
 zstyle ':completion::complete:*' gain-privileges 1
 zstyle ':completion:*' rehash true
+# always try to complete files
 zstyle ':completion:*' completer _complete _ignored _files
+# case insensitive completion
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
+# partial completion
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 # zstyle ':completion:*' special-dirs true
 
@@ -74,6 +79,27 @@ if [ -n "${TMUX}" ] && [ ! "$TERM" = "linux" ]; then
     bindkey -r "^k"
     bindkey -r "^l"
 fi
+
+# hjkl for menu select
+zmodload zsh/complist
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+
+# bind text objects for brackets and quotes
+autoload -Uz select-bracketed select-quoted
+zle -N select-quoted
+zle -N select-bracketed
+for km in viopp visual; do
+    bindkey -M $km -- '-' vi-up-line-or-history
+    for c in {a,i}${(s..)^:-\'\"\`\|,./:;=+@}; do
+        bindkey -M $km $c select-quoted
+    done
+    for c in {a,i}${(s..)^:-'()[]{}<>bB'}; do
+        bindkey -M $km $c select-bracketed
+    done
+done
 
 # create a zkbd compatible hash;
 # to add other keys to this hash, see: man 5 terminfo

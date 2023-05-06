@@ -80,6 +80,10 @@ return packer.startup(function(use)
             "sindrets/diffview.nvim",
         },
     })
+    use("tpope/vim-surround")
+    use("tpope/vim-repeat")
+    use("tpope/vim-speeddating")
+    use("Konfekt/vim-CtrlXA") -- TODO: AndrewRadev/switch.vim
 
     -- comments
     use("numToStr/Comment.nvim")
