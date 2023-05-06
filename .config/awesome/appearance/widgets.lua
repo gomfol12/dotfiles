@@ -119,7 +119,7 @@ _M.net = awful.widget.watch(
     update_timeout,
     function(widget, stdout, stderr, reason, exit_code)
         if exit_code ~= 0 then
-            widget:set_text(" -1MiB 祝 -1MiB")
+            widget:set_text("󰇚 -1MiB 󰕒 -1MiB")
             return
         end
 
@@ -140,7 +140,7 @@ _M.net = awful.widget.watch(
                     .. "/statistics/tx_bytes",
                 function(stdout2, stderr2, reason2, exit_code2)
                     if exit_code2 ~= 0 then
-                        widget:set_text(" -1MiB 祝 -1MiB")
+                        widget:set_text("󰇚 -1MiB 󰕒 -1MiB")
                         return
                     end
 
@@ -151,9 +151,9 @@ _M.net = awful.widget.watch(
 
                     -- in MiB
                     widget:set_text(
-                        " "
+                        "󰇚 "
                             .. string.format("%.1f", (data[3] - data[1]) / 1024 / 1024)
-                            .. "MiB 祝 "
+                            .. "MiB 󰕒 "
                             .. string.format("%.1f", (data[4] - data[2]) / 1024 / 1024)
                             .. "MiB"
                     )
@@ -179,22 +179,22 @@ _M.audio, _M.audio_timer = awful.widget.watch(
             stdout:match("device:%s(.*)\nsink_volume:%s(%d+)%%\nsink_mute:%s(.*)\nmicrophone_mute:%s(.*)\n")
         sink_volume = tonumber(sink_volume)
 
-        local sink_icon = "  "
+        local sink_icon = " "
         if device == "speaker" then
             if sink_mute == "yes" then
-                sink_icon = "  "
-            elseif sink_volume < 80 and sink_volume >= 40 then
-                sink_icon = "墳 "
-            elseif sink_volume < 40 and sink_volume > 0 then
-                sink_icon = "  "
+                sink_icon = "󰝟 "
+            elseif sink_volume < 100 and sink_volume >= 50 then
+                sink_icon = " "
+            elseif sink_volume < 50 and sink_volume > 0 then
+                sink_icon = " "
             elseif sink_volume == 0 then
-                sink_icon = "  "
+                sink_icon = " "
             end
         elseif device == "headphones" then
             if sink_mute == "yes" then
-                sink_icon = "MUTE "
+                sink_icon = "󰟎 "
             else
-                sink_icon = "  "
+                sink_icon = "󰋋 "
             end
         end
 
@@ -203,7 +203,7 @@ _M.audio, _M.audio_timer = awful.widget.watch(
             mic_icon = " "
         end
 
-        widget:set_text(sink_icon .. sink_volume .. "% " .. mic_icon)
+        widget:set_text(sink_icon .. " " .. sink_volume .. "% " .. mic_icon)
     end
 )
 

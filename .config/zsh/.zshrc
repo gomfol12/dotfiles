@@ -12,6 +12,8 @@ setopt extended_history
 setopt hist_find_no_dups
 setopt no_case_glob
 setopt globdots
+setopt hist_reduce_blanks
+# setopt share_history
 # Disable ctrl-s and ctrl-q
 stty -ixon
 
