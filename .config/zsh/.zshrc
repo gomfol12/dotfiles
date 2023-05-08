@@ -21,7 +21,12 @@ stty -ixon
 source "$ZDOTDIR/zsh-aliases"
 source "$ZDOTDIR/zsh-functions"
 zsh_add_file "zsh-timer"
-zsh_add_file "zsh-prompt"
+
+if command -v "starship" >/dev/null 2>&1; then
+    eval "$(starship init zsh)"
+else
+    zsh_add_file "zsh-prompt"
+fi
 
 ### "Plugins" ###
 zsh_add_plugin "zsh-users/zsh-autosuggestions"

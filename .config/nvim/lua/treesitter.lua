@@ -25,7 +25,7 @@ configs.setup({
         "gitattributes",
         "gitcommit",
         "gitignore",
-        "help",
+        -- "help",
         "html",
         "http",
         "java",
