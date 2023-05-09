@@ -17,13 +17,13 @@ if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
         xset +dpms
         xset dpms 300 300 600
         xset s off
-    }
+    } &
 else
     sleep 3 && {
         xset r rate 200 40
         xset -dpms
         xset s off
-    }
+    } &
 fi
 
 if test "$NVIDIA"; then
