@@ -53,6 +53,9 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
 
+[ -f $SCRIPT_DIR/fzf/completion.zsh ] && source $SCRIPT_DIR/fzf/completion.zsh
+[ -f $SCRIPT_DIR/fzf/key-bindings.zsh ] && source $SCRIPT_DIR/fzf/key-bindings.zsh
+
 compinit
 
 ### Keybinds ###

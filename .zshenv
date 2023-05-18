@@ -14,7 +14,15 @@ export HISTFILE="$ZDOTDIR/history"
 export HISTSIZE=2147483647
 export SAVEHIST=$HISTSIZE
 export HISTTIMEFORMAT="[%F %T] "
-export EDITOR="nvim"
+
+if command -v "nvim" >/dev/null 2>&1; then
+    export EDITOR="nvim"
+elif command -v "vim" >/dev/null 2>&1; then
+    export EDITOR="vim"
+else
+    export EDITOR="vi"
+fi
+
 export TERMINAL="st"
 export BROWSER="firefox"
 export _JAVA_AWT_WM_NONREPARENTING=1
