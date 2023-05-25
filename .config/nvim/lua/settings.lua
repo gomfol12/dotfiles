@@ -257,11 +257,15 @@ autocmd("FileType", {
     command = "setlocal formatoptions-=c formatoptions-=r formatoptions-=o",
 })
 
--- Line length marker at 80 columns
-for _, k in pairs({ "vimwiki", "tex", "markdown" }) do
+-- Line length marker at 80 columns and format
+for _, k in pairs({ "vimwiki", "tex", "markdown", "pandoc" }) do
     autocmd("FileType", {
         pattern = k,
-        command = 'lua vim.opt.colorcolumn = "80"',
+        callback = function()
+            vim.opt.colorcolumn = "80"
+            vim.opt.textwidth = 80
+            vim.cmd("set fo+=a")
+        end,
     })
 end
 
@@ -293,13 +297,33 @@ autocmd("BufEnter", {
     ]],
 })
 
+-- remove trailing spaces
+augroup("myformat", { clear = true })
+autocmd("BufWritePre", {
+    group = "myformat",
+    pattern = "*",
+    callback = function()
+        if
+            vim.bo.filetype == "markdown"
+            or vim.bo.filetype == "vimwiki"
+            or vim.bo.filetype == "pandoc"
+            or vim.bo.filetype == "latex"
+        then
+            return
+        end
+        local view = vim.fn.winsaveview()
+        vim.cmd([[%s/\v\s+$//e]])
+        vim.fn.winrestview(view)
+    end,
+})
+
 -- ========== Useful functions ========== --
 local function usercmd(alias, command)
     return vim.api.nvim_create_user_command(alias, command, { nargs = 0 })
 end
 
 -- Search
-usercmd("Search", function()
+usercmd("S", function()
     local search = vim.fn.input("Search: ")
     local pickers = require("telescope.pickers")
     local finders = require("telescope.finders")
@@ -340,3 +364,12 @@ usercmd("Search", function()
     end
     searcher(require("telescope.themes").get_dropdown({}))
 end)
+
+usercmd("Bonly", function()
+    vim.cmd('execute "%bd|e#|bd#"')
+end)
+
+-- Search Escape String
+usercmd("Sescstr", [[/\\".\{-}\\"]])
+-- Search String
+usercmd("Sstr", [[/".\{-}"]])

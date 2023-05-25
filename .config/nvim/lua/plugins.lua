@@ -83,6 +83,7 @@ return packer.startup(function(use)
     use("tpope/vim-surround")
     use("tpope/vim-repeat")
     use("tpope/vim-speeddating")
+    use("tpope/vim-unimpaired")
     use("Konfekt/vim-CtrlXA") -- TODO: AndrewRadev/switch.vim
 
     -- comments
