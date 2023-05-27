@@ -2,8 +2,10 @@
 #
 # Start a composition manager.
 
-compositor_command="xcompmgr -cfCF -D10 -I.1 -O.1"
-compositor_name="xcompmgr"
+# compositor_command="xcompmgr -cfCF -D10 -I.1 -O.1"
+# compositor_name="xcompmgr"
+compositor_command="picom"
+compositor_name="picom"
 
 help()
 {

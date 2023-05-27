@@ -1,32 +1,113 @@
-#!/bin/sh
-# TODO: messy script clean up, error checking
+#!/bin/bash
 
-if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
-    speaker="alsa_output.pci-0000_2b_00.3.analog-stereo"
-    headphones="alsa_output.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.analog-stereo"
-    microphone="alsa_input.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.mono-fallback"
-fi
-if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
-    speaker="alsa_input.pci-0000_00_1f.3.analog-stereo"
-    headphones=""
-    microphone=""
-fi
+config_file="${XDG_CONFIG_HOME:-"$HOME/.config"}/audioctl"
+players=$(playerctl --list-all --no-messages)
 
-if [ -z "$speaker" ] || [ -z "$headphones" ] || [ -z "$microphone" ]; then
-    echo "speaker, headphones, microphone variables not set"
-    exit 1
-fi
-
+# check if audio is ready
 default_sink=$(pactl get-default-sink)
 [ "$default_sink" = "@DEFAULT_SINK@" ] && exit 1
-players=$(playerctl --list-all --no-messages)
 
 log()
 {
     printf "%s\n" "$1" | xargs
 }
 
-# swap
+# $1 sink|source
+get_user_info()
+{
+    if [ "$1" = "sink" ]; then
+        sinks_raw="$(pactl list sinks)"
+        sinks_count="$(pactl list sinks | grep -cE "^Sink #[0-9]+")"
+    elif [ "$1" = "source" ]; then
+        sinks_raw="$(pactl list sources)"
+        sinks_count="$(pactl list sources | grep -cE "^Source #[0-9]+")"
+    else
+        log "Error: user_get_info argument required"
+        exit 1
+    fi
+
+    # error checking
+    if [ -z "$sinks_raw" ] || [ -z "$sinks_count" ]; then
+        log "Error: Cant get speaker data"
+        exit 1
+    fi
+
+    names=()
+    descs=()
+
+    counter=0
+    IFS=$'\n'
+    # get sink names
+    for name in $(echo "$sinks_raw" | grep "Name:.*$" | sed 's/[[:space:]]*Name: //'); do
+        names[counter]=$name
+        counter=$((counter + 1))
+    done
+    counter=0
+    # get sink desc
+    for desc in $(echo "$sinks_raw" | grep "Description:.*$" | sed 's/[[:space:]]*Description: //'); do
+        descs[counter]=$desc
+        counter=$((counter + 1))
+    done
+
+    # print for user
+    for ((i = 0; i < sinks_count; i++)); do
+        # error checking
+        if [ -z "${descs[i]}" ]; then
+            log "Error: Cant get speaker data"
+            exit 1
+        fi
+        log "$i: ${descs[i]}"
+    done
+    # read from user
+    while read -p "[0]: " -r select; do
+        if [[ $select =~ [[:digit:]]+ ]] && [ "$select" -lt "$sinks_count" ]; then
+            # error checking
+            if [ -z "${names[$select]}" ]; then
+                log "Error: Cant get speaker data"
+                exit 1
+            fi
+            select=${names[$select]}
+            break
+        fi
+        if [ -z "$select" ]; then
+            select=${names[0]}
+            break
+        fi
+        log "Invalid input! Try again."
+    done
+}
+
+setup()
+{
+    log "--- setup ---"
+    log "speaker:"
+    get_user_info "sink"
+    speaker=$select
+    log "headphones:"
+    get_user_info "sink"
+    headphones=$select
+    log "microphone:"
+    get_user_info "source"
+    microphone=$select
+
+    echo "speaker:$speaker" >"$config_file"
+    echo "headphones:$headphones" >>"$config_file"
+    echo "microphone:$microphone" >>"$config_file"
+}
+
+load_config()
+{
+    if [ -f "$config_file" ]; then
+        speaker=$(grep "speaker:" "$config_file" | cut -d ":" -f 2)
+        headphones=$(grep "headphones:" "$config_file" | cut -d ":" -f 2)
+        microphone=$(grep "microphone:" "$config_file" | cut -d ":" -f 2)
+    else
+        log "Error: Cant find config file. Starting setup..."
+        setup
+    fi
+}
+load_config
+
 swap_audio_outputs()
 {
     if [ "$default_sink" = "$speaker" ]; then
@@ -197,7 +278,8 @@ help()
     cat <<EOF
 audio.sh - audio/mic control
 usage - audio.sh [command] [subcommand|value]
-    setup:          setup default devices
+    setup:          setup config file for script
+    default:        set the default audio output and input
     swap:           swap audio output speaker/headphones
     info:           info
     volume:         control volume
@@ -235,10 +317,9 @@ EOF
 }
 
 case "$1" in
-"setup") setup_default_source_sink ;;
-
+"setup") setup ;;
+"default") setup_default_source_sink ;;
 "switch" | "swap") swap_audio_outputs ;;
-
 "info") get_sink_source_info ;;
 
 "volume")
