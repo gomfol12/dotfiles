@@ -196,6 +196,8 @@ _M.audio, _M.audio_timer = awful.widget.watch(
             else
                 sink_icon = "󰋋 "
             end
+        else
+            sink_icon = "󰝟 "
         end
 
         local mic_icon = " "

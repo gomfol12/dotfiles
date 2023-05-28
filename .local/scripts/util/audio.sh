@@ -267,6 +267,8 @@ get_sink_source_info()
     fi
     if [ "$default_sink" = "$headphones" ]; then
         echo "device: headphones"
+    else
+        echo "device: unknown"
     fi
     echo "sink_volume: $(get_default_sink_volume)"
     echo "sink_mute: $(mute "sink" "get")"
