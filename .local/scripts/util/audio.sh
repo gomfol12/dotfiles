@@ -264,8 +264,7 @@ get_sink_source_info()
 {
     if [ "$default_sink" = "$speaker" ]; then
         echo "device: speaker"
-    fi
-    if [ "$default_sink" = "$headphones" ]; then
+    elif [ "$default_sink" = "$headphones" ]; then
         echo "device: headphones"
     else
         echo "device: unknown"

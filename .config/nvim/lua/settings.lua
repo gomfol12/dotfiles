@@ -258,7 +258,7 @@ autocmd("FileType", {
 })
 
 -- Line length marker at 80 columns and format
-for _, k in pairs({ "vimwiki", "markdown", "pandoc" }) do
+for _, k in pairs({ "markdown", "pandoc" }) do
     autocmd("FileType", {
         pattern = k,
         callback = function()

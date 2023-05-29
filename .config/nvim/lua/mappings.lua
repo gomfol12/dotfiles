@@ -117,8 +117,8 @@ keymap.set("x", "<leader>$", "<ESC>`>a$<ESC>`<i$<ESC>", { silent = true, desc = 
 keymap.set("x", "K", ":move '<-2<CR>gv-gv", { silent = true, desc = "Move selected text" })
 keymap.set("x", "J", ":move '>+1<CR>gv-gv", { silent = true, desc = "Move selected text" })
 
-keymap.set("n", "<leader>z", ":set formatoptions-=cro<cr>", { desc = "Remove format options" })
-keymap.set("n", "<leader>Z", ":set formatoptions=cro<cr>", { desc = "Add format options" })
+keymap.set("n", "<leader>Z", ":set formatoptions-=croa<cr>", { desc = "Remove format options" })
+keymap.set("n", "<leader>z", ":set formatoptions=croa<cr>", { desc = "Add format options" })
 
 -- format
 keymap.set("n", "<leader>l", function()
