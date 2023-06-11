@@ -60,7 +60,7 @@ return packer.startup(function(use)
         end,
     })
     use("lukas-reineke/indent-blankline.nvim")
-    use("j-hui/fidget.nvim")
+    use({ "j-hui/fidget.nvim", tag = "legacy" })
     use("github/copilot.vim")
     use("folke/which-key.nvim")
     use("mbbill/undotree")

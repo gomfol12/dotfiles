@@ -27,18 +27,22 @@ cdw()
     help()
     {
         cat <<EOF
-usage: $programm_name [-h]
+usage: $programm_name [-h|-c|-d|-l|-j|-g|-hl|-hc] [<path>|<shortcut>|<shortcut> <path>]
         -h      help
+        -c     create shortcut
+        -d     delete shortcut
+        -l     list shortcuts
+        -j|-g  jump or change to directory
+        -hl    list history
+        -hc    clear history
 EOF
     }
 
     dir_change()
     {
-        arg1=$1
-
         # if file ask for opening with editor
-        if [ -f "$arg1" ]; then
-            log "$arg1 is a file."
+        if [ -f "$1" ]; then
+            log "$1 is a file."
             if [ -n "$EDITOR" ]; then
                 open_with_editor=""
 
@@ -49,27 +53,32 @@ EOF
                 fi
 
                 if echo "$open_with_editor" | grep -E "^[yY]" -q || [ -z "$open_with_editor" ]; then
-                    nvim "$arg1"
+                    nvim "$1"
                     return 0
                 fi
             fi
             return 1
         fi
 
-        if ! [ -d "$arg1" ]; then
-            log "no such file or directory: $arg1"
+        if ! [ -d "$1" ]; then
+            log "no such file or directory: $1"
             return 1
         fi
 
         # save history
         if ! [ "$2" = "nosave" ]; then
-            save="name:${arg1}:path:$(realpath "$arg1")"
-            save_hash=$(printf "%s" "$save" | md5sum | cut -d' ' -f1)
-            sed -i "/$save_hash/d" "$history_file"
-            printf "%s\n" "md5:${save_hash}:time:$(date +%s):${save}" >>"$history_file"
+            history_save_update_entry "$1"
         fi
 
-        \cd "$arg1" || return 1
+        \cd "$1" || return 1
+    }
+
+    history_save_update_entry()
+    {
+        save="name:${1}"
+        save_hash=$(printf "%s" "$save" | md5sum | cut -d' ' -f1)
+        sed -i "/$save_hash/d" "$history_file"
+        printf "%s\n" "md5:${save_hash}:time:$(date +%s):${save}:path:$(realpath "$1")" >>"$history_file"
     }
 
     shortcut_create()
@@ -109,32 +118,52 @@ EOF
 
     dir_change_or_jump()
     {
-        arg1=$1
         lf_open=0
 
-        if [ -z "$arg1" ]; then
-            arg1="$HOME"
+        if [ -z "$1" ]; then
+            dir_change "$HOME"
+            return 0
         fi
 
-        # for my own stupidity
-        if [ "$(echo "$arg1" | tail -c 2)" = "f" ]; then
-            if ! [ -d "$arg1" ]; then
-                arg1="$(echo "$arg1" | head -c -2)"
-                lf_open=1
+        if [ "$1" = ".." ] || [ "$1" = "." ]; then
+            dir_change "$1" "nosave"
+            return 0
+        fi
+
+        searched_shortcut="$(tac "$shortcut_file" | grep -m 1 "^name:$1:")"
+
+        if [ -d "$1" ]; then
+            if [ -n "$searched_shortcut" ]; then
+                dir_change "$1" "nosave"
+            else
+                dir_change "$1"
             fi
+            return 0
+        fi
+
+        input="$1"
+
+        # for my own stupidity
+        if [ "$(echo "$input" | tail -c 2)" = "f" ]; then
+            input="$(echo "$input" | head -c -2)"
+            lf_open=1
         fi
 
         # main change or jump "logic"
-        if ! [ -d "$arg1" ] && grep "^name:$arg1:" "$shortcut_file" -q; then
-            dir_change "$(grep "^name:$arg1:" "$shortcut_file" | cut -d':' -f4)" "nosave"
+        searched_shortcut="$(tac "$shortcut_file" | grep -m 1 "^name:$input:")"
+        searched_history_name="$(tac "$history_file" | grep -E -m 1 'name:[^:]*'"$input"'/?:')"
+        searched_history_path="$(tac "$shortcut_file" | grep -E -m 1 "path:.*$input/?$")"
+
+        if [ -n "$searched_shortcut" ]; then
+            dir_change "$(echo "$searched_shortcut" | cut -d':' -f4)" "nosave"
+        elif [ -n "$searched_history_name" ]; then
+            dir_change "$(echo "$searched_history_name" | cut -d':' -f8)" "nosave"
+            history_save_update_entry "$input"
+        elif [ -n "$searched_history_path" ]; then
+            dir_change "$(echo "$searched_history_path" | cut -d':' -f8)" "nosave"
+            history_save_update_entry "$input"
         else
-            if ! [ "$arg1" = ".." ] && ! [ "$arg1" = "." ] && grep -E 'name:[^:]+'"$arg1"':' "$history_file" -q; then
-                dir_change "$(grep -E 'name:[^:]+'"$arg1"':' "$history_file" | cut -d':' -f8 | tail -1)" "nosave"
-            elif ! [ "$arg1" = ".." ] && ! [ "$arg1" = "." ] && grep "path:.*$arg1$" "$history_file" -q; then
-                dir_change "$(grep "path:.*$arg1$" "$history_file" | cut -d':' -f8 | tail -1)" "nosave"
-            else
-                dir_change "$arg1"
-            fi
+            dir_change "$input"
         fi
 
         if [ $lf_open -eq 1 ]; then
