@@ -65,20 +65,15 @@ EOF
             return 1
         fi
 
+        \cd "$1" || return 1
+
         # save history
         if ! [ "$2" = "nosave" ]; then
-            history_save_update_entry "$1"
+            save="name:${1}"
+            save_hash=$(printf "%s" "$save" | md5sum | cut -d' ' -f1)
+            sed -i "/$save_hash/d" "$history_file"
+            printf "%s\n" "md5:${save_hash}:time:$(date +%s):${save}:path:$(pwd)" >>"$history_file"
         fi
-
-        \cd "$1" || return 1
-    }
-
-    history_save_update_entry()
-    {
-        save="name:${1}"
-        save_hash=$(printf "%s" "$save" | md5sum | cut -d' ' -f1)
-        sed -i "/$save_hash/d" "$history_file"
-        printf "%s\n" "md5:${save_hash}:time:$(date +%s):${save}:path:$(realpath "$1")" >>"$history_file"
     }
 
     shortcut_create()
@@ -158,10 +153,8 @@ EOF
             dir_change "$(echo "$searched_shortcut" | cut -d':' -f4)" "nosave"
         elif [ -n "$searched_history_name" ]; then
             dir_change "$(echo "$searched_history_name" | cut -d':' -f8)" "nosave"
-            history_save_update_entry "$input"
         elif [ -n "$searched_history_path" ]; then
             dir_change "$(echo "$searched_history_path" | cut -d':' -f8)" "nosave"
-            history_save_update_entry "$input"
         else
             dir_change "$input"
         fi
