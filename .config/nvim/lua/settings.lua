@@ -112,7 +112,7 @@ vim.g.vimtex_view_method = "zathura"
 vim.g.vimtex_compiler_method = "latexmk"
 vim.g.vimtex_compiler_engine = "lualatex"
 vim.g.vimtex_compiler_latexmk = {
-    build_dir = "build",
+    out_dir = "build",
     options = {
         "-pdf",
         "-shell-escape",
