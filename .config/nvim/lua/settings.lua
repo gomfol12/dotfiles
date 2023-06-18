@@ -254,7 +254,7 @@ autocmd("User", {
 -- Disable automatic comment insertion
 autocmd("FileType", {
     pattern = "*",
-    command = "setlocal formatoptions-=c formatoptions-=r formatoptions-=o",
+    command = "setlocal formatoptions-=cro",
 })
 
 -- Line length marker at 80 columns and format
@@ -264,7 +264,7 @@ for _, k in pairs({ "markdown", "pandoc" }) do
         callback = function()
             vim.opt.colorcolumn = "80"
             vim.opt.textwidth = 80
-            vim.cmd("set fo+=a")
+            -- vim.cmd("set fo+=a")
         end,
     })
 end
