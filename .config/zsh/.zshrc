@@ -113,9 +113,14 @@ done
 # to add other keys to this hash, see: man 5 terminfo
 typeset -g -A key
 
-key[Home]="${terminfo[khome]}"
+if [ -z "$TMUX" ]; then
+    key[Home]="${terminfo[home]}" # ???
+    key[Insert]="${terminfo[smir]}" # ???
+else
+    key[Home]="${terminfo[khome]}"
+    key[Insert]="${terminfo[kich1]}"
+fi
 key[End]="${terminfo[kend]}"
-key[Insert]="${terminfo[kich1]}"
 key[Backspace]="${terminfo[kbs]}"
 key[Delete]="${terminfo[kdch1]}"
 key[Up]="${terminfo[kcuu1]}"
@@ -177,7 +182,7 @@ if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
 fi
 
 # Change cursor shape for different vi modes.
-function zle-keymap-select () 
+function zle-keymap-select()
 {
     case $KEYMAP in
         vicmd) echo -ne '\e[1 q';;      # block
@@ -185,7 +190,7 @@ function zle-keymap-select ()
     esac
 }
 zle -N zle-keymap-select
-zle-line-init() 
+zle-line-init()
 {
     zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
     echo -ne "\e[5 q"
