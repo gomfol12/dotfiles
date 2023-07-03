@@ -32,7 +32,11 @@ fi
 
 while read -r line; do
     if [ "$dont_draw" == false ]; then
-        if [[ "$line" =~ ^\[.*\]:\ https:\/\/i\.redd\.it\/ ]] || [[ "$line" =~ ^\[.*\]:\ https:\/\/i\.imgur\.com\/ ]]; then
+        if [[ "$line" =~ ^\[.*\]:\ https:\/\/i\.redd\.it\/ ]] ||
+            [[ "$line" =~ ^\[.*\]:\ https:\/\/i\.imgur\.com\/ ]] ||
+            [[ "$line" =~ ^\[.*\]:\ https:\/\/b\.thumbs\.redditmedia\.com\/ ]] ||
+            [[ "$line" =~ ^\[.*\]:\ https:\/\/external-preview\.redd\.it\/ ]] ||
+            [[ "$line" =~ ^\[.*\]:\ https:\/\/preview\.redd\.it\/ ]]; then
             url=$(echo "$line" | cut -d" " -f2)
 
             if [ -n "$url" ]; then
@@ -53,7 +57,7 @@ while read -r line; do
                 if [ -f "$cache" ]; then
                     draw "$img_x" "$img_y" "$img_width" "$img_height" "$cache"
                 else
-                    curl -sL "$(youtube-dl --get-thumbnail "$url")" >"$cache"
+                    curl -sL "$(yt-dlp --get-thumbnail "$url")" >"$cache"
                     draw "$img_x" "$img_y" "$img_width" "$img_height" "$cache"
                 fi
             fi
@@ -70,6 +74,7 @@ s/\(\[[0-9][0-9]*\]\)/\\033[35m\1\\033[0m/g' "$1")
 lesskey=$(mktemp)
 echo "#command" >>"$lesskey"
 echo "\kb quit" >>"$lesskey"
+echo "n shell xdotool key q && (sleep 0.1 && xdotool key n && xdotool key Enter)&\n" >>"$lesskey"
 grep -o '\[[0-9]\]: https://[^ ]*' "$1" | sed -u 's/\[\([0-9]\)\]: \(.*\)/\1 shell linkhandler.sh "\2" \&\& xdotool key Return\\n/' >>"$lesskey"
 grep -o 'Link: https://[^ ]*' "$1" | sed -u 's/Link: \(.*\)/o shell linkhandler.sh "\1" \&\& xdotool key Return\\n/' >>"$lesskey"
 grep -o 'Link: https://[^ ]*' "$1" | sed -u 's/Link: \(.*\)/^o shell "$BROWSER" "\1" \&\& xdotool key Return\\n/' >>"$lesskey"
