@@ -116,13 +116,14 @@ typeset -g -A key
 if [ -z "$TMUX" ]; then
     key[Home]="${terminfo[home]}" # ???
     key[Insert]="${terminfo[smir]}" # ???
+    key[Delete]="${terminfo[dch1]}"
 else
     key[Home]="${terminfo[khome]}"
     key[Insert]="${terminfo[kich1]}"
+    key[Delete]="${terminfo[kdch1]}"
 fi
 key[End]="${terminfo[kend]}"
 key[Backspace]="${terminfo[kbs]}"
-key[Delete]="${terminfo[kdch1]}"
 key[Up]="${terminfo[kcuu1]}"
 key[Down]="${terminfo[kcud1]}"
 key[Left]="${terminfo[kcub1]}"
@@ -135,6 +136,8 @@ key[Control-Right]="${terminfo[kRIT5]}"
 key[Control-Backspace]="${terminfo[kBS5]}"
 key[Shift-Backspace]="${terminfo[kBS2]}"
 key[Shift-Space]="${terminfo[kSP2]}"
+key[Control-Up]="${terminfo[kUP5]}"
+key[Control-Down]="${terminfo[kDWN5]}"
 
 # widgets
 insert_space() { zle -U " " }
@@ -157,6 +160,8 @@ insert_space() { zle -U " " }
 [[ -n "${key[Control-Backspace]}" ]] && bindkey -- "${key[Control-Backspace]}" backward-kill-word
 [[ -n "${key[Shift-Backspace]}" ]] && bindkey -- "${key[Shift-Backspace]}" backward-delete-char
 [[ -n "${key[Shift-Space]}" ]] && bindkey -- "${key[Shift-Space]}" insert_space
+[[ -n "${key[Control-Up]}" ]] && bindkey -- "${key[Control-Up]}" up-line-or-beginning-search
+[[ -n "${key[Control-Down]}" ]] && bindkey -- "${key[Control-Down]}" down-line-or-beginning-search
 
 if [ "$TERM" = "linux" ]; then
     bindkey "^[[A" history-beginning-search-backward
@@ -182,7 +187,7 @@ if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
 fi
 
 # Change cursor shape for different vi modes.
-function zle-keymap-select()
+function zle-keymap-select ()
 {
     case $KEYMAP in
         vicmd) echo -ne '\e[1 q';;      # block
