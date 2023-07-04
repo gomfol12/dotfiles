@@ -30,7 +30,7 @@ vim.b.maplocalleader = "\\"
 keymap.set("n", "Q", "<nop>", { desc = "Disable ex mode" })
 
 -- disable search highlighting until the next search
-keymap.set("n", "<cr>", ":noh<cr><cr>", { silent = true, desc = "No highlight" })
+keymap.set("n", "<cr>", ":noh<cr>", { silent = true, desc = "No highlight" })
 keymap.set("n", "<leader>nh", ":noh<cr><cr>", { silent = true, desc = "No highlight" })
 
 -- delete buffer without closing neovim
@@ -270,12 +270,12 @@ keymap.set("t", "<C-\\>", "<C-\\><C-n>:lua ToggleTerm()<cr>", { noremap = true, 
 keymap.set("n", "<leader>go", ":Goyo<cr>", { silent = true, desc = "Goyo" })
 
 -- leap-ast
-vim.keymap.set({ "n", "x", "o" }, "m", function()
-    require("leap-ast").leap()
-end, { desc = "Leap AST" })
+-- vim.keymap.set({ "n", "x", "o" }, "m", function()
+--     require("leap-ast").leap()
+-- end, { desc = "Leap AST" })
 
 -- Search
-vim.keymap.set("n", "<leader>b", ":Search<cr>", { desc = "Search" })
+vim.keymap.set("n", "<leader>b", ":S<cr>", { desc = "Search" })
 
 -- Fold
 vim.keymap.set("n", "zR", require("ufo").openAllFolds)

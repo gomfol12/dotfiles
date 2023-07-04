@@ -87,7 +87,7 @@ local buttons = {
         button("e", "> New file  ", ":ene <bar> startinsert <cr>"),
         button("f", "> Find file  ", ":cd $HOME | Telescope find_files<cr>"),
         button("r", "> Recent files  ", ":Telescope oldfiles<cr>"),
-        button("v", "> NVIM config  ", ":e ~/.config/nvim/init.lua<cr>"),
+        button("a", "> NVIM config  ", ":e ~/.config/nvim/init.lua<cr>"),
         button("q", "> Quit NVIM 󰗼 ", ":qa<cr>"),
     },
     opts = {

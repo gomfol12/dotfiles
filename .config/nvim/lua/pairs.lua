@@ -24,7 +24,7 @@ npairs.setup({
     map_c_h = false, -- Map the <C-h> key to delete a pair
     map_c_w = false, -- map <c-w> to delete a pair if possible
     fast_wrap = {
-        map = "<c-a>",
+        map = "<c-'>",
         chars = { "{", "[", "(", '"', "'", "$" },
         pattern = [=[[%'%"%)%>%]%)%}%,]]=],
         end_key = "$",
@@ -55,8 +55,9 @@ npairs.add_rules({
 
 -- space between brackets
 local brackets = { { "(", ")" }, { "[", "]" }, { "{", "}" } }
+local brackets_rule = { "sh" }
 npairs.add_rules({
-    rule(" ", " "):with_pair(function(opts)
+    rule(" ", " ", brackets_rule):with_pair(function(opts)
         local pair = opts.line:sub(opts.col - 1, opts.col)
         return vim.tbl_contains({
             brackets[1][1] .. brackets[1][2],
@@ -67,7 +68,7 @@ npairs.add_rules({
 })
 for _, bracket in pairs(brackets) do
     npairs.add_rules({
-        rule(bracket[1] .. " ", " " .. bracket[2])
+        rule(bracket[1] .. " ", " " .. bracket[2], brackets_rule)
             :with_pair(function()
                 return false
             end)
