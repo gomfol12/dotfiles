@@ -313,6 +313,14 @@ vim.keymap.set("n", "<leader>gcr", require("telescope").extensions.advanced_git_
 -- stylua: ignore
 vim.keymap.set("n", "<leader>ga", require("telescope").extensions.advanced_git_search.show_custom_functions, { desc = "Git: all advanced_git_search" })
 
+-- luasnip
+vim.keymap.set(
+    "n",
+    "<Leader>L",
+    '<Cmd>lua require("luasnip.loaders.from_lua").load({paths = vim.fn.stdpath("config") .. "/snippets/"})<cr>',
+    { desc = "Reload snippets" }
+)
+
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })
 

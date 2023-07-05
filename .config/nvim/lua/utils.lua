@@ -56,7 +56,7 @@ function _G.dump(o)
 end
 
 function _G.put(...)
-    return vim.pretty_print(...)
+    return vim.print(...)
 end
 
 function _G.file_exists(path)
