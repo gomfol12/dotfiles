@@ -12,3 +12,7 @@ keymap.set("n", "<leader>le", ":VimtexErrors<CR>", { silent = true, desc = "Vimt
 keymap.set("n", "<leader>lv", ":VimtexView<CR>", { silent = true, desc = "Vimtex view" })
 
 vim.cmd(":autocmd BufNewFile,BufRead *.tex VimtexCompile")
+
+vim.opt.makeprg = "latexmk -pdf -shell-escape -verbose -file-line-error -output-directory="
+    .. vim.fn.expand("%:h")
+    .. "/build"

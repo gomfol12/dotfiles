@@ -381,14 +381,31 @@ local _snippets = {
         }),
         { condition = in_mathzone }
     ),
+
+    s(
+        {
+            trig = "sq",
+            regTrig = false,
+            wordTrig = true,
+            snippetType = "autosnippet",
+        },
+        fmta("<>\\sqrt{<>}<>", {
+            f(function(_, snip)
+                return snip.captures[1]
+            end),
+            i(1),
+            i(2),
+        }),
+        { condition = in_mathzone }
+    ),
 }
 
-for _, num in ipairs({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }) do
+for _, num in ipairs({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "n", "k" }) do
     table.insert(
         _snippets,
         s(
             { trig = "([%a%)%]%}])" .. num .. num, regTrig = true, wordTrig = false, snippetType = "autosnippet" },
-            fmta("<>_{<>}", {
+            fmta("<>^{<>}", {
                 f(function(_, snip)
                     return snip.captures[1]
                 end),
