@@ -130,6 +130,7 @@ return setmetatable(_M, {
         lsp_config.svlangserver.setup(vim.tbl_deep_extend("force", require("lsp.settings.svlangserver_lua"), opts))
         lsp_config.texlab.setup(opts)
         lsp_config.pyright.setup(opts)
+        lsp_config.rust_analyzer.setup(vim.tbl_deep_extend("force", require("lsp.settings.rust_analyser_lua"), opts))
 
         require("clangd_extensions").setup({
             server = {
