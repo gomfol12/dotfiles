@@ -166,6 +166,8 @@ return packer.startup(function(use)
 
             "mfussenegger/nvim-dap",
             "rcarriga/nvim-dap-ui",
+
+            "simrat39/rust-tools.nvim",
         },
     })
 
