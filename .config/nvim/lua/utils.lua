@@ -31,11 +31,13 @@ end
 
 function _M.concat(t1, t2)
     local t = {}
+    local count = 0
     for k, v in pairs(t1) do
         t[k] = v
+        count = count + 1
     end
     for k, v in pairs(t2) do
-        t[k] = v
+        t[count + k] = v
     end
     return t
 end
