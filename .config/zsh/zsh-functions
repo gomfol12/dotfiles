@@ -7,7 +7,7 @@ function zsh_add_file() {
 
 function zsh_add_plugin() {
     PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
-    if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then 
+    if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then
         # For plugins
         zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh" || \
         zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.zsh"
@@ -18,7 +18,7 @@ function zsh_add_plugin() {
 
 # function zsh_add_completion() {
 #     PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
-#     if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then 
+#     if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then
 #         # For completions
 #         completion_file_path=$(ls $ZDOTDIR/plugins/$PLUGIN_NAME/_*)
 #         fpath+="$(dirname "${completion_file_path}")"
@@ -182,4 +182,13 @@ countdown()
 
 function newalias(){
     echo "alias $1='$2'" >> "$ZDOTDIR/zsh-aliases" && source "$ZDOTDIR/.zshrc";
+}
+
+setup_em()
+{
+    # web assembly
+    if [ -f "/usr/bin/emsdk_env.sh" ]; then
+        export EMSDK_QUIET=1
+        source "/usr/bin/emsdk_env.sh"
+    fi
 }
