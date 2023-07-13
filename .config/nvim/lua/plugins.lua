@@ -90,49 +90,19 @@ return packer.startup(function(use)
     use("numToStr/Comment.nvim")
 
     -- color scheme
-    -- use({
-    --     "Mofiqul/vscode.nvim",
-    --     config = function()
-    --         vim.g.vscode_style = "dark"
-    --         vim.cmd([[colorscheme vscode]])
-    --         -- temp colorscheme fix for nvim 0.9
-    --         local links = {
-    --             ["@lsp.type.namespace"] = "@namespace",
-    --             ["@lsp.type.type"] = "@type",
-    --             ["@lsp.type.class"] = "@type",
-    --             ["@lsp.type.enum"] = "@type",
-    --             ["@lsp.type.interface"] = "@type",
-    --             ["@lsp.type.struct"] = "@structure",
-    --             ["@lsp.type.parameter"] = "@parameter",
-    --             ["@lsp.type.variable"] = "@variable",
-    --             ["@lsp.type.property"] = "@property",
-    --             ["@lsp.type.enumMember"] = "@constant",
-    --             ["@lsp.type.function"] = "@function",
-    --             ["@lsp.type.method"] = "@method",
-    --             ["@lsp.type.macro"] = "@macro",
-    --             ["@lsp.type.decorator"] = "@function",
-    --         }
-    --         for newgroup, oldgroup in pairs(links) do
-    --             vim.api.nvim_set_hl(0, newgroup, { link = oldgroup, default = true })
-    --         end
-    --         -- end temp
-    --     end,
-    -- })
-    -- use({
-    --     "bluz71/vim-moonfly-colors",
-    --     config = function()
-    --         vim.g.moonflyItalics = false
-    --         vim.g.moonflyNormalFloat = true
-    --         vim.g.moonflyCursorColor = true
-    --         vim.cmd([[colorscheme moonfly]])
-    --     end,
-    -- })
     use({
-        "projekt0n/github-nvim-theme",
+        "Mofiqul/vscode.nvim",
         config = function()
-            vim.cmd([[colorscheme github_dark_high_contrast]])
+            vim.g.vscode_style = "dark"
+            vim.cmd([[colorscheme vscode]])
         end,
     })
+    -- use({
+    --     "projekt0n/github-nvim-theme",
+    --     config = function()
+    --         vim.cmd([[colorscheme github_dark_high_contrast]])
+    --     end,
+    -- })
 
     -- Treesitter
     use({

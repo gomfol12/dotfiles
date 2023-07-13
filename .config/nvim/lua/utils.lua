@@ -29,15 +29,19 @@ function _M.getHost()
     return hostname
 end
 
-function _M.concat(t1, t2)
+function _M.concat(...)
     local t = {}
-    local count = 0
-    for k, v in pairs(t1) do
-        t[k] = v
-        count = count + 1
-    end
-    for k, v in pairs(t2) do
-        t[count + k] = v
+    for i = 1, select("#", ...) do
+        local arg = select(i, ...)
+        if arg ~= nil then
+            for k, v in pairs(arg) do
+                if type(k) == "string" then
+                    t[k] = v
+                else
+                    t[#t + 1] = v
+                end
+            end
+        end
     end
     return t
 end
