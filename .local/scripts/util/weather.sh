@@ -109,7 +109,7 @@ weather()
         esac
     fi
 
-    printf "%s %.f°C (%.f°C)
+    printf "%s %.f(%.f)°C
 
 weather:         %s
 temp:            %.f°C
