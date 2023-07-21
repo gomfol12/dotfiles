@@ -112,6 +112,24 @@ local _snippets = {
         i(2),
         t("}"),
     }),
+    s({ trig = "dsumkn", dscr = "dsum k=0 to n" }, {
+        t("\\dsum_{k=0}^n"),
+    }),
+    s({ trig = "dsumni", dscr = "dsum n=0 to inf" }, {
+        t("\\dsum_{n=0}^\\infty"),
+    }),
+    s({ trig = "dsumi", dscr = "dsum _ to inf" }, {
+        t("\\dsum_{"),
+        i(1),
+        t("}^\\infty"),
+    }),
+    s({ trig = "dsum", dscr = "dsum _ to _" }, {
+        t("\\dsum_{"),
+        i(1),
+        t("}^{"),
+        i(2),
+        t("}"),
+    }),
 
     s({ trig = "limni", dscr = "lim n to inf" }, {
         t("\\lim \\limits_{n \\to \\infty}"),
@@ -127,6 +145,12 @@ local _snippets = {
         t(" \\to "),
         i(2),
         t("}"),
+    }),
+    s({ trig = "limxx", dscr = "lim x to x_0" }, {
+        t("\\lim \\limits_{x \\to x_0}"),
+    }),
+    s({ trig = "limx", dscr = "lim x to _" }, {
+        t("\\lim \\limits_{x \\to }"),
     }),
 
     s({ trig = ";a", snippetType = "autosnippet" }, {
@@ -162,6 +186,12 @@ local _snippets = {
     }),
     s({ trig = ";p", snippetType = "autosnippet" }, {
         t("\\varphi"),
+    }),
+    s({ trig = ";e", snippetType = "autosnippet" }, {
+        t("\\varepsilon"),
+    }),
+    s({ trig = ";i", snippetType = "autosnippet" }, {
+        t("\\infty"),
     }),
 
     s(
@@ -204,9 +234,9 @@ local _snippets = {
         { trig = "ce", dscr = "Center environment" },
         fmta(
             [[
-                \begin{center*}
+                \begin{center}
                     <>
-                \end{center*}
+                \end{center}
             ]],
             { i(0) }
         )
@@ -398,6 +428,25 @@ local _snippets = {
         }),
         { condition = in_mathzone }
     ),
+
+    s(
+        { trig = "left" },
+        fmta("\\left(<>\\right)<>", {
+            i(1),
+            i(2),
+        }),
+        { condition = in_mathzone }
+    ),
+
+    s({ trig = ">=", snippetType = "autosnippet" }, {
+        t("\\geq"),
+    }, { condition = in_mathzone }),
+    s({ trig = "<=", snippetType = "autosnippet" }, {
+        t("\\leq"),
+    }, { condition = in_mathzone }),
+
+    s({ trig = "sub" }, { t("\\subset") }, { condition = in_mathzone }),
+    s({ trig = "subeq" }, { t("\\subseteq") }, { condition = in_mathzone }),
 }
 
 for _, num in ipairs({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "n", "k" }) do

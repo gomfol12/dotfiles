@@ -132,6 +132,7 @@ vim.g.vimtex_toc_config = {
 }
 vim.g.vimtex_fold_enabled = true
 -- vim.g.vimtex_quickfix_open_on_warning = 0
+vim.g.vimtex_syntax_conceal_disable = 1
 
 -- vim table mode
 vim.g.table_mode_corner = "+"
