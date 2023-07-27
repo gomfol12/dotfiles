@@ -278,6 +278,10 @@ return gears.table.join(
         awful.spawn("umount.sh")
     end, { description = "umount.sh" }),
 
+    awful.key({ modkey }, "c", function()
+        awful.spawn("dmenu_calc.sh")
+    end, { description = "dmenu_calc.sh" }),
+
     -- focus nav client
     awful.key({ modkey }, "j", function()
         awful.client.focus.global_bydirection("down")

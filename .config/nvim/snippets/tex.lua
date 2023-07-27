@@ -115,6 +115,9 @@ local _snippets = {
     s({ trig = "dsumkn", dscr = "dsum k=0 to n" }, {
         t("\\dsum_{k=0}^n"),
     }),
+    s({ trig = "dsumnk", dscr = "dsum n=0 to k" }, {
+        t("\\dsum_{n=0}^k"),
+    }),
     s({ trig = "dsumni", dscr = "dsum n=0 to inf" }, {
         t("\\dsum_{n=0}^\\infty"),
     }),
@@ -150,7 +153,9 @@ local _snippets = {
         t("\\lim \\limits_{x \\to x_0}"),
     }),
     s({ trig = "limx", dscr = "lim x to _" }, {
-        t("\\lim \\limits_{x \\to }"),
+        t("\\lim \\limits_{x \\to "),
+        i(1),
+        t("}"),
     }),
 
     s({ trig = ";a", snippetType = "autosnippet" }, {
@@ -193,14 +198,20 @@ local _snippets = {
     s({ trig = ";i", snippetType = "autosnippet" }, {
         t("\\infty"),
     }),
+    s({ trig = ";o", snippetType = "autosnippet" }, {
+        t("\\varrho"),
+    }),
+    s({ trig = ";s", snippetType = "autosnippet" }, {
+        t("\\psi"),
+    }),
 
     s(
         { trig = "eq", dscr = "Equation environment" },
         fmta(
             [[
-                \begin{equation}
+                \begin{equation*}
                     <>
-                \end{equation}
+                \end{equation*}
             ]],
             { i(0) }
         )
@@ -378,39 +389,58 @@ local _snippets = {
 
     s(
         {
-            trig = "uint",
+            trig = "to",
             regTrig = false,
             wordTrig = true,
             snippetType = "autosnippet",
         },
-        fmta("<>\\displaystyle \\int <> ~d<>", {
+        fmta("<>\\to", {
             f(function(_, snip)
                 return snip.captures[1]
             end),
-            i(1),
-            i(2),
         }),
         { condition = in_mathzone }
     ),
 
     s(
-        {
-            trig = "bint",
-            regTrig = false,
-            wordTrig = true,
-            snippetType = "autosnippet",
-        },
-        fmta("<>\\displaystyle \\int_{<>}^{<>} <> ~d<>", {
-            f(function(_, snip)
-                return snip.captures[1]
-            end),
+        { trig = "int", dscr = "int _ to _" },
+        fmta("displaystyle \\int_{<>}^{<>} <> ~d", {
             i(1),
             i(2),
             i(3),
-            i(4),
         }),
         { condition = in_mathzone }
     ),
+    s(
+        { trig = "intu", dscr = "int unbestimmt" },
+        fmta("displaystyle \\int <> ~d", {
+            i(1),
+        }),
+        { condition = in_mathzone }
+    ),
+    s(
+        { trig = "intab", dscr = "int a to b" },
+        fmta("displaystyle \\int_{a}^{b} <> ~d", {
+            i(1),
+        }),
+        { condition = in_mathzone }
+    ),
+    s(
+        { trig = "intabx", dscr = "int a to b dx" },
+        fmta("displaystyle \\int_{a}^{b} <> ~dx", {
+            i(1),
+        }),
+        { condition = in_mathzone }
+    ),
+    s(
+        { trig = "big", dscr = "big| _ to _" },
+        fmta("\\big|_{<>}^{<>}", {
+            i(1),
+            i(2),
+        }),
+        { condition = in_mathzone }
+    ),
+    s({ trig = "bigab", dscr = "big| x a to b" }, fmta("\\big|_{x=a}^{x=b}", {}), { condition = in_mathzone }),
 
     s(
         {
@@ -420,6 +450,22 @@ local _snippets = {
             snippetType = "autosnippet",
         },
         fmta("<>\\sqrt{<>}<>", {
+            f(function(_, snip)
+                return snip.captures[1]
+            end),
+            i(1),
+            i(2),
+        }),
+        { condition = in_mathzone }
+    ),
+    s(
+        {
+            trig = "sn",
+            regTrig = false,
+            wordTrig = true,
+            snippetType = "autosnippet",
+        },
+        fmta("<>\\sqrt[n]{<>}<>", {
             f(function(_, snip)
                 return snip.captures[1]
             end),
@@ -444,17 +490,36 @@ local _snippets = {
     s({ trig = "<=", snippetType = "autosnippet" }, {
         t("\\leq"),
     }, { condition = in_mathzone }),
+    s({ trig = "!=", snippetType = "autosnippet" }, {
+        t("\\not ="),
+    }, { condition = in_mathzone }),
 
     s({ trig = "sub" }, { t("\\subset") }, { condition = in_mathzone }),
     s({ trig = "subeq" }, { t("\\subseteq") }, { condition = in_mathzone }),
+
+    s({ trig = "par" }, { t("\\partial") }, { condition = in_mathzone }),
+    s({ trig = "nab" }, { t("\\nabla") }, { condition = in_mathzone }),
 }
 
-for _, num in ipairs({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "n", "k" }) do
+for _, num in ipairs({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "n", "k", "d", "p" }) do
     table.insert(
         _snippets,
         s(
             { trig = "([%a%)%]%}])" .. num .. num, regTrig = true, wordTrig = false, snippetType = "autosnippet" },
             fmta("<>^{<>}", {
+                f(function(_, snip)
+                    return snip.captures[1]
+                end),
+                t("" .. num),
+            }),
+            { condition = in_mathzone }
+        )
+    )
+    table.insert(
+        _snippets,
+        s(
+            { trig = "([%a%)%]%}])_" .. num .. num, regTrig = true, wordTrig = false, snippetType = "autosnippet" },
+            fmta("<>_{<>}", {
                 f(function(_, snip)
                     return snip.captures[1]
                 end),
