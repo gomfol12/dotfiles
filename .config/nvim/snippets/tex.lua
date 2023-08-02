@@ -192,6 +192,9 @@ local _snippets = {
     s({ trig = ";p", snippetType = "autosnippet" }, {
         t("\\varphi"),
     }),
+    s({ trig = ";P", snippetType = "autosnippet" }, {
+        t("\\Phi"),
+    }),
     s({ trig = ";e", snippetType = "autosnippet" }, {
         t("\\varepsilon"),
     }),
@@ -204,302 +207,191 @@ local _snippets = {
     s({ trig = ";s", snippetType = "autosnippet" }, {
         t("\\psi"),
     }),
+    s({ trig = ";m", snippetType = "autosnippet" }, {
+        t("\\models"),
+    }),
+    s({ trig = ";I", snippetType = "autosnippet" }, {
+        t("\\mathfrak{I}"),
+    }),
+    s({ trig = ";J", snippetType = "autosnippet" }, {
+        t("\\mathfrak{I}"),
+    }),
+    s({ trig = ";B", snippetType = "autosnippet" }, {
+        t("\\mathds{B}"),
+    }),
+    s({ trig = ";v", snippetType = "autosnippet" }, {
+        t("\\mathcal{V}"),
+    }),
+    s({ trig = ";t", snippetType = "autosnippet" }, {
+        t("\\mathcal{T}"),
+    }),
+    s({ trig = ";A", snippetType = "autosnippet" }, {
+        t("\\mathcal{A}"),
+    }),
 
-    s(
-        { trig = "eq", dscr = "Equation environment" },
-        fmta(
-            [[
-                \begin{equation*}
-                    <>
-                \end{equation*}
-            ]],
-            { i(0) }
-        )
-    ),
-
-    s(
-        { trig = "ca", dscr = "Cases environment" },
-        fmta(
-            [[
-                \begin{cases}
-                    <>
-                \end{cases}
-            ]],
-            { i(0) }
-        )
-    ),
-
-    s(
-        { trig = "al", dscr = "Align environment" },
-        fmta(
-            [[
-                \begin{align*}
-                    <>
-                \end{align*}
-            ]],
-            { i(0) }
-        )
-    ),
-
-    s(
-        { trig = "ce", dscr = "Center environment" },
-        fmta(
-            [[
-                \begin{center}
-                    <>
-                \end{center}
-            ]],
-            { i(0) }
-        )
-    ),
-
-    s(
-        { trig = "env", snippetType = "autosnippet" },
-        fmta(
-            [[
-                \begin{<>}
-                    <>
-                \end{<>}
-            ]],
-            {
-                i(1),
-                i(0),
-                rep(1),
-            }
-        )
-    ),
-
-    s(
-        { trig = "tiny", dscr = "'tiny' to {\\tiny TEXT}" },
-        fmta("{\\tiny <>}", {
-            d(1, get_visual),
-        })
-    ),
-    s(
-        { trig = "small", dscr = "'small' to {\\small TEXT}" },
-        fmta("{\\small <>}", {
-            d(1, get_visual),
-        })
-    ),
-    s(
-        { trig = "norm", dscr = "'normal' to {\\normal TEXT}" },
-        fmta("{\\normal <>}", {
-            d(1, get_visual),
-        })
-    ),
-    s(
-        { trig = "large", dscr = "'large' to {\\large TEXT}" },
-        fmta("{\\large <>}", {
-            d(1, get_visual),
-        })
-    ),
-    s(
-        { trig = "huge", dscr = "'huge' to {\\huge TEXT}" },
-        fmta("{\\huge <>}", {
-            d(1, get_visual),
-        })
-    ),
-
-    s(
-        { trig = "tbf", dscr = "'tbf' to textbf{TEXT}" },
-        fmta("\\textbf{<>}", {
-            d(1, get_visual),
-        })
-    ),
-    s(
-        { trig = "tii", dscr = "'tii' to textit{TEXT}" },
-        fmta("\\textit{<>}", {
-            d(1, get_visual),
-        })
-    ),
-    s(
-        { trig = "tuu", dscr = "'tuu' to \\underline{TEXT}" },
-        fmta("\\underline{<>}", {
-            d(1, get_visual),
-        })
-    ),
-    s(
-        { trig = "too", dscr = "'too' to \\overline{TEXT}" },
-        fmta("\\overline{<>}", {
-            d(1, get_visual),
-        })
-    ),
-
-    s({ trig = "ff", regTrig = false, wordTrig = true, snippetType = "autosnippet" }, {
-        f(function(_, snip)
-            return snip.captures[1]
-        end),
-        t("\\frac{"),
-        i(1),
-        t("}{"),
-        i(2),
-        t("}"),
-    }, { condition = in_mathzone }),
-
-    s(
-        { trig = "mm", regTrig = false, wordTrig = true, snippetType = "autosnippet" },
-        fmta("<>$<>$", {
-            f(function(_, snip)
-                return snip.captures[1]
-            end),
-            d(1, get_visual),
-        })
-    ),
-
-    s(
-        { trig = "ee", regTrig = false, wordTrig = true, snippetType = "autosnippet" },
-        fmta("<>e^{<>}", {
-            f(function(_, snip)
-                return snip.captures[1]
-            end),
-            d(1, get_visual),
-        }),
-        { condition = in_mathzone }
-    ),
-
-    s(
-        {
-            trig = "cd",
-            regTrig = false,
-            wordTrig = true,
-            snippetType = "autosnippet",
-        },
-        fmta("<>\\cdot", {
-            f(function(_, snip)
-                return snip.captures[1]
-            end),
-        }),
-        { condition = in_mathzone }
-    ),
-
-    s(
-        {
-            trig = "in",
-            regTrig = false,
-            wordTrig = true,
-            snippetType = "autosnippet",
-        },
-        fmta("<>\\in", {
-            f(function(_, snip)
-                return snip.captures[1]
-            end),
-        }),
-        { condition = in_mathzone }
-    ),
-
-    s(
-        {
-            trig = "to",
-            regTrig = false,
-            wordTrig = true,
-            snippetType = "autosnippet",
-        },
-        fmta("<>\\to", {
-            f(function(_, snip)
-                return snip.captures[1]
-            end),
-        }),
-        { condition = in_mathzone }
-    ),
-
-    s(
-        { trig = "int", dscr = "int _ to _" },
-        fmta("displaystyle \\int_{<>}^{<>} <> ~d", {
-            i(1),
-            i(2),
-            i(3),
-        }),
-        { condition = in_mathzone }
-    ),
-    s(
-        { trig = "intu", dscr = "int unbestimmt" },
-        fmta("displaystyle \\int <> ~d", {
-            i(1),
-        }),
-        { condition = in_mathzone }
-    ),
-    s(
-        { trig = "intab", dscr = "int a to b" },
-        fmta("displaystyle \\int_{a}^{b} <> ~d", {
-            i(1),
-        }),
-        { condition = in_mathzone }
-    ),
-    s(
-        { trig = "intabx", dscr = "int a to b dx" },
-        fmta("displaystyle \\int_{a}^{b} <> ~dx", {
-            i(1),
-        }),
-        { condition = in_mathzone }
-    ),
-    s(
-        { trig = "big", dscr = "big| _ to _" },
-        fmta("\\big|_{<>}^{<>}", {
-            i(1),
-            i(2),
-        }),
-        { condition = in_mathzone }
-    ),
-    s({ trig = "bigab", dscr = "big| x a to b" }, fmta("\\big|_{x=a}^{x=b}", {}), { condition = in_mathzone }),
-
-    s(
-        {
-            trig = "sq",
-            regTrig = false,
-            wordTrig = true,
-            snippetType = "autosnippet",
-        },
-        fmta("<>\\sqrt{<>}<>", {
-            f(function(_, snip)
-                return snip.captures[1]
-            end),
-            i(1),
-            i(2),
-        }),
-        { condition = in_mathzone }
-    ),
-    s(
-        {
-            trig = "sn",
-            regTrig = false,
-            wordTrig = true,
-            snippetType = "autosnippet",
-        },
-        fmta("<>\\sqrt[n]{<>}<>", {
-            f(function(_, snip)
-                return snip.captures[1]
-            end),
-            i(1),
-            i(2),
-        }),
-        { condition = in_mathzone }
-    ),
-
-    s(
-        { trig = "left" },
-        fmta("\\left(<>\\right)<>", {
-            i(1),
-            i(2),
-        }),
-        { condition = in_mathzone }
-    ),
-
-    s({ trig = ">=", snippetType = "autosnippet" }, {
-        t("\\geq"),
-    }, { condition = in_mathzone }),
-    s({ trig = "<=", snippetType = "autosnippet" }, {
-        t("\\leq"),
-    }, { condition = in_mathzone }),
-    s({ trig = "!=", snippetType = "autosnippet" }, {
-        t("\\not ="),
-    }, { condition = in_mathzone }),
-
-    s({ trig = "sub" }, { t("\\subset") }, { condition = in_mathzone }),
-    s({ trig = "subeq" }, { t("\\subseteq") }, { condition = in_mathzone }),
-
-    s({ trig = "par" }, { t("\\partial") }, { condition = in_mathzone }),
-    s({ trig = "nab" }, { t("\\nabla") }, { condition = in_mathzone }),
+    s({ trig = "=>", snippetType = "autosnippet" }, {
+        t("\\Rightarrow"),
+    }),
+    s({ trig = "->", snippetType = "autosnippet" }, {
+        t("\\rightarrow"),
+    }),
+    s({ trig = "=<>", snippetType = "autosnippet" }, {
+        t("\\Leftrightarrow"),
+    }),
+    s({ trig = "-<>", snippetType = "autosnippet" }, {
+        t("\\leftrightarrow"),
+    }),
+    s({ trig = "-|>", snippetType = "autosnippet" }, {
+        t("\\mapsto"),
+    }),
 }
+
+local function add_snippet_math(trigger, replace, replace_table, dscr)
+    table.insert(
+        _snippets,
+        s({
+            trig = trigger,
+            regTrig = false,
+            wordTrig = true,
+            dscr = dscr,
+        }, fmta(replace, replace_table), { condition = in_mathzone })
+    )
+end
+
+local function add_auto_snippet_math(trigger, replace, replace_table, dscr)
+    table.insert(
+        _snippets,
+        s({
+            trig = trigger,
+            regTrig = false,
+            wordTrig = true,
+            snippetType = "autosnippet",
+            dscr = dscr,
+        }, fmta(replace, replace_table), { condition = in_mathzone })
+    )
+end
+
+local function add_auto_snippet(trigger, replace, replace_table, dscr)
+    table.insert(
+        _snippets,
+        s({
+            trig = trigger,
+            regTrig = false,
+            wordTrig = true,
+            snippetType = "autosnippet",
+            dscr = dscr,
+        }, fmta(replace, replace_table))
+    )
+end
+
+add_auto_snippet(
+    "eq",
+    [[
+    \begin{equation*}
+        <>
+    \end{equation*}
+    ]],
+    { i(0) },
+    "Equation environment"
+)
+add_auto_snippet(
+    "ca",
+    [[
+    \begin{cases}
+        <>
+    \end{cases}
+    ]],
+    { i(0) },
+    "Align environment"
+)
+add_auto_snippet(
+    "al",
+    [[
+    \begin{align*}
+        <>
+    \end{align*}
+    ]],
+    { i(0) },
+    "Align environment"
+)
+add_auto_snippet(
+    "ce",
+    [[
+    \begin{center}
+        <>
+    \end{center}
+    ]],
+    { i(0) },
+    "Center environment"
+)
+add_auto_snippet(
+    "env",
+    [[
+    \begin{<>}
+        <>
+    \end{<>}
+    ]],
+    {
+        i(1),
+        i(0),
+        rep(1),
+    },
+    "Environment"
+)
+
+add_snippet_math("tiny", "{\\tiny <>}", { d(1, get_visual) }, "tiny")
+add_snippet_math("small", "{\\small <>}", { d(1, get_visual) }, "small")
+add_snippet_math("norm", "{\\normal <>}", { d(1, get_visual) }, "normal")
+add_snippet_math("large", "{\\large <>}", { d(1, get_visual) }, "large")
+add_snippet_math("huge", "{\\huge <>}", { d(1, get_visual) }, "huge")
+add_snippet_math("tbf", "\\textbf{<>}", { d(1, get_visual) }, "textbf")
+add_snippet_math("tit", "\\textit{<>}", { d(1, get_visual) }, "textit")
+add_snippet_math("underline", "\\underline{<>}", { d(1, get_visual) }, "underline")
+add_snippet_math("under", "\\underline{<>}", { d(1, get_visual) }, "underline")
+add_snippet_math("overline", "\\overline{<>}", { d(1, get_visual) }, "overline")
+add_snippet_math("over", "\\overline{<>}", { d(1, get_visual) }, "overline")
+
+add_auto_snippet_math("ff", "\\frac{<>}{<>}", { i(1), i(2) })
+
+add_auto_snippet_math("mm", "$<>$", { d(1, get_visual) })
+add_auto_snippet_math("ee", "e^{<>}", { d(1, get_visual) })
+
+add_auto_snippet_math("cd", "\\cdot", {})
+
+add_auto_snippet_math("in", "\\in", {})
+add_auto_snippet_math("to", "\\to", {})
+
+add_snippet_math("int", "displaystyle \\int_{<>}^{<>} <> ~d", { i(1), i(2), i(3) }, "int _ to _")
+add_snippet_math("intu", "displaystyle \\int <> ~d", { i(1) }, "int unbestimmt")
+add_snippet_math("intab", "displaystyle \\int_{a}^{b} <> ~d", { i(1) }, "int a to b")
+add_snippet_math("intabx", "displaystyle \\int_{a}^{b} <> ~dx", { i(1) }, "int a to b dx")
+
+add_snippet_math("big", "\\big|_{<>}^{<>}", { i(1), i(2) }, "big| _ to _")
+add_snippet_math("bigab", "\\big|_{x=a}^{x=b}", {}, "big| a to b")
+
+add_auto_snippet_math("sq", "\\sqrt{<>}<>", { i(1), i(2) })
+add_auto_snippet_math("sn", "\\sqrt[n]{<>}<>", { i(1), i(2) })
+
+add_snippet_math("left", "\\left(<>\\right)", { i(1) }, "big ()")
+
+add_auto_snippet_math(">=", "\\geq", {})
+add_auto_snippet_math("<=", "\\leq", {})
+add_auto_snippet_math("!=", "\\not =", {})
+
+add_auto_snippet_math("sub", "\\subset", {})
+add_auto_snippet_math("sube", "\\subseteq", {})
+
+add_auto_snippet_math("par", "\\partial", {})
+add_auto_snippet_math("nab", "\\nabla", {})
+
+add_auto_snippet_math("and", "\\land", {})
+add_auto_snippet_math("or", "\\lor", {})
+
+add_auto_snippet_math("ne", "\\neg", {})
+add_auto_snippet_math("==", "\\equiv", {})
+
+add_auto_snippet_math("ex", "\\exists", {})
+add_auto_snippet_math("all", "\\forall", {})
 
 for _, num in ipairs({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "n", "k", "d", "p" }) do
     table.insert(
