@@ -113,6 +113,11 @@ local opts = {
     on_attach = function(client, bufnr)
         _M.highlight(client, bufnr)
         _M.keybinds(bufnr)
+
+        if client.name == "clangd" then
+            require("clangd_extensions.inlay_hints").setup_autocmd()
+            require("clangd_extensions.inlay_hints").set_inlay_hints()
+        end
     end,
     capabilities = _M.capabilities,
 }
@@ -128,7 +133,8 @@ return setmetatable(_M, {
         lsp_config.svlangserver.setup(vim.tbl_deep_extend("force", require("lsp.settings.svlangserver_lua"), opts))
         lsp_config.texlab.setup(opts)
         lsp_config.pyright.setup(opts)
-        require("clangd_extensions").setup(require("lsp.settings.clangd_ext_lua")(opts))
+        lsp_config.clangd.setup(opts)
+        require("clangd_extensions").setup(require("lsp.settings.clangd_ext_lua"))
         require("rust-tools").setup(require("lsp.settings.rust_tools_lua")(opts))
 
         -- lsp_config.ltex.setup(vim.tbl_deep_extend("force", require("lsp.settings.ltex_lua"), opts))

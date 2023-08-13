@@ -284,7 +284,19 @@ local function add_auto_snippet(trigger, replace, replace_table, dscr)
     )
 end
 
-add_auto_snippet(
+local function add_snippet(trigger, replace, replace_table, dscr)
+    table.insert(
+        _snippets,
+        s({
+            trig = trigger,
+            regTrig = false,
+            wordTrig = true,
+            dscr = dscr,
+        }, fmta(replace, replace_table))
+    )
+end
+
+add_snippet(
     "eq",
     [[
     \begin{equation*}
@@ -294,7 +306,7 @@ add_auto_snippet(
     { i(0) },
     "Equation environment"
 )
-add_auto_snippet(
+add_snippet(
     "ca",
     [[
     \begin{cases}
@@ -304,7 +316,7 @@ add_auto_snippet(
     { i(0) },
     "Align environment"
 )
-add_auto_snippet(
+add_snippet(
     "al",
     [[
     \begin{align*}
@@ -314,7 +326,7 @@ add_auto_snippet(
     { i(0) },
     "Align environment"
 )
-add_auto_snippet(
+add_snippet(
     "ce",
     [[
     \begin{center}
@@ -324,7 +336,7 @@ add_auto_snippet(
     { i(0) },
     "Center environment"
 )
-add_auto_snippet(
+add_snippet(
     "env",
     [[
     \begin{<>}
@@ -337,6 +349,18 @@ add_auto_snippet(
         rep(1),
     },
     "Environment"
+)
+
+add_snippet_math(
+    "mat2",
+    [[
+    \begin{pmatrix}
+    <> & <> \\
+    <> & <>
+    \end{pmatrix}
+    ]],
+    { i(1), i(2), i(3), i(4) },
+    "2x2 Matrix"
 )
 
 add_snippet_math("tiny", "{\\tiny <>}", { d(1, get_visual) }, "tiny")
@@ -378,8 +402,8 @@ add_auto_snippet_math(">=", "\\geq", {})
 add_auto_snippet_math("<=", "\\leq", {})
 add_auto_snippet_math("!=", "\\not =", {})
 
-add_auto_snippet_math("sub", "\\subset", {})
-add_auto_snippet_math("sube", "\\subseteq", {})
+add_snippet_math("sub", "\\subset", {})
+add_snippet_math("sube", "\\subseteq", {})
 
 add_auto_snippet_math("par", "\\partial", {})
 add_auto_snippet_math("nab", "\\nabla", {})
