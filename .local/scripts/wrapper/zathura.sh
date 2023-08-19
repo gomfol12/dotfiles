@@ -4,7 +4,7 @@ configColorGen()
 {
     . "$HOME/.local/scripts/colors.sh"
     cat <<EOF
-set recolor "true"
+set recolor "false"
 set completion-bg "$background"
 set completion-fg "$foreground"
 set completion-group-bg "$background"

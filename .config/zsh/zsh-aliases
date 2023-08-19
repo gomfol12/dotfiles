@@ -143,6 +143,8 @@ alias wiki="dmenu_arch_wiki_search.sh"
 
 alias treesize="ncdu --exclude \"/.snapshots /home/.snapshots /var/log/.snapshots\""
 
+alias pv="zathura.sh"
+
 #alias b="dirBook"
 
 # because i am stupid
