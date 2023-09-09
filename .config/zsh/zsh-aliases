@@ -141,7 +141,7 @@ alias ip="ip -color=auto"
 
 alias wiki="dmenu_arch_wiki_search.sh"
 
-alias treesize="ncdu --exclude \"/.snapshots /home/.snapshots /var/log/.snapshots\""
+alias treesize="ncdu --exclude \"/.snapshots\" --exclude \"/home/.snapshots\" --exclude \"/var/log/.snapshots\""
 
 alias pv="zathura.sh"
 

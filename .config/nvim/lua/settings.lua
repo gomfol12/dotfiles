@@ -179,6 +179,15 @@ function! MyPandocOpen(file)
 endfunction
 ]])
 
+-- vim-printer
+vim.g.vim_printer_print_below_keybinding = "<leader>pr"
+vim.g.vim_printer_print_above_keybinding = "<leader>Pr"
+
+vim.g.vim_printer_items = {
+    c = 'printf("{$}: %d", {$});',
+    cpp = 'std::cout << "{$}: " << {$} << "\\n";',
+}
+
 -- ========== Autocmds ========== --
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd

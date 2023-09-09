@@ -85,6 +85,15 @@ return packer.startup(function(use)
     use("tpope/vim-speeddating")
     -- use("tpope/vim-unimpaired")
     -- use("Konfekt/vim-CtrlXA") -- TODO: AndrewRadev/switch.vim
+    use("paretje/nvim-man")
+    use("LunarVim/bigfile.nvim")
+    use({ "michaelb/sniprun", run = "sh ./install.sh" })
+    use({
+        "LintaoAmons/scratch.nvim",
+        event = "VimEnter",
+    })
+    use({ "meain/vim-printer" })
+    use({ "gomfol12/a.vim" })
 
     -- comments
     use("numToStr/Comment.nvim")

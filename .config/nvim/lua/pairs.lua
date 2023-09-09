@@ -1,4 +1,5 @@
 -- ==================== Autopairs (nvim-autopairs) ==================== --
+-- TODO: https://github.com/altermo/ultimate-autopair.nvim
 
 local npairs_ok, npairs = pcall(require, "nvim-autopairs")
 local cmp_ok, cmp = pcall(require, "cmp")

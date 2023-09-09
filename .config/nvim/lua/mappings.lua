@@ -321,6 +321,12 @@ vim.keymap.set(
     { desc = "Reload snippets" }
 )
 
+-- sniprun
+vim.keymap.set("v", "<leader>r", "<Plug>SnipRun", { silent = true })
+vim.keymap.set("n", "<leader>rr", "<Plug>SnipRun", { silent = true })
+vim.keymap.set("n", "<leader>rc", "<Plug>SnipClose", { silent = true })
+vim.keymap.set("n", "<F3>", ":let b:caret=winsaveview() <CR> | :%SnipRun <CR>| :call winrestview(b:caret) <CR>", {})
+
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })
 
@@ -333,3 +339,20 @@ vim.keymap.set(
 -- keymap.set("n", "<c-Down>", ":resize +2<CR>", { silent = true })
 -- keymap.set("n", "<c-Left>", ":vertical resize +2<CR>", { silent = true })
 -- keymap.set("n", "<c-Right>", ":vertical resize -2<CR>", { silent = true })
+
+-- Mapping Notes
+
+-- a.vim
+-- :A switches to the header file corresponding to the current file being edited (or vise versa)
+-- :AS splits and switches
+-- :AV vertical splits and switches
+-- :AT new tab and switches
+-- :AN cycles through matches
+-- :IH switches to file under cursor
+-- :IHS splits and switches
+-- :IHV vertical splits and switches
+-- :IHT new tab and switches
+-- :IHN cycles through matches
+-- <Leader>ih switches to file under cursor
+-- <Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
+-- <Leader>ihn cycles through matches
