@@ -62,6 +62,11 @@ _M.capabilities.textDocument.foldingRange = {
     lineFoldingOnly = true,
 }
 
+-- inc-rename.nvim
+local function inc_rename()
+    return ":IncRename " .. vim.fn.expand("<cword>")
+end
+
 -- Keybinds
 -- stylua: ignore
 function _M.keybinds(bufnr)
@@ -76,9 +81,12 @@ function _M.keybinds(bufnr)
     vim.keymap.set("n", "K", ":lua vim.lsp.buf.hover()<cr>",  U.concat(opts, { desc = "LSP: hover info" }))
     -- vim.keymap.set("n", "gs", ":lua vim.lsp.buf.signature_help()<cr>",  U.concat(opts, { desc = "LSP: signature help" }))
     vim.keymap.set("n", "<leader>ca", ":lua vim.lsp.buf.code_action()<cr>",  U.concat(opts, { desc = "LSP: code action" }))
-    vim.keymap.set("n", "<leader>rn", ":lua vim.lsp.buf.rename()<cr>",  U.concat(opts, { desc = "LSP: rename" }))
-    vim.keymap.set("n", "<leader>n", ":lua vim.lsp.buf.rename()<cr>",  U.concat(opts, { desc = "LSP: rename" }))
-    vim.keymap.set("n", "<F2>", ":lua vim.lsp.buf.rename()<cr>",  U.concat(opts, { desc = "LSP: rename" }))
+    -- vim.keymap.set("n", "<leader>rn", ":lua vim.lsp.buf.rename()<cr>",  U.concat(opts, { desc = "LSP: rename" }))
+    -- vim.keymap.set("n", "<leader>n", ":lua vim.lsp.buf.rename()<cr>",  U.concat(opts, { desc = "LSP: rename" }))
+    -- vim.keymap.set("n", "<F2>", ":lua vim.lsp.buf.rename()<cr>",  U.concat(opts, { desc = "LSP: rename" }))
+    vim.keymap.set("n", "<leader>rn", inc_rename, U.concat(opts, { desc = "LSP: rename", expr = true }))
+    vim.keymap.set("n", "<leader>n", inc_rename, U.concat(opts, { desc = "LSP: rename", expr = true }))
+    vim.keymap.set("n", "<F2>", inc_rename, U.concat(opts, { desc = "LSP: rename", expr = true }))
     vim.keymap.set("n", "<leader>m", ":lua vim.lsp.buf.formatting()<cr>",  U.concat(opts, { desc = "LSP: format" }))
     vim.keymap.set("n", "[d", ":lua vim.diagnostic.goto_prev()<cr>", U.concat(opts, { desc = "LSP: diagnostic next" }))
     vim.keymap.set("n", "]d", ":lua vim.diagnostic.goto_next()<cr>",  U.concat(opts, { desc = "LSP: diagnostic prev" }))

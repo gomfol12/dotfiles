@@ -188,6 +188,20 @@ vim.g.vim_printer_items = {
     cpp = 'std::cout << "{$}: " << {$} << "\\n";',
 }
 
+-- knap
+vim.g.knap_settings = {
+    texoutputext = "pdf",
+    textopdf = "pdflatex -synctex=1 -halt-on-error -interaction=batchmode %docroot%",
+    textopdfviewerlaunch = "zathura --synctex-editor-command 'nvim --headless -es --cmd \"lua require('\"'\"'knaphelper'\"'\"').relayjump('\"'\"'%servername%'\"'\"','\"'\"'%{input}'\"'\"',%{line},0)\"' %outputfile%",
+    textopdfviewerrefresh = "none",
+    textopdfforwardjump = "zathura --synctex-forward=%line%:%column%:%srcfile% %outputfile%",
+    mdtopdf = "pandoc %docroot% -o %outputfile%",
+    mdtopdfviewerlaunch = "zathura %outputfile%",
+    mdtopdfviewerrefresh = "none",
+    mdoutputext = "pdf",
+    textopdfshorterror = 'A=%outputfile% ; LOGFILE="${A%.pdf}.log" ; rubber-info "$LOGFILE" 2>&1 | head -n 1',
+}
+
 -- ========== Autocmds ========== --
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd

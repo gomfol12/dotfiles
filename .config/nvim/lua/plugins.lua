@@ -1,5 +1,5 @@
 -- ==================== Plugins ==================== --
--- TODO: diffview
+-- TODO: diffview, smart-splits.nvim
 
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
@@ -64,7 +64,7 @@ return packer.startup(function(use)
     use("github/copilot.vim")
     use("folke/which-key.nvim")
     use("mbbill/undotree")
-    use("rcarriga/nvim-notify")
+    use("rcarriga/nvim-notify") -- TODO: vigoux/notifier.nvim
     -- use("kwkarlwang/bufresize.nvim")
     use({ "akinsho/toggleterm.nvim", tag = "*" })
     use("junegunn/goyo.vim")
@@ -84,7 +84,7 @@ return packer.startup(function(use)
     use("tpope/vim-repeat")
     use("tpope/vim-speeddating")
     -- use("tpope/vim-unimpaired")
-    -- use("Konfekt/vim-CtrlXA") -- TODO: AndrewRadev/switch.vim
+    -- use("Konfekt/vim-CtrlXA") -- TODO: AndrewRadev/switch.vim, monaqa/dial.nvim
     use("paretje/nvim-man")
     use("LunarVim/bigfile.nvim")
     use({ "michaelb/sniprun", run = "sh ./install.sh" })
@@ -94,6 +94,19 @@ return packer.startup(function(use)
     })
     use({ "meain/vim-printer" })
     use({ "gomfol12/a.vim" })
+    use({ "smjonas/inc-rename.nvim" })
+    use({ "nacro90/numb.nvim" })
+    use({ "andymass/vim-matchup" })
+    use({ "gbprod/stay-in-place.nvim" })
+    use({ "frabjous/knap" })
+
+    use({
+        "smoka7/multicursors.nvim",
+        requires = {
+            "nvim-treesitter/nvim-treesitter",
+            "smoka7/hydra.nvim",
+        },
+    })
 
     -- comments
     use("numToStr/Comment.nvim")

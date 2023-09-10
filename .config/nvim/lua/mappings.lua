@@ -327,6 +327,16 @@ vim.keymap.set("n", "<leader>rr", "<Plug>SnipRun", { silent = true })
 vim.keymap.set("n", "<leader>rc", "<Plug>SnipClose", { silent = true })
 vim.keymap.set("n", "<F3>", ":let b:caret=winsaveview() <CR> | :%SnipRun <CR>| :call winrestview(b:caret) <CR>", {})
 
+-- knap
+-- stylua: ignore
+vim.keymap.set('n','<leader>po', function() require("knap").process_once() end, { silent = true, desc = "knap: process once" })
+-- stylua: ignore
+vim.keymap.set('n','<leader>pv', function() require("knap").close_viewer() end, { silent = true, desc = "knap: close viewer" })
+-- stylua: ignore
+vim.keymap.set('n','<leader>pa', function() require("knap").toggle_autopreviewing() end, { silent = true, desc = "knap: toggle auto previewing" })
+-- stylua: ignore
+vim.keymap.set('n','<leader>pf', function() require("knap").forward_jump() end, { silent = true, desc = "knap: forward jump" })
+
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })
 

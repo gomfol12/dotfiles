@@ -100,3 +100,27 @@ if dressing_ok then
         },
     })
 end
+
+-- inc-rename
+local inc_rename_ok, inc_rename = pcall(require, "inc_rename")
+if inc_rename_ok then
+    inc_rename.setup()
+end
+
+-- numb.nvim
+local numb_ok, numb = pcall(require, "numb")
+if numb_ok then
+    numb.setup()
+end
+
+-- multicursors.nvim
+local multicursors_ok, multicursors = pcall(require, "multicursors")
+if multicursors_ok then
+    multicursors.setup({})
+end
+
+-- stay-in-place.nvim
+local stay_in_place_ok, stay_in_place = pcall(require, "stay-in-place")
+if stay_in_place_ok then
+    stay_in_place.setup()
+end

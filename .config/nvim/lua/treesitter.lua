@@ -116,4 +116,7 @@ configs.setup({
             },
         },
     },
+    matchup = {
+        enable = true,
+    },
 })
