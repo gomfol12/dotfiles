@@ -192,3 +192,17 @@ setup_em()
         source "/usr/bin/emsdk_env.sh"
     fi
 }
+
+fix_keyboard_delay()
+{
+    if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
+        xset r rate 200 40
+        xset +dpms
+        xset dpms 300 300 600
+        xset s off
+    else
+        xset r rate 200 40
+        xset -dpms
+        xset s off
+    fi
+}

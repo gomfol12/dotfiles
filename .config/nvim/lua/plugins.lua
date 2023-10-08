@@ -137,7 +137,7 @@ return packer.startup(function(use)
         },
     })
     use({ "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" })
-    use({ "HiPhish/nvim-ts-rainbow2", after = "nvim-treesitter" })
+    use("HiPhish/rainbow-delimiters.nvim")
 
     -- LSP
     use({
