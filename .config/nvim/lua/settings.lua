@@ -294,12 +294,12 @@ for _, k in pairs({ "markdown", "pandoc" }) do
     })
 end
 
-autocmd("BufRead,BufNewFile", {
+autocmd({ "BufRead", "BufNewFile" }, {
     pattern = "/tmp/calcurse*",
     command = "set filetype=markdown",
 })
 
-autocmd("BufRead,BufNewFile", {
+autocmd({ "BufRead", "BufNewFile" }, {
     pattern = "~/.local/share/calcurse/notes/*",
     command = "set filetype=markdown",
 })

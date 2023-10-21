@@ -162,6 +162,7 @@ return packer.startup(function(use)
             "simrat39/rust-tools.nvim",
         },
     })
+    use("scalameta/nvim-metals")
 
     -- overseer
     use("stevearc/overseer.nvim")

@@ -45,6 +45,7 @@ typeset -U path PATH
 path+=(~/.local/bin)
 path+=($(find "$SCRIPT_DIR" -not -path "*old*" -not -path "*grub*" -type d))
 path+=(~/.local/share/gem/ruby/3.0.0/bin)
+path+=(~/.local/share/coursier/bin)
 export PATH
 
 ### HOME cleanup ###

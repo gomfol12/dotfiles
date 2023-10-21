@@ -125,6 +125,8 @@ local opts = {
         if client.name == "clangd" then
             require("clangd_extensions.inlay_hints").setup_autocmd()
             require("clangd_extensions.inlay_hints").set_inlay_hints()
+        elseif client.name == "metals" then
+            require("metals").setup_dap()
         end
     end,
     capabilities = _M.capabilities,
@@ -144,6 +146,22 @@ return setmetatable(_M, {
         lsp_config.clangd.setup(opts)
         require("clangd_extensions").setup(require("lsp.settings.clangd_ext_lua"))
         require("rust-tools").setup(require("lsp.settings.rust_tools_lua")(opts))
+
+        local metals_config = require("metals").bare_config()
+        metals_config.settings = {
+            showImplicitArguments = true,
+            excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
+        }
+        metals_config.capabilities = opts.capabilities
+        metals_config.on_attach = opts.on_attach
+        local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = { "scala", "sbt" },
+            callback = function()
+                require("metals").initialize_or_attach(metals_config)
+            end,
+            group = nvim_metals_group,
+        })
 
         -- lsp_config.ltex.setup(vim.tbl_deep_extend("force", require("lsp.settings.ltex_lua"), opts))
         -- lsp_config.marksman.setup(opts)
