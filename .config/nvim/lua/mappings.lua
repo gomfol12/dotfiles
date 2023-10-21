@@ -216,7 +216,7 @@ vim.keymap.set("n", "<leader>de", function()
     dap.clear_breakpoints()
     dapui.toggle()
     dap.terminate()
-    require("notify")("Debugger session ended", "warn")
+    require("notify")("Debugger session ended", "info")
 end)
 
 -- dapui

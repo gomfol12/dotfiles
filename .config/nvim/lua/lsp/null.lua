@@ -8,7 +8,6 @@ local mason_null_ls_ok, mason_null_ls = pcall(require, "mason-null-ls")
 if not null_ls_ok and not mason_null_ls_ok then
     return
 end
-
 mason_null_ls.setup({
     ensure_installed = {
         "stylua",
