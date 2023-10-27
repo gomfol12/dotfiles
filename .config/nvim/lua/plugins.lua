@@ -145,7 +145,6 @@ return packer.startup(function(use)
         requires = {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
-            "jayp0521/mason-null-ls.nvim",
             "jayp0521/mason-nvim-dap.nvim",
             "RubixDev/mason-update-all",
 
@@ -153,13 +152,15 @@ return packer.startup(function(use)
 
             "mfussenegger/nvim-jdtls",
 
-            "jose-elias-alvarez/null-ls.nvim",
             "nvim-lua/plenary.nvim",
 
             "mfussenegger/nvim-dap",
             "rcarriga/nvim-dap-ui",
 
             "simrat39/rust-tools.nvim",
+
+            "stevearc/conform.nvim",
+            "mfussenegger/nvim-lint",
         },
     })
     use("scalameta/nvim-metals")

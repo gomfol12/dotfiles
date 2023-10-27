@@ -28,7 +28,7 @@ cdw()
     {
         cat <<EOF
 usage: $programm_name [-h|-c|-d|-l|-j|-g|-hl|-hc] [<path>|<shortcut>|<shortcut> <path>]
-        -h      help
+        -h     help
         -c     create shortcut
         -d     delete shortcut
         -l     list shortcuts

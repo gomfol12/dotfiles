@@ -122,12 +122,12 @@ keymap.set("n", "<leader>z", ":set formatoptions=a<cr>", { desc = "Add format op
 
 -- format
 keymap.set("n", "<leader>l", function()
-    vim.lsp.buf.format({
-        filter = function(filter_client)
-            return filter_client.name == "null-ls"
-        end,
-        bufnr = 0,
-    })
+    local conform_ok, conform = pcall(require, "conform")
+    if conform_ok then
+        conform.format()
+    else
+        vim.lsp.buf.format()
+    end
 end, { desc = "Format" })
 
 -- stay in indent mode
