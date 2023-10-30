@@ -152,6 +152,7 @@ return packer.startup(function(use)
 
             "mfussenegger/nvim-jdtls",
 
+            "scalameta/nvim-metals",
             "nvim-lua/plenary.nvim",
 
             "mfussenegger/nvim-dap",
@@ -163,7 +164,6 @@ return packer.startup(function(use)
             "mfussenegger/nvim-lint",
         },
     })
-    use("scalameta/nvim-metals")
 
     -- overseer
     use("stevearc/overseer.nvim")

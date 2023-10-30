@@ -132,6 +132,36 @@ local opts = {
     capabilities = _M.capabilities,
 }
 
+local function setup_scala()
+    local metals_ok, metals = pcall(require, "metals")
+    if not metals_ok then
+        return
+    end
+
+    -- check for coursier. Is required for Metals
+    local utils = require("utils")
+    if not utils.check_executable({ "coursier" }, "Coursier is required for Metals") then
+        return
+    end
+
+    local metals_config = require("metals").bare_config()
+    metals_config.settings = {
+        showImplicitArguments = true,
+        excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
+    }
+    metals_config.capabilities = opts.capabilities
+    metals_config.on_attach = opts.on_attach
+
+    local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "scala", "sbt" },
+        callback = function()
+            metals.initialize_or_attach(metals_config)
+        end,
+        group = nvim_metals_group,
+    })
+end
+
 return setmetatable(_M, {
     __call = function()
         lsp_config.lua_ls.setup(vim.tbl_deep_extend("force", require("lsp.settings.lua_ls"), opts))
@@ -144,24 +174,15 @@ return setmetatable(_M, {
         lsp_config.texlab.setup(opts)
         lsp_config.pyright.setup(opts)
         lsp_config.clangd.setup(opts)
-        require("clangd_extensions").setup(require("lsp.settings.clangd_ext_lua"))
-        require("rust-tools").setup(require("lsp.settings.rust_tools_lua")(opts))
-
-        local metals_config = require("metals").bare_config()
-        metals_config.settings = {
-            showImplicitArguments = true,
-            excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
-        }
-        metals_config.capabilities = opts.capabilities
-        metals_config.on_attach = opts.on_attach
-        local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
-        vim.api.nvim_create_autocmd("FileType", {
-            pattern = { "scala", "sbt" },
-            callback = function()
-                require("metals").initialize_or_attach(metals_config)
-            end,
-            group = nvim_metals_group,
-        })
+        local clangd_extensions_ok, clangd_extensions = pcall(require, "clangd_extensions")
+        if clangd_extensions_ok then
+            clangd_extensions.setup(require("lsp.settings.clangd_ext_lua"))
+        end
+        local rust_tools_ok, rust_tools = pcall(require, "rust-tools")
+        if rust_tools_ok then
+            rust_tools.setup(require("lsp.settings.rust_tools_lua")(opts))
+        end
+        setup_scala()
 
         -- lsp_config.ltex.setup(vim.tbl_deep_extend("force", require("lsp.settings.ltex_lua"), opts))
         -- lsp_config.marksman.setup(opts)

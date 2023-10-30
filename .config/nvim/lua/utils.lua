@@ -75,4 +75,28 @@ function _G.file_exists(path)
     end
 end
 
+function _M.check_executable(progs, msg)
+    local str = ""
+    for _, p in ipairs(progs) do
+        if vim.fn.executable(p) ~= 1 then
+            str = str .. p .. " "
+        end
+    end
+
+    if str ~= "" and msg ~= nil then
+        print(msg .. " " .. str)
+        return false
+    end
+
+    return true
+end
+
+function _M.check_formatters(T)
+    _M.check_executable(T, "Formatters not installed:")
+end
+
+function _M.check_linters(T)
+    _M.check_executable(T, "Linters not installed:")
+end
+
 return _M

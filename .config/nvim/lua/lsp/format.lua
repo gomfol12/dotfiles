@@ -5,10 +5,15 @@ if not conform_ok then
     return
 end
 
+-- check if formatter is installed
+local utils = require("utils")
+utils.check_formatters({ "stylua", "shfmt", "prettier", "clang-format", "cmake-format", "latexindent" })
+
 conform.setup({
     formatters_by_ft = {
         lua = { "stylua" },
         bash = { "shfmt" },
+        sh = { "shfmt" },
         html = { "prettier" },
         css = { "prettier" },
         json = { "prettier" },

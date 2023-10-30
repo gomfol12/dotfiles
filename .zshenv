@@ -60,6 +60,7 @@ export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
 export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
 #export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export GOPATH="$XDG_DATA_HOME/go"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"

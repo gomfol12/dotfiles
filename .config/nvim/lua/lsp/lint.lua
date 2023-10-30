@@ -5,10 +5,15 @@ if not lint_ok then
     return
 end
 
+local utils = require("utils")
+utils.check_linters({ "shellcheck", "chktex" })
+
 lint.linters_by_ft = {
     bash = { "shellcheck" },
     tex = { "chktex" },
 }
+
+lint.linters.chktex.ignore_exitcode = true
 
 vim.api.nvim_create_autocmd({ "InsertLeave", "BufEnter", "BufWritePost" }, {
     callback = function()
