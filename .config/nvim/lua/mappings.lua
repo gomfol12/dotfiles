@@ -213,7 +213,6 @@ keymap.set("n", "<leader>dt", dap.terminate, { silent = true, desc = "Debug: ter
 
 -- Close debugger and clear breakpoints
 vim.keymap.set("n", "<leader>de", function()
-    dap.clear_breakpoints()
     dapui.toggle()
     dap.terminate()
     require("notify")("Debugger session ended", "info")

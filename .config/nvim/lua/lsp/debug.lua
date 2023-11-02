@@ -18,6 +18,11 @@ mason_dap.setup({
 vim.fn.sign_define("DapBreakpoint", { text = "👉", texthl = "", linehl = "", numhl = "" })
 vim.fn.sign_define("DapStopped", { text = "✋", texthl = "", linehl = "", numhl = "" })
 
+dap.defaults.fallback.external_terminal = {
+    command = "st",
+    args = { "-e" },
+}
+
 dap.adapters.lldb = {
     type = "executable",
     command = "/usr/bin/lldb-vscode",

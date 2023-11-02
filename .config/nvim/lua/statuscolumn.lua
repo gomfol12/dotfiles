@@ -11,15 +11,11 @@ statuscol.setup({
     relculright = true,
     segments = {
         {
-            sign = { name = { "GitSign" }, maxwidth = 1, colwidth = 1, auto = true },
+            sign = { name = { "GitSigns*" }, maxwidth = 1, colwidth = 1, auto = true },
             click = "v:lua.ScSa",
         },
         {
-            sign = { name = { "DiagnosticSign" }, maxwidth = 1, auto = false },
-            click = "v:lua.ScSa",
-        },
-        {
-            sign = { name = { "Dap" }, maxwidth = 1, colwidth = 2, auto = true },
+            sign = { name = { "Diagnostic" }, maxwidth = 1, auto = false },
             click = "v:lua.ScSa",
         },
         { text = { builtin.lnumfunc }, click = "v:lua.ScLa" },

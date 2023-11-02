@@ -21,6 +21,16 @@ local _snippets = {
             "---",
         }),
     }),
+    s("uninotetu", {
+        t({
+            "---",
+            "title: title",
+            "author: author",
+            "documentclass: tudaexercise",
+            "header-includes:",
+            "---",
+        }),
+    }),
     s("uninotemath", {
         t({
             "---",
