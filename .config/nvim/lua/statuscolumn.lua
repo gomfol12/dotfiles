@@ -11,22 +11,30 @@ statuscol.setup({
     relculright = true,
     segments = {
         {
-            sign = { name = { "GitSigns*" }, maxwidth = 1, colwidth = 1, auto = true },
-            click = "v:lua.ScSa",
+            sign = { namespace = { "gitsigns" }, colwidth = 1, wrap = true, auto = true },
+            click = "v:lua.ScLa",
         },
         {
-            sign = { name = { "Diagnostic" }, maxwidth = 1, auto = false },
-            click = "v:lua.ScSa",
+            sign = { name = { "Diagnostic" }, colwidth = 2 },
+            click = "v:lua.ScLa",
         },
-        { text = { builtin.lnumfunc }, click = "v:lua.ScLa" },
+        {
+            sign = { name = { "Dap" }, colwidth = 1 },
+            click = "v:lua.ScLa",
+        },
+        {
+            text = { builtin.lnumfunc },
+            condition = { true, builtin.not_empty },
+            click = "v:lua.ScLa",
+        },
         { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
     },
 })
 
--- old
+--old
 -- function _G.get_signs()
 --     local signs = {}
---     local buf = vim.api.nvim_win_get_buf(vim.g.statusline_winid)
+--     local buf = vim.api.nvim_win_get_buf(0)
 
 --     signs = vim.tbl_map(function(sign)
 --         return vim.fn.sign_getdefined(sign.name)[1]
