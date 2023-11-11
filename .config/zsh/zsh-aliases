@@ -145,6 +145,8 @@ alias treesize="ncdu --exclude \"/.snapshots\" --exclude \"/home/.snapshots\" --
 
 alias pv="zathura.sh"
 
+alias nvim_config_lines='find ~/.config/nvim -type d -name "plugin" -prune -o -type f -iname "*.lua" -print | xargs wc -l'
+
 #alias b="dirBook"
 
 # because i am stupid
