@@ -135,7 +135,7 @@ vim.g.vimtex_fold_enabled = true
 vim.g.vimtex_syntax_conceal_disable = 1
 
 -- vim table mode
-vim.g.table_mode_corner = "+"
+vim.g.table_mode_corner = "|"
 
 -- copilot
 vim.g.copilot_no_tab_map = true
@@ -201,6 +201,9 @@ vim.g.knap_settings = {
     mdoutputext = "pdf",
     textopdfshorterror = 'A=%outputfile% ; LOGFILE="${A%.pdf}.log" ; rubber-info "$LOGFILE" 2>&1 | head -n 1',
 }
+
+-- ts_commentstring
+vim.g.skip_ts_context_commentstring_module = true
 
 -- ========== Autocmds ========== --
 local augroup = vim.api.nvim_create_augroup

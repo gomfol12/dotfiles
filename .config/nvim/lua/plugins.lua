@@ -45,7 +45,6 @@ return packer.startup(function(use)
     use("lervag/vimtex")
     use("dhruvasagar/vim-table-mode")
     use("NvChad/nvim-colorizer.lua")
-    use("superhawk610/ascii-blocks.nvim")
     use({ "ggandor/leap.nvim", requires = { "tpope/vim-repeat" } })
     use({ "ggandor/leap-spooky.nvim", requires = { "ggandor/leap.nvim" } })
     use({ "ggandor/flit.nvim", requires = { "ggandor/leap.nvim" } })
@@ -60,13 +59,12 @@ return packer.startup(function(use)
         end,
     })
     use("lukas-reineke/indent-blankline.nvim")
-    use({ "j-hui/fidget.nvim", tag = "legacy" })
+    use("j-hui/fidget.nvim")
     use("github/copilot.vim")
     use("folke/which-key.nvim")
     use("mbbill/undotree")
     use("rcarriga/nvim-notify") -- TODO: vigoux/notifier.nvim
     -- use("kwkarlwang/bufresize.nvim")
-    use({ "akinsho/toggleterm.nvim", tag = "*" })
     use("junegunn/goyo.vim")
     use("stevearc/dressing.nvim")
     use({ "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" })
@@ -88,10 +86,6 @@ return packer.startup(function(use)
     use("paretje/nvim-man")
     use("LunarVim/bigfile.nvim")
     use({ "michaelb/sniprun", run = "sh ./install.sh" })
-    use({
-        "LintaoAmons/scratch.nvim",
-        event = "VimEnter",
-    })
     use({ "meain/vim-printer" })
     use({ "gomfol12/a.vim" })
     use({ "smjonas/inc-rename.nvim" })
@@ -99,14 +93,6 @@ return packer.startup(function(use)
     use({ "andymass/vim-matchup" })
     use({ "gbprod/stay-in-place.nvim" })
     use({ "frabjous/knap" })
-
-    use({
-        "smoka7/multicursors.nvim",
-        requires = {
-            "nvim-treesitter/nvim-treesitter",
-            "smoka7/hydra.nvim",
-        },
-    })
 
     -- comments
     use("numToStr/Comment.nvim")
@@ -119,12 +105,6 @@ return packer.startup(function(use)
             vim.cmd([[colorscheme vscode]])
         end,
     })
-    -- use({
-    --     "projekt0n/github-nvim-theme",
-    --     config = function()
-    --         vim.cmd([[colorscheme github_dark_high_contrast]])
-    --     end,
-    -- })
 
     -- Treesitter
     use({
