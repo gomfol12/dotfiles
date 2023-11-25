@@ -48,7 +48,7 @@ configs.setup({
     sync_install = false,
     highlight = {
         enable = true,
-        disable = { "latex", "markdown", "pandoc" },
+        disable = { "latex", "pandoc" },
     },
     indent = {
         enable = false,

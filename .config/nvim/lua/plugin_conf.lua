@@ -158,24 +158,25 @@ end
 
 -- image.nvim
 local image_ok, image = pcall(require, "image")
+local has_magick, magick = pcall(require, "magick")
 if image_ok then
-    -- image.setup({
-    --     backend = "ueberzugpp",
-    --     integrations = {
-    --         markdown = {
-    --             enabled = true,
-    --             clear_in_insert_mode = false,
-    --             download_remote_images = true,
-    --             only_render_image_at_cursor = false,
-    --             filetypes = { "markdown", "vimwiki", "pandoc" },
-    --         },
-    --     },
-    --     max_width = 100,
-    --     max_height = 12,
-    --     max_height_window_percentage = math.huge,
-    --     max_width_window_percentage = math.huge,
-    --     window_overlap_clear_enabled = true,
-    --     window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
-    --     hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp" }, -- render image files as images when opened
-    -- })
+    image.setup({
+        backend = "ueberzug",
+        integrations = {
+            markdown = {
+                enabled = true,
+                clear_in_insert_mode = false,
+                download_remote_images = true,
+                only_render_image_at_cursor = false,
+                filetypes = { "markdown", "vimwiki" },
+            },
+        },
+        max_width = 100,
+        max_height = 12,
+        max_height_window_percentage = math.huge,
+        max_width_window_percentage = math.huge,
+        window_overlap_clear_enabled = true,
+        window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+        hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp" }, -- render image files as images when opened
+    })
 end

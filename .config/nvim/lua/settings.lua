@@ -214,6 +214,15 @@ else
     print("Python venv not configured. Run nvim_setup_python_venv command")
 end
 
+-- lua venv (luarocks)
+local nvim_lua_venv_dir = os.getenv("NVIM_LUA_VENV_DIR")
+if nvim_lua_venv_dir ~= nil then
+    package.path = package.path .. ";" .. os.getenv("NVIM_LUA_VENV_DIR") .. "/share/lua/5.1/?/init.lua;"
+    package.path = package.path .. ";" .. os.getenv("NVIM_LUA_VENV_DIR") .. "/share/lua/5.1/?.lua;"
+else
+    print("Lua venv not configured. Run nvim_setup_lua_venv command")
+end
+
 -- ========== Autocmds ========== --
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
