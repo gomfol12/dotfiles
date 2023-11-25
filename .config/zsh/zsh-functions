@@ -206,3 +206,84 @@ fix_keyboard_delay()
         xset s off
     fi
 }
+
+# pyhton venv shit
+
+_testvenvdir()
+{
+    dirname=${PWD##*/}
+    [ -z "$dirname" ] && dirname="python_venv"
+    if [ -d ".${dirname}_venv" ]; then
+        return 0
+    fi
+    return 1
+}
+
+mkvenv()
+{
+    if _testvenvdir; then
+        echo "Venv already exists"
+        return 1
+    fi
+
+    python3 -m venv ".${dirname}_venv"
+}
+
+venv()
+{
+    if [ "$#" = 1 ]; then
+        if [ ! -d "$1" ]; then
+            echo "Not a directory."
+            return 1
+        fi
+        cd "$1"
+    fi
+
+    if ! _testvenvdir; then
+        echo "Venv does not exist"
+        return 1
+    fi
+
+    source ".${dirname}_venv/bin/activate"
+
+    if [ "$#" = 1 ]; then
+        cd -
+    fi
+}
+
+rmvenv()
+{
+    if ! _testvenvdir; then
+        echo "Venv does not exist"
+        return 1
+    fi
+
+    \rm -rf ".${dirname}_venv"
+}
+
+nvim_setup_python_venv()
+{
+    if [ -d "$NVIM_PYTHON_VENV_DIR" ]; then
+        echo "NVIM python venv directory already exists."
+        return 1
+    fi
+
+    mkdir -p "$NVIM_PYTHON_VENV_DIR"
+
+    if [ -d "$NVIM_PYTHON_VENV_DIR" ]; then
+        python3 -m venv "$NVIM_PYTHON_VENV_DIR"
+        source "$NVIM_PYTHON_VENV_DIR/bin/activate"
+        # nvim and molten.nvim deps
+        pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip
+        deactivate
+    fi
+}
+
+nvim_source_python_venv()
+{
+    if [ -d "$NVIM_PYTHON_VENV_DIR" ]; then
+        source "$NVIM_PYTHON_VENV_DIR/bin/activate"
+    else
+        echo "\$NVIM_PYTHON_VENV_DIR not set."
+    fi
+}

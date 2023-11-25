@@ -94,6 +94,9 @@ return packer.startup(function(use)
     use({ "gbprod/stay-in-place.nvim" })
     use({ "frabjous/knap" })
 
+    use("benlubas/molten-nvim")
+    use({ "3rd/image.nvim" })
+
     -- comments
     use("numToStr/Comment.nvim")
 

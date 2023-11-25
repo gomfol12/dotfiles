@@ -29,6 +29,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export LESSHISTFILE=-
 export QT_QPA_PLATFORMTHEME=gtk2
 #export QT_QPA_PLATFORMTHEME=qt5ct
+export NVIM_PYTHON_VENV_DIR="$HOME/.local/share/nvim/python_venv"
 
 # Color for manpages in less makes manpages a little easier to read
 export LESS='-iSrsMF'

@@ -205,6 +205,15 @@ vim.g.knap_settings = {
 -- ts_commentstring
 vim.g.skip_ts_context_commentstring_module = true
 
+-- python venv
+local nvim_python_venv_dir = os.getenv("NVIM_PYTHON_VENV_DIR")
+if nvim_python_venv_dir ~= nil then
+    vim.g.python_host_prog = nvim_python_venv_dir .. "/bin/python"
+    vim.g.python3_host_prog = nvim_python_venv_dir .. "/bin/python3"
+else
+    print("Python venv not configured. Run nvim_setup_python_venv command")
+end
+
 -- ========== Autocmds ========== --
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
