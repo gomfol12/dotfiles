@@ -223,6 +223,12 @@ else
     print("Lua venv not configured. Run nvim_setup_lua_venv command")
 end
 
+-- molten-nvim
+vim.g.molten_image_provider = "image.nvim"
+vim.g.molten_output_win_max_height = 20
+vim.g.molten_auto_open_output = true
+vim.g.molten_copy_output = true
+
 -- ========== Autocmds ========== --
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
@@ -295,6 +301,11 @@ cmd([[
 autocmd("User", {
     pattern = "PackerCompileDone",
     command = ":MasonUpdateAll",
+})
+
+autocmd("User", {
+    pattern = "PackerCompileDone",
+    command = ":UpdateRemotePlugins",
 })
 
 -- Disable automatic comment insertion

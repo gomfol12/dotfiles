@@ -158,13 +158,12 @@ end
 
 -- image.nvim
 local image_ok, image = pcall(require, "image")
-local has_magick, magick = pcall(require, "magick")
 if image_ok then
     image.setup({
         backend = "ueberzug",
         integrations = {
             markdown = {
-                enabled = true,
+                enabled = false,
                 clear_in_insert_mode = false,
                 download_remote_images = true,
                 only_render_image_at_cursor = false,
