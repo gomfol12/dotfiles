@@ -61,18 +61,24 @@ function _G.dump(o)
     end
 end
 
-function _G.put(...)
-    return vim.print(...)
-end
-
-function _G.file_exists(path)
+function _M.file_exists(path)
     local f = io.open(path, "r")
     if f ~= nil then
         io.close(f)
         return true
-    else
+    end
+    return false
+end
+
+function _M.dir_exists(path)
+    if path == nil or type(path) ~= "string" or path == "" then
         return false
     end
+    local ok = os.execute("cd " .. path .. " >/dev/null 2>&1")
+    if ok == 0 then
+        return true
+    end
+    return false
 end
 
 function _M.check_executable(progs, msg)

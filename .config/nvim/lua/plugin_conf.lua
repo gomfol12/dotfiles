@@ -1,5 +1,7 @@
 -- ==================== Additional plugin configuration ==================== --
 
+local utils = require("utils")
+
 -- leap.nvim
 local leap_ok, leap = pcall(require, "leap")
 if leap_ok then
@@ -158,7 +160,7 @@ end
 
 -- image.nvim
 local image_ok, image = pcall(require, "image")
-if image_ok then
+if image_ok and utils.dir_exists(os.getenv("NVIM_LUA_VENV_DIR")) then
     image.setup({
         backend = "ueberzug",
         integrations = {
