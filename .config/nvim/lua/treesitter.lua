@@ -48,7 +48,7 @@ configs.setup({
     sync_install = false,
     highlight = {
         enable = true,
-        disable = { "latex", "pandoc" },
+        disable = { "latex", "markdown", "pandoc" },
     },
     indent = {
         enable = false,
@@ -59,7 +59,7 @@ configs.setup({
     textobjects = {
         select = {
             enable = true,
-            disable = { "latex", "pandoc" },
+            disable = { "latex", "markdown", "pandoc" },
             lookahead = true,
             keymaps = {
                 ["af"] = "@function.outer",
@@ -70,7 +70,7 @@ configs.setup({
         },
         move = {
             enable = true,
-            disable = { "latex", "pandoc" },
+            disable = { "latex", "markdown", "pandoc" },
             set_jumps = true,
             goto_next_start = {
                 ["]m"] = "@function.outer",
@@ -91,7 +91,7 @@ configs.setup({
         },
         swap = {
             enable = true,
-            disable = { "latex", "pandoc" },
+            disable = { "latex", "markdown", "pandoc" },
             swap_next = {
                 ["<leader>a"] = "@parameter.inner",
             },
@@ -101,7 +101,7 @@ configs.setup({
         },
         lsp_interop = {
             enable = true,
-            disable = { "latex", "pandoc" },
+            disable = { "latex", "markdown", "pandoc" },
             border = "none",
             peek_definition_code = {
                 ["<leader>df"] = "@function.outer",

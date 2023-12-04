@@ -26,8 +26,16 @@ function _listfiles
 # show git log info
 function _gitlog
 {
-    git log --all --color \
-        --format="%C(yellow)%h%C(red)%d%C(reset) %s %C(green)(%cr) %C(bold blue)%an%C(reset)" "$@" |
+    local git_dir="$PWD/.git/"
+    local work_tree="$PWD"
+
+    if [ "$1" = "config" ]; then
+        git_dir="$HOME/.dotfiles/"
+        work_tree="$HOME"
+    fi
+
+    git --git-dir="$git_dir" --work-tree="$work_tree" log --all --color \
+        --format="%C(yellow)%h%C(red)%d%C(reset) %s %C(green)(%cr) %C(bold blue)%an%C(reset)" "-n ${DASHBOARD_GITLOG_LINES:-5}" |
         sed -e 's/ seconds* ago)/s)/' \
             -e 's/ minutes* ago)/m)/' \
             -e 's/ hours* ago)/h)/' \
@@ -83,9 +91,12 @@ function _gitstatus
 function _enter_dashboard
 {
     if git rev-parse --is-inside-work-tree &>/dev/null; then
-        _gitlog -n "${DASHBOARD_GITLOG_LINES:-5}"
+        _gitlog
         _separator
         _gitstatus
+    elif [ "$PWD" = "$HOME" ]; then
+        _gitlog config
+        _separator
     fi
 
     _listfiles
