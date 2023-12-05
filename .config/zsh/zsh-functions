@@ -78,7 +78,7 @@ pacs()
 
 parin()
 {
-    paru -Sl | awk '{print $2($4=="" ? "" : "*")}' | fzf --multi --preview 'echo {1} | tr -d "*" | xargs -r paru -Si' | tr -d "*" | xargs -ro paru $@ -S
+    paru -Sl | awk '{s=$2; gsub(/\x1b\[[0-9;]*m/,"",s); print s ($4=="" ? "" : "*")}' | fzf --multi --preview 'echo {1} | tr -d "*" | xargs -r paru -Si' | tr -d "*" | xargs -ro paru --fm lf.sh $@ -S
 }
 
 pardel()
@@ -88,7 +88,7 @@ pardel()
 
 pars()
 {
-    paru -Sl | awk '{print $2($4=="" ? "" : "*")}' | fzf --multi --preview 'echo {1} | tr -d "*" | xargs -r paru -Si' | tr -d "*"
+    paru -Sl | awk '{s=$2; gsub(/\x1b\[[0-9;]*m/,"",s); print s ($4=="" ? "" : "*")}' | fzf --multi --preview 'echo {1} | tr -d "*" | xargs -r paru -Si' | tr -d "*"
 }
 
 # scripts
