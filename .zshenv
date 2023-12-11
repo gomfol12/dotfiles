@@ -72,6 +72,7 @@ export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
 export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
 export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 export ANDROID_HOME="$XDG_DATA_HOME/android"
+export IPYTHONDIR="${XDG_CONFIG_HOME}/ipython"
 
 ### pass ###
 #export PASSWORD_STORE_DIR="$HOME/.local/password-store"
