@@ -32,6 +32,9 @@ export QT_QPA_PLATFORMTHEME=gtk2
 export NVIM_PYTHON_VENV_DIR="$HOME/.local/share/nvim/python_venv"
 export NVIM_LUA_VENV_DIR="$HOME/.local/share/nvim/lua_venv"
 
+# better looking fonts for java apps
+export JDK_JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+
 # Color for manpages in less makes manpages a little easier to read
 export LESS='-iSrsMF'
 export LESS_TERMCAP_mb=$'\E[01;32m'
