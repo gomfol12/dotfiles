@@ -230,9 +230,26 @@ vim.g.molten_output_win_max_height = 20
 vim.g.molten_auto_open_output = true
 vim.g.molten_copy_output = true
 
+-- jupytext.vim
+vim.g.jupytext_filetype_map = { ["md"] = "quarto" }
+
 -- ========== Autocmds ========== --
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
+
+-- disable on BufEnter conceal for specific filetypes and re-enable it on BufLeave
+autocmd({ "BufEnter", "BufWinEnter" }, {
+    pattern = { "*.qmd", "*.md", "*.json" },
+    callback = function()
+        vim.cmd("set conceallevel=0")
+    end,
+})
+vim.api.nvim_create_autocmd({ "BufLeave", "BufWinLeave" }, {
+    pattern = { "*.qmd", "*.md", "*.json" },
+    callback = function()
+        vim.cmd("set conceallevel=1")
+    end,
+})
 
 -- highlight on yank
 augroup("YankHighlight", { clear = true })

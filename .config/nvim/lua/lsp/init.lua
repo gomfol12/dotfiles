@@ -180,9 +180,11 @@ return setmetatable(_M, {
             rust_tools.setup(require("lsp.settings.rust_tools_lua")(opts))
         end
         setup_scala()
-
-        -- lsp_config.ltex.setup(vim.tbl_deep_extend("force", require("lsp.settings.ltex_lua"), opts))
-        -- lsp_config.marksman.setup(opts)
+        lsp_config.marksman.setup(
+            vim.tbl_deep_extend("force", { filetypes = { "markdown", "quarto", "pandoc" } }, opts)
+        )
+        lsp_config.yamlls.setup(opts)
+        lsp_config.emmet_language_server.setup(opts)
 
         require("lsp.format")
         require("lsp.lint")

@@ -17,6 +17,7 @@
 -- visual_block_mode    x
 -- term_mode            t
 -- command_mode         c
+-- TODO: move knap to tex and dap to lsp setup. shouldnt be here
 
 local keymap = vim.keymap
 
@@ -238,33 +239,6 @@ keymap.set("n", "<Leader>nf", require("neogen").generate, { silent = true, desc 
 -- undotree
 keymap.set("n", "<F4>", ":UndotreeToggle<cr>", { silent = true, desc = "UndoTreeToggle" })
 
--- ToggleTerm`
-ToggleTerm = function(direction)
-    local command = "ToggleTerm"
-    if direction == "horizontal" then
-        command = command .. " direction=horizontal size=20"
-    elseif direction == "vertical" then
-        command = command .. " direction=vertical size=" .. vim.o.columns * 0.4
-    end
-    if vim.bo.filetype == "toggleterm" then
-        -- require("bufresize").block_register()
-        vim.api.nvim_command(command)
-        -- require("bufresize").resize_close()
-    else
-        -- require("bufresize").block_register()
-        vim.api.nvim_command(command)
-        -- require("bufresize").resize_open()
-        vim.cmd([[execute "normal! i"]])
-    end
-end
-keymap.set("n", "<C-\\>", ":lua ToggleTerm()<cr>", { noremap = true, silent = true, desc = "ToggleTerm" })
--- stylua: ignore
-keymap.set("n", "<leader>th", [[:lua ToggleTerm("horizontal")<cr>]], { noremap = true, silent = true, desc = "ToggleTerm horizontally" })
--- stylua: ignore
-keymap.set("n", "<leader>tv", [[:lua ToggleTerm("vertical")<cr>]], { noremap = true, silent = true, desc = "ToggleTerm vertically" })
-keymap.set("i", "<C-\\>", "<esc>:lua ToggleTerm()<cr>", { noremap = true, silent = true, desc = "ToggleTerm" })
-keymap.set("t", "<C-\\>", "<C-\\><C-n>:lua ToggleTerm()<cr>", { noremap = true, silent = true, desc = "ToggleTerm" })
-
 -- Goyo
 keymap.set("n", "<leader>go", ":Goyo<cr>", { silent = true, desc = "Goyo" })
 
@@ -292,7 +266,7 @@ end)
 vim.cmd([[imap <silent><script><expr> <C-q> copilot#Accept("\<CR>")]])
 
 -- toggle checkbox
-vim.keymap.set("n", "ct", require("toggle-checkbox").toggle, { silent = true, desc = "Toggle checkbox" })
+vim.keymap.set("n", "ch", require("toggle-checkbox").toggle, { silent = true, desc = "Toggle checkbox" })
 
 -- advanced git search
 -- stylua: ignore
@@ -321,20 +295,44 @@ vim.keymap.set(
 )
 
 -- sniprun
-vim.keymap.set("v", "<leader>r", "<Plug>SnipRun", { silent = true })
-vim.keymap.set("n", "<leader>rr", "<Plug>SnipRun", { silent = true })
-vim.keymap.set("n", "<leader>rc", "<Plug>SnipClose", { silent = true })
-vim.keymap.set("n", "<F3>", ":let b:caret=winsaveview() <CR> | :%SnipRun <CR>| :call winrestview(b:caret) <CR>", {})
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "*",
+    callback = function()
+        -- exclude quarto files because uses molten
+        if vim.bo.filetype == "quarto" then
+            return
+        end
+
+        vim.keymap.set("v", "<leader>r", "<Plug>SnipRun", { silent = true })
+        vim.keymap.set("n", "<leader>rr", "<Plug>SnipRun", { silent = true })
+        vim.keymap.set("n", "<leader>rc", "<Plug>SnipClose", { silent = true })
+        vim.keymap.set(
+            "n",
+            "<F3>",
+            ":let b:caret=winsaveview() <CR> | :%SnipRun <CR>| :call winrestview(b:caret) <CR>",
+            {}
+        )
+    end,
+})
 
 -- knap
--- stylua: ignore
-vim.keymap.set('n','<leader>po', function() require("knap").process_once() end, { silent = true, desc = "knap: process once" })
--- stylua: ignore
-vim.keymap.set('n','<leader>pv', function() require("knap").close_viewer() end, { silent = true, desc = "knap: close viewer" })
--- stylua: ignore
-vim.keymap.set('n','<leader>pa', function() require("knap").toggle_autopreviewing() end, { silent = true, desc = "knap: toggle auto previewing" })
--- stylua: ignore
-vim.keymap.set('n','<leader>pf', function() require("knap").forward_jump() end, { silent = true, desc = "knap: forward jump" })
+vim.keymap.set("n", "<leader>po", function()
+    require("knap").process_once()
+end, { silent = true, desc = "knap: process once" })
+vim.keymap.set("n", "<leader>pv", function()
+    require("knap").close_viewer()
+end, { silent = true, desc = "knap: close viewer" })
+vim.keymap.set("n", "<leader>pa", function()
+    require("knap").toggle_autopreviewing()
+end, { silent = true, desc = "knap: toggle auto previewing" })
+vim.keymap.set("n", "<leader>pf", function()
+    require("knap").forward_jump()
+end, { silent = true, desc = "knap: forward jump" })
+
+-- nabla
+vim.keymap.set("n", "<leader>na", function()
+    require("nabla").popup()
+end, { silent = true, desc = "nabla: popup" })
 
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })

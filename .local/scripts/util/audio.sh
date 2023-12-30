@@ -274,6 +274,13 @@ get_sink_source_info()
     echo "microphone_mute: $(mute "microphone" "get")"
 }
 
+restart_pipewire()
+{
+    systemctl --user restart pipewire
+    systemctl --user restart pipewire-pulse
+    systemctl --user restart wireplumber
+}
+
 help()
 {
     cat <<EOF
@@ -313,6 +320,7 @@ usage - audio.sh [command] [subcommand|value]
         next:           next track
         play:           play track
         pause:          pause track
+    restart:        restart pipewire
     help:           help menu
 EOF
 }
@@ -352,6 +360,8 @@ case "$1" in
 "pause") players "pause" ;;
 
 "spotify") spotifyctl "$2" ;;
+
+"restart") restart_pipewire ;;
 
 "help") help ;;
 *) log "Invalid argument. Try help for help" ;;

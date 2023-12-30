@@ -181,3 +181,23 @@ if image_ok and utils.dir_exists(os.getenv("NVIM_LUA_VENV_DIR")) then
         hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp" }, -- render image files as images when opened
     })
 end
+
+-- clipboard-image.nvim
+local clipboard_image_ok, clipboard_image = pcall(require, "clipboard-image")
+if clipboard_image_ok then
+    clipboard_image.setup({
+        default = {
+            img_dir = { "res" },
+            img_dir_txt = "res",
+            img_name = function()
+                return os.date("%d.%m.%Y-%H-%M-%S")
+            end,
+            affix = "![](%s)", -- Multi lines affix
+        },
+        -- FileType specific config
+        -- pandoc = {
+        --     img_dir = { "res" },
+        --     img_dir_txt = "~/res",
+        -- },
+    })
+end

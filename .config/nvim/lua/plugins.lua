@@ -85,17 +85,24 @@ return packer.startup(function(use)
     -- use("Konfekt/vim-CtrlXA") -- TODO: AndrewRadev/switch.vim, monaqa/dial.nvim
     use("paretje/nvim-man")
     use("LunarVim/bigfile.nvim")
-    use({ "michaelb/sniprun", run = "sh ./install.sh" })
+    use({ "michaelb/sniprun", run = "sh ./install.sh" }) -- run code snippets
     use({ "meain/vim-printer" })
     use({ "gomfol12/a.vim" })
     use({ "smjonas/inc-rename.nvim" })
     use({ "nacro90/numb.nvim" })
     use({ "andymass/vim-matchup" })
     use({ "gbprod/stay-in-place.nvim" })
-    use({ "frabjous/knap" })
+    use({ "frabjous/knap" }) -- markdown, latex live preview
+    use("dfendr/clipboard-image.nvim")
+    use("jbyuki/nabla.nvim")
 
     use("benlubas/molten-nvim")
     use("3rd/image.nvim")
+
+    use("quarto-dev/quarto-nvim")
+    use("jmbuhr/otter.nvim")
+
+    use("goerz/jupytext.vim")
 
     -- comments
     use("numToStr/Comment.nvim")

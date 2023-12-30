@@ -145,6 +145,7 @@ cmp.setup({
             vim_item.menu = ({
                 nvim_lsp_signature_help = "[SIG]",
                 nvim_lsp = "[LSP]",
+                otter = "[OTTER]",
                 luasnip = "[LUASNIP]",
                 rg = "[RG]",
                 git = "[GIT]",
@@ -158,8 +159,9 @@ cmp.setup({
     sources = cmp.config.sources({
         { name = "nvim_lsp_signature_help" },
         { name = "nvim_lsp" },
+        { name = "otter" },
         { name = "luasnip" },
-        { name = "rg" },
+        -- { name = "rg" },
         { name = "git" },
         { name = "calc" },
         { name = "path" },

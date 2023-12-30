@@ -274,7 +274,7 @@ nvim_setup_python_venv()
         python3 -m venv "$NVIM_PYTHON_VENV_DIR"
         source "$NVIM_PYTHON_VENV_DIR/bin/activate"
         # nvim and molten.nvim deps
-        pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip nbformat ipykernel
+        pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip nbformat ipykernel jupytext
         deactivate
     fi
 }
@@ -304,4 +304,9 @@ nvim_setup_lua_venv()
         luarocks install --lua-version=5.1 magick
         deactivate-lua
     fi
+}
+
+pip_update_al()
+{
+    pip --disable-pip-version-check list --outdated --format=json | python -c "import json, sys; print('\n'.join([x['name'] for x in json.load(sys.stdin)]))" | xargs -n1 pip install -U
 }

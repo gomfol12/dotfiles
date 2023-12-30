@@ -417,6 +417,8 @@ add_auto_snippet_math("==", "\\equiv", {})
 add_auto_snippet_math("ex", "\\exists", {})
 add_auto_snippet_math("all", "\\forall", {})
 
+add_snippet_math("angle", "\\langle <> \\rangle", { i(1) })
+
 for _, num in ipairs({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "n", "k", "d", "p" }) do
     table.insert(
         _snippets,

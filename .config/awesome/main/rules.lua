@@ -40,6 +40,7 @@ function _M.get(clientkeys, clientbuttons)
                     "copyq", -- Includes session name in class.
                     "pinentry",
                     "floatterm",
+                    "Godot_Engine",
                 },
                 class = {
                     "Arandr",
@@ -113,12 +114,14 @@ function _M.get(clientkeys, clientbuttons)
         {
             rule_any = {
                 class = {
-                    "Steam",
+                    "steam",
                 },
             },
             properties = {
-                screen = 1,
-                tag = "9",
+                floating = true,
+                delayed_placement = awful.placement.centered,
+                width = awful.screen.focused().workarea.width * 0.8,
+                height = awful.screen.focused().workarea.height * 0.8,
             },
         },
 
