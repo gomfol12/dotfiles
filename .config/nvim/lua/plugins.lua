@@ -172,6 +172,10 @@ return packer.startup(function(use)
             "hrsh7th/cmp-calc",
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-buffer",
+            "jmbuhr/cmp-pandoc-references",
+            "hrsh7th/cmp-emoji",
+            "ray-x/cmp-treesitter",
+            -- "f3fora/cmp-spell",
 
             "hrsh7th/cmp-cmdline",
             "dmitmel/cmp-cmdline-history",

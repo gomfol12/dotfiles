@@ -65,6 +65,7 @@ configs.setup({
                 ["if"] = "@function.inner",
                 ["ac"] = "@class.outer",
                 ["ic"] = "@class.inner",
+                ["ib"] = { query = "@block.inner", desc = "in block" },
             },
         },
         move = {
