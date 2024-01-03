@@ -261,24 +261,6 @@ rmvenv()
     \rm -rf ".${dirname}_venv"
 }
 
-nvim_setup_python_venv()
-{
-    if [ -d "$NVIM_PYTHON_VENV_DIR" ]; then
-        echo "NVIM python venv directory already exists."
-        return 1
-    fi
-
-    mkdir -p "$NVIM_PYTHON_VENV_DIR"
-
-    if [ -d "$NVIM_PYTHON_VENV_DIR" ]; then
-        python3 -m venv "$NVIM_PYTHON_VENV_DIR"
-        source "$NVIM_PYTHON_VENV_DIR/bin/activate"
-        # nvim and molten.nvim deps
-        pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip nbformat ipykernel jupytext
-        deactivate
-    fi
-}
-
 nvim_source_python_venv()
 {
     if [ -d "$NVIM_PYTHON_VENV_DIR" ]; then
@@ -288,25 +270,66 @@ nvim_source_python_venv()
     fi
 }
 
-nvim_setup_lua_venv()
+nvim_setup()
 {
-    if [ -d "$NVIM_LUA_VENV_DIR" ]; then
-        echo "NVIM lua venv directory already exists."
+    # TODO finish list
+    dep_programs=(
+        "make"
+        "cmake"
+        "gcc"
+        "g++"
+        "python3"
+        "npm"
+        "lua"
+        "lua5.1"
+        "lua5.4"
+        "luarocks"
+    )
+    exit=0
+
+    for program in "${dep_programs[@]}"; do
+        if ! command -v "$program" &> /dev/null; then
+            echo "Dependency missing: $program"
+            exit=1
+        fi
+    done
+    if [ "$exit" = 1 ]; then
         return 1
     fi
 
+    if [ -d "$NVIM_PYTHON_VENV_DIR" ] && [ -d "$NVIM_LUA_VENV_DIR" ]; then
+        echo "NVIM python/lua venv directory already exists."
+        return 1
+    fi
+
+    mkdir -p "$NVIM_PYTHON_VENV_DIR"
     mkdir -p "$NVIM_LUA_VENV_DIR"
 
-    if [ -d "$NVIM_LUA_VENV_DIR" ]; then
-        curl -s https://raw.githubusercontent.com/luarocks/hererocks/master/hererocks.py -o "$NVIM_LUA_VENV_DIR/hererocks.py"
-        python "$NVIM_LUA_VENV_DIR/hererocks.py" "$NVIM_LUA_VENV_DIR" -r latest -j latest
-        source "$NVIM_LUA_VENV_DIR/bin/activate"
-        luarocks install --lua-version=5.1 magick
-        deactivate-lua
+    if [ ! -d "$NVIM_PYTHON_VENV_DIR" ] && [ ! -d "$NVIM_LUA_VENV_DIR" ]; then
+        echo "NVIM python/lua venv directory could not be created."
+        return 1
     fi
+
+    # setup python venv
+    python3 -m venv "$NVIM_PYTHON_VENV_DIR"
+    source "$NVIM_PYTHON_VENV_DIR/bin/activate"
+    # nvim and molten.nvim deps
+    pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip nbformat ipykernel jupytext
+    python3 -m ipykernel install --user --name python
+    deactivate
+
+    # setup lua venv
+    curl -s https://raw.githubusercontent.com/luarocks/hererocks/master/hererocks.py -o "$NVIM_LUA_VENV_DIR/hererocks.py"
+    python3 "$NVIM_LUA_VENV_DIR/hererocks.py" "$NVIM_LUA_VENV_DIR" -r latest -j latest
+    source "$NVIM_LUA_VENV_DIR/bin/activate"
+    luarocks install --lua-version=5.1 magick
+    deactivate-lua
+
+    # setup plugins
+    # nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 }
 
-pip_update_al()
+pip_update_all()
 {
     pip --disable-pip-version-check list --outdated --format=json | python -c "import json, sys; print('\n'.join([x['name'] for x in json.load(sys.stdin)]))" | xargs -n1 pip install -U
 }

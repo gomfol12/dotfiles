@@ -206,22 +206,21 @@ vim.g.knap_settings = {
 -- ts_commentstring
 vim.g.skip_ts_context_commentstring_module = true
 
--- python venv
+-- python/lua venv
 local nvim_python_venv_dir = os.getenv("NVIM_PYTHON_VENV_DIR")
-if nvim_python_venv_dir ~= nil and utils.dir_exists(nvim_python_venv_dir) then
+local nvim_lua_venv_dir = os.getenv("NVIM_LUA_VENV_DIR")
+if
+    nvim_python_venv_dir ~= nil
+    and nvim_lua_venv_dir ~= nil
+    and utils.dir_exists(nvim_python_venv_dir)
+    and utils.dir_exists(nvim_lua_venv_dir)
+then
     vim.g.python_host_prog = nvim_python_venv_dir .. "/bin/python"
     vim.g.python3_host_prog = nvim_python_venv_dir .. "/bin/python3"
-else
-    print("Python venv not configured. Run nvim_setup_python_venv command")
-end
-
--- lua venv (luarocks)
-local nvim_lua_venv_dir = os.getenv("NVIM_LUA_VENV_DIR")
-if nvim_lua_venv_dir ~= nil and utils.dir_exists(nvim_lua_venv_dir) then
     package.path = package.path .. ";" .. os.getenv("NVIM_LUA_VENV_DIR") .. "/share/lua/5.1/?/init.lua;"
     package.path = package.path .. ";" .. os.getenv("NVIM_LUA_VENV_DIR") .. "/share/lua/5.1/?.lua;"
 else
-    print("Lua venv not configured. Run nvim_setup_lua_venv command")
+    print("Python/lua venv not configured. Run nvim_setup command")
 end
 
 -- molten-nvim
