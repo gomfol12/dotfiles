@@ -226,3 +226,8 @@ fi
 if command -v tmux &>/dev/null && [ -z "${TMUX}" ] && [ -n "$DISPLAY" ]; then
     tmux
 fi
+
+### fuck ###
+if command -v "fuck" >/dev/null 2>&1; then
+    eval $(thefuck --alias)
+fi

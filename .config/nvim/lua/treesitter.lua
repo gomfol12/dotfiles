@@ -33,6 +33,7 @@ configs.setup({
         "kotlin",
         "latex",
         "markdown",
+        "markdown_inline",
         "ninja",
         "php",
         "perl",

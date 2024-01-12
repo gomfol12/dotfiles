@@ -18,7 +18,10 @@ local _snippets = {
             "format:",
             "    html:",
             "        code-fold: true",
-            "jupyter: python",
+            "        theme: cosmo",
+            "latex-tinytex: false",
+            "pdf-engine: lualatex",
+            "jupyter: python3",
             "---",
         }),
     }),
@@ -29,7 +32,9 @@ local _snippets = {
             "author: author",
             "format:",
             "    pdf",
-            "jupyter: python",
+            "latex-tinytex: false",
+            "pdf-engine: lualatex",
+            "jupyter: python3",
             "---",
         }),
     }),
@@ -38,6 +43,17 @@ local _snippets = {
         fmta(
             [[
             ```{python}
+            <>
+            ```
+            ]],
+            { i(0) }
+        )
+    ),
+    s(
+        "cpp",
+        fmta(
+            [[
+            ```{cpp}
             <>
             ```
             ]],

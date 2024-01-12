@@ -31,7 +31,8 @@ luasnip.config.setup({
     },
     enable_autosnippets = true,
     store_selection_keys = "<Tab>",
-    update_events = "TextChanged,TextChangedI",
+    update_events = { "TextChanged", "TextChangedI" },
+    delete_check_events = { "TextChanged", "InsertLeave" },
 })
 
 require("luasnip.loaders.from_vscode").lazy_load()
@@ -134,6 +135,11 @@ cmp.setup({
                 luasnip.expand_or_jump()
             else
                 fallback()
+            end
+        end, { "i", "s" }),
+        ["<C-c>"] = cmp.mapping(function()
+            if luasnip.choice_active() then
+                luasnip.change_choice(1)
             end
         end, { "i", "s" }),
     }),

@@ -185,9 +185,13 @@ return packer.startup(function(use)
     })
 
     -- snippets
-    use({ "L3MON4D3/LuaSnip", requires = {
-        "rafamadriz/friendly-snippets",
-    } })
+    use({
+        "L3MON4D3/LuaSnip",
+        run = "make install_jsregexp",
+        requires = {
+            "rafamadriz/friendly-snippets",
+        },
+    })
 
     -- javadoc
     use({

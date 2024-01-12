@@ -382,6 +382,7 @@ autocmd("BufWritePre", {
             or vim.bo.filetype == "vimwiki"
             or vim.bo.filetype == "pandoc"
             or vim.bo.filetype == "latex"
+            or vim.bo.filetype == "quarto"
         then
             return
         end

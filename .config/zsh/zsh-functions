@@ -314,7 +314,7 @@ nvim_setup()
     python3 -m venv "$NVIM_PYTHON_VENV_DIR"
     source "$NVIM_PYTHON_VENV_DIR/bin/activate"
     # nvim and molten.nvim deps
-    pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip nbformat ipykernel jupytext
+    pip install pynvim jupyter_client cairosvg plotly kaleido pnglatex pyperclip nbformat ipykernel jupytext jupyter-cache
     python3 -m ipykernel install --user --name python
     deactivate
 
