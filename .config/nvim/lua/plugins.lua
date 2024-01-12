@@ -148,6 +148,8 @@ return packer.startup(function(use)
             "mfussenegger/nvim-dap",
             "rcarriga/nvim-dap-ui",
 
+            "mfussenegger/nvim-dap-python",
+
             "simrat39/rust-tools.nvim",
 
             "stevearc/conform.nvim",

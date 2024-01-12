@@ -1,5 +1,5 @@
 -- ==================== NVIM init ==================== --
--- TODO: Telescope, alpha color, lualine
+-- TODO: Telescope, alpha color, lualine, meson add shit pls future me, and refactor config things getting messy (lazy setup)
 
 local packer_install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 local bootstrap = false

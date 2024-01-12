@@ -7,7 +7,7 @@ end
 
 -- check if formatter is installed
 local utils = require("utils")
-utils.check_formatters({ "stylua", "shfmt", "prettier", "clang-format", "cmake-format", "latexindent" })
+utils.check_formatters({ "stylua", "shfmt", "prettier", "clang-format", "cmake-format", "latexindent", "black" })
 
 conform.setup({
     formatters_by_ft = {
@@ -23,6 +23,7 @@ conform.setup({
         cpp = { "clang_format" },
         cmake = { "cmake_format" },
         tex = { "latexindent" },
+        python = { "black" },
 
         javascript = { "prettier" },
         typescript = { "prettier" },

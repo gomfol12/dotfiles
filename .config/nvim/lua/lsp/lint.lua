@@ -6,11 +6,12 @@ if not lint_ok then
 end
 
 local utils = require("utils")
-utils.check_linters({ "shellcheck", "chktex" })
+utils.check_linters({ "shellcheck", "chktex", "mypy", "ruff" })
 
 lint.linters_by_ft = {
     bash = { "shellcheck" },
     tex = { "chktex" },
+    python = { "mypy", "ruff" },
 }
 
 lint.linters.chktex.ignore_exitcode = true
