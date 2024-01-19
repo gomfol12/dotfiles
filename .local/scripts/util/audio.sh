@@ -276,9 +276,22 @@ get_sink_source_info()
 
 restart_pipewire()
 {
-    systemctl --user restart pipewire
-    systemctl --user restart pipewire-pulse
-    systemctl --user restart wireplumber
+    if [ "$(pgrep -u "$(id -u)" -nf "pipewire")" ]; then
+        systemctl --user restart pipewire
+        systemctl --user restart pipewire-pulse
+        systemctl --user restart wireplumber
+    else
+        printf "pipewire is not running\n"
+        exit 1
+    fi
+
+    if command -v easyeffects >/dev/null 2>&1; then
+        if [ "$(pgrep -u "$(id -u)" -nf "easyeffects")" ]; then
+            killall easyeffects
+        fi
+
+        exec setsid -f -- easyeffects --gapplication-service
+    fi
 }
 
 help()
