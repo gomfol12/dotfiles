@@ -274,9 +274,20 @@ get_sink_source_info()
     echo "microphone_mute: $(mute "microphone" "get")"
 }
 
+restart_easyeffects()
+{
+    if command -v easyeffects >/dev/null 2>&1; then
+        if [ -n "$(pgrep -u "$(id -u)" -n "easyeffects")" ]; then
+            killall easyeffects
+        fi
+
+        setsid -f -- easyeffects --gapplication-service
+    fi
+}
+
 restart_pipewire()
 {
-    if [ "$(pgrep -u "$(id -u)" -nf "pipewire")" ]; then
+    if [ -n "$(pgrep -u "$(id -u)" -n "pipewire")" ]; then
         systemctl --user restart pipewire
         systemctl --user restart pipewire-pulse
         systemctl --user restart wireplumber
@@ -285,13 +296,7 @@ restart_pipewire()
         exit 1
     fi
 
-    if command -v easyeffects >/dev/null 2>&1; then
-        if [ "$(pgrep -u "$(id -u)" -nf "easyeffects")" ]; then
-            killall easyeffects
-        fi
-
-        exec setsid -f -- easyeffects --gapplication-service
-    fi
+    restart_easyeffects
 }
 
 help()
@@ -334,6 +339,7 @@ usage - audio.sh [command] [subcommand|value]
         play:           play track
         pause:          pause track
     restart:        restart pipewire
+    easyeffects:    restart easyeffects
     help:           help menu
 EOF
 }
@@ -375,6 +381,8 @@ case "$1" in
 "spotify") spotifyctl "$2" ;;
 
 "restart") restart_pipewire ;;
+
+"easyeffects") restart_easyeffects ;;
 
 "help") help ;;
 *) log "Invalid argument. Try help for help" ;;

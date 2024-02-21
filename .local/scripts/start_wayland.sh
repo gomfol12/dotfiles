@@ -15,4 +15,8 @@ export XCURSOR_SIZE=24
 
 export WLR_DRM_NO_ATOMIC=1 # remove in the future (tearing)
 
-exec Hyprland
+if [ "$1" = "dwl" ]; then
+    exec ~/.local/src/dwl/dwl
+else
+    exec Hyprland
+fi
