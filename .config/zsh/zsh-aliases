@@ -147,6 +147,10 @@ alias pv="zathura.sh"
 
 alias nvim_config_lines='find ~/.config/nvim -type d -name "plugin" -prune -o -type f -iname "*.lua" -print | xargs wc -l'
 
+alias update_mirrors="sudo reflector --latest 10 --sort rate --protocol https --save /etc/pacman.d/mirrorlist"
+
+alias update="paru -Pw; paru -Syu --norebuild --combinedupgrade --batchinstall"
+
 #alias b="dirBook"
 
 # because i am stupid
