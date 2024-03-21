@@ -173,7 +173,7 @@ return gears.table.join(
         end)
     end, { description = "swap audio output", group = "util" }),
 
-    awful.key({ super }, "n", function()
+    awful.key({ super }, "p", function()
         awful.spawn.with_shell("colorpicker --short --one-shot --preview | xclip -selection c")
     end, { description = "color picker", group = "util" }),
 
