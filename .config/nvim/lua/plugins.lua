@@ -147,6 +147,7 @@ return packer.startup(function(use)
 
             "mfussenegger/nvim-dap",
             "rcarriga/nvim-dap-ui",
+	    "nvim-neotest/nvim-nio",
 
             "mfussenegger/nvim-dap-python",
 
