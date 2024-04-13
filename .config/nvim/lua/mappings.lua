@@ -31,7 +31,14 @@ vim.b.maplocalleader = "\\"
 keymap.set("n", "Q", "<nop>", { desc = "Disable ex mode" })
 
 -- disable search highlighting until the next search
-keymap.set("n", "<cr>", ":noh<cr>", { silent = true, desc = "No highlight" })
+keymap.set("n", "<cr>", function()
+    if vim.fn.getwininfo(vim.fn.win_getid())[1]["quickfix"] == 1 then
+        vim.cmd("call feedkeys(\"\\<cr>\", 'n')")
+        return
+    end
+
+    vim.cmd("nohlsearch")
+end, { silent = true, desc = "No highlight" })
 keymap.set("n", "<leader>nh", ":noh<cr><cr>", { silent = true, desc = "No highlight" })
 
 -- delete buffer without closing neovim
@@ -134,6 +141,10 @@ end, { desc = "Format" })
 -- stay in indent mode
 keymap.set("v", "<", "<gv", { desc = "Indent left" })
 keymap.set("v", ">", ">gv", { desc = "Indent right" })
+
+-- quickfix
+keymap.set("n", "[q", ":cnext<cr>", { desc = "Next Quickfix Entry" })
+keymap.set("n", "]q", ":cprev<cr>", { desc = "Previous Quickfix Entry" })
 
 -- plugins
 -- Telescope
