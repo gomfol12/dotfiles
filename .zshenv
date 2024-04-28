@@ -51,6 +51,7 @@ path+=(~/.local/bin)
 path+=($(find "$SCRIPT_DIR" -not -path "*old*" -not -path "*grub*" -type d))
 path+=(~/.local/share/gem/ruby/3.0.0/bin)
 path+=(~/.local/share/coursier/bin)
+path+=(~/.local/share/flutter/bin)
 export PATH
 
 ### HOME cleanup ###
@@ -74,7 +75,10 @@ export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
 export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
 export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 export ANDROID_HOME="$XDG_DATA_HOME/android"
+export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
+export ANDROID_AVD_HOME="$XDG_CONFIG_HOME/.android/avd"
 export IPYTHONDIR="${XDG_CONFIG_HOME}/ipython"
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 
 ### pass ###
 #export PASSWORD_STORE_DIR="$HOME/.local/password-store"

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # for bash: replace vared with read
 shortcut_file="$HOME/doc/bookmarks/cdw_dirs"
 history_file="$HOME/.cache/cdw_history"

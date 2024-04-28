@@ -223,7 +223,7 @@ if [ -f "$SCRIPT_DIR/util/cdw.sh" ]; then
 fi
 
 ### tmux ###
-if command -v tmux &>/dev/null && [ -z "${TMUX}" ] && [ -n "$DISPLAY" ]; then
+if command -v tmux &>/dev/null && [ -z "${TMUX}" ] && [ -n "$DISPLAY" ] && [ ! "$TERM_PROGRAM" = "vscode" ]; then
     tmux
 fi
 

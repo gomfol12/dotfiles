@@ -153,6 +153,8 @@ alias update="paru -Pw; paru -Syu --norebuild --combinedupgrade --batchinstall"
 
 #alias b="dirBook"
 
+alias adb='HOME="$XDG_DATA_HOME"/android adb'
+
 # because i am stupid
 alias :q="exit"
 alias al="la"
