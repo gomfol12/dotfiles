@@ -240,12 +240,20 @@ local autocmd = vim.api.nvim_create_autocmd
 autocmd({ "BufEnter", "BufWinEnter" }, {
     pattern = { "*.qmd", "*.md", "*.json" },
     callback = function()
+        if vim.bo.filetype == "vimwiki" then
+            vim.cmd("set conceallevel=2")
+            return
+        end
         vim.cmd("set conceallevel=0")
     end,
 })
 vim.api.nvim_create_autocmd({ "BufLeave", "BufWinLeave" }, {
     pattern = { "*.qmd", "*.md", "*.json" },
     callback = function()
+        if vim.bo.filetype == "vimwiki" then
+            vim.cmd("set conceallevel=2")
+            return
+        end
         vim.cmd("set conceallevel=1")
     end,
 })
