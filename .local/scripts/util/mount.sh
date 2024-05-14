@@ -25,7 +25,7 @@ format_mount()
 get_mount_point()
 {
     username=$(whoami)
-    mount_point=$(printf "/mnt\n/media\n/mnt\n/mount\n/run/media\n/home/%s\n/home/%s/usb" "$username" "$username" | dmenu_cmd "Select mount point: ") || exit
+    mount_point=$(printf "/mnt\n/media\n/mnt\n/mount\n/run/media\n/home/%s/handy\n/home/%s/usb" "$username" "$username" | dmenu_cmd "Select mount point: ") || exit
     test -n "$mount_point"
 
     if [ ! -d "$mount_point" ]; then
@@ -145,7 +145,7 @@ $mounted_drives" | sed "/^$/d;s/ *$//")
     📱*)
         # umount android device
         chosen=$(echo "$chosen" | cut -d" " -f2)
-        umount "$chosen"
+        umount "$chosen" || exec_term sudo umount "$chosen"
         notify-send "\"$chosen\" has been unmounted."
         ;;
     💾*)

@@ -222,7 +222,7 @@ if RC.vars.hostname == os.getenv("HOSTNAME_LAPTOP") then
             end
 
             local charge_full, charge_now = stdout:match("(%d+)\n(%d+)")
-            widget:set_text(string.format("%.1f%%", (100 / tonumber(charge_full)) * tonumber(charge_now)))
+            widget:set_text(string.format("%.0f%%", ((100 / tonumber(charge_full)) * tonumber(charge_now)) + 0.5))
         end
     )
 end
