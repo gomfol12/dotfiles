@@ -211,9 +211,7 @@ fix_keyboard_delay()
 
 _testvenvdir()
 {
-    dirname=${PWD##*/}
-    [ -z "$dirname" ] && dirname="python_venv"
-    if [ -d ".${dirname}_venv" ]; then
+    if [ -d ".venv" ]; then
         return 0
     fi
     return 1
@@ -226,7 +224,7 @@ mkvenv()
         return 1
     fi
 
-    python3 -m venv ".${dirname}_venv"
+    python3 -m venv ".venv"
 }
 
 venv()
@@ -244,7 +242,7 @@ venv()
         return 1
     fi
 
-    source ".${dirname}_venv/bin/activate"
+    source ".venv/bin/activate"
 
     if [ "$#" = 1 ]; then
         cd -
@@ -258,7 +256,7 @@ rmvenv()
         return 1
     fi
 
-    \rm -rf ".${dirname}_venv"
+    \rm -rf ".venv"
 }
 
 nvim_source_python_venv()
