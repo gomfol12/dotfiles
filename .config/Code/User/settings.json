@@ -14,5 +14,5 @@
     "terminal.integrated.shellIntegration.enabled": false,
     "dart.flutterSdkPath": "/home/marek/.local/share/flutter",
     "keyboard.dispatch": "keyCode",
-    "omnisharp.useModernNet": false
+    "omnisharp.useModernNet": false,
 }

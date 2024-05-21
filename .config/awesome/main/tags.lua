@@ -4,6 +4,7 @@
 -- Default libs
 local awful = require("awful")
 local naughty = require("naughty")
+local gears = require("gears")
 
 local tags = {}
 
@@ -29,5 +30,18 @@ for s in screen do
         end
     end
 end
+
+-- insanly stupid hacky way to fix unity redraw problem (see https://forum.unity.com/threads/editor-panels-only-redraw-on-update-mouse-over.731285/)
+tag.connect_signal("property::selected", function(t)
+    local clients = awful.client.visible(s)
+    for _, client in pairs(clients) do
+        if awful.rules.match(client, { class = "Unity" }) then
+            client.border_width = client.border_width + 1
+            gears.timer.start_new(1 / 60, function()
+                client.border_width = client.border_width - 1
+            end)
+        end
+    end
+end)
 
 return tags
