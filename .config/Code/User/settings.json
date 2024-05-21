@@ -1,0 +1,18 @@
+{
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [
+            80
+        ],
+        "editor.selectionHighlight": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": "off"
+    },
+    "editor.formatOnSave": true,
+    "terminal.integrated.shellIntegration.enabled": false,
+    "dart.flutterSdkPath": "/home/marek/.local/share/flutter",
+    "keyboard.dispatch": "keyCode",
+    "omnisharp.useModernNet": false
+}
