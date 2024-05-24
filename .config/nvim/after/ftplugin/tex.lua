@@ -1,6 +1,6 @@
 local keymap = vim.keymap
 
-require("lsp").keybinds(0)
+require("lsp").keybinds(nil, 0)
 vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
 
 keymap.set("n", "<leader>li", ":VimtexInfo<CR>", { silent = true, desc = "Vimtex info" })

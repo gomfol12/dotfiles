@@ -26,7 +26,7 @@ return {
         -- padding from the right if right_align is true
         right_align_padding = 7,
         -- The color of the hints
-        highlight = "Comment",
+        highlight = "LspInlayHint",
         -- The highlight group priority for extmark
         priority = 100,
     },

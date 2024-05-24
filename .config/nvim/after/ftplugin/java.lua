@@ -160,7 +160,7 @@ config["on_attach"] = function(client, bufnr)
     require("jdtls.dap").setup_dap_main_class_configs()
     require("jdtls").setup_dap({ hotcodereplace = "auto" })
 
-    require("lsp").keybinds(bufnr)
+    require("lsp").keybinds(client, bufnr)
     require("lsp").highlight(client, bufnr)
 end
 

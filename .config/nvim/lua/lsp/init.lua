@@ -69,7 +69,7 @@ end
 
 -- Keybinds
 -- stylua: ignore
-function _M.keybinds(bufnr)
+function _M.keybinds(client, bufnr)
     local opts = { silent = true, buffer = bufnr }
     vim.keymap.set("n", "gd", ":lua vim.lsp.buf.definition()<cr>", U.concat(opts, { desc = "LSP: go to definition" }))
     vim.keymap.set("n", "gD", ":lua vim.lsp.buf.declaration()<cr>", U.concat(opts, { desc = "LSP: go to declaration" }))
@@ -89,6 +89,14 @@ function _M.keybinds(bufnr)
     vim.keymap.set("n", "]d", ":lua vim.diagnostic.goto_next()<cr>",  U.concat(opts, { desc = "LSP: diagnostic prev" }))
     vim.keymap.set("n", "gl", ":lua vim.diagnostic.open_float()<cr>",  U.concat(opts, { desc = "LSP: diagnostic cursor" }))
     vim.keymap.set("n", "<leader>q", ":lua vim.diagnostic.setloclist()<cr>", U.concat(opts, { desc = "LSP: diagnostic all" }))
+    -- toggle inlay hints
+    vim.keymap.set("n", "<leader>ilh", function()
+        if client.name == "clangd" then
+            require("clangd_extensions.inlay_hints").toggle_inlay_hints()
+            return
+        end
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end, U.concat(opts, { desc = "LSP: Toggle Inlay Hints" }))
 end
 
 -- Auto highlighting
@@ -117,12 +125,19 @@ end
 local opts = {
     on_attach = function(client, bufnr)
         _M.highlight(client, bufnr)
-        _M.keybinds(bufnr)
+        _M.keybinds(client, bufnr)
 
-        if client.name == "clangd" then
-            require("clangd_extensions.inlay_hints").setup_autocmd()
-            require("clangd_extensions.inlay_hints").set_inlay_hints()
-        elseif client.name == "metals" then
+        if client.supports_method("inlayHintProvider") then
+            if client.name == "clangd" then
+                require("clangd_extensions.inlay_hints").setup_autocmd()
+                require("clangd_extensions.inlay_hints").set_inlay_hints()
+                return
+            end
+
+            vim.lsp.inlay_hint.enable()
+        end
+
+        if client.name == "metals" then
             require("metals").setup_dap()
         end
     end,
