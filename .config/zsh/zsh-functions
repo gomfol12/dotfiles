@@ -238,8 +238,19 @@ venv()
     fi
 
     if ! _testvenvdir; then
-        echo "Venv does not exist"
-        return 1
+        echo "Venv does not exist."
+
+        if [ -n "$ZSH_VERSION" ]; then
+            vared -p "Create it? [Y/n]: " -c create_venv
+        else
+            read -p "Create it? [Y/n]: " -r create_venv
+        fi
+
+        if echo "$create_venv" | grep -E "^[yY]" -q || [ -z "$create_venv" ]; then
+            mkvenv
+        else
+            return 1
+        fi
     fi
 
     source ".venv/bin/activate"

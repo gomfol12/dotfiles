@@ -15,4 +15,11 @@
     "dart.flutterSdkPath": "/home/marek/.local/share/flutter",
     "keyboard.dispatch": "keyCode",
     "omnisharp.useModernNet": false,
+    "redhat.telemetry.enabled": false,
+    "java.imports.gradle.wrapper.checksums": [
+        {
+            "sha256": "2a2ac325379e29446c08f714a7cc498cdde42c25508f629fecaca95fe81aee20",
+            "allowed": true
+        }
+    ],
 }

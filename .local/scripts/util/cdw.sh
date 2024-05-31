@@ -47,9 +47,9 @@ EOF
                 open_with_editor=""
 
                 if [ -n "$ZSH_VERSION" ]; then
-                    vared -p "open with $EDITOR? (y/n): " -c open_with_editor
+                    vared -p "open with $EDITOR? (Y/n): " -c open_with_editor
                 else
-                    read -p "open with $EDITOR? (y/n): " -r open_with_editor
+                    read -p "open with $EDITOR? (Y/n): " -r open_with_editor
                 fi
 
                 if echo "$open_with_editor" | grep -E "^[yY]" -q || [ -z "$open_with_editor" ]; then

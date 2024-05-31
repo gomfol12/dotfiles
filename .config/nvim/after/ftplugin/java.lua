@@ -70,6 +70,9 @@ local config = {
         ["java.import.maven.enabled"] = true,
         ["java.import.maven.wrapper.enabled"] = true,
         ["java.import.generatesMetadataFilesAtProjectRoot"] = true,
+        ["java.imports.gradle.wrapper.checksums"] = {
+            { ["sha256"] = "2a2ac325379e29446c08f714a7cc498cdde42c25508f629fecaca95fe81aee20", ["allowed"] = true },
+        },
         java = {
             eclipse = {
                 downloadSources = true,
