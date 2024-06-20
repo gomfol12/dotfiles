@@ -49,6 +49,7 @@ case "$file" in
 *.o) nm "$file" | head "$head_num" ;;
 *.iso) iso-info --no-header "$file" ;;
 *.xcf) printf "gimp file format" ;;
+*.aseprite) printf "aseprite file format" ;;
 *)
     case "$(file -Lb --mime-type -- "$file")" in
     image/*)

@@ -80,6 +80,11 @@ case "$f" in
         $EDITOR "$f"
     fi
     ;;
+*.aseprite)
+    if [ -n "$DISPLAY" ]; then
+        spawn aseprite "$f"
+    fi
+    ;;
 *)
     case $(file --mime-type "$f" -bL) in
     text/* | application/json | inode/x-empty | application/octet-stream | application/x-sega-pico-rom | application/javascript)
