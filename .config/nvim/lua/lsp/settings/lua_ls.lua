@@ -15,8 +15,8 @@ return {
             workspace = {
                 library = {
                     vim.api.nvim_get_runtime_file("", true),
-                    [vim.fn.stdpath("config") .. "/lua"] = true,
-                    ["/usr/share/awesome/lib"] = true,
+                    vim.fn.stdpath("config") .. "/lua",
+                    "/usr/share/awesome/lib",
                 },
             },
             telemetry = {
