@@ -67,8 +67,7 @@ alias mkzip="zip -r"
 alias iv="sxiv.sh"
 alias sxiv="sxiv.sh"
 
-alias yt="youtube-dl --add-metadata"
-alias yta="yt -f bestaudio/best"
+alias yt="yt-dlp"
 
 alias f="lfcd"
 alias ca="cal -m -3"
