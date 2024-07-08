@@ -31,6 +31,7 @@ export QT_QPA_PLATFORMTHEME=gtk2
 #export QT_QPA_PLATFORMTHEME=qt5ct
 export NVIM_PYTHON_VENV_DIR="$HOME/.local/share/nvim/python_venv"
 export NVIM_LUA_VENV_DIR="$HOME/.local/share/nvim/lua_venv"
+export MANWIDTH=80
 
 # better looking fonts for java apps
 export JDK_JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
@@ -76,7 +77,7 @@ export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
 export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
 export ANDROID_HOME="$XDG_DATA_HOME/android"
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
-export ANDROID_AVD_HOME="$XDG_CONFIG_HOME/.android/avd"
+export ANDROID_AVD_HOME="$XDG_CONFIG_HOME/android/avd"
 export IPYTHONDIR="${XDG_CONFIG_HOME}/ipython"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 

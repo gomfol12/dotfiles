@@ -22,4 +22,5 @@
             "allowed": true
         }
     ],
+    "security.workspace.trust.untrustedFiles": "open",
 }

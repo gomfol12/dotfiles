@@ -134,6 +134,13 @@ fman()
     man -k . | fzf --prompt='Man> ' | awk '{print $1}' | xargs -r man
 }
 
+man() {
+    local width=$(tput cols)
+    [ $width -gt $MANWIDTH ] && width=$MANWIDTH
+    env MANWIDTH=$width \
+    man "$@"
+}
+
 getClassString()
 {
     #xprop WM_CLASS | grep -o '"[^"]*"' | head -n 1

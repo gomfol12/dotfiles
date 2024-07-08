@@ -71,6 +71,10 @@ local winhighlight = {
 }
 
 cmp.setup({
+    preselect = "none",
+    completion = {
+        completeopt = "menu,menuone,noinsert,noselect",
+    },
     window = {
         completion = cmp.config.window.bordered(winhighlight),
         documentation = cmp.config.window.bordered(winhighlight),
