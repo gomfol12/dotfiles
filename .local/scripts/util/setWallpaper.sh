@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# small floating terminal as password prompt. Don't forget to set according rule in your window manager
+exec_term()
+{
+    ${TERMINAL:-st} -n floatterm -g 60x2 -e "$@"
+}
+
 title="Wallpaper Changed"
 bg_path="${XDG_DATA_HOME:-$HOME/.local/share/}/bg"
 
@@ -20,8 +26,11 @@ if [ -f "$1" ]; then
         xsettingsd >/dev/null 2>&1 &
     fi
 
-    sleep 2 # wait for awesome to restart
+    exec_term sh -ci "echo Update sddm theme && sudo sddm_setup.sh \"$bg_path\""
+
     notify-send -i "$bg_path" "$title" "theme changed"
+elif [ -d "$1" ]; then
+    notify-send "Error" "Directory, not a file"
 else
     theming -r
 fi

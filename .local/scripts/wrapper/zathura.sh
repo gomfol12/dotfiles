@@ -2,7 +2,7 @@
 
 configColorGen()
 {
-    . "$HOME/.local/scripts/colors.sh"
+    . "$SCRIPT_DIR/colors.sh"
     cat <<EOF
 set recolor "false"
 set completion-bg "$background"
