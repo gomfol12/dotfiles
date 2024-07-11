@@ -2,6 +2,16 @@
 
 set -e
 
+pacman_dep_check()
+{
+    pacman -Q "$1" >/dev/null 2>&1 || {
+        echo "$1 is not installed"
+        exit 1
+    }
+}
+pacman_dep_check "sddm-git"
+pacman_dep_check "sddm-theme-corners-git"
+
 if [ "$UID" -ne 0 ]; then
     echo "scipt must be run as the root user"
     exit 1
