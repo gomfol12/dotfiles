@@ -10,7 +10,7 @@ local indent = 4
 
 -- ========== General ========== --
 opt.mouse = "a" -- Enable mouse support
-opt.clipboard = "unnamedplus" -- Copy/paste to system clipboard
+-- opt.clipboard = "unnamedplus" -- Copy/paste to system clipboard
 opt.completeopt = "menuone,noinsert,noselect" -- Autocomplete options
 opt.wildmode = "list:longest"
 opt.confirm = true -- Confirmation dialog

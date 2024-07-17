@@ -3,6 +3,9 @@
 -- Default libs
 local awful = require("awful")
 
+-- Replace the default dwindle with custom one
+awful.layout.suit.spiral.dwindle.arrange = require("main.custom_dwindle_layout").arrange
+
 local layouts = {
     -- Table of layouts, order matters.
     awful.layout.suit.spiral.dwindle,

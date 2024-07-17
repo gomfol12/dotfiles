@@ -402,6 +402,26 @@ return gears.table.join(
         awful.tag.incncol(-1, nil, true)
     end, { description = "decrease the number of columns", group = "layout" }),
 
+    -- layout size manipulation
+    awful.key({ modkey, "Control" }, "l", function()
+        awful.tag.incmwfact(0.02)
+    end, { description = "increase master width factor", group = "layout" }),
+    awful.key({ modkey, "Control" }, "h", function()
+        awful.tag.incmwfact(-0.02)
+    end, { description = "decrease master width factor", group = "layout" }),
+    -- awful.key({ modkey, "Shift" }, "h", function()
+    --     awful.tag.incnmaster(1, nil, true)
+    -- end, { description = "increase the number of master clients", group = "layout" }),
+    -- awful.key({ modkey, "Shift" }, "l", function()
+    --     awful.tag.incnmaster(-1, nil, true)
+    -- end, { description = "decrease the number of master clients", group = "layout" }),
+    -- awful.key({ modkey, "Control" }, "h", function()
+    --     awful.tag.incncol(1, nil, true)
+    -- end, { description = "increase the number of columns", group = "layout" }),
+    -- awful.key({ modkey, "Control" }, "l", function()
+    --     awful.tag.incncol(-1, nil, true)
+    -- end, { description = "decrease the number of columns", group = "layout" }),
+
     -- move resize
     awful.key({ modkey, "Shift" }, "Down", function()
         awful.client.moveresize(0, 0, 0, 20)

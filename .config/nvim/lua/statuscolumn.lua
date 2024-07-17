@@ -11,11 +11,11 @@ statuscol.setup({
     relculright = true,
     segments = {
         {
-            sign = { namespace = { "gitsigns" }, colwidth = 1, wrap = true, auto = true },
+            sign = { namespace = { "gitsigns" }, colwidth = 1, wrap = true },
             click = "v:lua.ScLa",
         },
         {
-            sign = { name = { "Diagnostic" }, colwidth = 2 },
+            sign = { namespace = { "diagnostic/signs" }, colwidth = 2 },
             click = "v:lua.ScLa",
         },
         {

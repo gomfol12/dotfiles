@@ -345,6 +345,16 @@ vim.keymap.set("n", "<leader>na", function()
     require("nabla").popup()
 end, { silent = true, desc = "nabla: popup" })
 
+-- clipboard
+vim.keymap.set({ "n", "v", "x" }, "<leader>y", '"+y', { noremap = true, silent = true, desc = "Yank to clipboard" })
+vim.keymap.set(
+    { "n", "v", "x" },
+    "<leader>Y",
+    '"+yy',
+    { noremap = true, silent = true, desc = "Yank line to clipboard" }
+)
+vim.keymap.set({ "n", "v", "x" }, "<leader>p", '"+p', { noremap = true, silent = true, desc = "Paste from clipboard" })
+
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })
 

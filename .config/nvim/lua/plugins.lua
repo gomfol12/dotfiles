@@ -1,5 +1,5 @@
 -- ==================== Plugins ==================== --
--- TODO: diffview, smart-splits.nvim
+-- TODO: diffview, smart-splits.nvim, https://github.com/MeanderingProgrammer/markdown.nvim
 
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
@@ -61,7 +61,7 @@ return packer.startup(function(use)
     use("lukas-reineke/indent-blankline.nvim")
     use("j-hui/fidget.nvim")
     use("github/copilot.vim")
-    use("folke/which-key.nvim")
+    use({ "folke/which-key.nvim", requires = { "echasnovski/mini.icons" } })
     use("mbbill/undotree")
     use("rcarriga/nvim-notify") -- TODO: vigoux/notifier.nvim
     -- use("kwkarlwang/bufresize.nvim")
@@ -147,7 +147,7 @@ return packer.startup(function(use)
 
             "mfussenegger/nvim-dap",
             "rcarriga/nvim-dap-ui",
-	    "nvim-neotest/nvim-nio",
+            "nvim-neotest/nvim-nio",
 
             "mfussenegger/nvim-dap-python",
 
