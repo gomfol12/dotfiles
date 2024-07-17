@@ -78,7 +78,7 @@ xrandr --output \"$PRIMARY\" --mode 1920x1080 --rate 60 --primary" >>"/usr/share
 sddm_theme_setup()
 {
     local wallpaper_path
-    wallpaper_path=$(readlink -f "$1")
+    wallpaper_path=$1
 
     if [ -z "$wallpaper_path" ]; then
         local username
@@ -90,8 +90,11 @@ sddm_theme_setup()
         fi
 
         wallpaper_path=$(readlink -f "/home/$username/.local/share/bg")
-        extension="${wallpaper_path##*.}"
+    else
+        wallpaper_path=$(readlink -f "$1")
     fi
+
+    extension="${wallpaper_path##*.}"
 
     sed_option "Current" "corners" "/etc/sddm.conf.d/sddm.conf"
 
@@ -99,7 +102,13 @@ sddm_theme_setup()
 
     sed_option "BgSource" "\"backgrounds/wallpaper.$extension\"" "/usr/share/sddm/themes/corners/theme.conf"
     sed_option "FontFamily" "\"Inconsolata\"" "/usr/share/sddm/themes/corners/theme.conf"
-    sed_option "FontSize" "12" "/usr/share/sddm/themes/corners/theme.conf"
+
+    if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
+        sed_option "FontSize" "24" "/usr/share/sddm/themes/corners/theme.conf"
+    else
+        sed_option "FontSize" "12" "/usr/share/sddm/themes/corners/theme.conf"
+    fi
+
     sed_option "UserPictureEnabled" "false" "/usr/share/sddm/themes/corners/theme.conf"
 
     color0=$(get_color "color0")
