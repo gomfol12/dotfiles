@@ -20,11 +20,7 @@ if [ -f "$1" ]; then
     if [ "$(pgrep -u "$(id -u)" -nf "xsettingsd")" ]; then
         killall xsettingsd
     fi
-    if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
-        xsettingsd --config ~/.config/xsettingsd/xsettingsd-laptop.conf >/dev/null 2>&1 &
-    else
-        xsettingsd >/dev/null 2>&1 &
-    fi
+    xsettingsd >/dev/null 2>&1 &
 
     exec_term sh -ci "echo Update sddm theme && sudo sddm_setup.sh \"$bg_path\""
 
@@ -33,4 +29,8 @@ elif [ -d "$1" ]; then
     notify-send "Error" "Directory, not a file"
 else
     theming -r
+
+    if [ "$DESKTOP_SESSION" = "hyprland" ]; then
+        swww img "$bg_path" --transition-type wipe
+    fi
 fi

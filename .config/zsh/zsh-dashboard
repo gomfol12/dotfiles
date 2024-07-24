@@ -58,10 +58,10 @@ function _gitlog
 # show changed files in a more informative way than normal `git status`
 function _gitstatus
 {
-    git_ls_files_output=$(git ls-files --others --exclude-standard)
-    if [ -n "$git_ls_files_output" ]; then
-        echo "$git_ls_files_output" | xargs git add --intent-to-add
-    fi
+    # git_ls_files_output=$(git ls-files --others --exclude-standard)
+    # if [ -n "$git_ls_files_output" ]; then
+    #     echo "$git_ls_files_output" | xargs git add --intent-to-add
+    # fi
 
     if [[ -n "$(git status --porcelain)" ]]; then
         local unstaged staged

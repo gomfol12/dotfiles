@@ -42,7 +42,7 @@ playerctld daemon &
 log_notify.sh "$XDG_CACHE_HOME/log_notify.log" &
 
 if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
-    xsettingsd --config ~/.config/xsettingsd/xsettingsd-laptop.conf &
+    #xsettingsd --config ~/.config/xsettingsd/xsettingsd-laptop.conf &
     libinput-gestures &
 else
     imwheel -b "45" &
