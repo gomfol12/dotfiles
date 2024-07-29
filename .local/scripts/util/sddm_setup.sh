@@ -9,7 +9,7 @@ pacman_dep_check()
         exit 1
     }
 }
-pacman_dep_check "sddm-git"
+pacman_dep_check "sddm"
 pacman_dep_check "sddm-theme-corners-git"
 
 if [ "$UID" -ne 0 ]; then
