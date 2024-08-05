@@ -154,6 +154,8 @@ alias update="paru -Pw; paru -Syu --norebuild --combinedupgrade --batchinstall"
 
 alias adb='HOME="$XDG_DATA_HOME"/android adb'
 
+alias pentablet_driver="/usr/lib/pentablet/PenTablet.sh /mini & disown"
+
 # because i am stupid
 alias :q="exit"
 alias al="la"

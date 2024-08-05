@@ -94,13 +94,11 @@ sddm_theme_setup()
         wallpaper_path=$(readlink -f "$1")
     fi
 
-    extension="${wallpaper_path##*.}"
-
     sed_option "Current" "corners" "/etc/sddm.conf.d/sddm.conf"
 
-    cp "$wallpaper_path" "/usr/share/sddm/themes/corners/backgrounds/wallpaper.$extension"
+    cp "$wallpaper_path" "/usr/share/sddm/themes/corners/backgrounds/wallpaper"
 
-    sed_option "BgSource" "\"backgrounds/wallpaper.$extension\"" "/usr/share/sddm/themes/corners/theme.conf"
+    sed_option "BgSource" "\"backgrounds/wallpaper\"" "/usr/share/sddm/themes/corners/theme.conf"
     sed_option "FontFamily" "\"Inconsolata\"" "/usr/share/sddm/themes/corners/theme.conf"
 
     if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
