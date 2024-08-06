@@ -1,4 +1,13 @@
 #!/bin/bash
+# REWORK AGAIN ??? still not satisfied with the script
+# wpctl ???
+# bindel=, XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+# bindel=, XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+# bindl=, XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+# # Requires playerctl
+# bindl=, XF86AudioPlay, exec, playerctl play-pause
+# bindl=, XF86AudioPrev, exec, playerctl previous
+# bindl=, XF86AudioNext, exec, playerctl next
 
 config_file="${XDG_CONFIG_HOME:-"$HOME/.config"}/audioctl"
 players=$(playerctl --list-all --no-messages)

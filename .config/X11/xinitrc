@@ -34,7 +34,7 @@ unclutter --timeout 5 &
 lxpolkit &
 numlockx on &
 clipctl run &
-xcape -e 'Super_L=Menu;Super_R=Menu' &
+# xcape -e 'Super_L=Menu;Super_R=Menu' &
 easyeffects --gapplication-service &
 nm-applet &
 blueman-applet &

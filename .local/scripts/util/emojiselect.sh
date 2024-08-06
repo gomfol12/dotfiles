@@ -1,6 +1,22 @@
 #! /bin/sh
 # scraped from https://emojipedia.org/
-cat <<EOF | dmenu -l 20 | cut -d" " -f1 | xargs xdotool type
+
+spawn()
+{
+    exec </dev/null 1>&0 2>&0
+    exec setsid -f -- "$@"
+}
+
+command="xdotool type"
+
+if [ -n "$WAYLAND_DISPLAY" ]; then
+    if [ ! "$(pgrep -u "$(id -u)" -nf "ydotoold")" ]; then
+        spawn ydotoold
+    fi
+    command="ydotool type"
+fi
+
+cat <<EOF | dmenu -l 20 | cut -d" " -f1 | xargs $command
 😀 Grinning Face
 😃 Grinning Face with Big Eyes
 😄 Grinning Face with Smiling Eyes
