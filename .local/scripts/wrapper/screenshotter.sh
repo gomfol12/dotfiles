@@ -52,7 +52,7 @@ case $action in
     fi
     notify
     ;;
-"clipselct")
+"clipselect")
     if [ -n "$WAYLAND_DISPLAY" ]; then
         slurp | grim -g - - | wl-copy --type image/png
     else
