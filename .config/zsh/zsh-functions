@@ -68,7 +68,7 @@ pacin()
 
 pacdel()
 {
-    pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro doas pacman -Rncs
+    pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro doas pacman -Rns
 }
 
 pacs()
@@ -348,4 +348,11 @@ nvim_setup()
 pip_update_all()
 {
     pip --disable-pip-version-check list --outdated --format=json | python -c "import json, sys; print('\n'.join([x['name'] for x in json.load(sys.stdin)]))" | xargs -n1 pip install -U
+}
+
+xwayland_allow_root()
+{
+    xhost si:localuser:root
+    $@
+    xhost -si:localuser:root
 }

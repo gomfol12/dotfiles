@@ -7,7 +7,7 @@ else
     xrdb -merge "$HOME/.config/Xresources"
 fi
 
-setWallpaper.sh
+theming -f
 setupMonitors.sh
 # xset dpms 300 300 600
 # xset s 300
@@ -38,9 +38,9 @@ clipctl run &
 easyeffects --gapplication-service &
 nm-applet &
 blueman-applet &
-#playerctld daemon &
 log_notify.sh "$XDG_CACHE_HOME/log_notify.log" &
 xsettingsd &
+nextcloud --background &
 
 if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
     #xsettingsd --config ~/.config/xsettingsd/xsettingsd-laptop.conf &
