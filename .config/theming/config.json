@@ -35,6 +35,9 @@
             "command": "pidof st | xargs -r kill -SIGUSR1"
         },
         {
+            "command": "pidof kitty | xargs -r kill -SIGUSR1"
+        },
+        {
             "command": "[ \"$DESKTOP_SESSION\" = \"xinitrc\" ] && awesome-client 'awesome.restart()'",
             "ignore_error": true
         },

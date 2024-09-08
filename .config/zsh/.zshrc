@@ -115,15 +115,9 @@ done
 # to add other keys to this hash, see: man 5 terminfo
 typeset -g -A key
 
-if [ -z "$TMUX" ]; then
-    key[Home]="${terminfo[home]}" # ???
-    key[Insert]="${terminfo[smir]}" # ???
-    key[Delete]="${terminfo[dch1]}"
-else
-    key[Home]="${terminfo[khome]}"
-    key[Insert]="${terminfo[kich1]}"
-    key[Delete]="${terminfo[kdch1]}"
-fi
+key[Home]="${terminfo[khome]}"
+key[Insert]="${terminfo[kich1]}"
+key[Delete]="${terminfo[kdch1]}"
 key[End]="${terminfo[kend]}"
 key[Backspace]="${terminfo[kbs]}"
 key[Up]="${terminfo[kcuu1]}"
@@ -140,6 +134,20 @@ key[Shift-Backspace]="${terminfo[kBS2]}"
 key[Shift-Space]="${terminfo[kSP2]}"
 key[Control-Up]="${terminfo[kUP5]}"
 key[Control-Down]="${terminfo[kDWN5]}"
+
+if [ -z "$TMUX" ]; then
+    key[Home]="${terminfo[home]}" # ???
+    key[Insert]="${terminfo[smir]}" # ???
+    key[Delete]="${terminfo[dch1]}"
+fi
+
+if [ "$TERM" = "xterm-kitty" ]; then
+    key[End]="\e[F"
+    key[Insert]="\e[2~"
+    key[Delete]="\e[3~"
+    key[Control-Backspace]="${terminfo[cub1]}"
+    key[Control-Down]="${terminfo[kDN5]}"
+fi
 
 # widgets
 insert_space() { zle -U " " }
@@ -223,9 +231,9 @@ if [ -f "$SCRIPT_DIR/util/cdw.sh" ]; then
 fi
 
 ### tmux ###
-if command -v tmux &>/dev/null && [ -z "${TMUX}" ] && [ -n "$DISPLAY" ] && [ ! "$TERM_PROGRAM" = "vscode" ]; then
-    tmux
-fi
+# if command -v tmux &>/dev/null && [ -z "${TMUX}" ] && [ -n "$DISPLAY" ] && [ ! "$TERM_PROGRAM" = "vscode" ]; then
+#     tmux
+# fi
 
 ### fuck ###
 if command -v "fuck" >/dev/null 2>&1; then

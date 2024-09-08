@@ -1,5 +1,5 @@
 -- ==================== Plugins ==================== --
--- TODO: diffview, smart-splits.nvim, https://github.com/MeanderingProgrammer/markdown.nvim
+-- TODO: diffview, smart-splits.nvim, https://github.com/MeanderingProgrammer/markdown.nvim, hologram.nvim
 
 local status_ok, packer = pcall(require, "packer")
 if not status_ok then
@@ -95,6 +95,8 @@ return packer.startup(function(use)
     use({ "frabjous/knap" }) -- markdown, latex live preview
     use("dfendr/clipboard-image.nvim")
     use("jbyuki/nabla.nvim")
+    use("fladson/vim-kitty")
+    use({ "knubie/vim-kitty-navigator", run = "cp ./*.py ~/.config/kitty/" })
 
     use("benlubas/molten-nvim")
     use("3rd/image.nvim")

@@ -64,31 +64,35 @@ vim.keymap.set("v", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 
 -- window, tabs, ... --
 -- window navigation
-keymap.set("n", "<c-j>", "lua require('tmux').move_bottom()<cr>", { silent = true, desc = "Move down" })
-keymap.set("n", "<c-h>", "lua require('tmux').move_left()<cr>", { silent = true, desc = "Move left" })
-keymap.set("n", "<c-k>", "lua require('tmux').move_top()<cr>", { silent = true, desc = "Move up" })
-keymap.set("n", "<c-l>", "lua require('tmux').move_right()<cr>", { silent = true, desc = "Move right" })
+if os.getenv("TMUX") then
+    keymap.set("n", "<c-j>", "lua require('tmux').move_bottom()<cr>", { silent = true, desc = "Move down" })
+    keymap.set("n", "<c-h>", "lua require('tmux').move_left()<cr>", { silent = true, desc = "Move left" })
+    keymap.set("n", "<c-k>", "lua require('tmux').move_top()<cr>", { silent = true, desc = "Move up" })
+    keymap.set("n", "<c-l>", "lua require('tmux').move_right()<cr>", { silent = true, desc = "Move right" })
+elseif os.getenv("KITTY_WINDOW_ID") then
+    keymap.set("n", "<c-j>", ":KittyNavigateDown", { silent = true, desc = "Move down" })
+    keymap.set("n", "<c-h>", ":KittyNavigateLeft", { silent = true, desc = "Move left" })
+    keymap.set("n", "<c-k>", ":KittyNavigateUp", { silent = true, desc = "Move up" })
+    keymap.set("n", "<c-l>", ":KittyNavigateRight", { silent = true, desc = "Move right" })
+else
+    keymap.set("n", "<c-j>", "<c-w>j", { silent = true, desc = "Move down" })
+    keymap.set("n", "<c-h>", "<c-w>h", { silent = true, desc = "Move left" })
+    keymap.set("n", "<c-k>", "<c-w>k", { silent = true, desc = "Move up" })
+    keymap.set("n", "<c-l>", "<c-w>l", { silent = true, desc = "Move right" })
+end
 
 -- window resize
-keymap.set("n", "<c-Up>", function()
-    require("tmux").resize_top()
-    -- require("bufresize").register()
-end, { silent = true, desc = "Resize up" })
-
-keymap.set("n", "<c-Down>", function()
-    require("tmux").resize_bottom()
-    -- require("bufresize").register()
-end, { silent = true, desc = "Resize down" })
-
-keymap.set("n", "<c-Left>", function()
-    require("tmux").resize_left()
-    -- require("bufresize").register()
-end, { silent = true, desc = "Resize left" })
-
-keymap.set("n", "<c-Right>", function()
-    require("tmux").resize_right()
-    -- require("bufresize").register()
-end, { silent = true, desc = "Resize right" })
+if os.getenv("TMUX") then
+    keymap.set("n", "<c-Up>", require("tmux").resize_top, { silent = true, desc = "Resize up" })
+    keymap.set("n", "<c-Down>", require("tmux").resize_bottom, { silent = true, desc = "Resize down" })
+    keymap.set("n", "<c-Left>", require("tmux").resize_left, { silent = true, desc = "Resize left" })
+    keymap.set("n", "<c-Right>", require("tmux").resize_right, { silent = true, desc = "Resize right" })
+else
+    keymap.set("n", "<c-Up>", ":resize -2<CR>", { silent = true })
+    keymap.set("n", "<c-Down>", ":resize +2<CR>", { silent = true })
+    keymap.set("n", "<c-Left>", ":vertical resize +2<CR>", { silent = true })
+    keymap.set("n", "<c-Right>", ":vertical resize -2<CR>", { silent = true })
+end
 
 -- window splits
 keymap.set("n", "<leader>s", ":split<Space>", { desc = "split" })
@@ -357,16 +361,6 @@ vim.keymap.set({ "n", "v", "x" }, "<leader>p", '"+p', { noremap = true, silent =
 
 -- Maybe useful some time in the future
 -- keymap.set("", "<Space>", "<Nop>", { silent = true })
-
--- keymap.set("n", "<c-j>", "<c-w>j")
--- keymap.set("n", "<c-h>", "<c-w>h")
--- keymap.set("n", "<c-k>", "<c-w>k")
--- keymap.set("n", "<c-l>", "<c-w>l")
-
--- keymap.set("n", "<c-Up>", ":resize -2<CR>", { silent = true })
--- keymap.set("n", "<c-Down>", ":resize +2<CR>", { silent = true })
--- keymap.set("n", "<c-Left>", ":vertical resize +2<CR>", { silent = true })
--- keymap.set("n", "<c-Right>", ":vertical resize -2<CR>", { silent = true })
 
 -- Mapping Notes
 
