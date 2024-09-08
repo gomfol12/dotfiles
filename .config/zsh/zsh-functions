@@ -356,3 +356,12 @@ xwayland_allow_root()
     $@
     xhost -si:localuser:root
 }
+
+scancode()
+{
+    if [ -n "$WAYLAND_DISPLAY" ]; then
+        slurp | grim -g - - | zbarimg -
+    else
+        maim -s | zbarimg -
+    fi
+}
