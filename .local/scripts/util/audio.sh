@@ -1,48 +1,43 @@
 #!/bin/bash
 
-UPDATE_EWW=0
+UPDATE_EWW=1
 
 update_eww()
 {
-    if [ "$UPDATE_EWW" -eq 1 ]; then
-        local sink_mute
-        sink_mute=$(get_default_sink_mute)
-        local mic_mute
-        mic_mute=$(get_default_source_mute)
-        local volume_var
-        volume_var=$(get_default_sink_volume)
+    if ! [ "$UPDATE_EWW" -eq 1 ]; then
+        return
+    fi
 
-        eww update volume="$volume_var"
-        volume_var="${volume_var%\%}"
+    local sink_mute
+    sink_mute=$(get_default_sink_mute)
+    local mic_mute
+    mic_mute=$(get_default_source_mute)
+    local volume
+    volume=$(get_default_sink_volume)
+    volume="${volume%\%}" # strip percentage sign
 
-        default_sink=$(get_default_sink)
+    local sink_icon
+    local default_sink
+    default_sink=$(get_default_sink)
 
-        if [ "$default_sink" = "alsa_output.usb-Corsair_CORSAIR_HS80_RGB_Wireless_Gaming_Receiver_18e05f2e000700dc-00.analog-stereo" ]; then
-            if [ "$sink_mute" = "yes" ]; then
-                eww update sink_icon="󰟎 "
-            else
-                eww update sink_icon="󰋋 "
-            fi
+    if [ "$default_sink" = "alsa_output.usb-Corsair_CORSAIR_HS80_RGB_Wireless_Gaming_Receiver_18e05f2e000700dc-00.analog-stereo" ]; then
+        sink_icon=$([ "$sink_mute" = "yes" ] && echo "󰟎 " || echo "󰋋 ")
+    else
+        if [ "$sink_mute" = "yes" ]; then
+            sink_icon="󰝟 "
+        elif [ "$volume" -eq 0 ]; then
+            sink_icon=" "
+        elif [ "$volume" -lt 50 ]; then
+            sink_icon=" "
+        elif [ "$volume" -le 100 ]; then
+            sink_icon=" "
         else
-            if [ "$sink_mute" = "yes" ]; then
-                eww update sink_icon="󰝟 "
-            elif [ "$volume_var" -eq 0 ]; then
-                eww update sink_icon=" "
-            elif [ "$volume_var" -lt 50 ]; then
-                eww update sink_icon=" "
-            elif [ "$volume_var" -le 100 ]; then
-                eww update sink_icon=" "
-            else
-                eww update sink_icon="󰝟 "
-            fi
-        fi
-
-        if [ "$mic_mute" = "yes" ]; then
-            eww update mic_icon=" "
-        else
-            eww update mic_icon=""
+            sink_icon="󰝟 "
         fi
     fi
+
+    eww update mic_icon="$([ "$mic_mute" = "yes" ] && echo " " || echo "")"
+    eww update volume="$volume%" sink_icon="$sink_icon"
 }
 
 convert_to_percent()
@@ -219,8 +214,8 @@ usage - audio.sh [command] [subcommand|value]
 EOF
 }
 
-if [ "$1" = "eww" ]; then
-    UPDATE_EWW=1
+if [ "$1" = "noeww" ]; then
+    UPDATE_EWW=0
     shift
 fi
 
