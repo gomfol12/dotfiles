@@ -218,6 +218,9 @@ if [ "$1" = "noeww" ]; then
     UPDATE_EWW=0
     shift
 fi
+if [ "$1" = "eww" ]; then
+    shift
+fi
 
 case "$1" in
 "switch" | "swap")
