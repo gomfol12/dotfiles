@@ -1,0 +1,115 @@
+@import "colors.scss";
+
+* {
+  all: unset; //Unsets everything so you can style everything from scratch
+
+  font-family:
+    Inconsolata Nerd Font;
+  /* monospace; */
+  font-size: 16px;
+  border-radius: 0px;
+  min-height: 0px;
+}
+
+.primary_bar,
+.secondary_bar {
+  background-color: $background;
+  color: $foreground;
+  padding: 0px;
+}
+
+.workspaces button {
+  background-color: $background;
+  border: none;
+}
+
+.workspaces .button_normal {
+  padding: 5 10px;
+}
+
+.workspaces .button_occupied {
+  padding: 5 7px;
+  padding-right: 0px;
+}
+
+.workspaces .occupied {
+  background-color: $foreground;
+  padding: 2px;
+  padding-left: 4px;
+  padding-right: 0px;
+  margin: 2px;
+}
+
+.workspaces .focused {
+  background-color: $color1;
+}
+
+.workspaces .urgent {
+  background-color: $color7;
+  color: $background;
+}
+
+/* .workspaces button:hover { */
+/*   background-color: $color8; */
+/* } */
+
+.right {
+  background-color: $background;
+  color: $foreground;
+}
+
+.systray {
+  background-color: $color2;
+  color: $foreground;
+  margin: 0px;
+  padding: 0 10px;
+}
+
+.time {
+  padding: 0 10px;
+}
+
+.volume {
+  background-color: $color2;
+  padding: 0 10px;
+}
+
+.mic {
+  background-color: $color2;
+  padding: 0 10px;
+}
+
+.mem {
+  background-color: $color2;
+  padding: 0 10px;
+}
+
+.gpu {
+  background-color: $color2;
+  padding: 0 10px;
+}
+
+.cpu {
+  background-color: $color2;
+  padding: 0 10px;
+}
+
+.network {
+  background-color: $color2;
+  padding: 0 10px;
+}
+
+.weather {
+  background-color: $color2;
+  padding: 0 10px;
+}
+
+.title {
+  padding: 0 10px;
+}
+
+.title_focused {
+  background-color: $color1;
+  color: $background;
+  padding: 0 10px;
+}

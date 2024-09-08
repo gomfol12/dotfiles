@@ -1,0 +1,131 @@
+(defpoll time :interval "10s"
+  "date +'%a %d %B, %R'"
+)
+(defwidget time_box []
+  (box :class "time"
+    time
+  )
+)
+
+(defvar volume "100%")
+(defvar sink_icon " ")
+(defvar mic_icon "")
+(defwidget audio_box []
+  (box :space-evenly false :spacing 5 :orientation "h"
+    (box :class "volume" :space-evenly false :spacing 5 :orientation "h"
+      sink_icon
+      volume
+    )
+    (box :class "mic" :orientation "h"
+      mic_icon
+    )
+  )
+)
+
+(defpoll mem_percent :interval "10s"
+    "scripts/mem.sh percent"
+)
+(defpoll mem_used :interval "10s"
+    "scripts/mem.sh used"
+)
+(defvar mem_reveal false)
+(defwidget mem_box []
+  (eventbox :onclick "eww update mem_reveal=${mem_reveal ? false : true}"
+    (box :class "mem" :space-evenly false :spacing 5
+      "󰍛 "
+      mem_percent
+      (revealer :transition "slideright" :reveal mem_reveal :duration "500ms"
+        mem_used
+      )
+    )
+  )
+)
+
+(defpoll gpu :interval "5s"
+    "scripts/gpu.sh"
+)
+(defwidget gpu_box []
+  (box :class "gpu" :space-evenly false :spacing 5 :orientation "h"
+    "󰆧 "
+    gpu
+  )
+)
+
+(deflisten cpu "scripts/cpu_poll.sh 5")
+(defwidget cpu_box []
+  (box :class "cpu" :space-evenly false :spacing 5 :orientation "h"
+    " "
+    cpu
+  )
+)
+
+(deflisten network "scripts/network_poll.sh 5")
+(defwidget network_box []
+  (box :class "network" :space-evenly false :spacing 5 :orientation "h"
+    network
+  )
+)
+
+(defpoll weather :interval "15m"
+    "weather.sh | head -1"
+)
+(defwidget weather_box []
+  (box :class "weather" :space-evenly false :spacing 5 :orientation "h"
+    weather
+  )
+)
+
+(deflisten primary_workspaces "scripts/workspaces.sh HDMI-A-1")
+(deflisten primary_title "scripts/title.sh HDMI-A-1")
+
+(defwindow primary_bar []
+           :monitor '["<primary>", "HDMI-A-1", "MSI G24C4"]'
+           :geometry (geometry :x "0%"
+                               :y "0%"
+                               :width "100%"
+                               :height "25px"
+                               :anchor "top center")
+           :stacking "fg"
+           :reserve (struts :distance "25px" :side "top")
+           :windowtype "dock"
+           :wm-ignore false
+           :exclusive true
+  (box :orientation "h" :space-evenly false :spacing 5
+    (literal :content primary_workspaces)
+    (literal :content primary_title :hexpand true)
+    (box :class "right" :orientation "h" :space-evenly false :spacing 5 :halign "end"
+      (weather_box)
+      (network_box)
+      (cpu_box)
+      (gpu_box)
+      (mem_box)
+      (audio_box)
+      (systray :class "systray" :icon-size "16" :spacing "5")
+      (time_box)
+    )
+  )
+)
+
+(deflisten secondary_workspaces "scripts/workspaces.sh DVI-D-1")
+(deflisten secondary_title "scripts/title.sh DVI-D-1")
+
+(defwindow secondary_bar []
+           :monitor '["DVI-D-1", "PLE2483H"]'
+           :geometry (geometry :x "0%"
+                               :y "0%"
+                               :width "100%"
+                               :height "25px"
+                               :anchor "top center")
+           :stacking "fg"
+           :reserve (struts :distance "25px" :side "top")
+           :windowtype "dock"
+           :wm-ignore false
+           :exclusive true
+  (box :orientation "h" :space-evenly false
+    (literal :content secondary_workspaces)
+    (literal :content secondary_title :hexpand true)
+    (box :class "right" :orientation "h" :space-evenly false :halign "end"
+      (time_box)
+    )
+  )
+)
