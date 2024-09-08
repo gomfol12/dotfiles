@@ -1,286 +1,159 @@
 #!/bin/bash
-# REWORK AGAIN ??? still not satisfied with the script
-# wpctl ???
-# bindel=, XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
-# bindel=, XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
-# bindl=, XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-# # Requires playerctl
-# bindl=, XF86AudioPlay, exec, playerctl play-pause
-# bindl=, XF86AudioPrev, exec, playerctl previous
-# bindl=, XF86AudioNext, exec, playerctl next
 
-config_file="${XDG_CONFIG_HOME:-"$HOME/.config"}/audioctl"
-players=$(playerctl --list-all --no-messages)
+UPDATE_EWW=0
 
-# check if audio is ready
-default_sink=$(pactl get-default-sink)
-[ "$default_sink" = "@DEFAULT_SINK@" ] && exit 1
-
-log()
+update_eww()
 {
-    printf "%s\n" "$1" | xargs
-}
+    if [ "$UPDATE_EWW" -eq 1 ]; then
+        local sink_mute
+        sink_mute=$(get_default_sink_mute)
+        local mic_mute
+        mic_mute=$(get_default_source_mute)
+        local volume_var
+        volume_var=$(get_default_sink_volume)
 
-# $1 sink|source
-get_user_info()
-{
-    if [ "$1" = "sink" ]; then
-        sinks_raw="$(pactl list sinks)"
-        sinks_count="$(pactl list sinks | grep -cE "^Sink #[0-9]+")"
-    elif [ "$1" = "source" ]; then
-        sinks_raw="$(pactl list sources)"
-        sinks_count="$(pactl list sources | grep -cE "^Source #[0-9]+")"
-    else
-        log "Error: user_get_info argument required"
-        exit 1
-    fi
+        eww update volume="$volume_var"
+        volume_var="${volume_var%\%}"
 
-    # error checking
-    if [ -z "$sinks_raw" ] || [ -z "$sinks_count" ]; then
-        log "Error: Cant get speaker data"
-        exit 1
-    fi
+        default_sink=$(get_default_sink)
 
-    names=()
-    descs=()
-
-    counter=0
-    IFS=$'\n'
-    # get sink names
-    for name in $(echo "$sinks_raw" | grep "Name:.*$" | sed 's/[[:space:]]*Name: //'); do
-        names[counter]=$name
-        counter=$((counter + 1))
-    done
-    counter=0
-    # get sink desc
-    for desc in $(echo "$sinks_raw" | grep "Description:.*$" | sed 's/[[:space:]]*Description: //'); do
-        descs[counter]=$desc
-        counter=$((counter + 1))
-    done
-
-    # print for user
-    for ((i = 0; i < sinks_count; i++)); do
-        # error checking
-        if [ -z "${descs[i]}" ]; then
-            log "Error: Cant get speaker data"
-            exit 1
-        fi
-        log "$i: ${descs[i]}"
-    done
-    # read from user
-    while read -p "[0]: " -r select; do
-        if [[ $select =~ [[:digit:]]+ ]] && [ "$select" -lt "$sinks_count" ]; then
-            # error checking
-            if [ -z "${names[$select]}" ]; then
-                log "Error: Cant get speaker data"
-                exit 1
+        if [ "$default_sink" = "alsa_output.usb-Corsair_CORSAIR_HS80_RGB_Wireless_Gaming_Receiver_18e05f2e000700dc-00.analog-stereo" ]; then
+            if [ "$sink_mute" = "yes" ]; then
+                eww update sink_icon="󰟎 "
+            else
+                eww update sink_icon="󰋋 "
             fi
-            select=${names[$select]}
-            break
+        else
+            if [ "$sink_mute" = "yes" ]; then
+                eww update sink_icon="󰝟 "
+            elif [ "$volume_var" -eq 0 ]; then
+                eww update sink_icon=" "
+            elif [ "$volume_var" -lt 50 ]; then
+                eww update sink_icon=" "
+            elif [ "$volume_var" -le 100 ]; then
+                eww update sink_icon=" "
+            else
+                eww update sink_icon="󰝟 "
+            fi
         fi
-        if [ -z "$select" ]; then
-            select=${names[0]}
-            break
+
+        if [ "$mic_mute" = "yes" ]; then
+            eww update mic_icon=" "
+        else
+            eww update mic_icon=""
         fi
-        log "Invalid input! Try again."
-    done
-}
-
-setup()
-{
-    log "--- setup ---"
-    log "speaker:"
-    get_user_info "sink"
-    speaker=$select
-    log "headphones:"
-    get_user_info "sink"
-    headphones=$select
-    log "microphone:"
-    get_user_info "source"
-    microphone=$select
-
-    echo "speaker:$speaker" >"$config_file"
-    echo "headphones:$headphones" >>"$config_file"
-    echo "microphone:$microphone" >>"$config_file"
-}
-
-load_config()
-{
-    if [ -f "$config_file" ]; then
-        speaker=$(grep "speaker:" "$config_file" | cut -d ":" -f 2)
-        headphones=$(grep "headphones:" "$config_file" | cut -d ":" -f 2)
-        microphone=$(grep "microphone:" "$config_file" | cut -d ":" -f 2)
-    else
-        log "Error: Cant find config file. Starting setup..."
-        setup
-    fi
-}
-load_config
-
-swap_audio_outputs()
-{
-    if [ "$default_sink" = "$speaker" ]; then
-        pactl set-default-sink "$headphones"
-    fi
-    if [ "$default_sink" = "$headphones" ]; then
-        pactl set-default-sink "$speaker"
     fi
 }
 
-# setup default source sink
-setup_default_source_sink()
+convert_to_percent()
 {
-    pactl set-default-sink "$speaker"
-    pactl set-default-source "$microphone"
+    printf "%.0f%%\n" "$(echo "$1 * 100" | bc -l)"
 }
 
-# volume contorl
-set_default_sink_volume()
+# get all sinks and exclude "loopback" and "easy effects sinks" sinks
+get_sinks()
 {
-    pactl set-sink-volume "$default_sink" "$1"
+    pw-dump | jq 'map(select(.info.props."media.class" == "Audio/Sink"
+    and (.info.props."node.description" | test("^(?!Loopback|Easy Effects Sink).*"))))
+    | map({
+        id,
+        "node.name": .info.props."node.name",
+        "node.description": .info.props."node.description"
+    })'
+}
+
+get_default_sink()
+{
+    wpctl inspect @DEFAULT_AUDIO_SINK@ | grep "node.name" | cut -d"\"" -f2
 }
 
 get_default_sink_volume()
 {
-    pactl get-sink-volume "$default_sink" | grep -oE "[0-9]*%" | head -1
+    convert_to_percent "$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | cut -d" " -f2)"
 }
 
-reset_volume()
+get_default_sink_mute()
 {
-    pactl list sinks | grep "Name: " | sed 's/[[:space:]]*Name: //' | while read -r line; do
-        pactl set-sink-volume "$line" 100%
-    done
+    if wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q "MUTED"; then
+        echo "yes"
+    else
+        echo "no"
+    fi
 }
 
-# mute sink
-mute()
+set_default_sink()
 {
-    case "$1" in
-    "sink")
-        case "$2" in
-        "toggle") pactl set-sink-mute "$default_sink" toggle ;;
-        "set")
-            if [ "$3" = "on" ]; then
-                pactl set-sink-mute "$default_sink" 1
-            elif [ "$3" = "off" ]; then
-                pactl set-sink-mute "$default_sink" 0
-            else
-                log "Invalid argument. Try help for help"
-            fi
-            ;;
-        "get") pactl get-sink-mute "$default_sink" | sed "s/Mute: //" ;;
-        *) log "Invalid argument. Try help for help" ;;
-        esac
-        ;;
-    "microphone" | "mic")
-        case "$2" in
-        "toggle")
-            pactl set-source-mute "$microphone" toggle
-
-            mute_status=$(pactl get-source-mute "$microphone")
-            if [ "$mute_status" = "Mute: yes" ]; then
-                noisetorch -u
-            fi
-            if [ "$mute_status" = "Mute: no" ]; then
-                if ! pactl list sources | grep -q "Name: NoiseTorch.*"; then
-                    noisetorch -i -s "$microphone" -t 65
-                fi
-            fi
-            ;;
-        "set")
-            if [ "$3" = "on" ]; then
-                noisetorch -u
-                pactl set-source-mute "$microphone" 1
-            elif [ "$3" = "off" ]; then
-                if ! pactl list sources | grep -q "Name: NoiseTorch.*"; then
-                    noisetorch -i -s "$microphone" -t 65
-                fi
-                pactl set-source-mute "$microphone" 0
-            else
-                log "Invalid argument. Try help for help"
-            fi
-            ;;
-        "get") pactl get-source-mute "$microphone" | sed "s/Mute: //" ;;
-        *) log "Invalid argument. Try help for help" ;;
-        esac
-        ;;
-    "all")
-        pactl set-sink-mute "$default_sink" 1
-        pactl set-source-mute "$microphone" 1
-        noisetorch -u
-        playerctl stop
-        ;;
-    *) log "Invalid argument. Try help for help" ;;
-    esac
+    wpctl set-default "$1"
+    update_eww
 }
 
-players()
+set_default_sink_volume()
 {
-    # start playerctl daemon if not already started
-    if [ ! "$(pgrep -u "$(id -u)" -nf "playerctld")" ]; then
-        playerctld daemon
+    wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ "$1"
+    update_eww
+}
+
+set_default_sink_mute()
+{
+    wpctl set-mute @DEFAULT_AUDIO_SINK@ "$1"
+    update_eww
+}
+
+# get all sources and exclude "loopback" sources
+get_sources()
+{
+    pw-dump | jq 'map(select((.info.props."media.class" == "Audio/Source"
+    or .info.props."media.class" == "Audio/Source/Virtual")
+    and (.info.props."node.description" | test("^(?!Loopback).*"))))
+    | map({
+        id,
+        "node.name": .info.props."node.name",
+        "node.description": .info.props."node.description"
+    })'
+}
+
+get_default_source()
+{
+    wpctl inspect @DEFAULT_AUDIO_SOURCE@ | grep "node.name" | cut -d"\"" -f2
+}
+
+get_default_source_mute()
+{
+    if wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q "MUTED"; then
+        echo "yes"
+    else
+        echo "no"
+    fi
+}
+
+set_default_source()
+{
+    wpctl set-default "$1"
+    update_eww
+}
+
+set_default_source_mute()
+{
+    wpctl set-mute @DEFAULT_AUDIO_SOURCE@ "$1"
+    update_eww
+}
+
+swap_audio_outputs()
+{
+    if [ "$(get_sinks | jq -r 'length')" -lt 2 ]; then
+        echo "Not enough audio sinks to swap"
+        return
     fi
 
-    # start spotify if no player has been started yet
-    if [ -z "$players" ]; then
-        spotify >/dev/null 2>&1 &
-        if [ "$1" = "play" ]; then
-            sleep 2 && playerctl --player spotify play
-        fi
-    fi
-
-    case "$1" in
-    "stop") playerctl stop ;;
-    "play-pause" | "play_pause")
-        # calculate number of playing clients
-        num_playing=0
-        for player in ${players}; do
-            if [ "$(playerctl --player "$player" status)" = "Playing" ]; then
-                num_playing=$((num_playing + 1))
-            fi
-        done
-
-        # pause all clients if more than one is playing otherwise play-pause the client
-        if [ "$num_playing" -gt 1 ]; then
-            playerctl --all-players pause
-        else
-            playerctl play-pause
-        fi
-        ;;
-    "prev" | "previous") playerctl previous ;;
-    "next") playerctl next ;;
-    "play") playerctl play ;;
-    "pause") playerctl pause ;;
-    *) log "Invalid argument. Try help for help" ;;
-    esac
+    set_default_sink "$(get_sinks | jq -r '.[] | select(.["node.name"] != "'"$(get_default_sink)"'") | .id' | cut -d" " -f1)"
 }
 
-spotifyctl()
-{
-    case "$1" in
-    "stop") playerctl --player spotify stop ;;
-    "play-pause") playerctl --player spotify play-pause ;;
-    "prev" | "previous") playerctl --player spotify previous ;;
-    "next") playerctl --player spotify next ;;
-    "play") playerctl --player spotify play ;;
-    "pause") playerctl --player spotify pause ;;
-    *) log "Invalid argument. Try help for help" ;;
-    esac
-}
-
-# get sink source info
 get_sink_source_info()
 {
-    if [ "$default_sink" = "$speaker" ]; then
-        echo "device: speaker"
-    elif [ "$default_sink" = "$headphones" ]; then
-        echo "device: headphones"
-    else
-        echo "device: unknown"
-    fi
+    echo "device: speaker"
     echo "sink_volume: $(get_default_sink_volume)"
-    echo "sink_mute: $(mute "sink" "get")"
-    echo "microphone_mute: $(mute "microphone" "get")"
+    echo "sink_mute: $(get_default_sink_mute)"
+    echo "microphone_mute: $(get_default_source_mute)"
 }
 
 restart_easyeffects()
@@ -340,59 +213,133 @@ usage - audio.sh [command] [subcommand|value]
     next:           next track
     previous:       previous track
     stop:           stop track
-    spotify:        spotify commands
-        stop:           stop track
-        play-pause:     play-pause track
-        previous:       previous track
-        next:           next track
-        play:           play track
-        pause:          pause track
     restart:        restart pipewire
     easyeffects:    restart easyeffects
     help:           help menu
 EOF
 }
 
-case "$1" in
-"setup") setup ;;
-"default") setup_default_source_sink ;;
-"switch" | "swap") swap_audio_outputs ;;
-"info") get_sink_source_info ;;
+if [ "$1" = "eww" ]; then
+    UPDATE_EWW=1
+    shift
+fi
 
+case "$1" in
+"switch" | "swap")
+    swap_audio_outputs
+    ;;
+"info")
+    get_sink_source_info
+    ;;
 "volume")
-    case "$2" in
-    "inc" | "+") set_default_sink_volume "+5%" ;;
-    "dec" | "-") set_default_sink_volume "-5%" ;;
-    "get") get_default_sink_volume ;;
-    "reset") reset_volume ;;
+    shift
+    case "$1" in
+    "inc" | "+")
+        set_default_sink_volume 5%+
+        ;;
+    "dec" | "-")
+        set_default_sink_volume 5%-
+        ;;
+    "get")
+        get_default_sink_volume
+        ;;
+    "reset")
+        set_default_sink_volume 100%
+        ;;
     *)
-        if [ -n "$2" ] && (echo "$2" | grep -q "%"); then
-            set_default_sink_volume "$2"
-        else
-            log "Please provide volume level [number]% or lookup help for more"
-        fi
+        set_default_sink_volume "$1"
         ;;
     esac
     ;;
-
 "mute")
     shift
-    mute "$@"
+    case "$1" in
+    "sink")
+        case "$2" in
+        "set")
+            if [ "$3" = "on" ]; then
+                set_default_sink_mute 1
+            elif [ "$3" = "off" ]; then
+                set_default_sink_mute 0
+            else
+                help
+            fi
+            ;;
+        "get")
+            get_default_sink_mute
+            ;;
+        *)
+            set_default_sink_mute "toggle"
+            ;;
+        esac
+        ;;
+    "microphone" | "mic")
+        case "$2" in
+        "set")
+            if [ "$3" = "on" ]; then
+                set_default_source_mute 1
+            elif [ "$3" = "off" ]; then
+                set_default_source_mute 0
+            else
+                help
+            fi
+            ;;
+        "get")
+            get_default_source_mute
+            ;;
+        *)
+            set_default_source_mute "toggle"
+            ;;
+        esac
+        ;;
+    "all")
+        set_default_sink_mute 1
+        set_default_source_mute 1
+        playerctl pause
+        ;;
+    *)
+        help
+        ;;
+    esac
     ;;
+"stop")
+    playerctl stop
+    ;;
+"play-pause" | "play_pause")
+    # calculate number of playing clients
+    num_playing=0
+    for player in $(playerctl -l); do
+        if playerctl -p "$player" status | grep -q "Playing"; then
+            num_playing=$((num_playing + 1))
+        fi
+    done
 
-"stop") players "stop" ;;
-"play-pause" | "play_pause") players "play-pause" ;;
-"next") players "next" ;;
-"prev" | "previous") players "prev" ;;
-"play") players "play" ;;
-"pause") players "pause" ;;
-
-"spotify") spotifyctl "$2" ;;
-
-"restart") restart_pipewire ;;
-
-"easyeffects") restart_easyeffects ;;
-
-"help") help ;;
-*) log "Invalid argument. Try help for help" ;;
+    # pause all clients if more than one is playing otherwise play-pause the client
+    if [ "$num_playing" -gt 1 ]; then
+        playerctl --all-players pause
+    else
+        playerctl play-pause
+    fi
+    ;;
+"prev" | "previous")
+    playerctl previous
+    ;;
+"next")
+    playerctl next
+    ;;
+"play")
+    playerctl play
+    ;;
+"pause")
+    playerctl pause
+    ;;
+"restart")
+    restart_pipewire
+    ;;
+"easyeffects")
+    restart_easyeffects
+    ;;
+*)
+    help
+    ;;
 esac
