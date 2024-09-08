@@ -183,10 +183,38 @@ cmd list_trash ${{
     fi
 }}
 
-cmd yank-path %printf '%s' "$fx" | xclip -i -selection clipboard && printf "Yanked path"
-cmd yank-basename %basename -a -- $fx | head -c-1 | xclip -i -selection clipboard && printf "Yanked basename"
-cmd yank-dirname %dirname -- "$f" | head -c-1 | xclip -i -selection clipboard && printf "Yanked dirname"
-cmd yank-basename-without-extension %basename -a -- $fx | cut -d. -f1 | head -c-1 | xclip -i -selection clipboard && printf "Yanked basename without extension"
+cmd yank-path %{{
+    if [ -n "$WAYLAND_DISPLAY" ]; then
+        wl-copy "$fx" </dev/null 1>&0 2>&0
+    else
+        printf '%s' "$fx" | xclip -i -selection clipboard
+    fi
+    printf "Yanked path"
+}}
+cmd yank-basename %{{
+    if [ -n "$WAYLAND_DISPLAY" ]; then
+        wl-copy "$(basename -a -- "$fx" | head -c-1)" </dev/null 1>&0 2>&0
+    else
+        basename -a -- "$fx" | head -c-1 | xclip -i -selection clipboard
+    fi
+    printf "Yanked basename"
+}}
+cmd yank-dirname %{{
+    if [ -n "$WAYLAND_DISPLAY" ]; then
+        wl-copy "$(dirname -- "$f" | head -c-1)" </dev/null 1>&0 2>&0
+    else
+        dirname -- "$f" | head -c-1 | xclip -i -selection clipboard
+    fi
+    printf "Yanked dirname"
+}}
+cmd yank-basename-without-extension %{{
+    if [ -n "$WAYLAND_DISPLAY" ]; then
+        wl-copy "$(basename -a -- "$fx" | cut -d. -f1 | head -c-1)" </dev/null 1>&0 2>&0
+    else
+        basename -a -- "$fx" | cut -d. -f1 | head -c-1 | xclip -i -selection clipboard
+    fi
+    printf "Yanked basename without extension"
+}}
 
 # dragon
 cmd dragon %dragon-drop -a -x "$fx"
@@ -240,7 +268,13 @@ cmd bulk-rename ${{
 }}
 
 # share any file 256 MiB limit
-cmd share $curl -F"file=@$fx" https://0x0.st | xclip -selection c
+cmd share ${{
+    if [ -n "$WAYLAND_DISPLAY" ]; then
+        wl-copy "$(curl -F"file=@$fx" https://0x0.st)" </dev/null 1>&0 2>&0
+    else
+        curl -F"file=@$fx" https://0x0.st | xclip -selection clipboard
+    fi
+}}
 
 # show current directory in window title
 cmd on-cd &{{
