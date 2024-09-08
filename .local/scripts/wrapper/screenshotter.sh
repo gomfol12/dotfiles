@@ -33,7 +33,7 @@ fi
 
 output=$output/"$(date +%s_%d.%m.%Y-%H-%M).png"
 
-action=$(printf "select\nclipselect\nfull\nactive\nclipactive\nselectclippath" | dmenu -p "Screenshotter:")
+action=$(printf "clipselect\nselect\nfull\nactive\nclipactive\nselectclippath\nscancode" | dmenu -p "Screenshotter:")
 
 case $action in
 "full")
@@ -66,7 +66,7 @@ case $action in
         echo "$output" | wl-copy --type text/plain
     else
         maim -s "$output"
-        echo "$output" | xclip -selection clipboard
+        echo "$output" | xclip -selection clipboard -t text/plain
     fi
     notify
     ;;
@@ -85,6 +85,14 @@ case $action in
         exit 1
     else
         maim -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png
+    fi
+    notify
+    ;;
+"scancode")
+    if [ -n "$WAYLAND_DISPLAY" ]; then
+        slurp | grim -g - - | zbarimg -q - | dmenu -l 10 | sed 's/[^:]*\(:\)\(.*\)/\2/' | wl-copy --type text/plain
+    else
+        maim -s | zbarimg -q - | dmenu -l 10 | sed 's/[^:]*\(:\)\(.*\)/\2/' | xclip -selection clipboard -t text/plain
     fi
     notify
     ;;
