@@ -10,10 +10,7 @@ spawn()
 command="xdotool type"
 
 if [ -n "$WAYLAND_DISPLAY" ]; then
-    if [ ! "$(pgrep -u "$(id -u)" -nf "ydotoold")" ]; then
-        spawn ydotoold
-    fi
-    command="ydotool type"
+    command="wtype"
 fi
 
 cat <<EOF | dmenu -l 20 | cut -d" " -f1 | xargs $command
