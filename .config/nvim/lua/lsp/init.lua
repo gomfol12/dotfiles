@@ -200,6 +200,7 @@ return setmetatable(_M, {
         )
         lsp_config.yamlls.setup(opts)
         lsp_config.emmet_language_server.setup(opts)
+        lsp_config.zls.setup(opts)
 
         require("lsp.format")
         require("lsp.lint")
