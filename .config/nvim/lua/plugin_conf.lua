@@ -201,3 +201,55 @@ if clipboard_image_ok then
         -- },
     })
 end
+
+-- codecompanion.nvim
+local codecompanion_ok, codecompanion = pcall(require, "codecompanion")
+if codecompanion_ok then
+    codecompanion.setup({
+        strategies = {
+            chat = {
+                adapter = "ollamachat",
+            },
+            inline = {
+                adapter = "ollamainline",
+            },
+            agent = {
+                adapter = "ollamachat",
+            },
+        },
+        adapters = {
+            ollamachat = function()
+                return require("codecompanion.adapters").extend("ollama", {
+                    name = "ollamachat",
+                    schema = {
+                        model = {
+                            default = "llama3:8b",
+                            -- defaule = "codellama:7b",
+                        },
+                    },
+                })
+            end,
+            ollamainline = function()
+                return require("codecompanion.adapters").extend("ollama", {
+                    name = "ollamainline",
+                    schema = {
+                        model = {
+                            default = "deepseek-coder:6.7b-base",
+                        },
+                    },
+                })
+            end,
+            ollama = function()
+                return require("codecompanion.adapters").extend("ollama", {
+                    schema = {
+                        model = {
+                            default = "codestral:latest",
+                        },
+                    },
+                })
+            end,
+        },
+    })
+    -- Expand 'cc' into 'CodeCompanion' in the command line
+    vim.cmd([[cab cc CodeCompanion]])
+end

@@ -97,6 +97,19 @@ return packer.startup(function(use)
     use("jbyuki/nabla.nvim")
     use("fladson/vim-kitty")
     use({ "knubie/vim-kitty-navigator", run = "cp ./*.py ~/.config/kitty/" })
+    use({
+        "olimorris/codecompanion.nvim",
+        config = function()
+            require("codecompanion").setup()
+        end,
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+            "hrsh7th/nvim-cmp", -- Optional: For using slash commands and variables in the chat buffer
+            "nvim-telescope/telescope.nvim", -- Optional: For using slash commands
+            "stevearc/dressing.nvim", -- Optional: Improves the default Neovim UI
+        },
+    })
 
     use("benlubas/molten-nvim")
     use("3rd/image.nvim")

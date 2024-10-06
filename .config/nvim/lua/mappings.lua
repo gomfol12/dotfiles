@@ -32,7 +32,7 @@ keymap.set("n", "Q", "<nop>", { desc = "Disable ex mode" })
 
 -- disable search highlighting until the next search
 keymap.set("n", "<cr>", function()
-    if vim.fn.getwininfo(vim.fn.win_getid())[1]["quickfix"] == 1 then
+    if vim.fn.getwininfo(vim.fn.win_getid())[1]["quickfix"] == 1 or vim.bo.filetype == "codecompanion" then
         vim.cmd("call feedkeys(\"\\<cr>\", 'n')")
         return
     end
