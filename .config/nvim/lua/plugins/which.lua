@@ -1,3 +1,5 @@
+-- ==================== which-key ==================== --
+
 return {
     "folke/which-key.nvim",
     dependencies = { "nvim-web-devicons" },

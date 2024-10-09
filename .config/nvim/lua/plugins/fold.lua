@@ -1,3 +1,5 @@
+-- ==================== Fold (nvim-ufo) ==================== --
+
 -- handler for folded lines to show number of folded line and some eyecandy
 local handler_folded = function(virtText, lnum, endLnum, width, truncate)
     local newVirtText = {}

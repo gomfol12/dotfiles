@@ -1,4 +1,6 @@
-local has_words_before = function()
+-- ==================== Completion (nvim-cmp, LuaSnip, ...) ==================== --
+
+local function has_words_before()
     unpack = unpack or table.unpack
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
@@ -44,7 +46,7 @@ return {
                     "<Leader>L",
                     function()
                         require("luasnip.loaders.from_lua").lazy_load({
-                            paths = vim.fn.stdpath("config") .. "/lua/snippets/",
+                            paths = { vim.fn.stdpath("config") .. "/lua/snippets/" },
                         })
                     end,
                     desc = "Reload snippets",
@@ -106,10 +108,10 @@ return {
         })
 
         -- load custom snippets
-        require("luasnip.loaders.from_lua").lazy_load({ paths = vim.fn.stdpath("config") .. "/lua/snippets/" })
+        require("luasnip.loaders.from_lua").lazy_load({ paths = { vim.fn.stdpath("config") .. "/lua/snippets/" } })
 
         cmp.setup({
-            preselect = "none",
+            preselect = nil,
             completion = { completeopt = "menu,menuone,noinsert,noselect" },
             window = {
                 completion = cmp.config.window.bordered({

@@ -1,3 +1,5 @@
+-- ==================== VimWiki ==================== --
+
 return {
     "vimwiki/vimwiki",
     init = function()

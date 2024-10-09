@@ -1,3 +1,5 @@
+-- ==================== Debug (nvim-dap, ...) ==================== --
+
 return {
     "mfussenegger/nvim-dap",
     dependencies = {

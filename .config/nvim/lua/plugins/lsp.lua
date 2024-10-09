@@ -1,3 +1,5 @@
+-- ==================== LSP ==================== --
+
 local signs = {}
 if vim.g.have_nerd_font then
     signs = {
@@ -26,7 +28,7 @@ vim.diagnostic.config({
     float = {
         focusable = false,
         style = "minimal",
-        source = "always",
+        source = true,
         header = "",
         prefix = "",
         border = "single",

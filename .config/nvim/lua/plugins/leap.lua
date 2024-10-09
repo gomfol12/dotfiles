@@ -1,3 +1,5 @@
+-- ==================== Leap.nvim, ... ==================== --
+
 return {
     "ggandor/leap.nvim",
     dependencies = {

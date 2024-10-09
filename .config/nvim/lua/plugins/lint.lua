@@ -1,3 +1,5 @@
+-- ==================== Lint (nvim-lint) ==================== --
+
 -- check if linter is installed
 local utils = require("config.utils")
 utils.check_linters({ "chktex", "cppcheck" })

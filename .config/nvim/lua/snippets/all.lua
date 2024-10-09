@@ -1,3 +1,5 @@
+-- ==================== Snippets (all) ==================== --
+
 local ls = require("luasnip")
 local s = ls.snippet
 local sn = ls.snippet_node
@@ -9,7 +11,18 @@ local fmt = require("luasnip.extras.fmt").fmt
 local fmta = require("luasnip.extras.fmt").fmta
 local rep = require("luasnip.extras").rep
 
-local _snippets = {}
+local _snippets = {
+    s("nvim_config_header", {
+        t("-- ==================== "),
+        i(1),
+        t(" ==================== --"),
+    }),
+    s("nvim_config_header_smal", {
+        t("-- ========== "),
+        i(1),
+        t(" ========== --"),
+    }),
+}
 
 -- date snippets
 local dates = {

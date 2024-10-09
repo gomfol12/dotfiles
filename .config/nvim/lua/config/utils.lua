@@ -1,3 +1,5 @@
+-- ==================== Utils ==================== --
+
 local function getHost()
     local hostname = ""
     local file_hostname = io.popen("/bin/hostname")
@@ -34,7 +36,7 @@ local function dump(o)
             if type(k) ~= "number" then
                 k = '"' .. k .. '"'
             end
-            s = s .. "[" .. k .. "] = " .. _G.dump(v) .. ","
+            s = s .. "[" .. k .. "] = " .. dump(v) .. ","
         end
         return s .. "} "
     else

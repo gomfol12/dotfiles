@@ -1,3 +1,5 @@
+-- ==================== Tabline (tabby.nvim) ==================== --
+
 local theme = {
     fill = "TabLineFill",
     -- fill = { fg = "#b2b2b2", bg = "#080808", style = "italic" },

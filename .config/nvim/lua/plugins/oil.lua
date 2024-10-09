@@ -1,3 +1,5 @@
+-- ==================== Oil.nvim ==================== --
+
 return {
     "stevearc/oil.nvim",
     lazy = false,

@@ -1,3 +1,5 @@
+-- ==================== Goyo.vim ==================== --
+
 return {
     "junegunn/goyo.vim",
     init = function()

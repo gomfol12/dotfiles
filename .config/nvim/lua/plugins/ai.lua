@@ -1,3 +1,5 @@
+-- ==================== AI (copilot.vim, codecompanion.nvim) ==================== --
+
 return {
     {
         "github/copilot.vim",
@@ -7,13 +9,13 @@ return {
         config = function()
             vim.cmd([[imap <silent><script><expr> <C-q> copilot#Accept("\<CR>")]])
 
+            -- disable Copilot by default and commands for enabling it by buffer
             vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
                 pattern = "*",
                 callback = function()
                     vim.b.copilot_enabled = 0
                 end,
             })
-
             vim.api.nvim_create_user_command("CopilotEnable", function()
                 vim.b.copilot_enabled = 1
             end, {})
@@ -52,7 +54,7 @@ return {
                             schema = {
                                 model = {
                                     default = "llama3:8b",
-                                    -- defaule = "codellama:7b",
+                                    -- default = "codellama:7b",
                                 },
                             },
                         })

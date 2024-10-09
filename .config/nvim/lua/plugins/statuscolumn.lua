@@ -1,3 +1,5 @@
+-- ==================== Statuscolumn (statuscol.nvim) ==================== --
+
 return {
     "luukvbaal/statuscol.nvim",
     config = function()

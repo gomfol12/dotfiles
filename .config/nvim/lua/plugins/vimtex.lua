@@ -1,3 +1,5 @@
+-- ==================== VimTex ==================== --
+
 return {
     "lervag/vimtex",
     lazy = true,
