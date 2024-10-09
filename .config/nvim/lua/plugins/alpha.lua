@@ -105,22 +105,20 @@ local section = {
     footer = footer,
 }
 
-local opts = {
-    layout = {
-        { type = "padding", val = 2 },
-        section.header,
-        { type = "padding", val = 3 },
-        section.heading,
-        { type = "padding", val = 1 },
-        section.buttons,
-        section.footer,
-    },
-    opts = {
-        margin = 5,
-    },
-}
-
 return {
     "goolord/alpha-nvim",
-    opts = opts,
+    opts = {
+        layout = {
+            { type = "padding", val = 2 },
+            section.header,
+            { type = "padding", val = 3 },
+            section.heading,
+            { type = "padding", val = 1 },
+            section.buttons,
+            section.footer,
+        },
+        opts = {
+            margin = 5,
+        },
+    },
 }

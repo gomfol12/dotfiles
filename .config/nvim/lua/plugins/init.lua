@@ -2,9 +2,27 @@
 -- This file contains general plugins or plugins with litte to no configuration.
 
 -- Maybe useful some time
--- frabjous/knap
+-- { "frabjous/knap" }
+-- { "monaqa/dial.nvim" },
+-- { "AndrewRadev/switch.vim" },
 
 return {
+    { "tpope/vim-sleuth" }, -- Detect tabstop and shiftwidth automatically
+    { "tpope/vim-fugitive" }, -- Git wrapper
+    { "sindrets/diffview.nvim" },
+    { "rhysd/vim-grammarous" },
+    { "tpope/vim-surround" },
+    { "tpope/vim-unimpaired" },
+    { "Konfekt/vim-CtrlXA" },
+    { "gomfol12/a.vim", lazy = true, ft = { "c", "cpp" } },
+    { "stevearc/overseer.nvim" },
+    -- { "vim-pandoc/vim-pandoc-syntax" },
+    -- { "vim-pandoc/vim-pandoc" },
+    { "fladson/vim-kitty" },
+    { "knubie/vim-kitty-navigator", build = "cp ./*.py ~/.config/kitty/" },
+    { "LunarVim/bigfile.nvim", config = true },
+    { "gbprod/stay-in-place.nvim", config = true },
+    { "bullets-vim/bullets.vim", lazy = true, ft = { "markdown", "pandoc" } },
     {
         "Mofiqul/vscode.nvim",
         lazy = false,
@@ -13,7 +31,9 @@ return {
             vim.cmd([[colorscheme vscode]])
         end,
     },
-    { "tpope/vim-sleuth" }, -- Detect tabstop and shiftwidth automatically
+    { "numToStr/Comment.nvim", opts = {
+        ignore = "^$",
+    } },
     {
         "moll/vim-bbye",
         keys = {
@@ -26,77 +46,17 @@ return {
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = { signs = false },
     },
-    {
-        "echasnovski/mini.nvim",
-        config = function()
-            -- require("mini.ai").setup({ n_lines = 500 })
-            -- require("mini.surround").setup()
-        end,
-    },
-    {
-        "stevearc/oil.nvim",
-        lazy = false,
-        keys = {
-            {
-                "<leader>o",
-                function()
-                    vim.cmd((vim.bo.filetype == "oil") and "bd" or "Oil --float")
-                end,
-            },
-        },
-        opts = {
-            view_options = {
-                show_hidden = true,
-            },
-            keymaps_help = {
-                border = "single",
-            },
-            float = {
-                border = "single",
-            },
-        },
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-    },
-    { "fladson/vim-kitty", lazy = false },
-    { "knubie/vim-kitty-navigator", lazy = false, build = "cp ./*.py ~/.config/kitty/" },
-    { "tpope/vim-fugitive" },
-    { "sindrets/diffview.nvim" },
-    { "rhysd/vim-grammarous" },
+    -- {
+    --     "echasnovski/mini.nvim",
+    --     config = function()
+    --         require("mini.ai").setup({ n_lines = 500 })
+    --         require("mini.surround").setup()
+    --     end,
+    -- },
     {
         "dhruvasagar/vim-table-mode",
         init = function()
             vim.g.table_mode_corner = "|"
-        end,
-    },
-    {
-        "ggandor/leap.nvim",
-        dependencies = {
-            { "tpope/vim-repeat" },
-            {
-                "ggandor/leap-spooky.nvim",
-                opts = {
-                    affixes = {
-                        remote = { window = "r", cross_window = "R" },
-                        magnetic = { window = "m", cross_window = "M" },
-                    },
-                    -- automatically pasted yanked text at cursor position, if unnamed register is set
-                    paste_on_remote_yank = false,
-                },
-            },
-            {
-                "ggandor/flit.nvim",
-                opts = {
-                    keys = { f = "f", F = "F", t = "t", T = "T" },
-                    labeled_modes = "v",
-                    multiline = true,
-                    opts = {},
-                },
-            },
-            { "ggandor/leap-ast.nvim" },
-        },
-        config = function()
-            require("leap").add_default_mappings()
-            vim.cmd("autocmd ColorScheme * lua require('leap').init_highlight(true)")
         end,
     },
     {
@@ -106,32 +66,6 @@ return {
                 enable = false,
             },
         },
-    },
-    -- { "vim-pandoc/vim-pandoc-syntax" },
-    -- { "vim-pandoc/vim-pandoc" },
-    {
-        "github/copilot.vim",
-        init = function()
-            vim.g.copilot_no_tab_map = true
-        end,
-        config = function()
-            vim.cmd([[imap <silent><script><expr> <C-q> copilot#Accept("\<CR>")]])
-
-            vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-                pattern = "*",
-                callback = function()
-                    vim.b.copilot_enabled = 0
-                end,
-            })
-
-            vim.api.nvim_create_user_command("CopilotEnable", function()
-                vim.b.copilot_enabled = 1
-            end, {})
-
-            vim.api.nvim_create_user_command("CopilotDisable", function()
-                vim.b.copilot_enabled = 0
-            end, {})
-        end,
     },
     {
         "mbbill/undotree",
@@ -147,7 +81,6 @@ return {
             },
         },
     },
-    { "tpope/vim-surround" },
     {
         "tpope/vim-speeddating",
         config = function()
@@ -166,21 +99,16 @@ SpeedDatingFormat %H %M %S
         ]])
         end,
     },
-    { "tpope/vim-unimpaired" },
-    { "Konfekt/vim-CtrlXA" },
-    -- { "monaqa/dial.nvim" },
-    -- { "AndrewRadev/switch.vim" },
-    { "LunarVim/bigfile.nvim", opts = {} },
-    { "gomfol12/a.vim" },
     {
         "andymass/vim-matchup",
         setup = function()
             vim.g.matchup_matchparen_offscreen = { method = "popup" }
         end,
     },
-    { "gbprod/stay-in-place.nvim", opts = {} },
     {
         "jbyuki/nabla.nvim",
+        lazy = true,
+        ft = { "markdown", "vimwiki", "tex", "pandoc" },
         keys = {
             {
                 "<leader>na",
@@ -191,7 +119,18 @@ SpeedDatingFormat %H %M %S
         },
     },
     {
+        "goerz/jupytext.vim",
+        init = function()
+            vim.g.jupytext_filetype_map = { ["md"] = "quarto" }
+        end,
+    },
+    {
+        "danymat/neogen",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+    },
+    {
         "3rd/image.nvim",
+        ft = { "markdown", "vimwiki", "pandoc" },
         dependencies = { "leafo/magick" },
         opts = {
             backend = "kitty",
@@ -199,7 +138,7 @@ SpeedDatingFormat %H %M %S
                 markdown = {
                     enabled = true,
                     only_render_image_at_cursor = true,
-                    filetypes = { "markdown", "vimwiki" },
+                    filetypes = { "markdown", "vimwiki", "pandoc" },
                 },
             },
             window_overlap_clear_enabled = true,
@@ -207,7 +146,8 @@ SpeedDatingFormat %H %M %S
     },
     {
         "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
+        lazy = true,
+        cmd = { "PasteImage" },
         opts = {
             default = {
                 dir_path = "res",
@@ -219,22 +159,25 @@ SpeedDatingFormat %H %M %S
             { "<leader>pp", ":PasteImage<CR>", desc = "Paste image from system clipboard" },
         },
     },
-    {
-        "lukas-reineke/headlines.nvim",
-        dependencies = "nvim-treesitter/nvim-treesitter",
-        config = function()
-            vim.cmd([[highlight Headline1 guibg=#2b2b2b]])
-            vim.cmd([[highlight CodeBlock guibg=#1c1c1c]])
-            vim.cmd([[highlight Dash guibg=#D19A66 gui=bold]])
+    -- {
+    --     "lukas-reineke/headlines.nvim",
+    --     lazy = true,
+    --     ft = { "markdown", "pandoc" },
+    --     dependencies = "nvim-treesitter/nvim-treesitter",
+    --     config = function()
+    --         vim.cmd([[highlight Headline1 guibg=#2b2b2b]])
+    --         vim.cmd([[highlight CodeBlock guibg=#1c1c1c]])
+    --         vim.cmd([[highlight Dash guibg=#D19A66 gui=bold]])
 
-            require("headlines").setup({
-                markdown = {
-                    headline_highlights = { "Headline1" },
-                    bullets = { "#", "##", "###", "####", "#####", "######" },
-                },
-            })
-        end,
-    },
+    --         require("headlines").setup({
+    --             markdown = {
+    --                 headline_highlights = { "Headline1" },
+    --                 bullets = { "#", "##", "###", "####", "#####", "######" },
+    --             },
+    --             pandoc = {},
+    --         })
+    --     end,
+    -- },
     {
         "hedyhli/outline.nvim",
         lazy = true,
@@ -248,9 +191,9 @@ SpeedDatingFormat %H %M %S
             },
         },
     },
-    { "bullets-vim/bullets.vim" },
     {
         "iamcco/markdown-preview.nvim",
+        lazy = true,
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" },
         build = function(plugin)
@@ -268,43 +211,24 @@ SpeedDatingFormat %H %M %S
         end,
     },
     {
-        "quarto-dev/quarto-nvim",
-        dependencies = {
-            "jmbuhr/otter.nvim",
-            "nvim-treesitter/nvim-treesitter",
-        },
-        config = true,
-    },
-    {
-        "goerz/jupytext.vim",
-        init = function()
-            vim.g.jupytext_filetype_map = { ["md"] = "quarto" }
+        "jghauser/auto-pandoc.nvim",
+        lazy = true,
+        ft = "markdown",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            vim.api.nvim_create_user_command("AutoPandoc", function()
+                require("auto-pandoc").run_pandoc()
+            end, {})
         end,
-    },
-    {
-        "benlubas/molten-nvim",
-        init = function()
-            vim.g.molten_image_provider = "image.nvim"
-            vim.g.molten_output_win_max_height = 20
-            vim.g.molten_auto_open_output = true
-            vim.g.molten_copy_output = true
-        end,
-    },
-    { "numToStr/Comment.nvim", opts = {
-        ignore = "^$",
-    } },
-    { "stevearc/overseer.nvim" },
-    {
-        "danymat/neogen",
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
     },
     {
         "michaelb/sniprun",
-        lazy = false,
-        build = "sh ./install.sh",
+        lazy = true,
+        cmd = { "SnipRun" },
         cond = function()
             return vim.bo.filetype ~= "quarto"
         end,
+        build = "sh ./install.sh",
         keys = {
             { "<leader>r", "<Plug>SnipRun", mode = "v", desc = "Run code" },
             { "<leader>rr", "<Plug>SnipRun", desc = "Run code" },

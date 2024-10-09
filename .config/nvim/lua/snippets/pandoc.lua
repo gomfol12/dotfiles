@@ -78,4 +78,4 @@ local _snippets = {
     }),
 }
 
-return concat(_snippets, dofile(vim.fn.stdpath("config") .. "/lua/snippets/tex.lua"))
+return concat(_snippets, require("snippets.tex"))

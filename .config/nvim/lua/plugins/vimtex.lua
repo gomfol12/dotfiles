@@ -1,5 +1,6 @@
 return {
     "lervag/vimtex",
+    lazy = true,
     ft = { "tex", "pandoc" },
     init = function()
         vim.g.vimtex_view_method = "zathura"
