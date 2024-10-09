@@ -8,7 +8,7 @@ local d = ls.dynamic_node
 local fmt = require("luasnip.extras.fmt").fmt
 local fmta = require("luasnip.extras.fmt").fmta
 local rep = require("luasnip.extras").rep
-local concat = require("utils").concat
+local concat = require("config.utils").concat
 
 local _snippets = {
     s("uninote", {
@@ -78,4 +78,4 @@ local _snippets = {
     }),
 }
 
-return concat(_snippets, dofile(vim.fn.stdpath("config") .. "/snippets/tex.lua"))
+return concat(_snippets, dofile(vim.fn.stdpath("config") .. "/lua/snippets/tex.lua"))

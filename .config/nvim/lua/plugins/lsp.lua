@@ -305,23 +305,24 @@ return {
                 "hadolint",
                 "jsonlint",
                 "vale",
+                "jupytext",
             })
             require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
             require("mason-lspconfig").setup({
                 handlers = {
                     function(server_name)
-                        local server = servers[server_name] or {}
-                        server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-
                         if server_name == "clangd" then
                             require("clangd_extensions").setup()
+                            capabilities.offsetEncoding = { "utf-16" } -- clangd uses utf-16 offsets
                         end
 
                         if server_name == "rust_analyzer" or server_name == "jdtls" then
                             return
                         end
 
+                        local server = servers[server_name] or {}
+                        server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
                         require("lspconfig")[server_name].setup(server)
                     end,
                 },

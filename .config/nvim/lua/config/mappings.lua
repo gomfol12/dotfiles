@@ -84,10 +84,18 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- ========== window, tabs, ... ========== --
 -- window navigation
 if os.getenv("TMUX") then
-    vim.keymap.set("n", "<c-j>", "lua require('tmux').move_bottom()<CR>", { silent = true, desc = "Move down" })
-    vim.keymap.set("n", "<c-h>", "lua require('tmux').move_left()<CR>", { silent = true, desc = "Move left" })
-    vim.keymap.set("n", "<c-k>", "lua require('tmux').move_top()<CR>", { silent = true, desc = "Move up" })
-    vim.keymap.set("n", "<c-l>", "lua require('tmux').move_right()<CR>", { silent = true, desc = "Move right" })
+    vim.keymap.set("n", "<c-j>", function()
+        require("tmux").move_bottom()
+    end, { silent = true, desc = "Move down" })
+    vim.keymap.set("n", "<c-h>", function()
+        require("tmux").move_left()
+    end, { silent = true, desc = "Move left" })
+    vim.keymap.set("n", "<c-k>", function()
+        require("tmux").move_top()
+    end, { silent = true, desc = "Move up" })
+    vim.keymap.set("n", "<c-l>", function()
+        require("tmux").move_right()
+    end, { silent = true, desc = "Move right" })
 elseif os.getenv("KITTY_WINDOW_ID") then
     vim.keymap.set("n", "<c-j>", ":KittyNavigateDown<CR>", { silent = true, desc = "Move down" })
     vim.keymap.set("n", "<c-h>", ":KittyNavigateLeft<CR>", { silent = true, desc = "Move left" })
@@ -102,10 +110,18 @@ end
 
 -- window resize
 if os.getenv("TMUX") then
-    vim.keymap.set("n", "<c-Up>", require("tmux").resize_top, { silent = true, desc = "Resize up" })
-    vim.keymap.set("n", "<c-Down>", require("tmux").resize_bottom, { silent = true, desc = "Resize down" })
-    vim.keymap.set("n", "<c-Left>", require("tmux").resize_left, { silent = true, desc = "Resize left" })
-    vim.keymap.set("n", "<c-Right>", require("tmux").resize_right, { silent = true, desc = "Resize right" })
+    vim.keymap.set("n", "<c-Up>", function()
+        require("tmux").resize_top()
+    end, { silent = true, desc = "Resize up" })
+    vim.keymap.set("n", "<c-Down>", function()
+        require("tmux").resize_bottom()
+    end, { silent = true, desc = "Resize down" })
+    vim.keymap.set("n", "<c-Left>", function()
+        require("tmux").resize_left()
+    end, { silent = true, desc = "Resize left" })
+    vim.keymap.set("n", "<c-Right>", function()
+        require("tmux").resize_right()
+    end, { silent = true, desc = "Resize right" })
 else
     vim.keymap.set("n", "<c-Up>", ":resize -2<CR>", { silent = true })
     vim.keymap.set("n", "<c-Down>", ":resize +2<CR>", { silent = true })

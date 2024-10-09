@@ -148,6 +148,9 @@ return {
                         ["<leader>dF"] = "@class.outer",
                     },
                 },
+                matchup = {
+                    enable = true,
+                },
             },
         },
     },

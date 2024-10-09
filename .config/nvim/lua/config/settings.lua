@@ -45,10 +45,10 @@ vim.opt.numberwidth = 3
 
 vim.g.have_nerd_font = true
 
--- vim.schedule(function()
---     vim.opt.clipboard = "unnamedplus" -- Synchronize clipboard between system and neovim
--- end)
--- opt.sessionoptions:append("globals")
+vim.schedule(function()
+    vim.opt.clipboard = "unnamedplus" -- Synchronize clipboard between system and neovim
+end)
+vim.opt.sessionoptions:append("globals")
 
 -- disable netrw
 vim.g.loaded_netrw = 1
