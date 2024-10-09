@@ -1,4 +1,5 @@
 -- ==================== Statuscolumn (statuscol.nvim) ==================== --
+-- NOTE: get names `:I vim.fn.sign_getdefined()`
 
 return {
     "luukvbaal/statuscol.nvim",

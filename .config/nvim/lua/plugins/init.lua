@@ -1,5 +1,6 @@
 -- ==================== Plugins ==================== --
 -- This file contains general plugins or plugins with litte to no configuration.
+-- TODO: overseer, some kind of colorizer, test debug
 
 -- Maybe useful some time
 -- { "frabjous/knap" }
@@ -10,7 +11,10 @@ return {
     { "tpope/vim-sleuth" }, -- Detect tabstop and shiftwidth automatically
     { "tpope/vim-fugitive" }, -- Git wrapper
     { "sindrets/diffview.nvim" },
-    { "rhysd/vim-grammarous" },
+    {
+        "rhysd/vim-grammarous",
+        keys = { { "<leader>gg", ":GrammarousCheck --lang=de<CR>", desc = "Grammarous check" } },
+    },
     { "tpope/vim-surround" },
     { "tpope/vim-unimpaired" },
     { "Konfekt/vim-CtrlXA" },
@@ -127,6 +131,16 @@ SpeedDatingFormat %H %M %S
     {
         "danymat/neogen",
         dependencies = { "nvim-treesitter/nvim-treesitter" },
+        keys = {
+            {
+                "<Leader>nf",
+                function()
+                    require("neogen").generate()
+                end,
+                desc = "Neogen generate",
+            },
+        },
+        opts = { snippet_engine = "luasnip" },
     },
     {
         "3rd/image.nvim",
