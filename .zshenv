@@ -59,6 +59,7 @@ export PATH
 
 ### HOME cleanup ###
 export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
+export WINITRC="$XDG_CONFIG_HOME/wayland/winitrc"
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export _JAVA_OPTIONS="-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java -Djavafx.cachedir="$XDG_CACHE_HOME"/openjfx -Dsbt.global.base="$XDG_CACHE_HOME"/sbt/ -Dsbt.ivy.home="$XDG_CACHE_HOME"/ivy2/ -Divy.home="$XDG_CACHE_HOME"/ivy2/"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
@@ -99,36 +100,6 @@ export FZF_DEFAULT_OPTS="\
 ### hostname ###
 export HOSTNAME_DESKTOP="arch4live"
 export HOSTNAME_LAPTOP="laptop"
-
-### Monitors ###
-if [ "$(systemd-detect-virt)" = "kvm" ]; then
-    export PRIMARY="Virtual-1"
-    export SECONDARY=""
-fi
-if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
-    export PRIMARY="HDMI-0"
-    export SECONDARY="DVI-D-0"
-fi
-if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
-    export PRIMARY="eDP1"
-    export SECONDARY=""
-fi
-
-### Nvidia ###
-if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
-    export NVIDIA=1
-    export __GL_SYNC_TO_VBLANK=1
-    export __GL_SYNC_DISPLAY_DEVICE=$PRIMARY
-    export VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE=$PRIMARY
-fi
-
-### Laptop Scaling ###
-if [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
-    export QT_AUTO_SCREEN_SCALE_FACTOR=1
-    # WARNING: Don't do this. Baaaaad
-    export GDK_SCALE=2
-    export GDK_DPI_SCALE=0.5
-fi
 
 ### git ###
 export GIT_PS1_SHOWDIRTYSTATE=1

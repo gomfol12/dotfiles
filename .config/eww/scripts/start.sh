@@ -9,15 +9,14 @@ bar()
         monitors=$(hyprctl monitors -j | jq -r '.[] | .name')
 
         for monitor in $monitors; do
-            if [ "$monitor" = "HDMI-A-1" ]; then
+            if [ "$monitor" = "$PRIMARY" ]; then
                 eww open primary_bar
                 continue
             fi
-            if [ "$monitor" = "DVI-D-1" ]; then
+            if [ -n "$SECONDARY" ] && [ "$monitor" = "$SECONDARY" ]; then
                 eww open secondary_bar
                 continue
             fi
-            eww open secondary_bar
         done
         ;;
     esac

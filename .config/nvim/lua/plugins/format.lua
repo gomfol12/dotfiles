@@ -73,6 +73,7 @@ return {
         formatters_by_ft = {
             lua = { "stylua" },
             bash = { "shfmt" },
+            zsh = { "shfmt" },
             sh = { "shfmt" },
             html = { "prettier" },
             css = { "prettier" },

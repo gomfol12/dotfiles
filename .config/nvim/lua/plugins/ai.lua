@@ -53,7 +53,9 @@ return {
                             name = "chat",
                             schema = {
                                 model = {
-                                    default = "llama3:8b",
+                                    -- default = "llama3.2:3b",
+                                    default = "llama3.1:8b",
+                                    -- default = "llama3:8b",
                                     -- default = "codellama:7b",
                                 },
                             },

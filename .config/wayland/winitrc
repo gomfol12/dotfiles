@@ -1,0 +1,35 @@
+#!/bin/sh
+
+### Monitors ###
+if [ "$(systemd-detect-virt)" = "kvm" ]; then
+    export PRIMARY="Virtual-1"
+    export SECONDARY=""
+elif [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
+    export PRIMARY="HDMI-A-1"
+    export SECONDARY="DVI-D-1"
+
+    ### Nvidia ###
+    export NVIDIA=1
+    export LIBVA_DRIVER_NAME="nvidia"
+    export XDG_SESSION_TYPE="wayland"
+    export GBM_BACKEND="nvidia-drm"
+    export __GLX_VENDOR_LIBRARY_NAME="nvidia"
+
+    # VA-API hardware video acceleration for nvidia
+    export NVD_BACKEND="direct"
+elif [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
+    export PRIMARY=""
+    export SECONDARY=""
+fi
+
+# Electron apps on wayland
+export ELECTRON_OZONE_PLATFORM_HINT="auto"
+
+# firefox
+export MOZ_ENABLE_WAYLAND=1
+
+# cursor size
+export XCURSOR_SIZE=24
+export HYPRCURSOR_SIZE=24
+
+exec Hyprland

@@ -75,11 +75,11 @@
   )
 )
 
-(deflisten primary_workspaces "scripts/workspaces.sh HDMI-A-1")
-(deflisten primary_title "scripts/title.sh HDMI-A-1")
+(deflisten primary_workspaces "scripts/workspaces.sh ${get_env("PRIMARY")}")
+(deflisten primary_title "scripts/title.sh ${get_env("PRIMARY")}")
 
 (defwindow primary_bar []
-           :monitor '["<primary>", "HDMI-A-1", "MSI G24C4"]'
+           :monitor '["<primary>", "${get_env("PRIMARY")}", "MSI G24C4"]'
            :geometry (geometry :x "0%"
                                :y "0%"
                                :width "100%"
@@ -106,11 +106,11 @@
   )
 )
 
-(deflisten secondary_workspaces "scripts/workspaces.sh DVI-D-1")
-(deflisten secondary_title "scripts/title.sh DVI-D-1")
+(deflisten secondary_workspaces "scripts/workspaces.sh ${get_env("SECONDARY")}")
+(deflisten secondary_title "scripts/title.sh ${get_env("SECONDARY")}")
 
 (defwindow secondary_bar []
-           :monitor '["DVI-D-1", "PLE2483H"]'
+           :monitor '["${get_env("SECONDARY")}", "PLE2483H"]'
            :geometry (geometry :x "0%"
                                :y "0%"
                                :width "100%"
