@@ -28,6 +28,16 @@
             "ignore_error": true
         },
         {
+            "command": "[ \"$(hostname)\" = \"$HOSTNAME_LAPTOP\" ] && xrdb -merge \"$HOME/.config/laptop.Xresources\"",
+            "ignore_error": true,
+            "initial": true
+        },
+        {
+            "command": "[ \"$(hostname)\" = \"$HOSTNAME_DESKTOP\" ] && xrdb -merge \"$HOME/.config/Xresources\"",
+            "ignore_error": true,
+            "initial": true
+        },
+        {
             "command": "xrdb -merge %CACHE_PATH%/colors.Xresources",
             "initial": true
         },

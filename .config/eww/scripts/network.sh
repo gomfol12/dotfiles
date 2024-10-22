@@ -1,5 +1,14 @@
 #!/bin/bash
-interface=enp37s0
+
+interface="none"
+if [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
+    interface=enp37s0
+elif [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
+    interface=wlp170s0
+else
+    echo "no interface"
+    exit
+fi
 
 R1=$(cat /sys/class/net/$interface/statistics/rx_bytes)
 T1=$(cat /sys/class/net/$interface/statistics/tx_bytes)

@@ -8,6 +8,8 @@ elif [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
     export PRIMARY="HDMI-A-1"
     export SECONDARY="DVI-D-1"
 
+    export KITTY_CONF_FONT_SIZE="font_size 12.0"
+
     ### Nvidia ###
     export NVIDIA=1
     export LIBVA_DRIVER_NAME="nvidia"
@@ -18,8 +20,10 @@ elif [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
     # VA-API hardware video acceleration for nvidia
     export NVD_BACKEND="direct"
 elif [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
-    export PRIMARY=""
+    export PRIMARY="eDP-1"
     export SECONDARY=""
+
+    export KITTY_CONF_FONT_SIZE="font_size 10.0"
 fi
 
 # Electron apps on wayland

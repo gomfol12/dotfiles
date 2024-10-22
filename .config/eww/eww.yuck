@@ -79,7 +79,7 @@
 (deflisten primary_title "scripts/title.sh ${get_env("PRIMARY")}")
 
 (defwindow primary_bar []
-           :monitor '["<primary>", "${get_env("PRIMARY")}", "MSI G24C4"]'
+           :monitor '["<primary>", "${get_env("PRIMARY")}", "MSI G24C4", "0x095F" ]'
            :geometry (geometry :x "0%"
                                :y "0%"
                                :width "100%"
@@ -97,7 +97,7 @@
       (weather_box)
       (network_box)
       (cpu_box)
-      (gpu_box)
+      ;; (gpu_box)
       (mem_box)
       (audio_box)
       (systray :class "systray" :icon-size "16" :spacing "5")
