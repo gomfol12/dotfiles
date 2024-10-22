@@ -25,7 +25,7 @@ else
     export EDITOR="vi"
 fi
 
-export TERMINAL="st"
+export TERMINAL="kitty"
 export BROWSER="firefox"
 export _JAVA_AWT_WM_NONREPARENTING=1
 export LESSHISTFILE=-
