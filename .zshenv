@@ -83,6 +83,8 @@ export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
 export ANDROID_AVD_HOME="$XDG_CONFIG_HOME/android/avd"
 export IPYTHONDIR="${XDG_CONFIG_HOME}/ipython"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
 
 ### pass ###
 #export PASSWORD_STORE_DIR="$HOME/.local/password-store"

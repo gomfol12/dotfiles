@@ -82,6 +82,7 @@ return {
             yaml = { "prettier" },
             c = { "clang_format" },
             cpp = { "clang_format" },
+            cuda = { "clang_format" },
             cmake = { "cmake_format" },
             tex = { "latexindent" },
             python = { "black" },

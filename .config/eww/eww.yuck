@@ -94,10 +94,10 @@
     (literal :content primary_workspaces)
     (literal :content primary_title :hexpand true)
     (box :class "right" :orientation "h" :space-evenly false :spacing 5 :halign "end"
-      (weather_box)
+      ;; (weather_box)
       (network_box)
       (cpu_box)
-      ;; (gpu_box)
+      (gpu_box)
       (mem_box)
       (audio_box)
       (systray :class "systray" :icon-size "16" :spacing "5")

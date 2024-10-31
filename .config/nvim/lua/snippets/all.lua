@@ -22,6 +22,9 @@ local _snippets = {
         i(1),
         t(" ========== --"),
     }),
+    s("export_compile_commands", {
+        t("set(CMAKE_EXPORT_COMPILE_COMMANDS on)"),
+    }),
 }
 
 -- date snippets

@@ -6,5 +6,6 @@ require("config.cmds")
 require("config.toggle-checkbox").setup()
 require("config.statusline")
 require("config.spell")
+require("config.auto-template-insert")
 
 require("config.lazy")
