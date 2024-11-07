@@ -23,4 +23,10 @@
         }
     ],
     "security.workspace.trust.untrustedFiles": "open",
+    "cmake.pinnedCommands": [
+        "workbench.action.tasks.configureTaskRunner",
+        "workbench.action.tasks.runTask"
+    ],
+    "cmake.options.statusBarVisibility": "visible",
+    "cmake.useCMakePresets": "always",
 }
