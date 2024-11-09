@@ -85,7 +85,7 @@ return {
             cuda = { "clang_format" },
             cmake = { "cmake_format" },
             tex = { "latexindent" },
-            python = { "black" },
+            python = { "ruff" },
 
             javascript = { "prettier" },
             typescript = { "prettier" },

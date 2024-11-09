@@ -299,7 +299,6 @@ return {
                 "shfmt",
                 "prettier",
                 "latexindent",
-                "black",
                 "markdownlint",
                 "shellcheck",
                 "mypy",
