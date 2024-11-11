@@ -19,7 +19,7 @@ elif [ "$(hostname)" = "$HOSTNAME_LAPTOP" ]; then
     export PRIMARY="eDP1"
     export SECONDARY=""
 
-    export KITTY_CONF_FONT_SIZE="font_size 10.0"
+    export KITTY_CONF_FONT_SIZE="font_size 12.0"
 
     ### Laptop Scaling ###
     # export QT_AUTO_SCREEN_SCALE_FACTOR=1
