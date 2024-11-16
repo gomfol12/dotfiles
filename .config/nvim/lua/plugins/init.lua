@@ -122,11 +122,26 @@ SpeedDatingFormat %H %M %S
             },
         },
     },
+    -- {
+    --     "goerz/jupytext.vim",
+    --     init = function()
+    --         vim.g.jupytext_filetype_map = { ["md"] = "quarto" }
+    --     end,
+    -- },
     {
-        "goerz/jupytext.vim",
-        init = function()
-            vim.g.jupytext_filetype_map = { ["md"] = "quarto" }
-        end,
+        "GCBallesteros/jupytext.nvim",
+        opts = {
+            style = "hydrogen",
+            output_extension = "auto", -- don't change
+            force_ft = nil, -- don't change
+            custom_language_formatting = {
+                python = {
+                    extension = "qmd",
+                    style = "quarto",
+                    force_ft = "quarto",
+                },
+            },
+        },
     },
     {
         "danymat/neogen",
