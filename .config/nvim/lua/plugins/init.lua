@@ -12,6 +12,7 @@ return {
     { "tpope/vim-fugitive" }, -- Git wrapper
     { "sindrets/diffview.nvim" },
     {
+        lazy = false,
         "rhysd/vim-grammarous",
         keys = { { "<leader>gg", ":GrammarousCheck --lang=de<CR>", desc = "Grammarous check" } },
     },

@@ -9,7 +9,7 @@ return {
         vim.g.vimtex_compiler_method = "latexmk"
         vim.g.vimtex_compiler_engine = "lualatex"
         vim.g.vimtex_compiler_latexmk = {
-            out_dir = "build",
+            out_dir = "buildd",
             options = {
                 "-pdf",
                 "-shell-escape",

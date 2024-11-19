@@ -61,7 +61,14 @@ return {
             "WhoIsSethDaniel/mason-tool-installer.nvim",
 
             -- Useful status updates for LSP.
-            { "j-hui/fidget.nvim", opts = {} },
+            {
+                "j-hui/fidget.nvim",
+                opts = {
+                    progress = {
+                        ignore = { "ltex" },
+                    },
+                },
+            },
 
             -- Allows extra capabilities provided by nvim-cmp
             "hrsh7th/cmp-nvim-lsp",
@@ -282,6 +289,23 @@ return {
                 cssls = {},
                 svlangserver = {},
                 texlab = {},
+                ltex = {
+                    filetypes = { "tex" },
+                    flags = { debounce_text_changes = 300 },
+                    settings = {
+                        ltex = {
+                            language = "de-DE",
+                            setenceCacheSize = 2000,
+                            additionalRules = {
+                                enablePickyRules = true,
+                                motherTongue = "de-DE",
+                            },
+                            trace = { server = "verbose" },
+                            disabledRules = {},
+                            hiddenFalsePositives = {},
+                        },
+                    },
+                },
                 marksman = {},
                 yamlls = {},
                 emmet_language_server = {},

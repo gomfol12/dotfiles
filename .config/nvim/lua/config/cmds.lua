@@ -128,3 +128,10 @@ end, { nargs = 1 })
 vim.api.nvim_create_user_command("Sescstr", [[/\\".\{-}\\"]], { nargs = 0 })
 -- Search String
 vim.api.nvim_create_user_command("Sstr", [[/".\{-}"]], { nargs = 0 })
+
+-- markdown paste url
+vim.api.nvim_create_user_command("MdPasteUrl", function()
+    local url = vim.fn.getreg("+") -- Clipboard register
+    vim.api.nvim_put({ string.format("[](%s)", url) }, "c", true, true)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("F[", true, true, true), "n", true)
+end, { desc = "Markdown paste url" })
