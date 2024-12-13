@@ -7,6 +7,11 @@ local function has_words_before()
 end
 
 local function cmp_format(entry, vim_item)
+    local maxwidth = 50
+    local ellipsis_char = "…"
+    if vim.fn.strchars(vim_item.abbr) > maxwidth then
+        vim_item.abbr = vim.fn.strcharpart(vim_item.abbr, 0, maxwidth) .. ellipsis_char
+    end
     if vim.tbl_contains({ "path" }, entry.source.name) then
         local icon, hl_group = require("nvim-web-devicons").get_icon(entry:get_completion_item().label)
         if icon then

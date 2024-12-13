@@ -135,3 +135,22 @@ vim.api.nvim_create_user_command("MdPasteUrl", function()
     vim.api.nvim_put({ string.format("[](%s)", url) }, "c", true, true)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("F[", true, true, true), "n", true)
 end, { desc = "Markdown paste url" })
+
+-- count words in latex file
+local function word_count()
+    local filepath = vim.fn.expand("%:p")
+    if filepath == "" then
+        print("No file loaded.")
+        return
+    end
+
+    local handle = io.popen('detex "' .. filepath .. '" | wc -w')
+    if handle then
+        local result = handle:read("*a")
+        handle:close()
+        print("Word count: " .. result:gsub("%s+", ""))
+    else
+        print("Error running detex or wc.")
+    end
+end
+vim.api.nvim_create_user_command("WC", word_count, {})
