@@ -1,6 +1,6 @@
 -- ==================== Plugins ==================== --
 -- This file contains general plugins or plugins with litte to no configuration.
--- TODO: overseer, some kind of colorizer, test debug
+-- TODO: overseer, test debug
 
 -- Maybe useful some time
 -- { "frabjous/knap" }
@@ -290,6 +290,11 @@ SpeedDatingFormat %H %M %S
                 desc = "Stop my eyes hurt",
             },
         },
+        opts = {},
+    },
+    {
+        "catgoose/nvim-colorizer.lua",
+        event = "BufReadPre",
         opts = {},
     },
 }
