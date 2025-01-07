@@ -1,0 +1,27 @@
+[include]
+    path = user
+[core]
+    autocrlf = input
+[pull]
+    ff = only
+    rebase = true
+[init]
+    defaultBranch = master
+[http]
+    sslVerify = false
+[commit]
+    gpgsign = true
+[advice]
+    addEmptyPathspec = false
+[rerere]
+    enabled = true
+[alias]
+    change-commits = "!f() { VAR=$1; OLD=$2; NEW=$3; shift 3; git filter-branch --env-filter \"if [[ \\\"$`echo $VAR`\\\" = '$OLD' ]]; then export $VAR='$NEW'; fi\" $@; }; f"
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    m = "!f() { if git rev-parse --verify master >/dev/null 2>&1; then git switch master; elif git rev-parse --verify main >/dev/null 2>&1; then git switch main; else echo \"Neither master nor main branch exists\"; fi; }; f"
+    pushf = push --force-with-lease
+    pf = push --force-with-lease
+    p = push
+    b = branch
+    c = checkout
+    s = switch
