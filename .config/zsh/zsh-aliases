@@ -53,6 +53,7 @@ alias gba="g branch -a"
 
 alias config="git --git-dir=\$HOME/.dotfiles/ --work-tree=\$HOME"
 alias configlist="config -C \$HOME ls-tree -r master --name-only"
+alias con="config"
 alias sdn="shutdown -h now"
 
 alias p="sudo pacman"

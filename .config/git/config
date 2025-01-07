@@ -25,3 +25,6 @@
     b = branch
     c = checkout
     s = switch
+    d = diff
+    pul = pull
+    f = fetch
