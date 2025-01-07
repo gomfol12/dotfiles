@@ -12,13 +12,13 @@ __cmdtime_format_duration() {
   local mins=$(printf '%u' $((($1 - hours * 3600) / 60)))
   local secs=$(printf "%.3f" $(($1 - 60 * mins - 3600 * hours)))
   if [[ ! "${mins}" == "0" ]] || [[ ! "${hours}" == "0" ]]; then
-      # If there are a non zero number of minutes or hours 
+      # If there are a non zero number of minutes or hours
       # then display integer number of seconds
       secs=${secs%\.*}
   elif [[ "${secs}" =~ "^0\..*" ]]; then
       # If secs starts with 0. i.e. is less than 1 then display
-      # the number of milliseconds instead. Strip off the leading 
-      # zeros and append an 'm'. 
+      # the number of milliseconds instead. Strip off the leading
+      # zeros and append an 'm'.
       secs="${${${secs#0.}#0}#0}m"
   else
       # Display seconds to 2dp

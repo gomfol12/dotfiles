@@ -317,6 +317,14 @@ return {
             -- mason
             require("mason").setup()
 
+            -- register autocmd for updating mason tools
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "LazySync",
+                callback = function()
+                    vim.cmd("MasonToolsUpdate")
+                end,
+            })
+
             local ensure_installed = vim.tbl_keys(servers or {})
             vim.list_extend(ensure_installed, {
                 "stylua",

@@ -102,7 +102,7 @@ alias nano="\$EDITOR"
 alias mem="free -mth"
 alias thissize="du -ach --max-depth=0"
 alias foldersize="du -ach --max-depth=1 | sort -h"
-alias df="df -Th --total"
+alias df="df -Th --total | sort -k 3 -h"
 
 alias su="su -m"
 
@@ -147,8 +147,6 @@ alias pv="zathura.sh"
 alias nvim_config_lines='find ~/.config/nvim -type d -name "plugin" -prune -o -type f -iname "*.lua" -print | xargs wc -l'
 
 alias update_mirrors="sudo reflector --latest 10 --sort rate --protocol https --save /etc/pacman.d/mirrorlist"
-
-alias update="paru -Pw; paru -Syu --norebuild --combinedupgrade --batchinstall"
 
 #alias b="dirBook"
 

@@ -1,16 +1,18 @@
 #!/bin/zsh
 
 ### Helper functions to load/install files/plugins ###
-function zsh_add_file() {
+function zsh_add_file()
+{
     [ -f "$ZDOTDIR/$1" ] && source "$ZDOTDIR/$1"
 }
 
-function zsh_add_plugin() {
+function zsh_add_plugin()
+{
     PLUGIN_NAME=$(echo $1 | cut -d "/" -f 2)
     if [ -d "$ZDOTDIR/plugins/$PLUGIN_NAME" ]; then
         # For plugins
-        zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh" || \
-        zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.zsh"
+        zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.plugin.zsh" ||
+            zsh_add_file "plugins/$PLUGIN_NAME/$PLUGIN_NAME.zsh"
     else
         git clone "https://github.com/$1.git" "$ZDOTDIR/plugins/$PLUGIN_NAME"
     fi
@@ -134,11 +136,12 @@ fman()
     man -k . | fzf --prompt='Man> ' | awk '{print $1}' | xargs -r man
 }
 
-man() {
+man()
+{
     local width=$(tput cols)
     [ $width -gt $MANWIDTH ] && width=$MANWIDTH
     env MANWIDTH=$width \
-    man "$@"
+        man "$@"
 }
 
 getClassString()
@@ -179,16 +182,17 @@ countdown()
     fi
 
     start="$(($(date +%s) + $1))"
-    while [ "$start" -ge `date +%s` ]; do
-        time="$(( $start - `date +%s` ))"
+    while [ "$start" -ge $(date +%s) ]; do
+        time="$(($start - $(date +%s)))"
         printf '\r%s ' "$(date -u -d "@$time" +%H:%M:%S)"
     done
     play -q -n synth 0.15 sine 880 vol 0.5
     printf '\nCountdown finished\n'
 }
 
-function newalias(){
-    echo "alias $1='$2'" >> "$ZDOTDIR/zsh-aliases" && source "$ZDOTDIR/.zshrc";
+function newalias()
+{
+    echo "alias $1='$2'" >>"$ZDOTDIR/zsh-aliases" && source "$ZDOTDIR/.zshrc"
 }
 
 setup_em()
@@ -304,7 +308,7 @@ nvim_setup()
     exit=0
 
     for program in "${dep_programs[@]}"; do
-        if ! command -v "$program" &> /dev/null; then
+        if ! command -v "$program" &>/dev/null; then
             echo "Dependency missing: $program"
             exit=1
         fi
@@ -363,5 +367,42 @@ scancode()
         slurp | grim -g - - | zbarimg -
     else
         maim -s | zbarimg -
+    fi
+}
+
+update()
+{
+    echo "--- news ---"
+    paru -Pw
+    if [ "$?" -eq 0 ]; then
+        read -r "new_news?News available. Continue? [Y/n]: "
+        if [[ ! "$new_news" =~ ^[Yy]$ ]] && [ -n "$new_news" ]; then
+            return 1
+        fi
+    fi
+
+    echo "--- updating system/aur ... ---"
+    paru -Syu --norebuild --combinedupgrade --batchinstall
+    if [ "$?" -ne 0 ]; then
+        echo "Failed to update system/aur."
+        return 1
+    fi
+
+    echo "--- updating flatpak ... ---"
+    flatpak update
+    if [ "$?" -ne 0 ]; then
+        echo "Failed to update flatpak."
+        return 1
+    fi
+
+    echo "--- updating nvim ... ---"
+    read -r "update_nvim?Update nvim? [Y/n]: "
+    if [[ "$update_nvim" =~ ^[Yy]$ ]] || [ -z "$update_nvim" ]; then
+        nvim --headless "+Lazy! sync" +qa
+        # nvim --headless "+Lazy! sync" "+MasonToolsUpdateSync" +qa
+        if [ "$?" -ne 0 ]; then
+            echo "Failed to update nvim."
+            return 1
+        fi
     fi
 }
