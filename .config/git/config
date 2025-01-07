@@ -24,7 +24,8 @@
     p = push
     b = branch
     c = checkout
-    s = switch
+    sw = switch
+    st = status
     d = diff
     pul = pull
     f = fetch
