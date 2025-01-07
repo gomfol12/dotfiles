@@ -388,18 +388,20 @@ update()
         return 1
     fi
 
-    echo "--- updating flatpak ... ---"
-    flatpak update
-    if [ "$?" -ne 0 ]; then
-        echo "Failed to update flatpak."
-        return 1
+    if command -v flatpak 2>&1 >/dev/null; then
+        echo "--- updating flatpak ... ---"
+        flatpak update
+        if [ "$?" -ne 0 ]; then
+            echo "Failed to update flatpak."
+            return 1
+        fi
     fi
 
     echo "--- updating nvim ... ---"
     read -r "update_nvim?Update nvim? [Y/n]: "
     if [[ "$update_nvim" =~ ^[Yy]$ ]] || [ -z "$update_nvim" ]; then
-        nvim --headless "+Lazy! sync" +qa
-        # nvim --headless "+Lazy! sync" "+MasonToolsUpdateSync" +qa
+        # nvim --headless "+Lazy! sync" +qa
+        nvim --headless "+Lazy! sync" "+MasonToolsUpdateSync" +qa
         if [ "$?" -ne 0 ]; then
             echo "Failed to update nvim."
             return 1
