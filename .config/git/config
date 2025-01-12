@@ -22,6 +22,7 @@
     pushf = push --force-with-lease
     pf = push --force-with-lease
     p = push
+    pus = push
     b = branch
     c = checkout
     sw = switch

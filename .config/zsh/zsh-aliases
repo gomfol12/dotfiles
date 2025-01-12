@@ -149,6 +149,8 @@ alias nvim_config_lines='find ~/.config/nvim -type d -name "plugin" -prune -o -t
 
 alias update_mirrors="sudo reflector --latest 10 --sort rate --protocol https --save /etc/pacman.d/mirrorlist"
 
+alias package_list_installed_date="expac --timefmt='%Y-%m-%d %T' '%l\\t%n' | sort | less"
+
 #alias b="dirBook"
 
 alias adb='HOME="$XDG_DATA_HOME"/android adb'

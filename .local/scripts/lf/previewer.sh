@@ -42,6 +42,8 @@ case "$file" in
 *.docx | *.odt | *.epub) pandoc -s -t plain -- "$file" | head "$head_num" ;;
 *.doc) catdoc "$file" | head "$head_num" ;;
 *.zip) zipinfo "$file" | head "$head_num" ;;
+*.7z) 7z l "$file" | tail -n +2 | head "$head_num" ;;
+*.rar) unrar l "$file" | tail -n +2 | head "$head_num" ;;
 *.tar) tar -tvf "$file" | head "$head_num" ;;
 *.tar.gz) tar -ztvf "$file" | head "$head_num" ;;
 *.tar.bz2) tar -jtvf "$file" | head "$head_num" ;;
@@ -50,6 +52,8 @@ case "$file" in
 *.iso) iso-info --no-header "$file" ;;
 *.xcf) printf "gimp file format" ;;
 *.aseprite) printf "aseprite file format" ;;
+*.gpg) printf "gpg encrypted data" ;;
+*.pak) printf "pak archive" ;;
 *)
     case "$(file -Lb --mime-type -- "$file")" in
     image/*)

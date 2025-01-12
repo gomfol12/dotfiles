@@ -76,7 +76,7 @@ cmd sudomkfile ${{
 }}
 
 cmd unarchive ${{
-    unarchive.sh -nl "$fx"
+    unarchive.sh -nl -d "$fx"
 
     read -n 1 -s -r -p "Press any key to continue"
     printf "\n"
