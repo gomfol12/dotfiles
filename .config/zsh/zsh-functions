@@ -235,7 +235,7 @@ mkvenv()
         return 1
     fi
 
-    python3 -m venv ".venv"
+    uv venv ".venv"
 }
 
 venv()
