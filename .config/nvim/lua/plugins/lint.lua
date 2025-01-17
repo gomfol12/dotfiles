@@ -19,7 +19,7 @@ return {
             cpp = { "cppcheck" },
             dockerfile = { "hadolint" },
             json = { "jsonlint" },
-            text = { "vale" },
+            -- text = { "vale" },
         }
 
         lint.linters.chktex.ignore_exitcode = true

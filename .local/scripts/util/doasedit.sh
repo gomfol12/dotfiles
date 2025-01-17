@@ -30,12 +30,35 @@ esac
 export TMPDIR=/dev/shm/
 trap 'trap - EXIT HUP QUIT TERM INT ABRT; rm -f "$tmp" "$tmpcopy"' EXIT HUP QUIT TERM INT ABRT
 
+doas_retry()
+{
+    attempts=0
+    max_attempts=3
+
+    while [ $attempts -lt $max_attempts ]; do
+        if doas "$@"; then
+            return 0
+        fi
+        attempts=$((attempts + 1))
+    done
+
+    exit 1
+}
+
 for file; do
     case "$file" in -*) file=./"$file" ;; esac
 
-    tmp="$(mktemp)"
+    file_without_extension="${file%.*}"
+    file_extension="${file##*.}"
+    tmp=""
+    if [ "$file_extension" = "$file_without_extension" ]; then
+        tmp="$(mktemp)"
+    else
+        tmp="$(mktemp --suffix=".$file_extension")"
+    fi
+
     if [ -f "$file" ] && [ ! -r "$file" ]; then
-        doas cat "$file" >"$tmp"
+        doas_retry cat "$file" >"$tmp"
     elif [ -r "$file" ]; then
         cat "$file" >"$tmp"
     fi
@@ -48,7 +71,7 @@ for file; do
     if cmp -s "$tmp" "$tmpcopy"; then
         echo 'File unchanged, exiting...'
     else
-        doas dd if="$tmp" of="$file"
+        doas_retry dd if="$tmp" of="$file"
         echo 'Done, changes written'
     fi
 
