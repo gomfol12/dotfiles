@@ -93,6 +93,111 @@ pars()
     paru -Sl | awk '{s=$2; gsub(/\x1b\[[0-9;]*m/,"",s); print s ($4=="" ? "" : "*")}' | fzf --multi --preview 'echo {1} | tr -d "*" | xargs -r paru -Si' | tr -d "*"
 }
 
+setup_flatpak_repos()
+{
+    if command -v flatpak 2>&1 >/dev/null; then
+        flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        flatpak --user remote-add --if-not-exists flathub-beta https://flathub.org/beta-repo/flathub-beta.flatpakrepo
+        echo "Flatpak repos setup."
+    fi
+}
+
+# TODO: installed *
+pacall()
+{
+    local flatpak_repos=()
+    local cache_dir="/tmp/pacall_cache"
+
+    mkdir -p "$cache_dir"
+
+    # Fetch user flatpak remotes
+    if command -v flatpak &>/dev/null; then
+        flatpak_repos=()
+        while read -r repo; do
+            flatpak_repos+=("$repo")
+        done < <(flatpak --user remotes | awk '{print $1}')
+    fi
+
+    # shellcheck disable=SC2317
+    fzf_preview()
+    {
+        local package="${1//\*/}"
+        local matched_repo=""
+        local matched_package=""
+
+        for repo in "${flatpak_repos[@]}"; do
+            if [[ "$package" == "$repo-"* && "${#repo}" -gt "${#matched_repo}" ]]; then
+                matched_repo="$repo"
+                matched_package="${package#"$repo-"}"
+            fi
+        done
+
+        if [[ -n "$matched_repo" ]]; then
+            flatpak --user remote-info "$matched_repo" "$matched_package" | tail -n +2
+        else
+            paru -Si "$package"
+        fi
+    }
+
+    # Fetch package lists
+    packages="$({
+        paru -Sl | awk '{s=$2; gsub(/\x1b\[[0-9;]*m/, "", s); print s ($4 == "" ? "" : "*")}'
+        for repo in "${flatpak_repos[@]}"; do
+            local cache_file="$cache_dir/$repo.cache"
+            if [[ ! -f "$cache_file" || $(find "$cache_file" -mmin +60) ]]; then
+                flatpak --user remote-ls --app --columns=application "$repo" | awk -v r="$repo-" '{print r $1}' >"$cache_file"
+            fi
+            cat "$cache_file"
+        done
+    } | fzf --multi --preview '
+            '"$(declare -p flatpak_repos)"'
+            '"$(declare -f fzf_preview)"'
+            fzf_preview {1}
+    ' | tr -d "*")"
+
+    if [ -z "$packages" ]; then
+        return
+    fi
+
+    local pacman_packages=()
+    local flatpak_packages=()
+
+    # Sort packages
+    while read -r package; do
+        local matched_repo=""
+        local matched_pkg=""
+        for repo in "${flatpak_repos[@]}"; do
+            if [[ "$package" == "$repo-"* && "${#repo}" -gt "${#matched_repo}" ]]; then
+                matched_repo="$repo"
+                matched_pkg="${package#"$repo-"}"
+            fi
+        done
+        if [[ -n "$matched_repo" ]]; then
+            flatpak_packages+=("$matched_repo $matched_pkg")
+        else
+            pacman_packages+=("$package")
+        fi
+    done <<<"$packages"
+
+    # Install flatpak packages
+    for repo in "${flatpak_repos[@]}"; do
+        local to_install=()
+        for entry in "${flatpak_packages[@]}"; do
+            if [[ "$repo" == "${entry%% *}" ]]; then
+                to_install+=("${entry#* }")
+            fi
+        done
+        if [[ ${#to_install[@]} -gt 0 ]]; then
+            flatpak --user install -y "$repo" "${to_install[@]}"
+        fi
+    done
+
+    # Install pacman packages
+    if [[ ${#pacman_packages[@]} -gt 0 ]]; then
+        paru --fm lf.sh "$@" -S "${pacman_packages[@]}"
+    fi
+}
+
 # scripts
 se()
 {
@@ -290,6 +395,7 @@ nvim_source_python_venv()
     fi
 }
 
+# TODO: remove
 nvim_setup()
 {
     # TODO finish list
