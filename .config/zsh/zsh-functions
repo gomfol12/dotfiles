@@ -102,38 +102,55 @@ setup_flatpak_repos()
     fi
 }
 
-# TODO: installed *
+# TODO: installed *, multiple branches (example firefox)
 pacall()
 {
     local flatpak_repos=()
     local cache_dir="/tmp/pacall_cache"
+    local per_user=1
 
-    mkdir -p "$cache_dir"
+    \mkdir -p "$cache_dir" || return 1
 
     # Fetch user flatpak remotes
     if command -v flatpak &>/dev/null; then
         flatpak_repos=()
+
+        # look for user flatpak remotes
         while read -r repo; do
             flatpak_repos+=("$repo")
         done < <(flatpak --user remotes | awk '{print $1}')
+
+        # look for system flatpak remotes
+        if [ -z "$flatpak_repos" ]; then
+            while read -r repo; do
+                flatpak_repos+=("$repo")
+            done < <(flatpak --system remotes | awk '{print $1}')
+            per_user=0
+        fi
     fi
 
     # shellcheck disable=SC2317
     fzf_preview()
     {
-        local package="${1//\*/}"
+        local package="${*//\*/}"
         local matched_repo=""
         local matched_package=""
 
         for repo in "${flatpak_repos[@]}"; do
-            if [[ "$package" == "$repo-"* && "${#repo}" -gt "${#matched_repo}" ]]; then
+            if [[ "$package" == *"-$repo" && "${#repo}" -gt "${#matched_repo}" ]]; then
                 matched_repo="$repo"
-                matched_package="${package#"$repo-"}"
+                matched_package="${package%-"$repo"}"
+                matched_package="${matched_package%\)*}" # remove everything after last )
+                matched_package="${matched_package#*\(}" # remove everything before first (
             fi
         done
 
         if [[ -n "$matched_repo" ]]; then
-            flatpak --user remote-info "$matched_repo" "$matched_package" | tail -n +2
+            if [ "$per_user" -eq 1 ]; then
+                flatpak --user remote-info "$matched_repo" "$matched_package" | tail -n +2
+            else
+                flatpak --system remote-info "$matched_repo" "$matched_package" | tail -n +2
+            fi
         else
             paru -Si "$package"
         fi
@@ -145,14 +162,21 @@ pacall()
         for repo in "${flatpak_repos[@]}"; do
             local cache_file="$cache_dir/$repo.cache"
             if [[ ! -f "$cache_file" || $(find "$cache_file" -mmin +60) ]]; then
-                flatpak --user remote-ls --app --columns=application "$repo" | awk -v r="$repo-" '{print r $1}' >"$cache_file"
+                local flatpak_output=""
+                if [ "$per_user" -eq 1 ]; then
+                    flatpak_output=$(flatpak --user remote-ls --app --columns=name,application "$repo")
+                else
+                    flatpak_output=$(flatpak --system remote-ls --app --columns=name,application "$repo")
+                fi
+                echo "$flatpak_output" | awk -v r="-$repo" '{match($0, /[^ \t]+$/, last); name=substr($0, 1, RSTART-1); sub(/[ \t]+$/, "", name); printf "%s(%s)%s\n", name, last[0], r}' >"$cache_file"
             fi
             cat "$cache_file"
         done
     } | fzf --multi --preview '
             '"$(declare -p flatpak_repos)"'
             '"$(declare -f fzf_preview)"'
-            fzf_preview {1}
+            '"$(declare -p per_user)"'
+            fzf_preview {}
     ' | tr -d "*")"
 
     if [ -z "$packages" ]; then
@@ -165,15 +189,17 @@ pacall()
     # Sort packages
     while read -r package; do
         local matched_repo=""
-        local matched_pkg=""
+        local matched_package=""
         for repo in "${flatpak_repos[@]}"; do
-            if [[ "$package" == "$repo-"* && "${#repo}" -gt "${#matched_repo}" ]]; then
+            if [[ "$package" == *"-$repo" && "${#repo}" -gt "${#matched_repo}" ]]; then
                 matched_repo="$repo"
-                matched_pkg="${package#"$repo-"}"
+                matched_package="${package%-"$repo"}"
+                matched_package="${matched_package%\)*}"
+                matched_package="${matched_package#*\(}"
             fi
         done
         if [[ -n "$matched_repo" ]]; then
-            flatpak_packages+=("$matched_repo $matched_pkg")
+            flatpak_packages+=("$matched_repo $matched_package")
         else
             pacman_packages+=("$package")
         fi
@@ -188,7 +214,11 @@ pacall()
             fi
         done
         if [[ ${#to_install[@]} -gt 0 ]]; then
-            flatpak --user install -y "$repo" "${to_install[@]}"
+            if [ "$per_user" -eq 1 ]; then
+                flatpak --user install -y "$repo" "${to_install[@]}"
+            else
+                flatpak --system install -y "$repo" "${to_install[@]}"
+            fi
         fi
     done
 
