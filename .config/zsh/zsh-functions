@@ -102,8 +102,7 @@ setup_flatpak_repos()
     fi
 }
 
-# TODO: installed *, multiple branches (example firefox)
-pacall()
+parflat()
 {
     local flatpak_repos=()
     local cache_dir="/tmp/pacall_cache"
@@ -140,8 +139,8 @@ pacall()
             if [[ "$package" == *"-$repo" && "${#repo}" -gt "${#matched_repo}" ]]; then
                 matched_repo="$repo"
                 matched_package="${package%-"$repo"}"
-                matched_package="${matched_package%\)*}" # remove everything after last )
-                matched_package="${matched_package#*\(}" # remove everything before first (
+                matched_package="${matched_package##*\(}" # remove everything before last (
+                matched_package="${matched_package%%\)*}" # remove everything after last )
             fi
         done
 
@@ -162,13 +161,27 @@ pacall()
         for repo in "${flatpak_repos[@]}"; do
             local cache_file="$cache_dir/$repo.cache"
             if [[ ! -f "$cache_file" || $(find "$cache_file" -mmin +60) ]]; then
-                local flatpak_output=""
+                local flatpak_packages=""
+                local flatpak_packages_installed=""
                 if [ "$per_user" -eq 1 ]; then
-                    flatpak_output=$(flatpak --user remote-ls --app --columns=name,application "$repo")
+                    flatpak_packages=$(flatpak --user remote-ls --app --columns=name,application "$repo")
+                    flatpak_packages_installed=$(flatpak --user list --app --columns=name,application)
                 else
-                    flatpak_output=$(flatpak --system remote-ls --app --columns=name,application "$repo")
+                    flatpak_packages=$(flatpak --system remote-ls --app --columns=name,application "$repo")
+                    flatpak_packages_installed=$(flatpak --system list --app --columns=name,application)
                 fi
-                echo "$flatpak_output" | awk -v r="-$repo" '{match($0, /[^ \t]+$/, last); name=substr($0, 1, RSTART-1); sub(/[ \t]+$/, "", name); printf "%s(%s)%s\n", name, last[0], r}' >"$cache_file"
+                awk -v r="$repo" '
+                NR==FNR {
+                    match($0, /[^ \t]+$/, last)     # match application id in last column
+                    lookup[last[0]] = 1
+                    next
+                }
+                {
+                    match($0, /[^ \t]+$/, last)
+                    name = substr($0, 1, RSTART-1)  # everything before last column
+                    sub(/[ \t]+$/, "", name)        # remove trailing whitespace
+                    printf "%s(%s)-%s%s\n", name, last[0], r, (last[0] in lookup ? "*" : "") # * if installed
+                }' <(echo "$flatpak_packages_installed") <(echo "$flatpak_packages") >"$cache_file"
             fi
             cat "$cache_file"
         done
@@ -194,8 +207,8 @@ pacall()
             if [[ "$package" == *"-$repo" && "${#repo}" -gt "${#matched_repo}" ]]; then
                 matched_repo="$repo"
                 matched_package="${package%-"$repo"}"
-                matched_package="${matched_package%\)*}"
-                matched_package="${matched_package#*\(}"
+                matched_package="${matched_package##*\(}" # remove everything before last (
+                matched_package="${matched_package%%\)*}" # remove everything after last )
             fi
         done
         if [[ -n "$matched_repo" ]]; then
@@ -214,16 +227,22 @@ pacall()
             fi
         done
         if [[ ${#to_install[@]} -gt 0 ]]; then
+            echo "Flatpak: Installing from $repo"
             if [ "$per_user" -eq 1 ]; then
                 flatpak --user install -y "$repo" "${to_install[@]}"
             else
                 flatpak --system install -y "$repo" "${to_install[@]}"
+            fi
+
+            if [ "$?" -eq 0 ]; then
+                \rm -f "$cache_dir/$repo.cache"
             fi
         fi
     done
 
     # Install pacman packages
     if [[ ${#pacman_packages[@]} -gt 0 ]]; then
+        echo "Pacman: Installing"
         paru --fm lf.sh "$@" -S "${pacman_packages[@]}"
     fi
 }
