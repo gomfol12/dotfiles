@@ -102,18 +102,12 @@ setup_flatpak_repos()
     fi
 }
 
-parflat()
+get_added_flatpak_repos()
 {
     local flatpak_repos=()
-    local cache_dir="/tmp/pacall_cache"
     local per_user=1
 
-    \mkdir -p "$cache_dir" || return 1
-
-    # Fetch user flatpak remotes
     if command -v flatpak &>/dev/null; then
-        flatpak_repos=()
-
         # look for user flatpak remotes
         while read -r repo; do
             flatpak_repos+=("$repo")
@@ -126,6 +120,35 @@ parflat()
             done < <(flatpak --system remotes | awk '{print $1}')
             per_user=0
         fi
+    fi
+
+    echo "$per_user"
+    echo "${flatpak_repos[@]}"
+}
+
+parfs()
+{
+    local flatpak_repos=()
+    local cache_dir="/tmp/pacall_cache"
+    local per_user=1
+
+    \mkdir -p "$cache_dir" || return 1
+
+    if [ "$1" = "--remove-cache" ]; then
+        \rm -rf "$cache_dir"
+        return
+    fi
+
+    # read per_user and flatpak_repos from args
+    if [ "$1" = "--read-from-args" ]; then
+        per_user="$2"
+        flatpak_repos=("${@:3}")
+    fi
+
+    if [ -z "$1" ]; then
+        output=($(get_added_flatpak_repos))
+        per_user=${output[1]}
+        flatpak_repos=("${output[@]:1}")
     fi
 
     # shellcheck disable=SC2317
@@ -156,7 +179,7 @@ parflat()
     }
 
     # Fetch package lists
-    packages="$({
+    {
         paru -Sl | awk '{s=$2; gsub(/\x1b\[[0-9;]*m/, "", s); print s ($4 == "" ? "" : "*")}'
         for repo in "${flatpak_repos[@]}"; do
             local cache_file="$cache_dir/$repo.cache"
@@ -190,7 +213,19 @@ parflat()
             '"$(declare -f fzf_preview)"'
             '"$(declare -p per_user)"'
             fzf_preview {}
-    ' | tr -d "*")"
+    ' | tr -d "*"
+}
+
+parfin()
+{
+    local flatpak_repos=()
+    local per_user=1
+
+    output=($(get_added_flatpak_repos))
+    per_user=${output[1]}
+    flatpak_repos=("${output[@]:1}")
+
+    local packages=$(parfs --read-from-args "$per_user" "${flatpak_repos[@]}")
 
     if [ -z "$packages" ]; then
         return
@@ -235,7 +270,7 @@ parflat()
             fi
 
             if [ "$?" -eq 0 ]; then
-                \rm -f "$cache_dir/$repo.cache"
+                parfs --remove-cache
             fi
         fi
     done
