@@ -102,130 +102,94 @@ setup_flatpak_repos()
     fi
 }
 
-get_added_flatpak_repos()
-{
-    local flatpak_repos=()
-    local per_user=1
+# global vars for parfin, parfs, parfdel, ...
+if command -v flatpak 2>&1 >/dev/null; then
+    parf_flatpak_repos=()
+    parf_per_user=()
+    parf_cache_dir="/tmp/pacall_cache"
+    \mkdir -p "$parf_cache_dir" || return 1
 
-    if command -v flatpak &>/dev/null; then
-        # look for user flatpak remotes
-        while read -r repo; do
-            flatpak_repos+=("$repo")
-        done < <(flatpak --user remotes | awk '{print $1}')
+    parf_flatpak_repos=($(flatpak --user remotes | awk '{print $1}'))
 
-        # look for system flatpak remotes
-        if [ -z "$flatpak_repos" ]; then
-            while read -r repo; do
-                flatpak_repos+=("$repo")
-            done < <(flatpak --system remotes | awk '{print $1}')
-            per_user=0
-        fi
+    if [ -z "$parf_flatpak_repos" ]; then
+        parf_flatpak_repos=($(flatpak --system remotes | awk '{print $1}'))
+        parf_per_user=0
+    else
+        parf_per_user=1
     fi
+fi
 
-    echo "$per_user"
-    echo "${flatpak_repos[@]}"
+parf_fzf_preview()
+{
+    local package="${*//\*/}"
+    local repo=""
+
+    # find longest matching repo name
+    for r in "${parf_flatpak_repos[@]}"; do
+        if [[ "$package" == *"-$r" && ${#r} -gt ${#repo} ]]; then
+            repo="$r"
+        fi
+    done
+
+    if [[ -n "$repo" ]]; then
+        package="${package%-"$repo"}"
+        package="${package##*\(}" # remove everything before last (
+        package="${package%%\)*}" # remove everything after last )
+
+        if [[ "$parf_per_user" -eq 1 ]]; then
+            flatpak --user remote-info "$repo" "$package" | tail -n +2
+        else
+            flatpak --system remote-info "$repo" "$package" | tail -n +2
+        fi
+    else
+        paru -Si "$package"
+    fi
 }
 
 parfs()
 {
-    local flatpak_repos=()
-    local cache_dir="/tmp/pacall_cache"
-    local per_user=1
-
-    \mkdir -p "$cache_dir" || return 1
-
-    if [ "$1" = "--remove-cache" ]; then
-        \rm -rf "$cache_dir"
-        return
+    if [[ -z "$parf_flatpak_repos" && -z "$parf_per_user" ]]; then
+        echo "Flatpak not installed."
+        return 1
     fi
 
-    # read per_user and flatpak_repos from args
-    if [ "$1" = "--read-from-args" ]; then
-        per_user="$2"
-        flatpak_repos=("${@:3}")
-    fi
-
-    if [ -z "$1" ]; then
-        output=($(get_added_flatpak_repos))
-        per_user=${output[1]}
-        flatpak_repos=("${output[@]:1}")
-    fi
-
-    # shellcheck disable=SC2317
-    fzf_preview()
-    {
-        local package="${*//\*/}"
-        local matched_repo=""
-        local matched_package=""
-
-        for repo in "${flatpak_repos[@]}"; do
-            if [[ "$package" == *"-$repo" && "${#repo}" -gt "${#matched_repo}" ]]; then
-                matched_repo="$repo"
-                matched_package="${package%-"$repo"}"
-                matched_package="${matched_package##*\(}" # remove everything before last (
-                matched_package="${matched_package%%\)*}" # remove everything after last )
-            fi
-        done
-
-        if [[ -n "$matched_repo" ]]; then
-            if [ "$per_user" -eq 1 ]; then
-                flatpak --user remote-info "$matched_repo" "$matched_package" | tail -n +2
-            else
-                flatpak --system remote-info "$matched_repo" "$matched_package" | tail -n +2
-            fi
-        else
-            paru -Si "$package"
-        fi
-    }
-
-    # Fetch package lists
     {
         paru -Sl | awk '{s=$2; gsub(/\x1b\[[0-9;]*m/, "", s); print s ($4 == "" ? "" : "*")}'
-        for repo in "${flatpak_repos[@]}"; do
-            local cache_file="$cache_dir/$repo.cache"
+        for repo in "${parf_flatpak_repos[@]}"; do
+            local cache_file="$parf_cache_dir/$repo.cache"
             if [[ ! -f "$cache_file" || $(find "$cache_file" -mmin +60) ]]; then
                 local flatpak_packages=""
                 local flatpak_packages_installed=""
-                if [ "$per_user" -eq 1 ]; then
+                if [ "$parf_per_user" -eq 1 ]; then
                     flatpak_packages=$(flatpak --user remote-ls --app --columns=name,application "$repo")
                     flatpak_packages_installed=$(flatpak --user list --app --columns=name,application)
                 else
                     flatpak_packages=$(flatpak --system remote-ls --app --columns=name,application "$repo")
                     flatpak_packages_installed=$(flatpak --system list --app --columns=name,application)
                 fi
-                awk -v r="$repo" '
-                NR==FNR {
-                    match($0, /[^ \t]+$/, last)     # match application id in last column
-                    lookup[last[0]] = 1
-                    next
-                }
-                {
-                    match($0, /[^ \t]+$/, last)
-                    name = substr($0, 1, RSTART-1)  # everything before last column
-                    sub(/[ \t]+$/, "", name)        # remove trailing whitespace
-                    printf "%s(%s)-%s%s\n", name, last[0], r, (last[0] in lookup ? "*" : "") # * if installed
-                }' <(echo "$flatpak_packages_installed") <(echo "$flatpak_packages") >"$cache_file"
+                awk -F'\t' -v r="$repo" '
+                NR==FNR { lookup[$2] = 1; next }
+                { printf "%s(%s)-%s%s\n", $1, $2, r, ($2 in lookup ? "*" : "")}
+                ' <(echo "$flatpak_packages_installed") <(echo "$flatpak_packages") >"$cache_file"
             fi
             cat "$cache_file"
         done
     } | fzf --multi --preview '
-            '"$(declare -p flatpak_repos)"'
-            '"$(declare -f fzf_preview)"'
-            '"$(declare -p per_user)"'
-            fzf_preview {}
+            '"$(declare -p parf_flatpak_repos)"'
+            '"$(declare -f parf_fzf_preview)"'
+            '"$(declare -p parf_per_user)"'
+            parf_fzf_preview {}
     ' | tr -d "*"
 }
 
 parfin()
 {
-    local flatpak_repos=()
-    local per_user=1
+    if [[ -z "$parf_flatpak_repos" && -z "$parf_per_user" ]]; then
+        echo "Flatpak not installed."
+        return 1
+    fi
 
-    output=($(get_added_flatpak_repos))
-    per_user=${output[1]}
-    flatpak_repos=("${output[@]:1}")
-
-    local packages=$(parfs --read-from-args "$per_user" "${flatpak_repos[@]}")
+    local packages=$(parfs)
 
     if [ -z "$packages" ]; then
         return
@@ -238,7 +202,7 @@ parfin()
     while read -r package; do
         local matched_repo=""
         local matched_package=""
-        for repo in "${flatpak_repos[@]}"; do
+        for repo in "${parf_flatpak_repos[@]}"; do
             if [[ "$package" == *"-$repo" && "${#repo}" -gt "${#matched_repo}" ]]; then
                 matched_repo="$repo"
                 matched_package="${package%-"$repo"}"
@@ -254,7 +218,7 @@ parfin()
     done <<<"$packages"
 
     # Install flatpak packages
-    for repo in "${flatpak_repos[@]}"; do
+    for repo in "${parf_flatpak_repos[@]}"; do
         local to_install=()
         for entry in "${flatpak_packages[@]}"; do
             if [[ "$repo" == "${entry%% *}" ]]; then
@@ -263,14 +227,14 @@ parfin()
         done
         if [[ ${#to_install[@]} -gt 0 ]]; then
             echo "Flatpak: Installing from $repo"
-            if [ "$per_user" -eq 1 ]; then
-                flatpak --user install -y "$repo" "${to_install[@]}"
+            if [ "$parf_per_user" -eq 1 ]; then
+                flatpak --user install "$repo" "${to_install[@]}"
             else
-                flatpak --system install -y "$repo" "${to_install[@]}"
+                flatpak --system install "$repo" "${to_install[@]}"
             fi
 
             if [ "$?" -eq 0 ]; then
-                parfs --remove-cache
+                \rm -rf "$parf_cache_dir/$repo.cache"
             fi
         fi
     done
@@ -279,6 +243,84 @@ parfin()
     if [[ ${#pacman_packages[@]} -gt 0 ]]; then
         echo "Pacman: Installing"
         paru --fm lf.sh "$@" -S "${pacman_packages[@]}"
+    fi
+}
+
+parfdel()
+{
+    if [[ -z "$parf_flatpak_repos" && -z "$parf_per_user" ]]; then
+        echo "Flatpak not installed."
+        return 1
+    fi
+
+    local packages="$(
+        {
+            pacman -Qq
+            local flatpak_packages=""
+            if [ "$parf_per_user" -eq 1 ]; then
+                flatpak_packages=$(flatpak --user list --app --columns=name,application,origin)
+            else
+                flatpak_packages=$(flatpak --system list --app --columns=name,application,origin)
+            fi
+            awk -F'\t' '{printf "%s(%s)-%s\n", $1, $2, $3}' <(echo "$flatpak_packages")
+        } | fzf --multi --preview '
+            '"$(declare -p parf_flatpak_repos)"'
+            '"$(declare -f parf_fzf_preview)"'
+            '"$(declare -p parf_per_user)"'
+            parf_fzf_preview {}
+    ' | tr -d "*"
+    )"
+
+    if [ -z "$packages" ]; then
+        return
+    fi
+
+    local pacman_packages=()
+    local flatpak_packages=()
+
+    # Sort packages
+    while read -r package; do
+        local matched_repo=""
+        local matched_package=""
+        for repo in "${parf_flatpak_repos[@]}"; do
+            if [[ "$package" == *"-$repo" && "${#repo}" -gt "${#matched_repo}" ]]; then
+                matched_repo="$repo"
+                matched_package="${package%-"$repo"}"
+                matched_package="${matched_package##*\(}" # remove everything before last (
+                matched_package="${matched_package%%\)*}" # remove everything after last )
+            fi
+        done
+        if [[ -n "$matched_repo" ]]; then
+            flatpak_packages+=("$matched_repo $matched_package")
+        else
+            pacman_packages+=("$package")
+        fi
+    done <<<"$packages"
+
+    for repo in "${parf_flatpak_repos[@]}"; do
+        local to_uninstall=()
+        for entry in "${flatpak_packages[@]}"; do
+            if [[ "$repo" == "${entry%% *}" ]]; then
+                to_uninstall+=("${entry#* }")
+            fi
+        done
+        if [[ ${#to_uninstall[@]} -gt 0 ]]; then
+            echo "Flatpak: Uninstalling from $repo"
+            if [ "$parf_per_user" -eq 1 ]; then
+                flatpak --user uninstall "${to_uninstall[@]}"
+            else
+                flatpak --system uninstall "${to_uninstall[@]}"
+            fi
+
+            if [ "$?" -eq 0 ]; then
+                \rm -rf "$parf_cache_dir/$repo.cache"
+            fi
+        fi
+    done
+
+    if [[ ${#pacman_packages[@]} -gt 0 ]]; then
+        echo "Pacman: Uninstalling"
+        paru --fm lf.sh -Rns "${pacman_packages[@]}"
     fi
 }
 
