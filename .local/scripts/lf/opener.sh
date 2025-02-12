@@ -75,7 +75,7 @@ case "$f" in
     ;;
 *.html | *.htm)
     if [ -n "$DISPLAY" ] && [ "$op" = "open_sec" ]; then
-        spawn $BROWSER "$f"
+        spawn "$BROWSER" "$f"
     else
         $EDITOR "$f"
     fi

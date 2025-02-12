@@ -1,7 +1,7 @@
 #!/bin/sh
 draw()
 {
-    $SCRIPT_DIR/lf/draw_img.sh "$@"
+    "$SCRIPT_DIR/lf/draw_img.sh" "$@"
     exit 1
 }
 
@@ -22,10 +22,12 @@ file="$1"
 shift
 
 head_num=-50
+fold_width=80
 
+# exiftool
 case "$file" in
 *.pdf)
-    if [ -n "$FIFO_UEBERZUG" ]; then
+    if [ -n "$FIFO_UEBERZUG" ] || [ "$TERM" = "xterm-kitty" ]; then
         cache="$(hash "$file")"
         cache "$cache.jpg" "$@"
         pdftoppm -f 1 -l 1 \
@@ -47,17 +49,18 @@ case "$file" in
 *.tar) tar -tvf "$file" | head "$head_num" ;;
 *.tar.gz) tar -ztvf "$file" | head "$head_num" ;;
 *.tar.bz2) tar -jtvf "$file" | head "$head_num" ;;
-*.exe | *.dll | *.img) printf "\033[48;5;7m\033[30mbinary\033[0m" ;;
+*.exe | *.dll | *.img) printf "\033[48;5;7m\033[30mbinary\033[0m\n" ;;
 *.o) nm "$file" | head "$head_num" ;;
 *.iso) iso-info --no-header "$file" ;;
-*.xcf) printf "gimp file format" ;;
-*.aseprite) printf "aseprite file format" ;;
-*.gpg) printf "gpg encrypted data" ;;
-*.pak) printf "pak archive" ;;
+*.xcf) printf "gimp file format\n" ;;
+*.aseprite) printf "aseprite file format\n" ;;
+*.gpg) printf "gpg encrypted data\n" ;;
+*.pak) printf "pak archive\n" ;;
+*.db-shm | *.db-wal) printf "sqlite3 database\n" ;;
 *)
     case "$(file -Lb --mime-type -- "$file")" in
     image/*)
-        if [ -n "$FIFO_UEBERZUG" ]; then
+        if [ -n "$FIFO_UEBERZUG" ] || [ "$TERM" = "xterm-kitty" ]; then
             orientation="$(identify -format '%[EXIF:Orientation]\n' -- "$file")"
             if [ -n "$orientation" ] && [ "$orientation" != 1 ]; then
                 cache="$(hash "$file").jpg"
@@ -72,7 +75,7 @@ case "$file" in
         fi
         ;;
     video/*)
-        if [ -n "$FIFO_UEBERZUG" ]; then
+        if [ -n "$FIFO_UEBERZUG" ] || [ "$TERM" = "xterm-kitty" ]; then
             cache="$(hash "$file").jpg"
             cache "$cache" "$@"
             ffmpegthumbnailer -i "$file" -o "$cache" -s 0
@@ -86,5 +89,5 @@ case "$file" in
     ;;
 esac
 
-file -Lb -- "$1" | fold -s -w "$width"
-exit 0
+printf "\n-----\n"
+file -Lb -- "$file" | fold -s -w "$fold_width"
