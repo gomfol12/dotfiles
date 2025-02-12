@@ -65,6 +65,10 @@ case "$file" in
             if [ -n "$orientation" ] && [ "$orientation" != 1 ]; then
                 cache="$(hash "$file").jpg"
                 cache "$cache" "$@"
+                if ! command -v convert >/dev/null; then
+                    printf "imagemagick not found\n"
+                    exit 1
+                fi
                 convert -- "$file" -auto-orient "$cache"
                 draw "$cache" "$@"
             else
@@ -78,6 +82,10 @@ case "$file" in
         if [ -n "$FIFO_UEBERZUG" ] || [ "$TERM" = "xterm-kitty" ]; then
             cache="$(hash "$file").jpg"
             cache "$cache" "$@"
+            if ! command -v ffmpegthumbnailer >/dev/null; then
+                printf "ffmpegthumbnailer not found\n"
+                exit 1
+            fi
             ffmpegthumbnailer -i "$file" -o "$cache" -s 0
             draw "$cache" "$@"
         else
