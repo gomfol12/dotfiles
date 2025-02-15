@@ -3,6 +3,11 @@ set -e
 
 if [ -n "$DISPLAY" ]; then
     if ! [ "$TERM" = "xterm-kitty" ]; then
+        if ! command -v ueberzug >/dev/null; then
+            printf "ueberzug not found\n"
+            exit 1
+        fi
+
         export FIFO_UEBERZUG="${TMPDIR:-/tmp}/lf-ueberzug-$$"
 
         cleanup()

@@ -57,6 +57,7 @@ case "$file" in
 *.gpg) printf "gpg encrypted data\n" ;;
 *.pak) printf "pak archive\n" ;;
 *.db-shm | *.db-wal) printf "sqlite3 database\n" ;;
+*.mp3) mediainfo "$file" ;;
 *)
     case "$(file -Lb --mime-type -- "$file")" in
     image/*)

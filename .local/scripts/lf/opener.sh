@@ -85,6 +85,11 @@ case "$f" in
         spawn aseprite "$f"
     fi
     ;;
+*.mp3)
+    if [ -n "$DISPLAY" ]; then
+        mpv "$f"
+    fi
+    ;;
 *)
     case $(file --mime-type "$f" -bL) in
     text/* | application/json | inode/x-empty | application/octet-stream | application/x-sega-pico-rom | application/javascript)
