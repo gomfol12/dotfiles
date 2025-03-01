@@ -50,7 +50,7 @@ return {
             },
         },
         opts = {
-            ensure_installed = {
+            ensure_installed = vim.tbl_extend("force", {
                 "c",
                 "cpp",
                 "lua",
@@ -74,7 +74,6 @@ return {
                 "java",
                 "json",
                 "kotlin",
-                "latex",
                 "markdown",
                 "markdown_inline",
                 "ninja",
@@ -90,7 +89,7 @@ return {
                 "vim",
                 "vimdoc",
                 "yaml",
-            },
+            }, (vim.fn.executable("pdflatex") == 1 or vim.fn.executable("lualatex") == 1) and { "latex" } or {}),
             auto_install = true,
             highlight = {
                 enable = true,
