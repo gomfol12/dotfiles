@@ -10,4 +10,4 @@ require("config.auto-template-insert")
 
 require("config.lazy")
 
-require("config.venv_switcher")
+require("config.venv_switcher")()
