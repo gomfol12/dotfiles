@@ -51,7 +51,7 @@ export LESS_TERMCAP_us=$'\E[01;31m'
 ### PATH ###
 typeset -U path PATH
 path+=(~/.local/bin)
-path+=($(find "$SCRIPT_DIR" -not -path "*old*" -not -path "*grub*" -type d))
+path+=($(find "$SCRIPT_DIR" -not -path "*old*" -not -path "*grub*" -not -path "*.git*" -type d))
 path+=(~/.local/share/gem/ruby/3.0.0/bin)
 path+=(~/.local/share/coursier/bin)
 path+=(~/.local/share/flutter/bin)

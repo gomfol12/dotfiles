@@ -9,3 +9,5 @@ require("config.spell")
 require("config.auto-template-insert")
 
 require("config.lazy")
+
+require("config.venv_switcher")
