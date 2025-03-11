@@ -300,6 +300,10 @@ cmd recol ${{
 }}
 recol
 
+cmd pdfmerge ${{
+    pdfmerge.sh "$fx"
+}}
+
 # key bindings
 # Remove some defaults
 map m
