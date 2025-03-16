@@ -124,12 +124,11 @@ alias cpaste="xclip -selection clipboard -o"
 
 alias pw="pw.sh"
 
-alias pin="pacin"
-alias yin="parin"
-alias yedit="parin --fm lf.sh --review"
-alias pas="pacs"
-alias yas="pars"
-alias pdel="pacdel"
+alias pin="parfin"
+alias yin="pin"
+alias pas="parfs"
+alias yas="pas"
+alias pdel="parfdel"
 
 alias calc="qalc"
 
