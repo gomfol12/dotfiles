@@ -29,27 +29,29 @@ local _snippets = {
 
 -- date snippets
 local dates = {
-    "today",
-    "tomorrow",
-    "next monday",
-    "next tuesday",
-    "next wednesday",
-    "next thursday",
-    "next friday",
-    "next saturday",
-    "next sunday",
-    "next week",
-    "next month",
+    ["today"] = "heute",
+    ["tomorrow"] = "morgen",
+    ["next monday"] = "nächsten Montag",
+    ["next tuesday"] = "nächsten Dienstag",
+    ["next wednesday"] = "nächsten Mittwoch",
+    ["next thursday"] = "nächsten Donnerstag",
+    ["next friday"] = "nächsten Freitag",
+    ["next saturday"] = "nächsten Samstag",
+    ["next sunday"] = "nächsten Sonntag",
+    ["next week"] = "nächste Woche",
+    ["next month"] = "nächsten Monat",
 }
-for _, date in pairs(dates) do
-    table.insert(
-        _snippets,
-        s("d_" .. date:gsub(" ", "-"), {
-            f(function(args, snip, user_arg_1)
-                return vim.fn.trim(vim.fn.system("date -d '" .. date .. "' +'%d.%m.%Y '"))
-            end, {}),
-        })
-    )
+for date, ger_date in pairs(dates) do
+    for _, key in ipairs({ date, ger_date }) do
+        table.insert(
+            _snippets,
+            s("d_" .. key:gsub(" ", "-"), {
+                f(function()
+                    return vim.fn.trim(vim.fn.system("date -d '" .. date .. "' +'%d.%m.%Y '"))
+                end, {}),
+            })
+        )
+    end
 end
 
 return _snippets
