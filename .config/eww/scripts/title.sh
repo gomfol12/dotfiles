@@ -8,7 +8,7 @@ title()
 
         active_workspace=$(hyprctl monitors -j | jq '.[] | select(.name == "'"$1"'").activeWorkspace.id')
         focused=$(hyprctl monitors -j | jq -r '.[] | select(.name == "'"$1"'").focused')
-        title=$(hyprctl workspaces -j | jq -r '.[] | select(.id == '"$active_workspace"').lastwindowtitle')
+        title=$(hyprctl workspaces -j | jq -r '.[] | select(.id == '"$active_workspace"').lastwindowtitle' | sed 's/"/\\"/g' | tr '\n' ' ')
 
         if [ "$focused" = "true" ]; then
             echo "(box :class \"title_focused\" :orientation \"h\" :space-evenly false :halign \"fill\" :hexpand true :vexpand true \
