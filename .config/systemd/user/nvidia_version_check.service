@@ -1,0 +1,13 @@
+[Unit]
+Description=Flatpak / NVIDIA Driver Version Check
+After=graphical.target network.target
+
+[Service]
+ExecStart=%h/.local/scripts/nvidia_version_check.sh
+Type=oneshot
+RemainAfterExit=yes
+Environment=DISPLAY=:0
+Environment=XDG_RUNTIME_DIR=/run/user/%U
+
+[Install]
+WantedBy=default.target
