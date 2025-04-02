@@ -67,6 +67,7 @@ return {
             cmake = { "cmake_format" },
             tex = { "latexindent" },
             python = { "ruff" },
+            fortran = { "fprettify" },
 
             javascript = { "prettier" },
             typescript = { "prettier" },
@@ -83,6 +84,9 @@ return {
             },
             clang_format = {
                 prepend_args = { "-style={BasedOnStyle: Microsoft}" },
+            },
+            fprettify = {
+                prepend_args = { "--silent", "--indent", "4" },
             },
         },
     },

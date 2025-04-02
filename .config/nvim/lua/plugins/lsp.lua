@@ -3,21 +3,17 @@
 local signs = {}
 if vim.g.have_nerd_font then
     signs = {
-        { name = "DiagnosticSignError", text = "" },
-        { name = "DiagnosticSignWarn", text = "" },
-        { name = "DiagnosticSignHint", text = "" },
-        { name = "DiagnosticSignInfo", text = "" },
+        [vim.diagnostic.severity.ERROR] = "",
+        [vim.diagnostic.severity.WARN] = "",
+        [vim.diagnostic.severity.INFO] = "",
+        [vim.diagnostic.severity.HINT] = "",
     }
-
-    for _, sign in ipairs(signs) do
-        vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
-    end
 end
 
 vim.diagnostic.config({
     virtual_text = false,
     signs = {
-        active = signs,
+        text = signs or {},
         severity = {
             min = vim.diagnostic.severity.INFO,
         },
@@ -312,6 +308,17 @@ return {
                 zls = {},
                 rust_analyzer = {},
                 jdtls = {},
+                fortls = {
+                    cmd = {
+                        "fortls",
+                        "--lowercase_intrinsics",
+                        "--hover_signature",
+                        "--hover_language=fortran",
+                        "--use_signature_help",
+                        "--notify_init",
+                        "--enable_code_actions",
+                    },
+                },
             }
 
             -- mason
@@ -339,6 +346,7 @@ return {
                 "jsonlint",
                 "vale",
                 "jupytext",
+                "fprettify",
             })
             require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
