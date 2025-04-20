@@ -7,6 +7,7 @@ require("config.toggle-checkbox").setup()
 require("config.statusline")
 require("config.spell")
 require("config.auto-template-insert")
+require("config.diff_highlighting").setup()
 
 require("config.lazy")
 

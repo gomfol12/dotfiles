@@ -55,8 +55,10 @@ vim.keymap.set("v", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set("v", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- stay in indent mode
-vim.keymap.set("v", "<", "<gv", { desc = "Indent left" })
-vim.keymap.set("v", ">", ">gv", { desc = "Indent right" })
+-- vim.keymap.set("v", "<", "<gv", { desc = "Indent left" })
+-- vim.keymap.set("v", ">", ">gv", { desc = "Indent right" })
+vim.keymap.set("v", "–", "<gv", { desc = "Indent left" })
+vim.keymap.set("v", "•", ">gv", { desc = "Indent right" })
 
 -- quickfix
 vim.keymap.set("n", "[q", ":cnext<cr>", { desc = "Next Quickfix Entry" })
