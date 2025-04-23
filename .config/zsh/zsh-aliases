@@ -156,6 +156,8 @@ alias adb='HOME="$XDG_DATA_HOME"/android adb'
 
 alias pentablet_driver="/usr/lib/pentablet/PenTablet.sh /mini & disown"
 
+alias rg="rg --hidden --smart-case"
+
 # for kitty
 # if [ "$TERM" = "xterm-kitty" ]; then
 #     alias ssh="kitten ssh"
