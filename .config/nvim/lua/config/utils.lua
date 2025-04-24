@@ -199,6 +199,26 @@ local function in_tikz()
     return in_env("tikzpicture")
 end
 
+local function scan_dir_with_name(name)
+    local scan = require("plenary.scandir")
+    local path = require("plenary.path")
+
+    local out = ""
+    scan.scan_dir(".", {
+        search_pattern = name,
+        on_insert = function(entry)
+            local relative_path = string.match(entry, "(.*)/[^/]+$")
+            if relative_path == nil then
+                return
+            end
+            out = path:new(relative_path):absolute()
+        end,
+        hidden = true,
+        depth = 2,
+    })
+    return out
+end
+
 return {
     getHost = getHost,
     concat = concat,
@@ -217,4 +237,5 @@ return {
         in_itemize = in_itemize,
         in_tikz = in_tikz,
     },
+    scan_dir_with_name = scan_dir_with_name,
 }

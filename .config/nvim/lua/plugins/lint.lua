@@ -1,8 +1,9 @@
 -- ==================== Lint (nvim-lint) ==================== --
 
--- check if linter is installed
 local utils = require("config.utils")
-utils.check_linters({ "chktex", "cppcheck", "fortitude" })
+
+-- check if linter is installed
+utils.check_linters({ "chktex", "clang-tidy", "fortitude" })
 
 return {
     "mfussenegger/nvim-lint",
@@ -15,8 +16,8 @@ return {
             bash = { "shellcheck" },
             tex = { "chktex" },
             python = { "mypy", "ruff" },
-            c = { "cppcheck" },
-            cpp = { "cppcheck" },
+            c = { "clangtidy" },
+            cpp = { "clangtidy" },
             dockerfile = { "hadolint" },
             json = { "jsonlint" },
             fortran = { "fortitude" },
@@ -24,6 +25,11 @@ return {
         }
 
         lint.linters.chktex.ignore_exitcode = true
+
+        local build_path = utils.scan_dir_with_name("build")
+        if build_path ~= "" then
+            lint.linters.clangtidy.args = { "-p", build_path }
+        end
 
         local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
         vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {

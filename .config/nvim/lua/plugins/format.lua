@@ -17,6 +17,12 @@ vim.api.nvim_create_user_command("Format", function(args)
     require("conform").format({ async = true, lsp_fallback = true, range = range })
 end, { range = true, desc = "Format range" })
 
+local clang_format_args = {}
+local clang_format_file = utils.scan_dir_with_name(".clang.*format")
+if clang_format_file == "" then
+    clang_format_args = { "-style={BasedOnStyle: Microsoft}" }
+end
+
 return {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
@@ -83,7 +89,7 @@ return {
                 prepend_args = { "--tab-width", "4" },
             },
             clang_format = {
-                prepend_args = { "-style={BasedOnStyle: Microsoft}" },
+                prepend_args = clang_format_args,
             },
             fprettify = {
                 prepend_args = { "--silent", "--indent", "4" },
