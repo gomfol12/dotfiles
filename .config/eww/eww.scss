@@ -11,12 +11,45 @@
   min-height: 0px;
 }
 
+// tooltip
+
+tooltip.background {
+  background-color: $background;
+  color: $foreground;
+}
+
+tooltip label {
+  margin: 0px;
+}
+
+// systray menu
+
+menu,
+popup {
+  background-color: $background;
+  color: $foreground;
+}
+
+menu menuitem,
+popup menuitem {
+  padding: 3px 6px;
+}
+
+menu menuitem:hover,
+popup menuitem:hover {
+  background-color: $color1;
+}
+
+// bar
+
 .primary_bar,
 .secondary_bar {
   background-color: $background;
   color: $foreground;
   padding: 0px;
 }
+
+// workspaces
 
 .workspaces button {
   background-color: $background;
@@ -52,6 +85,8 @@
 /* .workspaces button:hover { */
 /*   background-color: $color8; */
 /* } */
+
+// widgets
 
 .right {
   background-color: $background;
