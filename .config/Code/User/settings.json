@@ -29,6 +29,5 @@
     ],
     "cmake.options.statusBarVisibility": "visible",
     "cmake.useCMakePresets": "always",
-    "cmake.showOptionsMovedNotification": false,
     "latex-workshop.latex.outDir": "%DIR%/buildd/",
 }
