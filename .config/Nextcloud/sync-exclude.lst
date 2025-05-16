@@ -58,4 +58,5 @@ __pycache__/
 .cache/
 node_modules/
 build/
+build_*/
 *-archivemount/

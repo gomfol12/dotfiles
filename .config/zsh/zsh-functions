@@ -621,7 +621,7 @@ update()
     read -r "update_nvim?Update nvim? [Y/n]: "
     if [[ "$update_nvim" =~ ^[Yy]$ ]] || [ -z "$update_nvim" ]; then
         # nvim --headless "+Lazy! sync" +qa
-        nvim --headless "+Lazy! sync" "+MasonToolsUpdateSync" +qa
+        nvim --headless "+Lazy! sync" "+MasonUpdateAllPackages" +qa
         if [ "$?" -ne 0 ]; then
             echo "Failed to update nvim."
             return 1

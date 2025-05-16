@@ -220,7 +220,9 @@ return {
                 for _, tool in pairs(tools) do
                     local p = mr.get_package(tool)
                     if not p:is_installed() then
-                        p:install()
+                        p:install(nil, function()
+                            print("Installed " .. tool)
+                        end)
                     end
                 end
             end)

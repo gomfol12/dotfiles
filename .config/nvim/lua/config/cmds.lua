@@ -176,3 +176,19 @@ local function word_count()
     end
 end
 vim.api.nvim_create_user_command("WC", word_count, {})
+
+-- update mason
+vim.api.nvim_create_user_command("MasonUpdateAllPackages", function()
+    local mr = require("mason-registry")
+    mr.refresh(function()
+        local packages = mr.get_installed_package_names()
+        for _, package in pairs(packages) do
+            local p = mr.get_package(package)
+            if p:get_installed_version() ~= p:get_latest_version() then
+                p:install(nil, function()
+                    print("Updated " .. package)
+                end)
+            end
+        end
+    end)
+end, { desc = "Update all Packages" })
