@@ -62,11 +62,21 @@ return {
             bash = { "shfmt" },
             zsh = { "shfmt" },
             sh = { "shfmt" },
-            html = { "prettier" },
-            css = { "prettier" },
-            json = { "prettier" },
-            -- markdown = { "prettier" },
-            yaml = { "prettier" },
+            html = { "prettier", prepend_args = { "--tab-width", "4" } },
+            css = { "prettier", prepend_args = { "--tab-width", "4" } },
+            json = { "prettier", prepend_args = { "--tab-width", "4" } },
+            markdown = {
+                "prettier",
+                prepend_args = {
+                    "--print-width",
+                    "80",
+                    "--prose-wrap",
+                    "always",
+                    "--tab-width",
+                    "2",
+                },
+            },
+            yaml = { "prettier", prepend_args = { "--tab-width", "4" } },
             c = { "clang_format" },
             cpp = { "clang_format" },
             cuda = { "clang_format" },
@@ -75,8 +85,8 @@ return {
             python = { "ruff" },
             fortran = { "fprettify" },
 
-            javascript = { "prettier" },
-            typescript = { "prettier" },
+            javascript = { "prettier", prepend_args = { "--tab-width", "4" } },
+            typescript = { "prettier", prepend_args = { "--tab-width", "4" } },
         },
         formatters = {
             stylua = {
@@ -84,9 +94,6 @@ return {
             },
             shfmt = {
                 prepend_args = { "-i", "4", "-fn" },
-            },
-            prettier = {
-                prepend_args = { "--tab-width", "4" },
             },
             clang_format = {
                 prepend_args = clang_format_args,

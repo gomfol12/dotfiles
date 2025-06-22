@@ -234,7 +234,14 @@ return {
 
             local ensure_installed = {}
             for server, opts in pairs(servers) do
-                vim.lsp.config[server] = opts or {}
+                if server == "clangd" then
+                    -- quick fix TODO:
+                    capabilities.offsetEncoding = { "utf-16" }
+                    opts.capabilities = capabilities
+                    vim.lsp.config[server] = opts or {}
+                else
+                    vim.lsp.config[server] = opts or {}
+                end
 
                 table.insert(ensure_installed, server)
             end

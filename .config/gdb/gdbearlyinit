@@ -1,0 +1,4 @@
+set history size unlimited
+set history remove-duplicates unlimited
+set history save
+set history filename ~/.config/gdb/gdbhistory

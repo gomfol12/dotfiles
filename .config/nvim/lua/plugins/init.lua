@@ -271,27 +271,27 @@ SpeedDatingFormat %H %M %S
             },
         },
     },
-    {
-        "wildfunctions/myeyeshurt",
-        lazy = false,
-        keys = {
-            {
-                "<leader>ms",
-                function()
-                    require("myeyeshurt").start()
-                end,
-                desc = "Toggle my eyes hurt",
-            },
-            {
-                "<leader>mx",
-                function()
-                    require("myeyeshurt").stop()
-                end,
-                desc = "Stop my eyes hurt",
-            },
-        },
-        opts = {},
-    },
+    -- {
+    --     "wildfunctions/myeyeshurt",
+    --     lazy = false,
+    --     keys = {
+    --         {
+    --             "<leader>ms",
+    --             function()
+    --                 require("myeyeshurt").start()
+    --             end,
+    --             desc = "Toggle my eyes hurt",
+    --         },
+    --         {
+    --             "<leader>mx",
+    --             function()
+    --                 require("myeyeshurt").stop()
+    --             end,
+    --             desc = "Stop my eyes hurt",
+    --         },
+    --     },
+    --     opts = {},
+    -- },
     {
         "catgoose/nvim-colorizer.lua",
         event = "BufReadPre",
