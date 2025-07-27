@@ -628,3 +628,31 @@ update()
         fi
     fi
 }
+
+with_inhibit()
+{
+    cmd="$@"
+
+    systemd-inhibit --what=idle:sleep --why="Running: $cmd" $cmd
+
+    # cookie=$(gdbus call --session \
+    #     --dest org.freedesktop.ScreenSaver \
+    #     --object-path /org/freedesktop/ScreenSaver \
+    #     --method org.freedesktop.ScreenSaver.Inhibit \
+    #     "Long Running Command" \
+    #     "Running: $cmd" | awk -F '[(), ]+' '{print $3}')
+
+    # if [[ ! "$cookie" =~ '^[0-9]+$' ]]; then
+    #     echo "Warning: Could not extract inhibition cookie. Running without inhibiting screen saver."
+    #     eval "$cmd"
+    #     return
+    # fi
+
+    # eval "$cmd"
+
+    # gdbus call --session \
+    #     --dest org.freedesktop.ScreenSaver \
+    #     --object-path /org/freedesktop/ScreenSaver \
+    #     --method org.freedesktop.ScreenSaver.UnInhibit \
+    #     "$cookie" >/dev/null
+}
