@@ -101,26 +101,40 @@ return {
     },
     opts = {
         on_attach = on_attach,
-
         disable_netrw = true,
         view = {
-            adaptive_size = true,
             centralize_selection = true,
             number = true,
             relativenumber = true,
         },
         renderer = {
             group_empty = true,
-            highlight_git = true,
+            highlight_git = "all",
             highlight_opened_files = "all",
         },
         update_focused_file = {
             enable = true,
         },
-
+        filters = {
+            git_ignored = false,
+        },
         diagnostics = {
             enable = true,
             show_on_dirs = true,
+        },
+        filesystem_watchers = {
+            enable = true,
+            debounce_delay = 50,
+            ignore_dirs = {
+                "/.ccls-cache",
+                "/.cache",
+                "/.mypy_cache",
+                "/build",
+                "/build_*",
+                "/buildd",
+                "/node_modules",
+                "/target",
+            },
         },
         actions = {
             change_dir = {
