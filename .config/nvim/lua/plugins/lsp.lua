@@ -173,7 +173,7 @@ local servers = {
             },
         },
     },
-    marksman = {},
+    -- marksman = {},
     yamlls = {},
     emmet_language_server = {},
     zls = {},
@@ -190,6 +190,7 @@ local servers = {
             "--enable_code_actions",
         },
     },
+    vimls = {},
 }
 
 local tools = {
@@ -206,6 +207,7 @@ local tools = {
     "vale",
     "jupytext",
     "fprettify",
+    "vint",
 }
 
 return {

@@ -180,15 +180,38 @@ vim.api.nvim_create_user_command("WC", word_count, {})
 -- update mason
 vim.api.nvim_create_user_command("MasonUpdateAllPackages", function()
     local mr = require("mason-registry")
+
+    local done = false
     mr.refresh(function()
         local packages = mr.get_installed_package_names()
-        for _, package in pairs(packages) do
-            local p = mr.get_package(package)
-            if p:get_installed_version() ~= p:get_latest_version() then
-                p:install(nil, function()
-                    print("Updated " .. package)
+        local pending = 0
+
+        local function on_done()
+            pending = pending - 1
+            if pending == 0 then
+                done = true
+            end
+        end
+
+        for _, name in ipairs(packages) do
+            local pkg = mr.get_package(name)
+            if pkg:get_installed_version() ~= pkg:get_latest_version() then
+                pending = pending + 1
+                pkg:install(nil, function()
+                    print("Updated " .. name .. "\n")
+                    on_done()
                 end)
             end
         end
+
+        if pending == 0 then
+            done = true
+        end
     end)
+
+    -- block main thread until done
+    while not done do
+        vim.wait(50)
+        vim.uv.run("nowait")
+    end
 end, { desc = "Update all Packages" })

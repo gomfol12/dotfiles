@@ -12,7 +12,7 @@ return {
         local lint = require("lint")
 
         lint.linters_by_ft = {
-            markdown = { "markdownlint" },
+            -- markdown = { "markdownlint" },
             bash = { "shellcheck" },
             tex = { "chktex" },
             python = { "mypy", "ruff" },
@@ -21,6 +21,7 @@ return {
             dockerfile = { "hadolint" },
             json = { "jsonlint" },
             fortran = { "fortitude" },
+            vim = { "vint" },
             -- text = { "vale" },
         }
 
