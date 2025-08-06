@@ -157,6 +157,30 @@ local servers = {
     svlangserver = {},
     texlab = {},
     ltex = {
+        on_init = function(client, bufnr)
+            local settings = client.config.settings.ltex or {}
+            local path = vim.fn.stdpath("config") .. "/spell/de.utf-8.add"
+            local file = io.open(path, "r")
+
+            if not file then
+                vim.notify("Cannot open spell file: " .. path, vim.log.levels.WARN)
+                return
+            end
+
+            settings.dictionary = settings.dictionary or {}
+            settings.dictionary["en-US"] = settings.dictionary["en-US"] or {}
+            settings.dictionary["de-DE"] = settings.dictionary["de-DE"] or {}
+
+            local dict_en = settings.dictionary["en-US"]
+            local dict_de = settings.dictionary["de-DE"]
+
+            for word in file:lines() do
+                table.insert(dict_en, word)
+                table.insert(dict_de, word)
+            end
+
+            file:close()
+        end,
         filetypes = { "tex" },
         flags = { debounce_text_changes = 300 },
         settings = {
