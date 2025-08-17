@@ -70,6 +70,10 @@ return {
             copy_sync = {
                 enable = false,
             },
+            navigation = {
+                -- disable default keybindings (C-hjkl) for normal mode
+                enable_default_keybindings = false,
+            },
         },
     },
     {
