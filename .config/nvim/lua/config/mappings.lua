@@ -162,6 +162,19 @@ vim.keymap.set("x", "<leader>'", "<ESC>`>a'<ESC>`<i'<ESC>", { silent = true, des
 vim.keymap.set("x", '<leader>"', '<ESC>`>a"<ESC>`<i"<ESC>', { silent = true, desc = '"" around selected word' })
 vim.keymap.set("x", "<leader>$", "<ESC>`>a$<ESC>`<i$<ESC>", { silent = true, desc = "$$ around selected word" })
 
+-- `` and `````` around word(s)
+vim.keymap.set("n", "<leader>`", "viw<ESC>bi`<ESC>ea`<ESC>", { noremap = true, silent = true })
+vim.keymap.set("v", "<leader>cb", function()
+    local start_line = vim.fn.line("v")
+    local end_line = vim.fn.line(".")
+    if start_line > end_line then
+        start_line, end_line = end_line, start_line
+    end
+    vim.api.nvim_buf_set_lines(0, start_line - 1, start_line - 1, false, { "```" })
+    vim.api.nvim_buf_set_lines(0, end_line + 1, end_line + 1, false, { "```" })
+    vim.cmd("normal! gv")
+end, { noremap = true, silent = true })
+
 -- move selected text
 vim.keymap.set("x", "K", ":move '<-2<CR>gv-gv", { silent = true, desc = "Move selected text" })
 vim.keymap.set("x", "J", ":move '>+1<CR>gv-gv", { silent = true, desc = "Move selected text" })
