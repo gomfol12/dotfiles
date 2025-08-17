@@ -33,7 +33,7 @@ local function custom_vimwiki_enter()
         local target = line:match("%[[^%]]+%]%(([^%)]+)%)")
         if target then
             if target:match("^vfile:") then
-                local handled = vim.fn["VimwikiLinkHandler"](target)
+                local handled = VimwikiLinkHandler(target)
                 if handled == 1 then
                     return
                 end
@@ -87,6 +87,11 @@ return {
                 },
             }
             vim.g.vimwiki_global_ext = 0
+            vim.cmd([[
+                function! VimwikiLinkHandler(link)
+                    return v:lua.VimwikiLinkHandler(a:link)
+                endfunction
+            ]])
         end,
     },
 }
