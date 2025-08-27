@@ -87,6 +87,16 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end,
 })
 
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--     pattern = "NvimTree_*",
+--     callback = function()
+--         local mouse_row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+--         vim.defer_fn(function()
+--             vim.api.nvim_win_set_cursor(0, { mouse_row, 0 })
+--         end, 100)
+--     end,
+-- })
+
 return {
     "kyazdani42/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -103,7 +113,7 @@ return {
         on_attach = on_attach,
         disable_netrw = true,
         view = {
-            centralize_selection = true,
+            centralize_selection = false, -- annoying. Don't change ever.
             number = true,
             relativenumber = true,
         },
@@ -111,9 +121,6 @@ return {
             group_empty = true,
             highlight_git = "all",
             highlight_opened_files = "all",
-        },
-        update_focused_file = {
-            enable = true,
         },
         filters = {
             git_ignored = false,
