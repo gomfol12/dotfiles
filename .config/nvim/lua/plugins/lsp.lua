@@ -254,22 +254,10 @@ return {
             end)
 
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
-            vim.lsp.config("*", {
-                capabilities = capabilities,
-            })
+            local ensure_installed = vim.tbl_keys(servers)
 
-            local ensure_installed = {}
             for server, opts in pairs(servers) do
-                if server == "clangd" then
-                    -- quick fix TODO:
-                    capabilities.offsetEncoding = { "utf-16" }
-                    opts.capabilities = capabilities
-                    vim.lsp.config[server] = opts or {}
-                else
-                    vim.lsp.config[server] = opts or {}
-                end
-
-                table.insert(ensure_installed, server)
+                vim.lsp.config[server] = vim.tbl_deep_extend("force", { capabilities = capabilities }, opts or {})
             end
 
             require("mason-lspconfig").setup({
