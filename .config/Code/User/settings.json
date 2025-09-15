@@ -31,4 +31,5 @@
     "cmake.useCMakePresets": "always",
     "latex-workshop.latex.outDir": "%DIR%/buildd/",
     "git.openRepositoryInParentFolders": "never",
+    "winidea-debug.customInstall": false,
 }
