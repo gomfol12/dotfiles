@@ -215,3 +215,17 @@ vim.api.nvim_create_user_command("MasonUpdateAllPackages", function()
         vim.uv.run("nowait")
     end
 end, { desc = "Update all Packages" })
+
+-- open in github
+vim.api.nvim_create_user_command("OpenInGithub", function()
+    local repo = vim.fn.expand("<cWORD>")
+    repo = repo:match("[%w_.-]+/[%w_.-]+")
+
+    if not repo then
+        vim.notify("Cursor is not on a valid GitHub repo string", vim.log.levels.ERROR)
+        return
+    end
+
+    local url = "https://github.com/" .. repo
+    vim.fn.jobstart({ "xdg-open", url }, { detach = true })
+end, { desc = "Open in github" })

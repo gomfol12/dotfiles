@@ -65,18 +65,16 @@ return {
         "hrsh7th/cmp-nvim-lsp-signature-help",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-path",
-        "lukas-reineke/cmp-rg",
         "petertriho/cmp-git",
         "nvim-lua/plenary.nvim",
         "hrsh7th/cmp-calc",
         "hrsh7th/cmp-buffer",
-        "jmbuhr/cmp-pandoc-references",
         "hrsh7th/cmp-emoji",
 
         "hrsh7th/cmp-cmdline",
         "dmitmel/cmp-cmdline-history",
 
-        "hrsh7th/cmp-omni",
+        -- "hrsh7th/cmp-omni",
 
         "nvim-tree/nvim-web-devicons",
         "onsails/lspkind.nvim",
@@ -209,7 +207,6 @@ return {
                 { name = "nvim_lsp" },
                 { name = "otter" },
                 { name = "luasnip" },
-                { name = "pandoc_references" },
                 { name = "path" },
                 { name = "git" },
                 { name = "emoji" },

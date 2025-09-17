@@ -11,11 +11,6 @@ return {
     { "tpope/vim-sleuth" }, -- Detect tabstop and shiftwidth automatically
     { "tpope/vim-fugitive" }, -- Git wrapper
     { "sindrets/diffview.nvim" },
-    -- {
-    --     lazy = false,
-    --     "rhysd/vim-grammarous",
-    --     keys = { { "<leader>gg", ":GrammarousCheck --lang=de<CR>", desc = "Grammarous check" } },
-    -- },
     { "tpope/vim-surround" },
     { "tpope/vim-unimpaired" },
     { "Konfekt/vim-CtrlXA" },
@@ -128,12 +123,6 @@ SpeedDatingFormat %H %M %S
             },
         },
     },
-    -- {
-    --     "goerz/jupytext.vim",
-    --     init = function()
-    --         vim.g.jupytext_filetype_map = { ["md"] = "quarto" }
-    --     end,
-    -- },
     {
         "GCBallesteros/jupytext.nvim",
         opts = {
