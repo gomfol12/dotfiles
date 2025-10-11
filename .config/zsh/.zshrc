@@ -30,6 +30,8 @@ fi
 
 zsh_add_file "zsh-dashboard"
 
+fpath=($ZDOTDIR/completion $fpath)
+
 ### "Plugins" ###
 zsh_add_plugin "zsh-users/zsh-autosuggestions"
 zsh_add_plugin "zsh-users/zsh-syntax-highlighting"

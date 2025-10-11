@@ -1,0 +1,16 @@
+#compdef pacclean.sh
+
+_pacclean()
+{
+    local -a commands
+    commands=(
+        "clean:Clean packages"
+        "diff:Show differences"
+        "edit:Edit package list"
+        "generate:Generate package list"
+        "list:List package list"
+        "--help:Show help"
+        "-h:Show help"
+    )
+    _describe 'command' commands
+}
