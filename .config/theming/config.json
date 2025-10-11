@@ -24,7 +24,7 @@
     ],
     "reload_commands": [
         {
-            "command": "[ \"$DESKTOP_SESSION\" = \"hyprland\" ] && swww img %IMAGE_PATH% --transition-type wipe",
+            "command": "[ \"$DESKTOP_SESSION\" = \"winitrc\" ] && swww img %IMAGE_PATH% --transition-type wipe",
             "ignore_error": true
         },
         {
