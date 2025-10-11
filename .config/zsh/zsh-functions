@@ -384,9 +384,44 @@ qtThemeFix()
     QT_QPA_PLATFORMTHEME=qt5ct "$@"
 }
 
+to_seconds()
+{
+    local input="$1"
+    local total=0
+    local num unit
+
+    # remove spaces
+    input=${input//[[:space:]]/}
+
+    while [[ -n $input ]]; do
+        if [[ $input =~ '^([0-9]*\.?[0-9]+)([a-zA-Z]*)' ]]; then
+            num=${match[1]}
+            unit=${match[2]}
+
+            case $unit in
+            h | hour | hours) total=$((total + num * 3600)) ;;
+            m | min | minute | minutes) total=$((total + num * 60)) ;;
+            s | sec | second | seconds) total=$((total + num)) ;;
+            *) total=$((total + num)) ;;
+            esac
+
+            # remove the matched part
+            input=${input#${match[1]}${match[2]}}
+        else
+            break
+        fi
+    done
+
+    # round
+    echo $((int(total + 0.5)))
+}
+
 timer()
 {
+    local time start
+
     start=$(date +%s)
+
     while true; do
         time="$(($(date +%s) - $start))"
         printf '\r%s ' "$(date -u -d "@$time" +%H:%M:%S)"
@@ -395,18 +430,24 @@ timer()
 
 countdown()
 {
-    if [ -z "$1" ]; then
-        echo "Time missing!"
-        return
+    local time start
+
+    time=$(to_seconds "$1")
+    if [ "$time" -le 0 ]; then
+        echo "Invalid time!"
+        return 1
     fi
 
-    start="$(($(date +%s) + $1))"
+    start="$(($(date +%s) + $time))"
+
     while [ "$start" -ge $(date +%s) ]; do
         time="$(($start - $(date +%s)))"
         printf '\r%s ' "$(date -u -d "@$time" +%H:%M:%S)"
     done
-    play -q -n synth 0.15 sine 880 vol 0.5
+
     printf '\nCountdown finished\n'
+
+    play -q -n synth 0.15 sine 880 vol 0.5
 }
 
 function newalias()
