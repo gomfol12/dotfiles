@@ -357,5 +357,14 @@ return {
         "mrcjkb/haskell-tools.nvim",
         version = "^6",
         lazy = false,
+        init = function()
+            vim.g.haskell_tools = {
+                hls = {
+                    default_settings = {
+                        haskell = { formattingProvider = "ormolu" },
+                    },
+                },
+            }
+        end,
     },
 }
