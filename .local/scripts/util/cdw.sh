@@ -139,15 +139,15 @@ EOF
         input="$1"
 
         # for my own stupidity
-        if [ "$(echo "$input" | tail -c 2)" = "f" ]; then
-            input="$(echo "$input" | head -c -2)"
+        if [ "${input: -1}" = "f" ]; then
+            input="${input%?}" # remove last character only
             lf_open=1
         fi
 
         # main change or jump "logic"
         searched_shortcut="$(tac "$shortcut_file" | grep -m 1 "^name:$input:")"
         searched_history_name="$(tac "$history_file" | grep -E -m 1 'name:[^:]*'"$input"'/?:')"
-        searched_history_path="$(tac "$shortcut_file" | grep -E -m 1 "path:.*$input/?$")"
+        searched_history_path="$(tac "$history_file" | grep -E -m 1 "path:.*$input/?$")"
 
         if [ -n "$searched_shortcut" ]; then
             dir_change "$(echo "$searched_shortcut" | cut -d':' -f4)" "nosave"
@@ -161,6 +161,14 @@ EOF
 
         if [ $lf_open -eq 1 ]; then
             lf.sh
+
+            last_dir_file="$HOME/.cache/lf_last_dir"
+            if [ -f "$last_dir_file" ]; then
+                newdir="$(cat "$last_dir_file")"
+                if [ -d "$newdir" ]; then
+                    dir_change "$newdir"
+                fi
+            fi
         fi
     }
 

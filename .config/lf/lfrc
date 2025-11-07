@@ -304,6 +304,11 @@ cmd pdfmerge ${{
     pdfmerge.sh "$fx"
 }}
 
+cmd on-quit ${{
+    # save last directory
+    echo "$PWD" > "$HOME/.cache/lf_last_dir"
+}}
+
 # key bindings
 # Remove some defaults
 map m
