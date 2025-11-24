@@ -1,6 +1,9 @@
 #!/bin/bash
 
+# pw-metadata -n settings 0 clock.force-rate 48000 && pw-metadata -n settings 0 clock.force-quantum 512
+
 UPDATE_EWW=1
+HEADPHONES="alsa_output.usb-Corsair_CORSAIR_HS80_RGB_Wireless_Gaming_Receiver_18e05f2e000700dc-00.analog-stereo"
 
 update_eww()
 {
@@ -20,7 +23,7 @@ update_eww()
     local default_sink
     default_sink=$(get_default_sink)
 
-    if [ "$default_sink" = "alsa_output.usb-Corsair_CORSAIR_HS80_RGB_Wireless_Gaming_Receiver_18e05f2e000700dc-00.analog-stereo" ]; then
+    if [ "$default_sink" = "$HEADPHONES" ]; then
         sink_icon=$([ "$sink_mute" = "yes" ] && echo "󰟎 " || echo "󰋋 ")
     else
         if [ "$sink_mute" = "yes" ]; then
@@ -43,6 +46,22 @@ update_eww()
 convert_to_percent()
 {
     printf "%.0f%%\n" "$(echo "$1 * 100" | bc -l)"
+}
+
+kill_nuclear()
+{
+    pid=$(pgrep -u "$(id -u)" -n "$1")
+    if [ -n "$pid" ]; then
+        kill -9 "$pid"
+    fi
+}
+
+kill_graceful()
+{
+    pid=$(pgrep -u "$(id -u)" -n "$1")
+    if [ -n "$pid" ]; then
+        kill "$pid"
+    fi
 }
 
 # get all sinks and exclude "loopback" and "easy effects sinks" sinks
@@ -141,6 +160,12 @@ swap_audio_outputs()
     fi
 
     set_default_sink "$(get_sinks | jq -r '.[] | select(.["node.name"] != "'"$(get_default_sink)"'") | .id' | cut -d" " -f1)"
+
+    if [ "$(get_default_sink)" = "$HEADPHONES" ]; then
+        setsid -f -- pw-play --latency=500ms --raw --format=f32 /dev/zero
+    else
+        kill_nuclear "pw-play"
+    fi
 }
 
 get_sink_source_info()
@@ -154,9 +179,8 @@ get_sink_source_info()
 restart_easyeffects()
 {
     if command -v easyeffects >/dev/null 2>&1; then
-        if [ -n "$(pgrep -u "$(id -u)" -n "easyeffects")" ]; then
-            killall easyeffects
-        fi
+        kill_nuclear "pw-play"
+        kill_graceful "easyeffects"
 
         setsid -f -- easyeffects --gapplication-service
     fi
