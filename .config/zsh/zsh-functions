@@ -152,7 +152,7 @@ parf_fzf_preview()
 parfs()
 {
     {
-        paru -Sl | awk '{s=$2; gsub(/\x1b\[[0-9;]*m/, "", s); print s ($4 == "" ? "" : "*")}'
+        paru -Sl 2>/dev/null | awk '{s=$2; gsub(/\x1b\[[0-9;]*m/, "", s); print s ($4 == "" ? "" : "*")}'
         for repo in "${parf_flatpak_repos[@]}"; do
             local cache_file="$parf_cache_dir/$repo.cache"
             if [[ ! -f "$cache_file" || $(find "$cache_file" -mmin +60) ]]; then

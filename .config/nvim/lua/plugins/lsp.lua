@@ -215,6 +215,7 @@ local servers = {
         },
     },
     vimls = {},
+    vala_ls = {},
 }
 
 local tools = {
