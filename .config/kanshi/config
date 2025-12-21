@@ -1,7 +1,7 @@
 profile {
-    output HDMI-A-1 enable mode 1920x1080@144 position 1920,0
+    output DP-1 enable mode 1920x1080@143.854996 position 1920,0
     output DVI-D-1 enable mode 1920x1080@60 position 0,0
-    exec xrandr --output HDMI-A-1 --primary
+    exec xrandr --output DP-1 --primary
 }
 
 profile {

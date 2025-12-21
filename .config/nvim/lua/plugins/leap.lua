@@ -5,17 +5,6 @@ return {
     dependencies = {
         { "tpope/vim-repeat" },
         {
-            "ggandor/leap-spooky.nvim",
-            opts = {
-                affixes = {
-                    remote = { window = "r", cross_window = "R" },
-                    magnetic = { window = "m", cross_window = "M" },
-                },
-                -- automatically pasted yanked text at cursor position, if unnamed register is set
-                paste_on_remote_yank = false,
-            },
-        },
-        {
             "ggandor/flit.nvim",
             opts = {
                 keys = { f = "f", F = "F", t = "t", T = "T" },
@@ -24,10 +13,20 @@ return {
                 opts = {},
             },
         },
-        { "ggandor/leap-ast.nvim" },
     },
     config = function()
-        require("leap").add_default_mappings()
-        vim.cmd("autocmd ColorScheme * lua require('leap').init_highlight(true)")
+        vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap)")
+        vim.keymap.set("n", "S", "<Plug>(leap-from-window)")
+
+        require("leap").opts.preview = function(ch0, ch1, ch2)
+            return not (ch1:match("%s") or (ch0:match("%a") and ch1:match("%a") and ch2:match("%a")))
+        end
+
+        require("leap").opts.equivalence_classes = {
+            " \t\r\n",
+            "([{",
+            ")]}",
+            "'\"`",
+        }
     end,
 }

@@ -5,7 +5,7 @@ if [ "$(systemd-detect-virt)" = "kvm" ]; then
     export PRIMARY="Virtual-1"
     export SECONDARY=""
 elif [ "$(hostname)" = "$HOSTNAME_DESKTOP" ]; then
-    export PRIMARY="HDMI-A-1"
+    export PRIMARY="DP-1"
     export SECONDARY="DVI-D-1"
 
     export KITTY_CONF_FONT_SIZE="font_size 12.0"
