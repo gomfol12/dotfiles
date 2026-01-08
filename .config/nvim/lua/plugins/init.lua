@@ -269,4 +269,5 @@ SpeedDatingFormat %H %M %S
         event = "BufReadPre",
         opts = {},
     },
+    { "73/vim-klog" },
 }
