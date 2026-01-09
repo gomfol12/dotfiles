@@ -12,7 +12,8 @@ $hostname\
 :\
 $directory\
 [\\]](red)\
-([\\[](red)$git_branch$git_status(:$git_commit)(:$git_metrics)[\\]](red))( $git_state) \
+([\\[](red)$git_branch$git_status(:$git_commit)(:$git_metrics)[\\]](red))( $git_state)\
+(${custom.klog}) \
 """
 
 right_format="""                              \
@@ -64,6 +65,12 @@ disabled = true
 
 [package]
 disabled = true
+
+[custom.klog]
+command = "${HOME}/.local/scripts/klog_running_record.sh"
+when = 'sh -c "${HOME}/.local/scripts/klog_running_record.sh | grep -q ."'
+shell = "sh"
+format= '[\[](red)[$output](green)[\]](red)'
 
 [git_branch]
 format = '[$branch(:$remote_branch)](green)'
