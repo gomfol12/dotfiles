@@ -19,8 +19,8 @@ function _listfiles
         printf "Dashboard: eza not installed.\n" && return 1
     fi
 
-    printf "%s" "$(exa --width="$COLUMNS" --all --grid --color=always \
-        --sort=name --classify --group-directories-first)"
+    printf "%s" "$(eza --width="$COLUMNS" --all --grid --color=always \
+        --sort=name --classify --group-directories-first $PWD)"
 }
 
 # show git log info
@@ -84,7 +84,6 @@ function _gitstatus
             -e $'s/ \\| Unmerged /  \033[1;31m  \033[0m /' \
             -Ee $'s_([^/ ]*)(/)_\033[1;36m\\1\033[1;33m\\2\033[0m_g' \
             -e $'s/ \\|/ \033[1;30m│\033[0m/g'
-        _separator
     fi
 }
 
@@ -94,6 +93,7 @@ function _enter_dashboard
         _gitlog
         _separator
         _gitstatus
+        _separator
     elif [ "$PWD" = "$HOME" ]; then
         _gitlog config
         _separator
