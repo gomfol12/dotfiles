@@ -27,7 +27,7 @@ return {
 
         lint.linters.chktex.ignore_exitcode = true
 
-        local build_path = utils.scan_dir_with_name("build")
+        local build_path = utils.scan_dir_with_name("compile_commands.json")
         if build_path ~= "" then
             lint.linters.clangtidy.args = { "-p", build_path }
         end
