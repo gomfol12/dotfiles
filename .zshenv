@@ -87,6 +87,8 @@ export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
 export ELECTRUMDIR="$XDG_DATA_HOME/electrum"
+export PYTHON_HISTORY="$XDG_STATE_HOME/python_history"
+export BN_USER_DIRECTORY="$XDG_DATA_HOME/binaryninja"
 
 ### pass ###
 #export PASSWORD_STORE_DIR="$HOME/.local/password-store"
