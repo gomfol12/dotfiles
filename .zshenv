@@ -55,7 +55,7 @@ path+=($(find "$SCRIPT_DIR" -not -path "*old*" -not -path "*grub*" -not -path "*
 path+=(~/.local/share/gem/ruby/3.0.0/bin)
 path+=(~/.local/share/coursier/bin)
 path+=(~/.local/share/flutter/bin)
-path+=(~/.luarocks/bin)
+path+=(~/.local/share/luarocks/bin)
 export PATH
 
 ### HOME cleanup ###

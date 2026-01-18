@@ -101,6 +101,7 @@ alias nvim="\$EDITOR"
 alias nano="\$EDITOR"
 
 alias mem="free -mth"
+alias memu="ps aux | awk '{print \$6/1024  \" MB\\t\\t\" \$2 \"\\t\" \$11}' | sort -n"
 alias thissize="du -ach --max-depth=0"
 alias foldersize="du -ach --max-depth=1 | sort -h"
 alias df="df -Th --total | sort -k 3 -h"
@@ -157,6 +158,8 @@ alias adb='HOME="$XDG_DATA_HOME"/android adb'
 alias pentablet_driver="/usr/lib/pentablet/PenTablet.sh /mini & disown"
 
 alias rg="rg --hidden --smart-case"
+
+alias no='curl -s "https://naas.isalman.dev/no" | jq .reason'
 
 # for kitty
 # if [ "$TERM" = "xterm-kitty" ]; then
