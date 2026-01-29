@@ -15,7 +15,7 @@ return {
     { "tpope/vim-unimpaired" },
     { "Konfekt/vim-CtrlXA" },
     { "gomfol12/a.vim", lazy = true, ft = { "c", "cpp" } },
-    { "stevearc/overseer.nvim" },
+    -- { "stevearc/overseer.nvim" },
     -- { "vim-pandoc/vim-pandoc-syntax" },
     -- { "vim-pandoc/vim-pandoc" },
     { "fladson/vim-kitty", lazy = false },
