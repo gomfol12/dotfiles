@@ -108,10 +108,21 @@ alias df="df -Th --total | sort -k 3 -h"
 
 alias su="su -m"
 
-alias transende="trans :de -s en"
-alias transesde="trans :de -s es"
-alias transdeen="trans :en -s de"
-alias transdees="trans :es -s de"
+transpair()
+{
+    local src="$1"
+    local dst="$2"
+
+    eval "
+  t${src}${dst}() {
+    trans :${dst} -s ${src} \"\$*\"
+  }
+  "
+}
+transpair de en
+transpair en de
+transpair de es
+transpair es de
 
 alias listfonts="fc-list  | cut -d : -f1"
 alias displayfont="fontviewer.sh"
