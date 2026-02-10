@@ -169,6 +169,7 @@ alias adb='HOME="$XDG_DATA_HOME"/android adb'
 alias pentablet_driver="/usr/lib/pentablet/PenTablet.sh /mini & disown"
 
 alias rg="rg --hidden --smart-case"
+alias fd="fd --hidden"
 
 alias no='curl -s "https://naas.isalman.dev/no" | jq .reason'
 
