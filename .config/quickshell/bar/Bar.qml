@@ -19,6 +19,6 @@ Rectangle {
             Layout.fillWidth: true
         }
 
-        ClockWidget {}
+        Clock {}
     }
 }
