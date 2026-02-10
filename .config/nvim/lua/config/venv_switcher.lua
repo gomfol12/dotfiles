@@ -71,6 +71,6 @@ end, {
 
 return setmetatable({}, {
     __call = function()
-        M.load_venv()
+        -- M.load_venv()
     end,
 })

@@ -395,6 +395,56 @@ add_snippet(
     },
     "Environment"
 )
+add_snippet(
+    "ad2",
+    [[
+    \begin{adjustwidth}{2em}{0pt}
+        <>
+    \end{adjustwidth}
+    ]],
+    { i(0) },
+    "Adjustwidth environment"
+)
+add_snippet(
+    "ad15",
+    [[
+    \begin{adjustwidth}{1.5em}{0pt}
+        <>
+    \end{adjustwidth}
+    ]],
+    { i(0) },
+    "Adjustwidth environment"
+)
+add_snippet(
+    "itembullet",
+    [[
+    \begin{itemize}[label=$\bullet$, left=0pt, labelsep=0.5em]
+        <>
+    \end{itemize}
+    ]],
+    { i(0) },
+    "Itemize bullet environment"
+)
+add_snippet(
+    "itemnolabel",
+    [[
+    \begin{itemize}[label={}, left=0pt, labelsep=0.5em]
+        <>
+    \end{itemize}
+    ]],
+    { i(0) },
+    "Itemize no label environment"
+)
+add_snippet(
+    "enumalph",
+    [[
+    \begin{enumerate}[label=\alph*), left=0pt, labelsep=0.5em]
+        <>
+    \end{enumerate}
+    ]],
+    { i(0) },
+    "Enumerate alphabet environment"
+)
 
 add_snippet_math(
     "mat2",
