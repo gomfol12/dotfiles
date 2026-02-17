@@ -219,6 +219,66 @@ local function scan_dir_with_name(name)
     return out
 end
 
+-- generate macro name from filename
+local function generate_guard()
+    local filename = vim.fn.expand("%:t")
+    local guard = filename:upper():gsub("[^A-Z0-9_]", "_")
+
+    return guard
+end
+
+-- insert cpp header guard, if #pragma once exists, replace it
+local function insert_guard()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local guard = generate_guard()
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+    local insert_at = 0
+    local i = 1
+
+    -- skip initial block comment (/* ... */)
+    if lines[i] and lines[i]:match("^%s*/%*") then
+        while i <= #lines do
+            if lines[i]:match("%*/") then
+                i = i + 1
+                break
+            end
+            i = i + 1
+        end
+    end
+
+    -- skip consecutive single-line comments (// ...)
+    while lines[i] and lines[i]:match("^%s*//") do
+        i = i + 1
+    end
+
+    insert_at = i - 1
+
+    -- check existing guard or remove #pragma once
+    for idx, line in ipairs(lines) do
+        if line:match("^#ifndef%s+" .. guard) then
+            print("Header guard already exists.")
+            return
+        end
+        if line:match("^%s*#pragma%s+once") then
+            vim.api.nvim_buf_set_lines(bufnr, idx - 1, idx, false, {})
+            break
+        end
+    end
+
+    vim.api.nvim_buf_set_lines(bufnr, insert_at + 1, insert_at + 1, false, {
+        "#ifndef " .. guard,
+        "#define " .. guard,
+    })
+
+    vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, {
+        "",
+        "#endif // " .. guard,
+    })
+
+    print("Inserted header guard: " .. guard)
+end
+
 return {
     getHost = getHost,
     concat = concat,
@@ -238,4 +298,5 @@ return {
         in_tikz = in_tikz,
     },
     scan_dir_with_name = scan_dir_with_name,
+    insert_guard = insert_guard,
 }

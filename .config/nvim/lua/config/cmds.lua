@@ -229,3 +229,25 @@ vim.api.nvim_create_user_command("OpenInGithub", function()
     local url = "https://github.com/" .. repo
     vim.fn.jobstart({ "xdg-open", url }, { detach = true })
 end, { desc = "Open in github" })
+
+vim.api.nvim_create_user_command("UpdateHeaderFilename", function()
+    local new_name = vim.fn.expand("%:t")
+    local bufnr = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 20, false) -- only scan first 20 lines
+
+    for i, line in ipairs(lines) do
+        if line:match("^%s*%*%s*File:") or line:match("^%s*File:") then
+            local updated = line:gsub("File:%s*.*", "File: " .. new_name)
+            vim.api.nvim_buf_set_lines(bufnr, i - 1, i, false, { updated })
+            print("Header filename updated to " .. new_name)
+            return
+        end
+    end
+
+    print("No 'File:' header line found in first 20 lines.")
+end, {})
+
+-- insert cpp header guard
+vim.api.nvim_create_user_command("HeaderGuard", function()
+    utils.insert_guard()
+end, {})

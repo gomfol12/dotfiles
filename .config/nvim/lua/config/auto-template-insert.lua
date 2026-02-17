@@ -51,3 +51,21 @@ vim.api.nvim_create_autocmd("BufNewFile", {
     pattern = "main.cpp",
     callback = insert_main_cpp,
 })
+
+vim.api.nvim_create_autocmd("BufNewFile", {
+    pattern = "*.py",
+    callback = function()
+        vim.api.nvim_buf_set_lines(0, 0, 0, false, {
+            "#!/usr/bin/env python",
+        })
+    end,
+})
+
+vim.api.nvim_create_autocmd("BufNewFile", {
+    pattern = "*.sh",
+    callback = function()
+        vim.api.nvim_buf_set_lines(0, 0, 0, false, {
+            "#!/usr/bin/env bash",
+        })
+    end,
+})
