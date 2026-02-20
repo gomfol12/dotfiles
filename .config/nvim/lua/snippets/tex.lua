@@ -445,6 +445,16 @@ add_snippet(
     { i(0) },
     "Enumerate alphabet environment"
 )
+add_snippet(
+    "enumroman",
+    [[
+    \begin{enumerate}[label=(\roman*), left=0pt, labelsep=0.5em]
+        <>
+    \end{enumerate}
+    ]],
+    { i(0) },
+    "Enumerate roman environment"
+)
 
 add_snippet_math(
     "mat2",
