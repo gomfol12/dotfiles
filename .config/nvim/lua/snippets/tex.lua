@@ -419,7 +419,7 @@ add_snippet(
     "itembullet",
     [[
     \begin{itemize}[label=$\bullet$, left=0pt, labelsep=0.5em]
-        <>
+        \item <>
     \end{itemize}
     ]],
     { i(0) },
@@ -429,7 +429,7 @@ add_snippet(
     "itemnolabel",
     [[
     \begin{itemize}[label={}, left=0pt, labelsep=0.5em]
-        <>
+        \item <>
     \end{itemize}
     ]],
     { i(0) },
@@ -439,7 +439,7 @@ add_snippet(
     "enumalph",
     [[
     \begin{enumerate}[label=\alph*), left=0pt, labelsep=0.5em]
-        <>
+        \item <>
     \end{enumerate}
     ]],
     { i(0) },
@@ -449,7 +449,7 @@ add_snippet(
     "enumroman",
     [[
     \begin{enumerate}[label=(\roman*), left=0pt, labelsep=0.5em]
-        <>
+        \item <>
     \end{enumerate}
     ]],
     { i(0) },

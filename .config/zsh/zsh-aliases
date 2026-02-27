@@ -114,7 +114,7 @@ transpair()
     local dst="$2"
 
     eval "
-  t${src}${dst}() {
+  trans${src}${dst}() {
     trans :${dst} -s ${src} \"\$*\"
   }
   "
