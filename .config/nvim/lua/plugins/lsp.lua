@@ -281,6 +281,11 @@ return {
             progress = {
                 ignore = { "ltex" },
             },
+            notification = {
+                window = {
+                    avoid = { "NvimTree" },
+                },
+            },
         },
     },
 
