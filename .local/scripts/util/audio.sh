@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# pw-metadata -n settings 0 clock.force-rate 48000 && pw-metadata -n settings 0 clock.force-quantum 512
-
 UPDATE_EWW=1
 HEADPHONES="alsa_output.usb-Corsair_CORSAIR_HS80_RGB_Wireless_Gaming_Receiver_18e05f2e000700dc-00.analog-stereo"
 
@@ -234,6 +232,7 @@ usage - audio.sh [command] [subcommand|value]
     stop:           stop track
     restart:        restart pipewire
     easyeffects:    restart easyeffects
+    cracklingfix:   fix audio crackling when playing some games (e.g. Cookie Clicker)
     help:           help menu
 EOF
 }
@@ -360,6 +359,10 @@ case "$1" in
     ;;
 "easyeffects")
     restart_easyeffects
+    ;;
+"cracklingfix")
+    # this fixes audio crackling when playing some games (e.g. Cookie Clicker).
+    pw-metadata -n settings 0 clock.force-rate 48000 && pw-metadata -n settings 0 clock.force-quantum 500
     ;;
 *)
     help

@@ -18,8 +18,13 @@ return {
     -- { "stevearc/overseer.nvim" },
     -- { "vim-pandoc/vim-pandoc-syntax" },
     -- { "vim-pandoc/vim-pandoc" },
-    { "fladson/vim-kitty", lazy = false },
-    { "knubie/vim-kitty-navigator", lazy = false, build = "cp ./*.py ~/.config/kitty/" },
+    { "fladson/vim-kitty" },
+    {
+        "knubie/vim-kitty-navigator",
+        init = function()
+            vim.g.kitty_navigator_no_mappings = 1
+        end,
+    },
     { "LunarVim/bigfile.nvim", config = true },
     { "gbprod/stay-in-place.nvim", config = true },
     { "bullets-vim/bullets.vim", lazy = true, ft = { "markdown", "pandoc" } },
@@ -66,7 +71,16 @@ return {
                 enable = false,
             },
             navigation = {
-                -- disable default keybindings (C-hjkl) for normal mode
+                cycle_navigation = false,
+                -- disables default keybindings (C-hjkl) for normal mode
+                enable_default_keybindings = false,
+            },
+            resize = {
+                -- disables default keybindings (A-hjkl) for normal mode
+                enable_default_keybindings = false,
+            },
+            swap = {
+                -- disables default keybindings (C-A-hjkl) for normal mode
                 enable_default_keybindings = false,
             },
         },

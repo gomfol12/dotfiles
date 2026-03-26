@@ -83,6 +83,10 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- Maybe useful some time in the future
 -- vim.keymap.set("", "<Space>", "<Nop>", { silent = true })
 
+-- magic
+vim.keymap.set("n", "/", "/\\v", { noremap = true })
+vim.keymap.set("n", "?", "?\\v", { noremap = true })
+
 -- ========== window, tabs, ... ========== --
 -- window navigation
 if os.getenv("TMUX") then
