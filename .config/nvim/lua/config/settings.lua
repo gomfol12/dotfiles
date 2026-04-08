@@ -89,3 +89,6 @@ vim.cmd([[
 -- vim.cmd([[
 --     highlight CursorColumn ctermbg=Gray cterm=bold guibg=#222222
 -- ]])
+
+-- ========== Filetype ========== --
+vim.filetype.add({ extension = { mcg = "json" } })

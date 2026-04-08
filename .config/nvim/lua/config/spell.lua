@@ -9,8 +9,8 @@ vim.api.nvim_create_autocmd("FileType", {
     command = ":setlocal nospell",
 })
 
--- set spell when in vimwiki, tex or markdown buffer
-for _, k in pairs({ "vimwiki", "tex", "markdown" }) do
+-- set spell when in vimwiki or tex buffer
+for _, k in pairs({ "vimwiki", "tex" }) do
     vim.api.nvim_create_autocmd("FileType", {
         group = augroup,
         pattern = k,

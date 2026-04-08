@@ -3,12 +3,11 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
+        lazy = false,
         build = ":TSUpdate",
-        main = "nvim-treesitter.configs", -- Sets main module to use for opts
         dependencies = {
             "nvim-treesitter/nvim-treesitter-textobjects",
             "nvim-treesitter/nvim-treesitter-context",
-            "nvim-treesitter/playground",
             "HiPhish/rainbow-delimiters.nvim",
             {
                 "lukas-reineke/indent-blankline.nvim",
@@ -49,8 +48,8 @@ return {
                 end,
             },
         },
-        opts = {
-            ensure_installed = vim.tbl_extend("force", {
+        init = function()
+            local ensureInstalled = vim.tbl_extend("force", {
                 "c",
                 "cpp",
                 "lua",
@@ -89,70 +88,78 @@ return {
                 "vim",
                 "vimdoc",
                 "yaml",
-            }, (vim.fn.executable("pdflatex") == 1 or vim.fn.executable("lualatex") == 1) and { "latex" } or {}),
-            auto_install = true,
-            highlight = {
-                enable = true,
-                -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-                -- If you are experiencing weird indenting issues, add the language to
-                -- the list of additional_vim_regex_highlighting and disabled languages for indent.
-                additional_vim_regex_highlighting = { "ruby" },
-                disable = { "latex" },
-            },
-            indent = { enable = true, disable = { "ruby" } },
-            textobjects = {
-                select = {
-                    enable = true,
-                    lookahead = true,
-                    keymaps = {
-                        ["af"] = "@function.outer",
-                        ["if"] = "@function.inner",
-                        ["ac"] = "@class.outer",
-                        ["ic"] = "@class.inner",
-                        ["ib"] = { query = "@block.inner", desc = "in block" },
-                    },
-                },
-                move = {
-                    enable = true,
-                    set_jumps = true,
-                    goto_next_start = {
-                        ["]m"] = "@function.outer",
-                        ["]]"] = "@class.outer",
-                    },
-                    goto_next_end = {
-                        ["]M"] = "@function.outer",
-                        ["]["] = "@class.outer",
-                    },
-                    goto_previous_start = {
-                        ["[m"] = "@function.outer",
-                        ["[["] = "@class.outer",
-                    },
-                    goto_previous_end = {
-                        ["[M"] = "@function.outer",
-                        ["[]"] = "@class.outer",
-                    },
-                },
-                swap = {
-                    enable = true,
-                    swap_next = {
-                        ["<leader>a"] = "@parameter.inner",
-                    },
-                    swap_previous = {
-                        ["<leader>A"] = "@parameter.inner",
-                    },
-                },
-                lsp_interop = {
-                    enable = true,
-                    border = "single",
-                    peek_definition_code = {
-                        ["<leader>df"] = "@function.outer",
-                        ["<leader>dF"] = "@class.outer",
-                    },
-                },
-                matchup = {
-                    enable = true,
-                },
-            },
-        },
+            }, (vim.fn.executable("pdflatex") == 1 or vim.fn.executable("lualatex") == 1) and { "latex" } or {})
+
+            local alreadyInstalled = require("nvim-treesitter.config").get_installed()
+            local parsersToInstall = vim.iter(ensureInstalled)
+                :filter(function(parser)
+                    return not vim.tbl_contains(alreadyInstalled, parser)
+                end)
+                :totable()
+            require("nvim-treesitter").install(parsersToInstall)
+
+            for _, parser in ipairs(ensureInstalled) do
+                vim.api.nvim_create_autocmd("FileType", {
+                    pattern = parser,
+                    callback = function()
+                        vim.treesitter.start()
+                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    end,
+                })
+            end
+        end,
     },
+    --textobjects = {
+    --    select = {
+    --        enable = true,
+    --        lookahead = true,
+    --        keymaps = {
+    --            ["af"] = "@function.outer",
+    --            ["if"] = "@function.inner",
+    --            ["ac"] = "@class.outer",
+    --            ["ic"] = "@class.inner",
+    --            ["ib"] = { query = "@block.inner", desc = "in block" },
+    --        },
+    --    },
+    --    move = {
+    --        enable = true,
+    --        set_jumps = true,
+    --        goto_next_start = {
+    --            ["]m"] = "@function.outer",
+    --            ["]]"] = "@class.outer",
+    --        },
+    --        goto_next_end = {
+    --            ["]M"] = "@function.outer",
+    --            ["]["] = "@class.outer",
+    --        },
+    --        goto_previous_start = {
+    --            ["[m"] = "@function.outer",
+    --            ["[["] = "@class.outer",
+    --        },
+    --        goto_previous_end = {
+    --            ["[M"] = "@function.outer",
+    --            ["[]"] = "@class.outer",
+    --        },
+    --    },
+    --    swap = {
+    --        enable = true,
+    --        swap_next = {
+    --            ["<leader>a"] = "@parameter.inner",
+    --        },
+    --        swap_previous = {
+    --            ["<leader>A"] = "@parameter.inner",
+    --        },
+    --    },
+    --    lsp_interop = {
+    --        enable = true,
+    --        border = "single",
+    --        peek_definition_code = {
+    --            ["<leader>df"] = "@function.outer",
+    --            ["<leader>dF"] = "@class.outer",
+    --        },
+    --    },
+    --    matchup = {
+    --        enable = true,
+    --    },
+    --},
 }

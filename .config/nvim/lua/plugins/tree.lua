@@ -116,6 +116,7 @@ return {
             centralize_selection = false, -- annoying. Don't change ever.
             number = true,
             relativenumber = true,
+            width = 40,
         },
         renderer = {
             group_empty = true,
