@@ -364,6 +364,7 @@ return {
         "mrcjkb/haskell-tools.nvim",
         version = "^6",
         lazy = false,
+        ft = "haskell",
         init = function()
             vim.g.haskell_tools = {
                 hls = {
