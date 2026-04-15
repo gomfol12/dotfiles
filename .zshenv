@@ -89,6 +89,7 @@ export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
 export ELECTRUMDIR="$XDG_DATA_HOME/electrum"
 export PYTHON_HISTORY="$XDG_STATE_HOME/python_history"
 export BN_USER_DIRECTORY="$XDG_DATA_HOME/binaryninja"
+export PLATFORMIO_CORE_DIR="$XDG_DATA_HOME/platformio"
 
 ### pass ###
 #export PASSWORD_STORE_DIR="$HOME/.local/password-store"
