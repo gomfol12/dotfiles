@@ -88,6 +88,9 @@ return {
                 "vim",
                 "vimdoc",
                 "yaml",
+                "fortran",
+                "qmljs",
+                "hyprlang",
             }, (vim.fn.executable("pdflatex") == 1 or vim.fn.executable("lualatex") == 1) and { "latex" } or {})
 
             local alreadyInstalled = require("nvim-treesitter.config").get_installed()
