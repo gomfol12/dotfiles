@@ -255,7 +255,7 @@ return {
                 end
             end)
 
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            local capabilities = require("blink.cmp").get_lsp_capabilities({}, true)
             local ensure_installed = vim.tbl_keys(servers)
 
             for server, opts in pairs(servers) do
