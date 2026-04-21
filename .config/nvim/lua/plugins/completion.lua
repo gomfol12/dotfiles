@@ -111,8 +111,8 @@ return {
             ["<C-f>"] = { "scroll_documentation_down", "fallback" },
 
             ["<C-e>"] = { "hide", "fallback" },
-            ["<C-y>"] = { "select_and_accept", "fallback" },
-            ["<CR>"] = { "select_and_accept", "fallback" },
+            ["<C-y>"] = { "accept", "fallback" },
+            ["<CR>"] = { "accept", "fallback" },
 
             ["<C-u>"] = { "scroll_signature_up", "fallback" },
             ["<C-d>"] = { "scroll_signature_down", "fallback" },
@@ -134,6 +134,7 @@ return {
                 },
             },
             menu = {
+                auto_show = true,
                 border = "single",
                 draw = {
                     treesitter = { "lsp" },
@@ -189,6 +190,12 @@ return {
                 ["<CR>"] = { "accept_and_enter", "fallback" },
             },
             completion = {
+                list = {
+                    selection = {
+                        preselect = false,
+                        auto_insert = false,
+                    },
+                },
                 menu = {
                     auto_show = true,
                 },
@@ -222,13 +229,7 @@ return {
             },
             providers = {
                 cmdline = {
-                    min_keyword_length = function(ctx)
-                        -- when typing a command, only show when the keyword is 3 characters or longer
-                        if ctx.mode == "cmdline" and string.find(ctx.line, " ") == nil then
-                            return 3
-                        end
-                        return 0
-                    end,
+                    name = "[CM]",
                 },
                 lazydev = {
                     name = "[LD]",
@@ -246,7 +247,7 @@ return {
                     name = "[Snip]",
                 },
                 conventional_commits = {
-                    name = "[cc]",
+                    name = "[CC]",
                     module = "blink-cmp-conventional-commits",
                     enabled = function()
                         return vim.bo.filetype == "gitcommit"
@@ -256,8 +257,11 @@ return {
                     opts = {},
                 },
                 git = {
-                    name = "[git]",
+                    name = "[Git]",
                     module = "blink-cmp-git",
+                    enabled = function()
+                        return vim.tbl_contains({ "gitcommit", "markdown" }, vim.bo.filetype)
+                    end,
                     opts = {},
                 },
                 spell = {
@@ -298,6 +302,9 @@ return {
                         insert = true, -- Insert nerdfont icon (default) or complete its name
                         trigger = ":",
                     },
+                    should_show_items = function()
+                        return vim.tbl_contains({ "gitcommit", "markdown" }, vim.o.filetype)
+                    end,
                 },
                 emoji = {
                     name = "[Emoji]",
@@ -308,6 +315,9 @@ return {
                         ---@type string|table|fun():table
                         trigger = ":",
                     },
+                    should_show_items = function()
+                        return vim.tbl_contains({ "gitcommit", "markdown" }, vim.o.filetype)
+                    end,
                 },
             },
         },
