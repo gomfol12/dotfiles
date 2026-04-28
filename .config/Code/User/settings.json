@@ -33,4 +33,5 @@
     "git.openRepositoryInParentFolders": "never",
     "winidea-debug.customInstall": false,
     "github.copilot.nextEditSuggestions.enabled": true,
+    "workbench.colorTheme": "Dark Modern",
 }
