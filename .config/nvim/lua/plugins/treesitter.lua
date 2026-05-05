@@ -71,6 +71,8 @@ return {
                 "html",
                 "http",
                 "java",
+                "javascript",
+                "typescript",
                 "json",
                 "kotlin",
                 "markdown",
