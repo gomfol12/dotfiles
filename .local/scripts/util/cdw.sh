@@ -1,198 +1,264 @@
 #!/bin/bash
-# for bash: replace vared with read
-shortcut_file="$HOME/doc/bookmarks/cdw_dirs"
-history_file="$HOME/.cache/cdw_history"
-programm_name="cdw.sh"
 
-if ! [ -f "$shortcut_file" ]; then
-    if ! [ -d "$HOME/doc/bookmarks/" ]; then
-        mkdir -p "$HOME/doc/bookmarks/"
-    fi
-    touch "$shortcut_file"
-fi
-if ! [ -f "$history_file" ]; then
-    if ! [ -d "$HOME/.cache/" ]; then
-        mkdir -p "$HOME/.cache/"
-    fi
-    touch "$history_file"
-fi
+CDW_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}"
+
+CDW_SHORTCUT_FILE="$HOME/doc/bookmarks/cdw_dirs"
+CDW_HISTORY_FILE="$CDW_CACHE_DIR/cdw_history"
+
+CDW_PROGRAM_NAME="cdw.sh"
+
+\mkdir -p "$HOME/doc/bookmarks/"
+\mkdir -p "$CDW_CACHE_DIR/"
+
+\touch "$CDW_SHORTCUT_FILE" "$CDW_HISTORY_FILE"
 
 cdw()
 {
     log()
     {
-        printf "$programm_name: %s\n" "$1"
+        printf '%s: %s\n' "$CDW_PROGRAM_NAME" "$1"
+    }
+
+    real()
+    {
+        realpath "$1" 2>/dev/null || readlink -f "$1"
     }
 
     help()
     {
         cat <<EOF
-usage: $programm_name [-h|-c|-d|-l|-j|-g|-hl|-hc] [<path>|<shortcut>|<shortcut> <path>]
-        -h     help
-        -c     create shortcut
-        -d     delete shortcut
-        -l     list shortcuts
-        -j|-g  jump or change to directory
-        -hl    list history
-        -hc    clear history
+usage:
+  cdw [query]
+  cdw -a <name> <path>     add shortcut
+  cdw -r <name>            remove shortcut
+  cdw -l                   list shortcuts
+  cdw -hl                  list history
+  cdw -hc                  clear history
+  cdw -h                   help
+
+examples:
+  cdw proj
+  cdw h/d/d/p
+  cdw -a dev ~/doc/dev
 EOF
     }
 
-    dir_change()
+    save_history()
     {
-        # if file ask for opening with editor
-        if [ -f "$1" ]; then
-            log "$1 is a file."
-            if [ -n "$EDITOR" ]; then
-                open_with_editor=""
+        local file_path="$1"
+        tmp=$(\mktemp)
 
-                if [ -n "$ZSH_VERSION" ]; then
-                    vared -p "open with $EDITOR? (Y/n): " -c open_with_editor
-                else
-                    read -p "open with $EDITOR? (Y/n): " -r open_with_editor
-                fi
+        awk -F '\t' -v p="$file_path" '$2 != p' "$CDW_HISTORY_FILE" >"$tmp" &&
+            \mv "$tmp" "$CDW_HISTORY_FILE"
 
-                if echo "$open_with_editor" | grep -E "^[yY]" -q || [ -z "$open_with_editor" ]; then
-                    nvim "$1"
-                    return 0
-                fi
-            fi
-            return 1
-        fi
-
-        if ! [ -d "$1" ]; then
-            log "no such file or directory: $1"
-            return 1
-        fi
-
-        \cd "$1" || return 1
-
-        # save history
-        if ! [ "$2" = "nosave" ]; then
-            save="name:${1}"
-            save_hash=$(printf "%s" "$save" | md5sum | cut -d' ' -f1)
-            sed -i "/$save_hash/d" "$history_file"
-            printf "%s\n" "md5:${save_hash}:time:$(date +%s):${save}:path:$(pwd)" >>"$history_file"
-        fi
+        printf '%s\t%s\n' "$(\date +%s)" "$file_path" >>"$CDW_HISTORY_FILE"
     }
 
-    shortcut_create()
+    list_shortcuts()
     {
-        if [ -z "$1" ] || [ -z "$2" ]; then
-            log "usage: $programm_name -c <shortcut> <path>"
+        column -t -s $'\t' "$CDW_SHORTCUT_FILE"
+    }
+
+    list_history()
+    {
+        column -t -s $'\t' "$CDW_HISTORY_FILE"
+    }
+
+    clear_history()
+    {
+        : >"$CDW_HISTORY_FILE"
+    }
+
+    add_shortcut()
+    {
+        local name="${1:-}"
+        local file_path="${2:-}"
+
+        if [ -z "$name" ] || [ -z "$file_path" ]; then
+            log "usage: cdw -a <name> <path>"
             return 1
         fi
 
-        if ! [ -d "$2" ]; then
-            log "directory doesn't exist"
+        file_path="$(real "$file_path")"
+
+        if ! [ -d "$file_path" ]; then
+            log "directory does not exist"
             return 1
         fi
 
-        if grep "^name:$1:" "$shortcut_file" -q; then
+        if awk -F '\t' -v n="$name" '$1 == n' "$CDW_SHORTCUT_FILE" | grep . >/dev/null; then
             log "shortcut already exists"
             return 1
         fi
 
-        printf "%s\n" "name:${1}:path:$(realpath "$2")" >>"$shortcut_file"
+        printf '%s\t%s\n' "$name" "$file_path" >>"$CDW_SHORTCUT_FILE"
+
+        log "added shortcut '$name'"
     }
 
-    shortcut_delete()
+    remove_shortcut()
     {
-        if [ -z "$1" ]; then
-            log "usage: $programm_name -d <shortcut>"
+        local name="${1:-}"
+
+        if [ -z "$name" ]; then
+            log "usage: cdw -r <name>"
             return 1
         fi
 
-        sed -i "/^name:$1:/d" "$shortcut_file"
+        tmp=$(mktemp)
+
+        awk -F '\t' -v n="$name" '$1 != n' "$CDW_SHORTCUT_FILE" >"$tmp" &&
+            \mv "$tmp" "$CDW_SHORTCUT_FILE"
+
+        log "removed shortcut '$name'"
     }
 
-    shortcut_list()
+    collect_candidates()
     {
-        cut -d':' -f2,4 "$shortcut_file" | tr ':' ' ' | column -t
+        {
+            cut -f2 "$CDW_SHORTCUT_FILE"
+            cut -f2 "$CDW_HISTORY_FILE"
+        } | awk '!seen[$0]++'
     }
 
-    dir_change_or_jump()
+    find_best_match()
     {
-        lf_open=0
+        local query="$1"
 
-        if [ -z "$1" ]; then
-            dir_change "$HOME"
-            return 0
+        awk -v q="$query" '
+{
+    qn = q
+    sub(/f$/, "", qn)
+
+    s = score($0, qn)
+
+    if (s > best) {
+        best = s
+        m = $0
+    }
+}
+
+function score(path, q) {
+    s = 0
+
+    # exact match
+    if (path == q)
+        s += 1000
+
+    # basename
+    base = path
+    sub(".*/", "", base)
+    if (index(base, q) == 1)
+        s += 300
+
+    # substring match
+    if (index(path, q) > 0)
+        s += 200
+
+    return s
+}
+
+END { print m }
+    ' < <(collect_candidates)
+    }
+
+    jump()
+    {
+        local input="${1:-}"
+
+        # default home
+        if [ -z "$input" ]; then
+            echo "$HOME"
+            save_history "$PWD"
+            return
         fi
 
-        if [ "$1" = ".." ] || [ "$1" = "." ]; then
-            dir_change "$1" "nosave"
-            return 0
+        # special dirs
+        case "$input" in
+        "." | "..")
+            echo "$input"
+            return
+            ;;
+        esac
+
+        # direct path
+        if [ -d "$input" ]; then
+            echo "$input"
+            save_history "$PWD"
+            return
         fi
 
-        searched_shortcut="$(tac "$shortcut_file" | grep -m 1 "^name:$1:")"
+        # exact shortcut
+        local shortcut_match
+        shortcut_match="$(awk -F '\t' -v q="$input" '$1 == q { print $2 }' "$CDW_SHORTCUT_FILE")"
 
-        if [ -d "$1" ]; then
-            if [ -n "$searched_shortcut" ]; then
-                dir_change "$1" "nosave"
+        if [ -n "$shortcut_match" ]; then
+            echo "$shortcut_match"
+            save_history "$PWD"
+            return
+        fi
+
+        # smart matching
+        local match
+        match="$(find_best_match "$input")"
+
+        if [ -n "$match" ]; then
+            echo "$match"
+            save_history "$PWD"
+            return
+        fi
+
+        # fallback to input
+        echo "$input"
+    }
+
+    case "${1:-}" in
+    "-h")
+        help
+        ;;
+    "-a")
+        add_shortcut "${2:-}" "${3:-}"
+        ;;
+    "-r")
+        remove_shortcut "${2:-}"
+        ;;
+    "-l")
+        list_shortcuts
+        ;;
+    "-hl")
+        list_history
+        ;;
+    "-hc")
+        clear_history
+        ;;
+    *)
+        local target
+        target="$(jump "${1:-}")"
+
+        if [ -f "$target" ]; then
+            if [ -n "${EDITOR:-}" ]; then
+                "$EDITOR" "$input"
             else
-                dir_change "$1"
+                nvim "$input"
             fi
-            return 0
+
+            return
         fi
 
-        input="$1"
+        \cd "$target" || return 1
 
         # for my own stupidity
-        if [ "${input: -1}" = "f" ]; then
-            input="${input%?}" # remove last character only
-            lf_open=1
-        fi
-
-        # main change or jump "logic"
-        searched_shortcut="$(tac "$shortcut_file" | grep -m 1 "^name:$input:")"
-        searched_history_name="$(tac "$history_file" | grep -E -m 1 'name:[^:]*'"$input"'/?:')"
-        searched_history_path="$(tac "$history_file" | grep -E -m 1 "path:.*$input/?$")"
-
-        if [ -n "$searched_shortcut" ]; then
-            dir_change "$(echo "$searched_shortcut" | cut -d':' -f4)" "nosave"
-        elif [ -n "$searched_history_name" ]; then
-            dir_change "$(echo "$searched_history_name" | cut -d':' -f8)" "nosave"
-        elif [ -n "$searched_history_path" ]; then
-            dir_change "$(echo "$searched_history_path" | cut -d':' -f8)" "nosave"
-        else
-            dir_change "$input"
-        fi
-
-        if [ $lf_open -eq 1 ]; then
+        if [ "${1: -1}" = "f" ]; then
             lf.sh
 
-            last_dir_file="$HOME/.cache/lf_last_dir"
+            last_dir_file="/tmp/lf_last_dir"
             if [ -f "$last_dir_file" ]; then
                 newdir="$(cat "$last_dir_file")"
                 if [ -d "$newdir" ]; then
-                    dir_change "$newdir"
+                    target="$newdir"
                 fi
             fi
         fi
-    }
-
-    history_clear()
-    {
-        if [ -f "$history_file" ]; then
-            rm -f "$history_file"
-            touch "$history_file"
-        fi
-    }
-
-    history_list()
-    {
-        cut -d':' -f6,8 "$history_file" | tr ':' ' ' | column -t
-    }
-
-    case "$1" in
-    "-h") help ;;
-    "-c") shortcut_create "$2" "$3" ;;
-    "-d") shortcut_delete "$2" ;;
-    "-l") shortcut_list ;;
-    "-j" | "-g") dir_change_or_jump "$2" ;;
-    "-hl") history_list ;;
-    "-hc") history_clear ;;
-    *) dir_change_or_jump "$1" ;;
+        ;;
     esac
 }
