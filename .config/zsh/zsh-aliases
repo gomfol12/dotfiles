@@ -195,3 +195,4 @@ alias hc='cd ~ && clear'
 alias reload="source "$ZDOTDIR/.zshrc""
 alias cacl='calc'
 alias clac='calc'
+alias lg='lazygit'
