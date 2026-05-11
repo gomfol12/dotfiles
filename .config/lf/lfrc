@@ -130,10 +130,10 @@ cmd trash %{{
     set -f
     SAVEIFS=$IFS
     IFS=$(printf "\n\b")
-	for file in $fx; do
+    for file in $fx; do
         printf "%s\n\n" "$file"
         trash-put "$file"
-	done
+    done
     IFS=$SAVEIFS
     printf "Deleted"
 }}
@@ -175,7 +175,7 @@ cmd restore_trash ${{
 
 cmd list_trash ${{
     if [ -n "$(trash-list)" ]; then
-	    trash-list | less
+        trash-list | less
     else
         printf "Trash is empty\n"
         read -n 1 -s -r -p "Press any key to continue"
@@ -306,7 +306,7 @@ cmd pdfmerge ${{
 
 cmd on-quit ${{
     # save last directory
-    echo "$PWD" > "$HOME/.cache/lf_last_dir"
+    echo "$PWD" > "/tmp/lf_last_dir"
 }}
 
 # key bindings
@@ -419,35 +419,10 @@ map M ${{
 }}
 map col recol
 
-# zoxide
-cmd z %{{
-    result="$(zoxide query --exclude "${PWD}" -- "$@")"
-    lf -remote "send ${id} cd '${result}'"
-}}
-cmd zi ${{
-    result="$(zoxide query -i -- "$@")"
-    lf -remote "send ${id} cd '${result}'"
-}}
-
 # movement
-map gdl &lf -remote "send $id cd $(dirBook.sh -get download)"
-map gdt &lf -remote "send $id cd $(dirBook.sh -get desktop)"
 
-map gdo &lf -remote "send $id cd $(dirBook.sh -get documents)"
-map gdc &lf -remote "send $id cd $(dirBook.sh -get documents)"
-map gdn &lf -remote "send $id cd $(dirBook.sh -get nbdata)"
-
-map gb &lf -remote "send $id cd $(dirBook.sh -get bilder)"
-map gdv &lf -remote "send $id cd $(dirBook.sh -get dev)"
-map gn &lf -remote "send $id cd $(dirBook.sh -get notizen)"
-map gj &lf -remote "send $id cd $(dirBook.sh -get dev_java)"
-map gc &lf -remote "send $id cd $(dirBook.sh -get dev_c++)"
-map gsc &lf -remote "send $id cd $(dirBook.sh -get scripts)"
-map gsr &lf -remote "send $id cd $(dirBook.sh -get source)"
-map gp &lf -remote "send $id cd $(dirBook.sh -get projects)"
-
-map g.c &lf -remote "send $id cd $(dirBook.sh -get config)"
-map g.l &lf -remote "send $id cd $(dirBook.sh -get local)"
+# map g.c &lf -remote "send $id cd $(dirBook.sh -get config)"
+# map g.l &lf -remote "send $id cd $(dirBook.sh -get local)"
 
 #fzf
 map <c-f> :fzf_jump
