@@ -3,6 +3,10 @@
 UPDATE_EWW=1
 HEADPHONES="alsa_output.usb-Corsair_CORSAIR_HS80_RGB_Wireless_Gaming_Receiver_18e05f2e000700dc-00.analog-stereo"
 
+LAST_PLAYER_FILE="/tmp/last_media_player"
+NUM_PLAYING=""
+PLAYING_PLAYERS=()
+
 update_eww()
 {
     if ! [ "$UPDATE_EWW" -eq 1 ]; then
@@ -198,6 +202,44 @@ restart_pipewire()
     restart_easyeffects
 }
 
+get_players_state()
+{
+    for player in $(playerctl -l); do
+        status=$(playerctl -p "$player" status 2>/dev/null)
+
+        if [ "$status" = "Playing" ]; then
+            PLAYING_PLAYERS+=("$player")
+        fi
+    done
+
+    NUM_PLAYING=${#PLAYING_PLAYERS[@]}
+}
+
+get_active_player()
+{
+    get_players_state
+
+    # if something is playing, return the first one
+    if [ "$NUM_PLAYING" -gt 0 ]; then
+        echo "${PLAYING_PLAYERS[0]}"
+        # remember last active player
+        echo "${PLAYING_PLAYERS[0]}" >"$LAST_PLAYER_FILE"
+        return
+    fi
+
+    # fallback to last known player
+    if [ -f "$LAST_PLAYER_FILE" ]; then
+        last=$(cat "$LAST_PLAYER_FILE")
+        if playerctl -l | grep -qx "$last"; then
+            echo "$last"
+            return
+        fi
+    fi
+
+    # final fallback
+    playerctl -l | head -n1
+}
+
 help()
 {
     cat <<EOF
@@ -324,35 +366,35 @@ case "$1" in
     esac
     ;;
 "stop")
-    playerctl stop
+    active_player=$(get_active_player)
+    [ -n "$active_player" ] && playerctl -p "$active_player" stop
     ;;
 "play-pause" | "play_pause")
-    # calculate number of playing clients
-    num_playing=0
-    for player in $(playerctl -l); do
-        if playerctl -p "$player" status | grep -q "Playing"; then
-            num_playing=$((num_playing + 1))
-        fi
-    done
+    get_players_state
+    active_player=$(get_active_player)
 
-    # pause all clients if more than one is playing otherwise play-pause the client
-    if [ "$num_playing" -gt 1 ]; then
+    # if multiple players are playing, pause all
+    if [ "$NUM_PLAYING" -gt 1 ]; then
         playerctl --all-players pause
     else
-        playerctl play-pause
+        [ -n "$active_player" ] && playerctl -p "$active_player" play-pause
     fi
     ;;
 "prev" | "previous")
-    playerctl previous
+    active_player=$(get_active_player)
+    [ -n "$active_player" ] && playerctl -p "$active_player" previous
     ;;
 "next")
-    playerctl next
+    active_player=$(get_active_player)
+    [ -n "$active_player" ] && playerctl -p "$active_player" next
     ;;
 "play")
-    playerctl play
+    active_player=$(get_active_player)
+    [ -n "$active_player" ] && playerctl -p "$active_player" play
     ;;
 "pause")
-    playerctl pause
+    active_player=$(get_active_player)
+    [ -n "$active_player" ] && playerctl -p "$active_player" pause
     ;;
 "restart")
     restart_pipewire
