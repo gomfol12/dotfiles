@@ -45,7 +45,9 @@ EOF
 
     save_history()
     {
-        local file_path="$1"
+        local file_path
+        local tmp
+        file_path="$(real "$1")"
         tmp=$(\mktemp)
 
         awk -F '\t' -v p="$file_path" '$2 != p' "$CDW_HISTORY_FILE" >"$tmp" &&
@@ -169,7 +171,7 @@ END { print m }
         # default home
         if [ -z "$input" ]; then
             echo "$HOME"
-            save_history "$PWD"
+            save_history "$HOME"
             return
         fi
 
@@ -184,7 +186,7 @@ END { print m }
         # direct path
         if [ -d "$input" ]; then
             echo "$input"
-            save_history "$PWD"
+            save_history "$input"
             return
         fi
 
@@ -194,7 +196,7 @@ END { print m }
 
         if [ -n "$shortcut_match" ]; then
             echo "$shortcut_match"
-            save_history "$PWD"
+            save_history "$shortcut_match"
             return
         fi
 
@@ -204,7 +206,7 @@ END { print m }
 
         if [ -n "$match" ]; then
             echo "$match"
-            save_history "$PWD"
+            save_history "$match"
             return
         fi
 
@@ -237,9 +239,9 @@ END { print m }
 
         if [ -f "$target" ]; then
             if [ -n "${EDITOR:-}" ]; then
-                "$EDITOR" "$input"
+                "$EDITOR" "$target"
             else
-                nvim "$input"
+                nvim "$target"
             fi
 
             return
