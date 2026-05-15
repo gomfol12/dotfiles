@@ -118,49 +118,68 @@ EOF
     collect_candidates()
     {
         {
-            cut -f2 "$CDW_SHORTCUT_FILE"
-            cut -f2 "$CDW_HISTORY_FILE"
-        } | awk '!seen[$0]++'
+            awk -F '\t' '{ print "0\t" $2 }' "$CDW_SHORTCUT_FILE"
+            cat "$CDW_HISTORY_FILE"
+        } | awk -F '\t' '
+{
+    # keep newest timestamp for duplicates
+    if (!seen[$2] || $1 > ts[$2]) {
+        seen[$2] = 1
+        ts[$2] = $1
+    }
+}
+
+END {
+    for (p in ts)
+        print ts[p] "\t" p
+}
+'
     }
 
     find_best_match()
     {
-        local query="$1"
+        # remove trailing 'f' for lf mode
+        local query="${1%f}"
 
         awk -v q="$query" '
-{
-    qn = q
-    sub(/f$/, "", qn)
-
-    s = score($0, qn)
-
-    if (s > best) {
-        best = s
-        m = $0
-    }
+BEGIN {
+    now = systime()
 }
 
-function score(path, q) {
+{
+    ts = $1
+    path = $2
+
     s = 0
 
-    # exact match
+    # exact path
     if (path == q)
         s += 1000
 
-    # basename
+    # basename prefix
     base = path
     sub(".*/", "", base)
+
     if (index(base, q) == 1)
         s += 300
 
-    # substring match
-    if (index(path, q) > 0)
+    # substring
+    else if (index(path, q))
         s += 200
 
-    return s
+    # recency bonus
+    if (ts)
+        s += int(1000000 / (now - ts + 3600))
+
+    if (s > best) {
+        best = s
+        best_path = path
+    }
 }
 
-END { print m }
+END {
+    print best_path
+}
     ' < <(collect_candidates)
     }
 
