@@ -197,25 +197,6 @@ SpeedDatingFormat %H %M %S
             { "<leader>pp", ":PasteImage<CR>", desc = "Paste image from system clipboard" },
         },
     },
-    -- {
-    --     "lukas-reineke/headlines.nvim",
-    --     lazy = true,
-    --     ft = { "markdown", "pandoc" },
-    --     dependencies = "nvim-treesitter/nvim-treesitter",
-    --     config = function()
-    --         vim.cmd([[highlight Headline1 guibg=#2b2b2b]])
-    --         vim.cmd([[highlight CodeBlock guibg=#1c1c1c]])
-    --         vim.cmd([[highlight Dash guibg=#D19A66 gui=bold]])
-
-    --         require("headlines").setup({
-    --             markdown = {
-    --                 headline_highlights = { "Headline1" },
-    --                 bullets = { "#", "##", "###", "####", "#####", "######" },
-    --             },
-    --             pandoc = {},
-    --         })
-    --     end,
-    -- },
     {
         "hedyhli/outline.nvim",
         lazy = true,
@@ -245,6 +226,29 @@ SpeedDatingFormat %H %M %S
         init = function()
             if vim.fn.executable("npx") then
                 vim.g.mkdp_filetypes = { "markdown" }
+            end
+        end,
+    },
+    {
+        "MeanderingProgrammer/render-markdown.nvim",
+        ft = { "markdown", "vimwiki", "pandoc", "quarto" },
+        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+        ---@module 'render-markdown'
+        ---@type render.md.UserConfig
+        opts = {
+            -- file_types = { "markdown", "vimwiki", "pandoc", "quarto" },
+            render_modes = { "n", "c", "t" },
+            code = {
+                style = "language",
+                border = "thick",
+            },
+        },
+        init = function()
+            if vim.fn.executable("ldconfig -p | grep -q libtexprintf") == 1 then
+                vim.notify("render-markdown: libtexprintf not found.", vim.log.levels.WARN)
+            end
+            if vim.fn.executable("python3 -c 'import pylatexenc'") == 1 then
+                vim.notify("render-markdown: pylatexenc not found.", vim.log.levels.WARN)
             end
         end,
     },

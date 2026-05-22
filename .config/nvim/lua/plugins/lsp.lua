@@ -142,7 +142,15 @@ local servers = {
                 completion = {
                     callSnippet = "Replace",
                 },
-                diagnostics = { disable = { "missing-fields", "unused-function" } },
+                diagnostics = {
+                    disable = { "missing-fields", "unused-function" },
+                    globals = { "hl" },
+                },
+                workspace = {
+                    library = {
+                        "/usr/share/hypr/stubs",
+                    },
+                },
                 telemetry = {
                     enable = false,
                 },
