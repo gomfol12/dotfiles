@@ -34,4 +34,5 @@
     "winidea-debug.customInstall": false,
     "github.copilot.nextEditSuggestions.enabled": true,
     "workbench.colorTheme": "Dark Modern",
+    "stm32cube-ide-core.enableTelemetry": false
 }
