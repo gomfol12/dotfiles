@@ -210,10 +210,7 @@ hl.define_submap("clean", function()
 end)
 
 -- general
-bind(
-    { superMod, "SHIFT", "Z" },
-    hl.dsp.exec_cmd('dmenu_prompt.sh "Quit hyprland?" "hyprctl dispatch "hl.dsp.hyprshutdown()""')
-)
+bind({ superMod, "SHIFT", "Z" }, hl.dsp.exec_cmd('dmenu_prompt.sh "Quit hyprland?" "hyprctl dispatch hl.dsp.exit()"'))
 bind({ mainMod, "SHIFT", "C" }, hl.dsp.window.close())
 -- bind({ mainMod, "SHIFT", "K" }, hl.dsp.window.kill())
 bind({ mainMod, "SHIFT", "F" }, hl.dsp.window.float())
@@ -355,6 +352,20 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 6, bezier = "default
 --- Window rules ---
 
 hl.window_rule({ match = { class = ".*" }, suppress_event = "maximize" })
+
+hl.window_rule({
+    -- Fix some dragging issues with XWayland
+    match = {
+        class = "^$",
+        title = "^$",
+        xwayland = true,
+        float = true,
+        fullscreen = false,
+        pin = false,
+    },
+
+    no_focus = true,
+})
 
 -- "smart gaps" / "no gaps when only"
 hl.workspace_rule({ workspace = "w[tv1]", gaps_out = 0, gaps_in = 0 })
