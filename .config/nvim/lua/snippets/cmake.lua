@@ -37,10 +37,10 @@ set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(CMAKE_C_FLAGS
-    "-Wall -Wextra -pedantic -Wno-unused-parameter -Wno-unused-value -Wshadow -Wdouble-promotion -Wformat=2 -Wformat-overflow -Wformat-truncation=2 -Wundef -fno-common -Wconversion"
+    "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-unused-value -Wshadow -Wdouble-promotion -Wformat=2 -Wformat-overflow -Wformat-truncation=2 -Wundef -fno-common -Wconversion"
 )
 set(CMAKE_C_FLAGS_DEBUG "-g")
-set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -63,10 +63,11 @@ project(<> VERSION 1.0)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# TODO: flags
-#set(CMAKE_CXX_FLAGS "")
+set(CMAKE_CXX_FLAGS
+    "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-unused-value -Wshadow -Wdouble-promotion -Wformat=2 -Wformat-overflow -Wformat-truncation=2 -Wundef -fno-common -Wconversion"
+)
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
