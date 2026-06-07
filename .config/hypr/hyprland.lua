@@ -70,6 +70,13 @@ hl.on("hyprland.start", function()
     end
 end)
 
+--- Plugin-Manager ---
+local pm = require("plugin_manager")
+pm.sync()
+pm.load()
+
+local smw = require("plugins.split-monitor-workspaces")
+
 --- Settings ---
 
 hl.config({
@@ -160,25 +167,7 @@ hl.config({
     master = {
         new_status = "master",
     },
-    plugin = {
-        split_monitor_workspaces = {
-            count = 9,
-            enable_wrapping = false,
-            keep_focused = true,
-            enable_persistent_workspaces = true,
-            -- enable_notifications = true,
-        },
-    },
 })
-
-local smw = hl.plugin.split_monitor_workspaces
-if SECONDARY then
-    smw.monitor_priority({ PRIMARY, SECONDARY })
-    smw.max_workspaces({ monitor = SECONDARY, max = 5 })
-elseif PRIMARY then
-    smw.monitor_priority({ PRIMARY })
-    smw.max_workspaces({ monitor = SECONDARY, max = 9 })
-end
 
 --- Keybinds ---
 
@@ -322,14 +311,10 @@ bind({ mainMod, "SHIFT", "E" }, function()
 end)
 
 -- Switch workspaces and move active window to a workspace
-for i = 1, 9 do
-    local key = tostring(i)
-    hl.bind(mainMod .. " + " .. key, function()
-        return smw.workspace(i)
-    end)
-    hl.bind(mainMod .. " + SHIFT + " .. key, function()
-        return smw.move_to_workspace_silent(i)
-    end)
+for i = 1, smw.get_amount_of_workspaces() do
+    local n = tostring(i)
+    hl.bind(mainMod .. " +" .. n, smw.workspace(n))
+    hl.bind(mainMod .. " + SHIFT +" .. n, smw.move_to_workspace_silent(n))
 end
 
 -- -- Move/resize windows with mainMod + LMB/RMB and dragging
