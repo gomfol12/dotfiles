@@ -225,6 +225,7 @@ local servers = {
     vimls = {},
     vala_ls = {},
     qmlls = {},
+    buf_ls = {},
 }
 
 local tools = {
@@ -242,6 +243,7 @@ local tools = {
     "jupytext",
     "fprettify",
     "vint",
+    "protolint",
 }
 
 return {

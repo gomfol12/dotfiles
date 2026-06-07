@@ -23,6 +23,7 @@ return {
             fortran = { "fortitude" },
             vim = { "vint" },
             -- text = { "vale" },
+            proto = { "protolint" },
         }
 
         lint.linters.chktex.ignore_exitcode = true
