@@ -303,12 +303,8 @@ bind({ mainMod, "SHIFT", "h" }, hl.dsp.window.move({ direction = "l" }))
 bind({ mainMod, "SHIFT", "l" }, hl.dsp.window.move({ direction = "r" }))
 bind({ mainMod, "SHIFT", "k" }, hl.dsp.window.move({ direction = "u" }))
 bind({ mainMod, "SHIFT", "j" }, hl.dsp.window.move({ direction = "d" }))
-bind({ mainMod, "SHIFT", "W" }, function()
-    smw.change_monitor("prev")
-end)
-bind({ mainMod, "SHIFT", "E" }, function()
-    smw.change_monitor("next")
-end)
+bind({ mainMod, "SHIFT", "W" }, hl.dsp.window.move({ monitor = "+1" }))
+bind({ mainMod, "SHIFT", "E" }, hl.dsp.window.move({ monitor = "-1" }))
 
 -- Switch workspaces and move active window to a workspace
 for i = 1, smw.get_amount_of_workspaces() do
