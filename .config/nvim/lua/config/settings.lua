@@ -35,6 +35,7 @@ vim.opt.listchars = "tab:>-,trail:-,precedes:<,extends:>,nbsp:+"
 vim.opt.conceallevel = 1
 vim.opt.pumheight = 10 -- Max number of items to show in the popup menu
 -- vim.opt.winborder = "single" -- Square borders
+vim.opt.modeline = false
 
 -- folding
 vim.opt.foldcolumn = "1"
