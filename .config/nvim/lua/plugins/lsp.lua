@@ -32,6 +32,22 @@ vim.diagnostic.config({
     },
 })
 
+local function hover_man()
+    if vim.bo.filetype ~= "cpp" then
+        return vim.lsp.buf.hover({ border = "single" })
+    end
+
+    local word = vim.fn.expand("<cWORD>")
+    word = word:match("std::[%w_:]+")
+
+    -- use `cppman` to get references from `cppreference.com`
+    if word then
+        vim.cmd("Man " .. word)
+    else
+        vim.lsp.buf.hover({ border = "single" })
+    end
+end
+
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(event)
         local map = function(keys, func, desc, mode, silent)
@@ -44,9 +60,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map("gi", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
         map("gr", vim.lsp.buf.references, "[G]oto [R]eferences")
         map("gt", vim.lsp.buf.type_definition, "[G]oto [T]ype Definition")
-        map("K", function()
-            vim.lsp.buf.hover({ border = "single" })
-        end, "[K]ind of symbol")
+        map("K", hover_man, "Hover / Man")
         map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
         map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
         map("<F2>", vim.lsp.buf.rename, "[R]e[n]ame")
