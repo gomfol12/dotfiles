@@ -34,10 +34,11 @@ function _M.dump(o)
     if type(o) == "table" then
         local s = "{ "
         for k, v in pairs(o) do
-            if type(k) ~= "number" then
-                k = '"' .. k .. '"'
+            local key = k
+            if type(key) ~= "number" then
+                key = '"' .. key .. '"'
             end
-            s = s .. "[" .. k .. "] = " .. _M.dump(v) .. ","
+            s = s .. "[" .. key .. "] = " .. _M.dump(v) .. ","
         end
         return s .. "} "
     else
