@@ -4,7 +4,7 @@ local SECONDARY = os.getenv("SECONDARY")
 return {
     {
         repo = "zjeffer/split-monitor-workspaces",
-        tag = "v0.55.2",
+        tag = "v0.56.2",
         init = function()
             local smw = require("plugins.split-monitor-workspaces")
             local smw_options = {

@@ -17,33 +17,55 @@ local browser = "firefox"
 
 --- Monitors ---
 
+-- TODO: remove in the future
 local PRIMARY = os.getenv("PRIMARY")
 local SECONDARY = os.getenv("SECONDARY")
 
-if PRIMARY then
-    hl.monitor({
-        output = PRIMARY,
-        mode = "1920x1080@119.98",
-        position = "1920x0",
-        scale = 1,
-    })
-    hl.exec_cmd("xrandr --output " .. PRIMARY .. " --primary")
-end
-if SECONDARY then
-    hl.monitor({
-        output = SECONDARY,
-        mode = "1920x1080@60",
-        position = "0x0",
-        scale = 1,
-    })
-end
+local monitor_profile = require("monitor_profiles")
 
-hl.monitor({
-    output = "",
-    mode = "preferred",
-    position = "auto",
-    scale = "auto",
-})
+---@type MonitorProfile[]
+local profiles = {
+    {
+        monitors = {
+            {
+                output = "DP-1",
+                mode = "highres",
+                position = "1920x0",
+                scale = 1,
+                -- vrr = true,
+            },
+            {
+                output = "HDMI-A-1",
+                mode = "highres",
+                position = "0x0",
+                scale = 1,
+            },
+        },
+        exec = "xrandr --output DP-1 --primary",
+    },
+    {
+        monitors = {
+            {
+                output = "eDP-1",
+                mode = "highres",
+                position = "auto",
+                scale = 1.57,
+            },
+        },
+    },
+    {
+        monitors = {
+            {
+                output = "DP-4",
+                mode = "highres",
+                position = "auto",
+                scale = 1,
+            },
+        },
+    },
+}
+
+monitor_profile.add_profiles(profiles)
 
 --- Autostart ---
 
@@ -276,7 +298,7 @@ bind({ mainMod, "F12" }, hl.dsp.exec_cmd("mount.sh"))
 bind({ mainMod, "F11" }, hl.dsp.exec_cmd("umount.sh"))
 bind({ mainMod, "c" }, hl.dsp.exec_cmd("dmenu_calc.sh"))
 bind({ mainMod, "m" }, hl.dsp.exec_cmd("tearing.sh ask"))
-bind({ mainMod, "SHIFT", "m" }, hl.dsp.exec_cmd("tearing.sh toggle_steam"))
+-- bind({ mainMod, "SHIFT", "m" }, hl.dsp.exec_cmd("tearing.sh toggle_steam"))
 bind({ superMod, "W" }, hl.dsp.exec_cmd('${TERMINAL:-st} -e nvim "+:VimwikiIndex"'))
 bind({ mainMod, "y" }, hl.dsp.exec_cmd("clip_manager -l | dmenu -l 10 | clip_manager -g | wl-copy"))
 -- TODO: toggle bar
@@ -421,11 +443,20 @@ hl.window_rule({
 })
 
 -- tearing
-hl.window_rule({
+local steam_immediate = hl.window_rule({
     name = "steam_immediate",
     match = { class = "steam.*" },
     immediate = true,
 })
+bind({ mainMod, "SHIFT", "m" }, function()
+    if steam_immediate:is_enabled() then
+        steam_immediate:set_enabled(false)
+        hl.exec_cmd("notify-send 'Hyprland' 'Steam immediate rule enabled'")
+    else
+        steam_immediate:set_enabled(true)
+        hl.exec_cmd("notify-send 'Hyprland' 'Steam immediate rule disabled'")
+    end
+end)
 hl.window_rule({
     match = { class = "osu.*" },
     immediate = true,
