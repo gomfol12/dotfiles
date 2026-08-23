@@ -2,14 +2,18 @@ pragma ComponentBehavior: Bound
 
 import Quickshell
 import QtQuick
-import QtQuick.Layouts
 import qs.bar
 
 Scope {
+    id: root
+
     Variants {
+        id: panels
+
         model: Quickshell.screens
 
         PanelWindow {
+            id: panelWindow
             required property var modelData
             screen: modelData
 
@@ -21,7 +25,9 @@ Scope {
 
             implicitHeight: 30
 
-            Bar {}
+            Bar {
+                panelWindow: panelWindow
+            }
         }
     }
 }

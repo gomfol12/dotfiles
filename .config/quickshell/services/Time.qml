@@ -1,10 +1,12 @@
 pragma Singleton
+pragma ComponentBehavior: Bound
 
 import Quickshell
 import QtQuick
 
 Singleton {
     id: root
+
     readonly property string time: {
         Qt.formatDateTime(clock.date, "ddd dd MMMM, hh:mm");
     }
