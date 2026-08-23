@@ -34,5 +34,12 @@
     "winidea-debug.customInstall": false,
     "github.copilot.nextEditSuggestions.enabled": true,
     "workbench.colorTheme": "Dark Modern",
-    "stm32cube-ide-core.enableTelemetry": false
+    "stm32cube-ide-core.enableTelemetry": false,
+    "cmake.environment": {
+        "PATH": "/home/marek/.vscode/extensions/stmicroelectronics.stm32cube-ide-build-cmake-1.45.0-linux-x64/resources/cube-cmake/linux/x86_64:/home/marek/.vscode/extensions/stmicroelectronics.stm32cube-ide-core-1.3.0-linux-x64/resources/binaries/linux/x86_64:${env.PATH}"
+    },
+    "debug.allowBreakpointsEverywhere": true,
+    "stm32cube-ide-clangd.detectExtensionConflicts": false,
+    "stm32cube-ide-build-cmake.ignoreCubeProjectDiscovery": true,
+    "python.analysis.typeCheckingMode": "strict"
 }
