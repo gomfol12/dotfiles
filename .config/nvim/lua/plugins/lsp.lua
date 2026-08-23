@@ -203,11 +203,14 @@ local servers = {
 
             file:close()
         end,
+        -- on_attach = function(client, bufnr)
+        -- require("ltex_extra").setup({ load_langs = { "en-US", "de-DE" } })
+        -- end,
         filetypes = { "tex" },
         flags = { debounce_text_changes = 300 },
         settings = {
             ltex = {
-                language = "de-DE",
+                language = "en-US",
                 setenceCacheSize = 2000,
                 additionalRules = {
                     enablePickyRules = true,
@@ -338,6 +341,10 @@ return {
         ft = "rust",
         lazy = false,
     },
+    -- {
+    --     "barreiroleo/ltex_extra.nvim",
+    --     ft = "tex",
+    -- },
 
     -- scala
     {
