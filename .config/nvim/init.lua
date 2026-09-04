@@ -11,4 +11,4 @@ require("config.diff_highlighting").setup()
 
 require("config.lazy")
 
-require("config.venv_switcher")()
+require("config.venv_switcher")
