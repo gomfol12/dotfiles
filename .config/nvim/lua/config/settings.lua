@@ -16,6 +16,7 @@ vim.opt.shortmess:append("c")
 vim.opt.jumpoptions:append("view")
 vim.opt.breakindent = true -- preserve indent on indented lines that wrap
 vim.opt.inccommand = "split" -- preview substitutions live
+vim.cmd("syntax off")
 
 vim.opt.number = true -- Show line number
 vim.opt.showmatch = true -- Highlight matching parenthesis

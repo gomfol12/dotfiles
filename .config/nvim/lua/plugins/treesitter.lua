@@ -106,12 +106,30 @@ return {
             for _, parser in ipairs(ensureInstalled) do
                 vim.api.nvim_create_autocmd("FileType", {
                     pattern = parser,
-                    callback = function()
-                        vim.treesitter.start()
-                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    callback = function(args)
+                        local max_lines = 10000
+                        if vim.api.nvim_buf_line_count(args.buf) > max_lines then
+                            return
+                        end
+                        vim.schedule(function()
+                            if vim.api.nvim_buf_is_valid(args.buf) then
+                                vim.treesitter.start(args.buf)
+                                vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                            end
+                        end)
                     end,
                 })
             end
+
+            vim.api.nvim_create_autocmd("FileType", {
+                callback = function(args)
+                    if not ensureInstalled[args.match] then
+                        vim.schedule(function()
+                            vim.cmd("syntax on")
+                        end)
+                    end
+                end,
+            })
         end,
     },
     --textobjects = {
