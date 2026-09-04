@@ -8,7 +8,7 @@ function _G.StatusLine()
     local winid = vim.g.statusline_winid or vim.api.nvim_get_current_win()
     local bufnr = vim.api.nvim_win_get_buf(winid)
 
-    local width = vim.api.nvim_win_get_width(0)
+    local width = vim.api.nvim_win_get_width(winid)
     local is_small = width <= 120
     local is_smaller = width <= 80
 
@@ -18,19 +18,10 @@ function _G.StatusLine()
         if ok and gs then
             git = string.format("[%s:+%d~%d-%d]", gs.head or "none", gs.added or 0, gs.changed or 0, gs.removed or 0)
         elseif vim.fn.exists("*FugitiveStatusline") == 1 then
-            -- save the current window and buffer
-            local current_win = vim.api.nvim_get_current_win()
-            local current_buf = vim.api.nvim_get_current_buf()
-            if current_buf ~= bufnr then
-                vim.api.nvim_set_current_win(winid)
-            end
-
-            local fugitive = vim.fn.FugitiveStatusline()
-
-            -- restore the previous window and buffer
-            if current_buf ~= bufnr then
-                vim.api.nvim_set_current_win(current_win)
-            end
+            local fugitive
+            vim.api.nvim_win_call(winid, function()
+                fugitive = vim.fn.FugitiveStatusline()
+            end)
 
             if fugitive ~= "" then
                 local branch = fugitive:match("%((.-)%)")
