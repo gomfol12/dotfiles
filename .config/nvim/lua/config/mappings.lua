@@ -167,7 +167,8 @@ vim.keymap.set("x", '<leader>"', '<ESC>`>a"<ESC>`<i"<ESC>', { silent = true, des
 vim.keymap.set("x", "<leader>$", "<ESC>`>a$<ESC>`<i$<ESC>", { silent = true, desc = "$$ around selected word" })
 
 -- `` and `````` around word(s)
-vim.keymap.set("n", "<leader>`", "viw<ESC>bi`<ESC>ea`<ESC>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>ti", "viw<ESC>bi`<ESC>ea`<ESC>", { noremap = true, silent = true })
+vim.keymap.set("v", "<leader>ti", "<ESC>`<i`<ESC>`>a`<ESC>", { noremap = true, silent = true })
 vim.keymap.set("v", "<leader>cb", function()
     local start_line = vim.fn.line("v")
     local end_line = vim.fn.line(".")
@@ -185,6 +186,15 @@ vim.keymap.set("x", "J", ":move '>+1<CR>gv-gv", { silent = true, desc = "Move se
 
 vim.keymap.set("n", "<leader>Z", ":set formatoptions-=a<cr>", { desc = "Remove format options" })
 vim.keymap.set("n", "<leader>z", ":set formatoptions=a<cr>", { desc = "Add format options" })
+
+vim.keymap.set("v", "<leader>n", function()
+    local start = vim.fn.line("'<")
+    local finish = vim.fn.line("'>")
+
+    for i = start, finish do
+        vim.fn.setline(i, (i - start + 1) .. ". " .. vim.fn.getline(i))
+    end
+end, { desc = "Number selected lines" })
 
 -- ========== Mapping Notes ========== --
 -- a.vim
