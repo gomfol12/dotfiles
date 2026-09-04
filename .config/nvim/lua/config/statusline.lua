@@ -5,17 +5,33 @@ local cmd = vim.cmd
 vim.o.statusline = "%!v:lua.StatusLine()"
 
 function _G.StatusLine()
+    local winid = vim.g.statusline_winid or vim.api.nvim_get_current_win()
+    local bufnr = vim.api.nvim_win_get_buf(winid)
+
     local width = vim.api.nvim_win_get_width(0)
     local is_small = width <= 120
     local is_smaller = width <= 80
 
     local git = ""
-    local gs = vim.b.gitsigns_status_dict
     if not is_small then
-        if gs then
+        local ok, gs = pcall(vim.api.nvim_buf_get_var, bufnr, "gitsigns_status_dict")
+        if ok and gs then
             git = string.format("[%s:+%d~%d-%d]", gs.head or "none", gs.added or 0, gs.changed or 0, gs.removed or 0)
         elseif vim.fn.exists("*FugitiveStatusline") == 1 then
+            -- save the current window and buffer
+            local current_win = vim.api.nvim_get_current_win()
+            local current_buf = vim.api.nvim_get_current_buf()
+            if current_buf ~= bufnr then
+                vim.api.nvim_set_current_win(winid)
+            end
+
             local fugitive = vim.fn.FugitiveStatusline()
+
+            -- restore the previous window and buffer
+            if current_buf ~= bufnr then
+                vim.api.nvim_set_current_win(current_win)
+            end
+
             if fugitive ~= "" then
                 local branch = fugitive:match("%((.-)%)")
                 if branch then
@@ -29,7 +45,7 @@ function _G.StatusLine()
     end
 
     local diagnostic = ""
-    local diag = vim.diagnostic.get(0)
+    local diag = vim.diagnostic.get(bufnr)
     if #diag > 0 then
         local errors, warnings, hints, info = 0, 0, 0, 0
 
@@ -63,10 +79,12 @@ function _G.StatusLine()
         diagnostic = " " .. table.concat(parts, "")
     end
 
+    local readonly = vim.api.nvim_get_option_value("readonly", { buf = bufnr })
+
     local parts = {
         " %M", -- modified flag
         " %y", -- filetype
-        vim.bo.readonly and " [RO]" or nil,
+        readonly and " [RO]" or nil,
         is_smaller and " %t" or (is_small and " %f" or " %F"), -- file name
         "%=", -- right align
         git,
