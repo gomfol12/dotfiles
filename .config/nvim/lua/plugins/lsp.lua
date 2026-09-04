@@ -18,7 +18,7 @@ vim.diagnostic.config({
             min = vim.diagnostic.severity.INFO,
         },
     },
-    update_in_insert = true,
+    update_in_insert = false,
     underline = true,
     severity_sort = true,
     float = {
@@ -216,7 +216,7 @@ local servers = {
                     enablePickyRules = true,
                     motherTongue = "de-DE",
                 },
-                trace = { server = "verbose" },
+                trace = { server = "off" },
                 disabledRules = {},
                 hiddenFalsePositives = {},
             },
@@ -264,11 +264,11 @@ local tools = {
 }
 
 return {
-    { "mason-org/mason.nvim", opts = {} },
+    { "mason-org/mason.nvim", event = { "BufReadPre", "BufNewFile" }, opts = {} },
     {
         "mason-org/mason-lspconfig.nvim",
         dependencies = { "mason-org/mason.nvim", "neovim/nvim-lspconfig" },
-        event = { "VeryLazy", "BufReadPre", "BufNewFile" },
+        event = { "BufReadPre", "BufNewFile" },
         config = function()
             local mr = require("mason-registry")
             mr.refresh(function()
@@ -339,7 +339,6 @@ return {
     {
         "mrcjkb/rustaceanvim",
         ft = "rust",
-        lazy = false,
     },
     -- {
     --     "barreiroleo/ltex_extra.nvim",
@@ -394,7 +393,6 @@ return {
     {
         "mrcjkb/haskell-tools.nvim",
         version = "^6",
-        lazy = false,
         ft = "haskell",
         init = function()
             vim.g.haskell_tools = {

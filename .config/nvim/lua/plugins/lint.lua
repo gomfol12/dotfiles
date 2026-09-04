@@ -3,13 +3,14 @@
 local utils = require("config.utils")
 
 -- check if linter is installed
-utils.check_linters({ "chktex", "clang-tidy", "fortitude" })
 
 return {
     "mfussenegger/nvim-lint",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
         local lint = require("lint")
+
+        utils.check_linters({ "chktex", "clang-tidy", "fortitude" })
 
         lint.linters_by_ft = {
             -- markdown = { "markdownlint" },
@@ -34,9 +35,9 @@ return {
         end
 
         local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
-        vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+        vim.api.nvim_create_autocmd({ "BufWritePost" }, {
             group = lint_augroup,
-            callback = function()
+            callback = function(args)
                 lint.try_lint()
             end,
         })

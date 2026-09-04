@@ -45,22 +45,12 @@ function _G.StatusLine()
     end
 
     local diagnostic = ""
-    local diag = vim.diagnostic.get(bufnr)
-    if #diag > 0 then
-        local errors, warnings, hints, info = 0, 0, 0, 0
-
-        for _, d in ipairs(diag) do
-            local t = d.severity
-            if t == vim.diagnostic.severity.ERROR then
-                errors = errors + 1
-            elseif t == vim.diagnostic.severity.WARN then
-                warnings = warnings + 1
-            elseif t == vim.diagnostic.severity.HINT then
-                hints = hints + 1
-            elseif t == vim.diagnostic.severity.INFO then
-                info = info + 1
-            end
-        end
+    local diagnostic_counts = vim.diagnostic.count(bufnr)
+    if next(diagnostic_counts) then
+        local errors = diagnostic_counts[vim.diagnostic.severity.ERROR] or 0
+        local warnings = diagnostic_counts[vim.diagnostic.severity.WARN] or 0
+        local hints = diagnostic_counts[vim.diagnostic.severity.HINT] or 0
+        local info = diagnostic_counts[vim.diagnostic.severity.INFO] or 0
 
         local parts = {}
 

@@ -2,32 +2,67 @@
 
 return {
     "mfussenegger/nvim-dap",
+    lazy = true,
     dependencies = {
         "rcarriga/nvim-dap-ui",
         "nvim-neotest/nvim-nio",
 
-        "williamboman/mason.nvim",
-        "jay-babu/mason-nvim-dap.nvim",
+        { "williamboman/mason.nvim", lazy = true },
+        { "jay-babu/mason-nvim-dap.nvim", lazy = true },
 
         "mfussenegger/nvim-dap-python",
     },
     keys = function(_, keys)
-        local dap = require("dap")
-        local dapui = require("dapui")
         return {
-            { "<F5>", dap.continue, desc = "Debug: Start/Continue" },
-            { "<F10>", dap.step_over, desc = "Debug: Step Over" },
-            { "<F11>", dap.step_into, desc = "Debug: Step Into" },
-            { "<F12>", dap.step_out, desc = "Debug: Step Out" },
-            { "<leader>b", dap.toggle_breakpoint, desc = "Debug: Toggle Breakpoint" },
+            {
+                "<F5>",
+                function()
+                    require("dap").continue()
+                end,
+                desc = "Debug: Start/Continue",
+            },
+            {
+                "<F10>",
+                function()
+                    require("dap").step_over()
+                end,
+                desc = "Debug: Step Over",
+            },
+            {
+                "<F11>",
+                function()
+                    require("dap").step_into()
+                end,
+                desc = "Debug: Step Into",
+            },
+            {
+                "<F12>",
+                function()
+                    require("dap").step_out()
+                end,
+                desc = "Debug: Step Out",
+            },
+            {
+                "<leader>b",
+                function()
+                    require("dap").toggle_breakpoint()
+                end,
+                desc = "Debug: Toggle Breakpoint",
+            },
             {
                 "<leader>B",
                 function()
-                    dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+                    require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
                 end,
                 desc = "Debug: Set Breakpoint",
             },
-            { "<F7>", dapui.toggle, desc = "Debug: See last session result." },
+            {
+                "<F7>",
+                function()
+                    require("dapui").toggle()
+                end,
+                desc = "Debug: See last session result.",
+            },
             unpack(keys),
         }
     end,

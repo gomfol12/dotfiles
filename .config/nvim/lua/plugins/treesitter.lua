@@ -3,7 +3,7 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
-        lazy = false,
+        event = { "BufReadPre", "BufNewFile" },
         build = ":TSUpdate",
         dependencies = {
             "nvim-treesitter/nvim-treesitter-textobjects",
@@ -48,7 +48,7 @@ return {
                 end,
             },
         },
-        init = function()
+        config = function()
             local ensureInstalled = vim.tbl_extend("force", {
                 "c",
                 "cpp",

@@ -2,7 +2,6 @@
 
 -- check if formatter is installed
 local utils = require("config.utils")
-utils.check_formatters({ "clang-format", "cmake-format" }) -- other formatter are automatically installed by mason
 
 -- Range Format
 vim.api.nvim_create_user_command("Format", function(args)
@@ -18,10 +17,6 @@ vim.api.nvim_create_user_command("Format", function(args)
 end, { range = true, desc = "Format range" })
 
 local clang_format_args = {}
-local clang_format_file = utils.scan_dir_with_name(".clang.*format")
-if clang_format_file == "" then
-    clang_format_args = { "-style={BasedOnStyle: Microsoft}" }
-end
 
 return {
     "stevearc/conform.nvim",
@@ -37,6 +32,13 @@ return {
             desc = "[F]ormat buffer",
         },
     },
+    config = function(_, opts)
+        utils.check_formatters({ "clang-format", "cmake-format" })
+        if utils.scan_dir_with_name(".clang.*format") == "" then
+            opts.formatters.clang_format.prepend_args = { "-style={BasedOnStyle: Microsoft}" }
+        end
+        require("conform").setup(opts)
+    end,
     opts = {
         notify_on_error = false,
         format_on_save = function(bufnr)
