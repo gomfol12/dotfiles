@@ -29,7 +29,7 @@ local profiles = {
         monitors = {
             {
                 output = "DP-1",
-                mode = "highres",
+                mode = "1920x1080@120",
                 position = "1920x0",
                 scale = 1,
                 -- vrr = true,
