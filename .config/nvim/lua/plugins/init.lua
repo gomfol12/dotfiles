@@ -18,7 +18,6 @@ return {
     -- { "stevearc/overseer.nvim" },
     -- { "vim-pandoc/vim-pandoc-syntax" },
     -- { "vim-pandoc/vim-pandoc" },
-    { "fladson/vim-kitty" },
     {
         "knubie/vim-kitty-navigator",
         init = function()
