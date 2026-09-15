@@ -2,6 +2,9 @@
     path = user
 [core]
     autocrlf = input
+    pager = delta
+[interactive]
+    diffFilter = delta --color-only
 [pull]
     ff = only
     rebase = true
@@ -15,6 +18,8 @@
     addEmptyPathspec = false
 [rerere]
     enabled = true
+[merge]
+    conflictStyle = zdiff3
 [alias]
     change-commits = "!f() { VAR=$1; OLD=$2; NEW=$3; shift 3; git filter-branch --env-filter \"if [[ \\\"$`echo $VAR`\\\" = '$OLD' ]]; then export $VAR='$NEW'; fi\" $@; }; f"
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
@@ -30,3 +35,35 @@
     d = diff
     pul = pull
     f = fetch
+[delta]
+    dark = true
+    navigate = true
+    line-numbers = true
+    hyperlinks = true
+    keep-plus-minus-markers = true
+    file-added-label = [+]
+    file-copied-label = [==]
+    file-modified-label = [*]
+    file-removed-label = [-]
+    file-renamed-label = [->]
+    file-style = omit
+    zero-style = syntax
+    syntax-theme = Visual Studio Dark+
+    commit-decoration-style ="#1688f0" box
+    commit-style = "#aaaaaa"
+    hunk-header-decoration-style = "#1688f0" box ul
+    hunk-header-file-style = "#aaaaaa"
+    hunk-header-line-number-style = "#aaaaaa" box
+    hunk-header-style = file line-number syntax
+    line-numbers-left-format = "{nm:>1}|"
+    line-numbers-left-style = "#1688f0"
+    line-numbers-minus-style = "#b94647" bold
+    line-numbers-plus-style = "#3D9141" bold
+    line-numbers-right-format = "{np:>1}|"
+    line-numbers-right-style = "#1688f0"
+    line-numbers-zero-style = "#aaaaaa"
+    minus-emph-style = syntax "#990030"
+    minus-style = syntax "#5d001e"
+    plus-emph-style = syntax "#00291f"
+    plus-style = syntax "#004433"
+    whitespace-error-style = "#280050"
