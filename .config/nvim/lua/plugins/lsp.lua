@@ -48,6 +48,8 @@ local function hover_man()
     end
 end
 
+vim.api.nvim_create_user_command("HoverMan", hover_man, { desc = "Hover / Man" })
+
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(event)
         local map = function(keys, func, desc, mode, silent)
@@ -60,7 +62,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map("gi", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
         map("gr", vim.lsp.buf.references, "[G]oto [R]eferences")
         map("gt", vim.lsp.buf.type_definition, "[G]oto [T]ype Definition")
-        map("K", hover_man, "Hover / Man")
+        map("<leader>k", function()
+            hover_man()
+        end, "Hover / Man")
+        map("K", function()
+            vim.lsp.buf.hover({ border = "single" })
+        end, "LSP Hover")
         map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
         map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
         map("<F2>", vim.lsp.buf.rename, "[R]e[n]ame")
