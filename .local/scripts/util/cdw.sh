@@ -150,26 +150,46 @@ BEGIN {
     ts = $1
     path = $2
 
+    base = path
+    sub(".*/", "", base)
+
     s = 0
 
     # exact path
     if (path == q)
-        s += 1000
-
+    {
+        s = 100000
+    }
+    # exact basename
+    else if (base == q)
+    {
+        s = 10000
+    }
     # basename prefix
-    base = path
-    sub(".*/", "", base)
-
-    if (index(base, q) == 1)
-        s += 300
-
-    # substring
-    else if (index(path, q))
-        s += 200
+    else if (index(base, q) == 1)
+    {
+       s = 1000
+    }
+    # substring anywhere in basename
+    else if (index(base, q) > 0) {
+        s = 500
+    }
+    # substring anywhere in full path
+    else if (index(path, q) > 0)
+    {
+        s = 100
+    }
+    else
+    {
+        next
+    }
 
     # recency bonus
-    if (ts)
-        s += int(1000000 / (now - ts + 3600))
+    if (ts) {
+        age = now - ts
+        if (age < 0) age = 0
+        s += 2000 / (age + 30)
+    }
 
     if (s > best) {
         best = s
