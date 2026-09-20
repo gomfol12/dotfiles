@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import Quickshell
 import QtQuick
 import qs.bar
+import qs.services
 
 Scope {
     id: root
@@ -23,7 +24,7 @@ Scope {
                 right: true
             }
 
-            implicitHeight: 30
+            implicitHeight: Config.bar.height
 
             Bar {
                 panelWindow: panelWindow

@@ -12,7 +12,11 @@ Singleton {
         property int size: 16
     }
 
-    readonly property var workspace: QtObject {
-        property int cellSize: root.font.size + 14
+    readonly property var bar: QtObject {
+        property int boxHeight: 26
+        property int boxMargin: 4
+        property int spacing: 8
+        property int borderWidth: 2
+        readonly property int height: boxHeight + boxMargin * 2
     }
 }

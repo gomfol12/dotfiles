@@ -1,100 +1,40 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import QtQuick.Layouts
+import qs.bar.widgets
 import qs.services
-import Quickshell
-import Quickshell.Widgets
 
-Item {
+BarBox {
     id: root
 
     required property var panelWindow
+    readonly property var client: Hypr.focusedClientPerMonitor(panelWindow.screen)
+    readonly property var monitor: Hypr.monitorFor(panelWindow.screen)
+    readonly property bool monitorFocused: !!(monitor && monitor.focused)
 
-    readonly property var icons: ({
-            FLOAT: Qt.resolvedUrl(`${Quickshell.shellDir}/icons/plane.svg`),
-            FULL: Qt.resolvedUrl(`${Quickshell.shellDir}/icons/fullscreen.svg`),
-            PINNED: Qt.resolvedUrl(`${Quickshell.shellDir}/icons/pin.svg`)
-        })
+    fillColor: root.monitorFocused ? Colors.color1 : Colors.color0
+    implicitWidth: title.implicitWidth
+    implicitHeight: title.implicitHeight
+    Layout.fillWidth: true
 
-    function focusedClientPerMonitor() {
-        const monitor = Hypr.monitorFor(root.panelWindow.screen);
+    Text {
+        id: title
 
-        for (const ws of Hypr.workspaces.values) {
-            if (ws.id !== monitor.activeWorkspace.id)
-                continue;
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.leftMargin: 10
+        anchors.rightMargin: 10
+        anchors.verticalCenter: parent.verticalCenter
 
-            const last = ws.lastIpcObject.lastwindow.replace(/^0x/, "");
+        font.pixelSize: Config.font.size
+        font.family: Config.font.family
+        color: root.monitorFocused ? Colors.background : Colors.foreground
+        text: root.client && typeof root.client.title === "string" ? root.client.title : ""
 
-            for (const tl of ws.toplevels.values) {
-                if (tl.address.replace(/^0x/, "") === last)
-                    return tl.lastIpcObject;
-            }
-        }
-
-        return null;
-    }
-
-    readonly property var client: focusedClientPerMonitor()
-
-    readonly property var statelabels: {
-        if (!client)
-            return [];
-
-        const labels = [];
-
-        if (client.floating) {
-            labels.push("FLOAT");
-        }
-        if (client.fullscreen) {
-            labels.push("FULL");
-        }
-        if (client.pinned) {
-            labels.push("PINNED");
-        }
-
-        return labels;
-    }
-
-    implicitWidth: stateRow.implicitWidth
-    implicitHeight: stateRow.implicitHeight
-
-    Row {
-        id: stateRow
-
-        Repeater {
-            model: root.statelabels
-
-            Rectangle {
-                id: stateRect
-
-                required property var modelData
-
-                color: Colors.background
-                implicitHeight: 24
-                implicitWidth: 24
-
-                IconImage {
-                    anchors.centerIn: parent
-                    width: 14
-                    height: 14
-
-                    source: root.icons[stateRect.modelData] || ""
-                }
-            }
-        }
-
-        Text {
-            anchors.verticalCenter: parent.verticalCenter
-
-            font.pixelSize: Config.font.size
-            font.family: Config.font.family
-            color: Colors.foreground
-            text: root.client ? root.client.title : ""
-
-            elide: Text.ElideRight
-            maximumLineCount: 1
-            wrapMode: Text.NoWrap
-            verticalAlignment: Text.AlignVCenter
-        }
+        elide: Text.ElideRight
+        maximumLineCount: 1
+        wrapMode: Text.NoWrap
+        verticalAlignment: Text.AlignVCenter
     }
 }

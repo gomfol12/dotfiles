@@ -16,6 +16,7 @@ Item {
 
     Row {
         id: workspacesRow
+        spacing: 0
 
         Repeater {
             id: workspaces

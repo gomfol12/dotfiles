@@ -16,17 +16,41 @@ Rectangle {
 
     RowLayout {
         anchors.fill: parent
+        anchors.leftMargin: Config.bar.spacing
+        anchors.rightMargin: Config.bar.spacing
+        spacing: Config.bar.spacing
 
-        Workspaces {
-            panelWindow: root.panelWindow
+        BarBox {
+            id: workspaceGroup
+
+            Layout.preferredWidth: workspaces.implicitWidth
+
+            Workspaces {
+                id: workspaces
+                anchors.centerIn: parent
+                panelWindow: root.panelWindow
+            }
+        }
+
+        BarBox {
+            id: stateGroup
+
+            visible: stateIcons.implicitWidth > 0
+            Layout.preferredWidth: stateIcons.implicitWidth + Config.bar.boxMargin * 2
+
+            StateIcons {
+                id: stateIcons
+                anchors.centerIn: parent
+                panelWindow: root.panelWindow
+            }
         }
 
         WindowTitle {
             panelWindow: root.panelWindow
         }
 
-        Item {
-            Layout.fillWidth: true
+        Tray {
+            panelWindow: root.panelWindow
         }
 
         Clock {

@@ -1,11 +1,13 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
+import qs.bar.widgets
 import qs.services
 
-Item {
+BarBox {
     id: root
 
     required property var panelWindow
@@ -27,16 +29,20 @@ Item {
         popupOpen ? closePopup() : openPopup();
     }
 
-    implicitWidth: clockLabel.implicitWidth
+    fillColor: Colors.color0
+    implicitWidth: clockLabel.implicitWidth + 20
     implicitHeight: clockLabel.implicitHeight
 
     Text {
         id: clockLabel
-        anchors.centerIn: parent
+        anchors.fill: parent
+        anchors.leftMargin: 10
+        anchors.rightMargin: 10
 
         font.pixelSize: Config.font.size
         font.family: Config.font.family
         color: Colors.foreground
+        verticalAlignment: Text.AlignVCenter
 
         text: Time.time
     }

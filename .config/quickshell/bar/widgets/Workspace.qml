@@ -17,15 +17,16 @@ Rectangle {
     readonly property string workspaceLabel: workspace ? workspace.id : ""
 
     visible: sameMonitor
-    width: Config.workspace.cellSize
-    height: Config.workspace.cellSize
+    width: Config.bar.boxHeight
+    height: Config.bar.boxHeight
     color: isUrgent ? Colors.foreground : (isActive ? Colors.color1 : Colors.background)
+    border.width: 0
 
     Text {
         anchors.centerIn: parent
         font.pixelSize: Config.font.size
         font.family: Config.font.family
-        color: Colors.foreground
+        color: root.isUrgent ? Colors.background : Colors.foreground
         text: root.workspaceLabel
     }
 
@@ -36,9 +37,9 @@ Rectangle {
         radius: 0
         anchors.top: parent.top
         anchors.right: parent.right
-        anchors.topMargin: 2
-        anchors.rightMargin: 2
-        color: Colors.foreground
+        anchors.topMargin: Config.bar.boxMargin
+        anchors.rightMargin: Config.bar.boxMargin
+        color: root.isUrgent ? Colors.background : Colors.foreground
     }
 
     MouseArea {

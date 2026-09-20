@@ -24,6 +24,30 @@ Singleton {
         return Hyprland.monitorFor(screen);
     }
 
+    function focusedClientPerMonitor(screen: ShellScreen): var {
+        const monitor = Hypr.monitorFor(screen);
+        if (!monitor || !monitor.activeWorkspace)
+            return null;
+
+        for (const ws of Hypr.workspaces.values) {
+            if (ws.id !== monitor.activeWorkspace.id)
+                continue;
+
+            const lastWindow = ws.lastIpcObject?.lastwindow;
+            if (typeof lastWindow !== "string")
+                return null;
+
+            const last = lastWindow.replace(/^0x/, "");
+
+            for (const tl of ws.toplevels.values) {
+                if (typeof tl.address === "string" && tl.address.replace(/^0x/, "") === last)
+                    return tl.lastIpcObject;
+            }
+        }
+
+        return null;
+    }
+
     Connections {
         target: Hyprland
 
