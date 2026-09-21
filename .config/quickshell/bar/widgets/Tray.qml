@@ -16,22 +16,29 @@ BarBox {
     implicitWidth: trayRow.implicitWidth + Config.bar.boxMargin * 2
 
     function openMenu(item, anchorItem) {
+        if (activeItem === item) {
+            closeMenu();
+            return;
+        }
         closeMenu();
         activeItem = item;
 
         const iconPos = anchorItem.mapToItem(null, 0, 0);
         const growRight = iconPos.x < (panelWindow.width / 2);
 
-        activeMenu = menuComponent.createObject(root, {
-            menuHandle: item.menu,
-            anchorItem: anchorItem,
-            placement: "below",
-            side: growRight ? "right" : "left"
+        Qt.callLater(() => {
+            activeMenu = menuComponent.createObject(root, {
+                menuHandle: item.menu,
+                anchorItem: anchorItem,
+                placement: "below",
+                side: growRight ? "right" : "left"
+            });
         });
     }
 
     function closeMenu() {
         if (activeMenu) {
+            activeMenu.visible = false;
             activeMenu.destroy();
             activeMenu = null;
         }
@@ -55,7 +62,10 @@ BarBox {
 
             Item {
                 id: trayItem
+
                 required property var modelData
+
+                property bool showTooltip: false
 
                 width: 24
                 height: Config.bar.boxHeight
@@ -74,7 +84,9 @@ BarBox {
                 }
 
                 MouseArea {
+                    id: trayMouse
                     anchors.fill: parent
+                    hoverEnabled: true
                     acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
                     onClicked: mouse => {
                         if (mouse.button === Qt.LeftButton) {
@@ -83,6 +95,45 @@ BarBox {
                             trayItem.modelData.secondaryActivate();
                         } else if (mouse.button === Qt.RightButton && trayItem.modelData.hasMenu) {
                             root.openMenu(trayItem.modelData, trayItem);
+                        }
+                    }
+
+                    onContainsMouseChanged: {
+                        if (containsMouse) {
+                            tooltipDelay.restart();
+                        } else {
+                            tooltipDelay.stop();
+                            trayItem.showTooltip = false;
+                        }
+                    }
+                }
+
+                Timer {
+                    id: tooltipDelay
+                    interval: 400
+                    onTriggered: trayItem.showTooltip = true
+                }
+
+                PopupWindow {
+                    id: trayTooltip
+                    anchor.item: trayItem
+                    anchor.edges: Edges.Bottom | Edges.Left
+                    anchor.gravity: Edges.Bottom | Edges.Left
+                    visible: trayItem.showTooltip
+                    color: "transparent"
+                    implicitWidth: ttText.implicitWidth + 16
+                    implicitHeight: ttText.implicitHeight + 8
+
+                    Rectangle {
+                        anchors.fill: parent
+                        color: Colors.background
+                        border.color: Colors.color1
+                        border.width: Config.bar.borderWidth
+                        Text {
+                            id: ttText
+                            anchors.centerIn: parent
+                            color: Colors.foreground
+                            text: trayItem.modelData.tooltipTitle || trayItem.modelData.title
                         }
                     }
                 }

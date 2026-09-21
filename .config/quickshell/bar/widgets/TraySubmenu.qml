@@ -45,6 +45,7 @@ PopupWindow {
 
     function closeChild() {
         if (level.childLevel) {
+            level.childLevel.visible = false;
             level.childLevel.destroy();
             level.childLevel = null;
             level.childEntry = null;
@@ -54,23 +55,25 @@ PopupWindow {
     function openChild(entry, entryItem) {
         if (level.childEntry === entry)
             return;
-        level.closeChild();
+        closeChild();
         level.childEntry = entry;
 
         const marker = level.side === "right" ? entryItem.rightAnchor : entryItem.leftAnchor;
 
-        const comp = Qt.createComponent(Qt.resolvedUrl("TraySubmenu.qml"));
-        if (comp.status === Component.Ready) {
-            level.childLevel = comp.createObject(level, {
-                menuHandle: entry,
-                anchorItem: marker,
-                rootClose: level.rootClose,
-                side: level.side,
-                placement: level.side
-            });
-        } else {
-            console.warn("TraySubmenu: failed to load submenu component:", comp.errorString());
-        }
+        Qt.callLater(() => {
+            const comp = Qt.createComponent(Qt.resolvedUrl("TraySubmenu.qml"));
+            if (comp.status === Component.Ready) {
+                level.childLevel = comp.createObject(level, {
+                    menuHandle: entry,
+                    anchorItem: marker,
+                    rootClose: level.rootClose,
+                    side: level.side,
+                    placement: level.side
+                });
+            } else {
+                console.warn("TraySubmenu: failed to load submenu component:", comp.errorString());
+            }
+        });
     }
 
     QsMenuOpener {

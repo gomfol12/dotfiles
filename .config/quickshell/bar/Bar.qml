@@ -49,6 +49,12 @@ Rectangle {
             panelWindow: root.panelWindow
         }
 
+        PowerBox {}
+
+        AudioBox {
+            panelWindow: root.panelWindow
+        }
+
         Tray {
             panelWindow: root.panelWindow
         }
