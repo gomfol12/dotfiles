@@ -478,7 +478,6 @@ hl.window_rule({
     match = { class = "com.nextcloud.desktopclient.nextcloud", title = "Nextcloud" },
     float = true,
     size = "(monitor_w*0.2) (monitor_h*0.5)",
-    border_size = 0,
     move = { "(monitor_w*1)-window_w-0", "30" },
     no_anim = true,
 })
