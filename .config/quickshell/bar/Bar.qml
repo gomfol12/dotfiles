@@ -49,6 +49,10 @@ Rectangle {
             panelWindow: root.panelWindow
         }
 
+        Cpu {}
+
+        Memory {}
+
         PowerBox {}
 
         AudioBox {
