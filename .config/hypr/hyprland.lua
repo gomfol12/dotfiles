@@ -75,7 +75,8 @@ hl.on("hyprland.start", function()
         "lxpolkit",
         "awww-daemon",
         -- "kanshi",
-        "~/.config/eww/scripts/start.sh",
+        -- "~/.config/eww/scripts/start.sh",
+        "quickshell",
         "nm-applet",
         "blueman-applet",
         "easyeffects --gapplication-service",
@@ -286,7 +287,8 @@ bind({ "XF86AudioPlay" }, hl.dsp.exec_cmd("audio.sh play-pause"))
 -- util
 bind({ "Menu" }, hl.dsp.exec_cmd(menu))
 bind({ "Print" }, hl.dsp.exec_cmd("screenshotter.sh"))
-bind({ "Scroll_Lock" }, hl.dsp.exec_cmd("audio.sh eww swap"))
+-- bind({ "Scroll_Lock" }, hl.dsp.exec_cmd("audio.sh eww swap"))
+bind({ "Scroll_Lock" }, hl.dsp.exec_cmd("audio.sh swap"))
 bind({ superMod, "F" }, hl.dsp.exec_cmd("emojiselect.sh"))
 bind({ superMod, "P" }, hl.dsp.exec_cmd("hyprpicker -na"))
 bind({ superMod, "L" }, hl.dsp.exec_cmd("hyprlock"))
@@ -304,9 +306,12 @@ bind({ mainMod, "y" }, hl.dsp.exec_cmd("clip_manager -l | dmenu -l 10 | clip_man
 -- TODO: toggle bar
 
 -- volume
-bind({ mainMod, "F6" }, hl.dsp.exec_cmd("audio.sh eww mute microphone toggle"))
-bind({ mainMod, "F7" }, hl.dsp.exec_cmd("audio.sh eww mute sink toggle"))
-bind({ mainMod, "F8" }, hl.dsp.exec_cmd("audio.sh eww mute all"))
+-- bind({ mainMod, "F6" }, hl.dsp.exec_cmd("audio.sh eww mute microphone toggle"))
+bind({ mainMod, "F6" }, hl.dsp.exec_cmd("audio.sh mute microphone toggle"))
+-- bind({ mainMod, "F7" }, hl.dsp.exec_cmd("audio.sh eww mute sink toggle"))
+bind({ mainMod, "F7" }, hl.dsp.exec_cmd("audio.sh mute sink toggle"))
+-- bind({ mainMod, "F8" }, hl.dsp.exec_cmd("audio.sh eww mute all"))
+bind({ mainMod, "F8" }, hl.dsp.exec_cmd("audio.sh mute all"))
 
 -- -- Move focus
 bind({ mainMod, "h" }, hl.dsp.focus({ direction = "l" }))
