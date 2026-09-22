@@ -49,6 +49,8 @@ Rectangle {
             panelWindow: root.panelWindow
         }
 
+        NetworkBox {}
+
         Cpu {}
 
         Memory {}

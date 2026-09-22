@@ -148,19 +148,30 @@ PopupWindow {
                         anchors.rightMargin: 4
                         anchors.verticalCenter: parent.verticalCenter
                         visible: !entryItem.isSeparator
-                        color: entryItem.modelData.enabled ? Colors.foreground : Colors.color8
+                        color: {
+                            if (entryItem.modelData.enabled) {
+                                if (entryMouse.containsMouse) {
+                                    Colors.background;
+                                } else {
+                                    Colors.foreground;
+                                }
+                            } else {
+                                Colors.color8;
+                            }
+                        }
                         text: entryItem.modelData.text
                         elide: Text.ElideRight
                     }
 
-                    Text {
+                    IconImage {
                         id: submenuArrow
                         anchors.right: parent.right
                         anchors.rightMargin: 6
                         anchors.verticalCenter: parent.verticalCenter
+                        width: 18
+                        height: 18
                         visible: !entryItem.isSeparator && entryItem.modelData.hasChildren
-                        text: ">"
-                        color: Colors.foreground
+                        source: entryMouse.containsMouse ? Qt.resolvedUrl(`${Quickshell.shellDir}/icons/right-arrow-dark`) : Qt.resolvedUrl(`${Quickshell.shellDir}/icons/right-arrow-light`)
                     }
 
                     MouseArea {
