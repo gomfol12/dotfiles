@@ -90,6 +90,7 @@ export ELECTRUMDIR="$XDG_DATA_HOME/electrum"
 export PYTHON_HISTORY="$XDG_STATE_HOME/python_history"
 export BN_USER_DIRECTORY="$XDG_DATA_HOME/binaryninja"
 export PLATFORMIO_CORE_DIR="$XDG_DATA_HOME/platformio"
+export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
 
 ### pass ###
 #export PASSWORD_STORE_DIR="$HOME/.local/password-store"
