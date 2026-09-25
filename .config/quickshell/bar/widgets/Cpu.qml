@@ -10,7 +10,6 @@ import qs.services
 BarBox {
     id: root
 
-    property bool showDetails: false
     property string cpuUsage: "..."
     property string cpuTemp: "..."
 
@@ -51,12 +50,6 @@ BarBox {
                 text: root.cpuTemp
                 color: Colors.foreground
             }
-        }
-
-        MouseArea {
-            anchors.fill: parent
-
-            onClicked: root.showDetails = !root.showDetails
         }
     }
 

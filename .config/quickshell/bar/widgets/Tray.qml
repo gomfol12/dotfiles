@@ -87,6 +87,7 @@ BarBox {
                     id: trayMouse
                     anchors.fill: parent
                     hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
                     acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
                     onClicked: mouse => {
                         if (mouse.button === Qt.LeftButton) {

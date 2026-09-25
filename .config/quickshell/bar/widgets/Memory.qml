@@ -37,6 +37,7 @@ BarBox {
 
         MouseArea {
             anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
             onClicked: {
                 root.showDetails = !root.showDetails;
                 memory.running = true;
