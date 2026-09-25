@@ -2,3 +2,27 @@ git:
   diffRenderers:
     - command: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
       colorArg: always
+
+gui:
+  theme:
+    lightTheme: false
+    activeBorderColor:
+      - "#1688f0"
+      - bold
+    inactiveBorderColor:
+      - "#aaaaaa"
+    searchingActiveBorderColor:
+      - "#3D9141"
+      - bold
+    optionsTextColor:
+      - "#1688f0"
+    selectedLineBgColor:
+      - "#333333"
+    selectedRangeBgColor:
+      - "#333333"
+    cherryPickedCommitBgColor:
+      - "#1688f0"
+    cherryPickedCommitFgColor:
+      - "#000000"
+    unstagedChangesColor:
+      - "#b94647"
