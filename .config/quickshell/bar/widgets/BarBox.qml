@@ -9,8 +9,8 @@ Rectangle {
 
     default property alias content: contentContainer.data
 
-    property color fillColor: Colors.color0
-    property color outlineColor: Colors.color1
+    property color fillColor: Colors.color2
+    property color outlineColor: Colors.color2
     property int outlineWidth: Config.bar.borderWidth
 
     Layout.preferredHeight: Config.bar.boxHeight

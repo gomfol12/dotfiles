@@ -15,8 +15,6 @@ BarBox {
     implicitWidth: row.implicitWidth + 16
     implicitHeight: row.implicitHeight
 
-    color: Colors.background
-
     RowLayout {
         id: row
         anchors.centerIn: parent
