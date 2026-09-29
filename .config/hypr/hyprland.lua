@@ -70,6 +70,8 @@ monitor_profile.add_profiles(profiles)
 --- Autostart ---
 
 hl.on("hyprland.start", function()
+    hl.env("QT_LOGGING_RULES", "quickshell.dbus.properties.warning=false")
+
     local cmds = {
         "sleep 1 && theming -f",
         "lxpolkit",
@@ -303,7 +305,8 @@ bind({ mainMod, "m" }, hl.dsp.exec_cmd("tearing.sh ask"))
 -- bind({ mainMod, "SHIFT", "m" }, hl.dsp.exec_cmd("tearing.sh toggle_steam"))
 bind({ superMod, "W" }, hl.dsp.exec_cmd('${TERMINAL:-st} -e nvim "+:VimwikiIndex"'))
 bind({ mainMod, "y" }, hl.dsp.exec_cmd("clip_manager -l | dmenu -l 10 | clip_manager -g | wl-copy"))
--- TODO: toggle bar
+bind({ mainMod, "B" }, hl.dsp.exec_cmd("qs ipc call bars toggleTop"))
+bind({ mainMod, "SHIFT", "B" }, hl.dsp.exec_cmd("qs ipc call bars toggleBottom"))
 
 -- volume
 -- bind({ mainMod, "F6" }, hl.dsp.exec_cmd("audio.sh eww mute microphone toggle"))

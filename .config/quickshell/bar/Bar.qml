@@ -10,6 +10,7 @@ Rectangle {
     id: root
 
     property var panelWindow
+    property bool primary: false
 
     anchors.fill: parent
     color: Colors.background
@@ -49,20 +50,50 @@ Rectangle {
             panelWindow: root.panelWindow
         }
 
-        NetworkBox {}
-
-        Cpu {}
-
-        Memory {}
-
-        PowerBox {}
-
-        AudioBox {
-            panelWindow: root.panelWindow
+        PrimaryOnly {
+            show: root.primary && Config.isDesktop()
+            sourceComponent: Component {
+                NetworkBox {}
+            }
         }
 
-        Tray {
-            panelWindow: root.panelWindow
+        PrimaryOnly {
+            show: root.primary && Config.isDesktop()
+            sourceComponent: Component {
+                Cpu {}
+            }
+        }
+
+        PrimaryOnly {
+            show: root.primary && Config.isDesktop()
+            sourceComponent: Component {
+                Memory {}
+            }
+        }
+
+        PrimaryOnly {
+            show: root.primary && Power.hasBattery
+            sourceComponent: Component {
+                PowerBox {}
+            }
+        }
+
+        PrimaryOnly {
+            show: root.primary
+            sourceComponent: Component {
+                AudioBox {
+                    panelWindow: root.panelWindow
+                }
+            }
+        }
+
+        PrimaryOnly {
+            show: root.primary
+            sourceComponent: Component {
+                Tray {
+                    panelWindow: root.panelWindow
+                }
+            }
         }
 
         Clock {

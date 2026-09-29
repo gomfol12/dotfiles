@@ -10,9 +10,6 @@ import qs.services
 BarBox {
     id: root
 
-    property string hostname: ""
-    property string interfaceName: ""
-
     property real downloadSpeed: 0
     property real uploadSpeed: 0
 
@@ -73,7 +70,7 @@ BarBox {
     Process {
         id: networkProcess
 
-        command: ["cat", `/sys/class/net/${root.interfaceName}/statistics/rx_bytes`, `/sys/class/net/${root.interfaceName}/statistics/tx_bytes`]
+        command: ["cat", `/sys/class/net/${Config.system.networkInterface}/statistics/rx_bytes`, `/sys/class/net/${Config.system.networkInterface}/statistics/tx_bytes`]
 
         stdout: StdioCollector {
             onStreamFinished: {
@@ -113,32 +110,10 @@ BarBox {
 
     Timer {
         interval: 5000
-        running: root.interfaceName !== ""
+        running: Config.system.networkInterface !== ""
         repeat: true
         triggeredOnStart: true
 
         onTriggered: networkProcess.running = true
-    }
-
-    Process {
-        id: hostnameProcess
-
-        command: ["hostname"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.hostname = text.trim();
-
-                if (root.hostname === Quickshell.env("HOSTNAME_DESKTOP")) {
-                    root.interfaceName = "enp37s0";
-                } else if (root.hostname === Quickshell.env("HOSTNAME_LAPTOP")) {
-                    root.interfaceName = "wlp170s0";
-                }
-            }
-        }
-    }
-
-    Component.onCompleted: {
-        hostnameProcess.running = true;
     }
 }

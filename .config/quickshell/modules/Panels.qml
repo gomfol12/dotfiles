@@ -1,33 +1,77 @@
 pragma ComponentBehavior: Bound
 
-import Quickshell
 import QtQuick
+import Quickshell
+import Quickshell.Io
 import qs.bar
 import qs.services
 
 Scope {
     id: root
 
+    property bool topVisible: true
+    property bool bottomVisible: Config.isLaptop()
+
+    IpcHandler {
+        target: "bars"
+
+        function toggleTop(): void {
+            root.topVisible = !root.topVisible;
+        }
+        function toggleBottom(): void {
+            root.bottomVisible = !root.bottomVisible;
+        }
+    }
+
     Variants {
         id: panels
 
         model: Quickshell.screens
 
-        PanelWindow {
-            id: panelWindow
+        Scope {
+            id: perScreen
             required property var modelData
-            screen: modelData
+            readonly property bool isPrimary: modelData.name === Config.system.primaryMonitor
 
-            anchors {
-                top: true
-                left: true
-                right: true
+            PanelWindow {
+                id: topWindow
+
+                screen: perScreen.modelData
+                visible: root.topVisible
+
+                anchors {
+                    top: true
+                    left: true
+                    right: true
+                }
+
+                implicitHeight: Config.bar.height
+
+                Bar {
+                    panelWindow: topWindow
+                    primary: perScreen.isPrimary
+                }
             }
 
-            implicitHeight: Config.bar.height
+            LazyLoader {
+                active: perScreen.isPrimary
 
-            Bar {
-                panelWindow: panelWindow
+                PanelWindow {
+                    id: bottomWindow
+
+                    screen: perScreen.modelData
+                    visible: root.bottomVisible
+
+                    anchors {
+                        bottom: true
+                        left: true
+                        right: true
+                    }
+
+                    implicitHeight: Config.bar.height
+
+                    BottomBar {}
+                }
             }
         }
     }
