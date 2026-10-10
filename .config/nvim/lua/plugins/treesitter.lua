@@ -132,11 +132,17 @@ return {
                         if vim.api.nvim_buf_line_count(args.buf) > max_lines then
                             return
                         end
+                        local buf = args.buf
+                        local lang = vim.treesitter.language.get_lang(parser)
                         vim.schedule(function()
-                            if vim.api.nvim_buf_is_valid(args.buf) then
-                                vim.treesitter.start(args.buf)
-                                vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                            if not vim.api.nvim_buf_is_valid(args.buf) then
+                                return
                             end
+                            if vim.bo[buf].filetype ~= parser then
+                                return
+                            end
+                            vim.treesitter.start(args.buf, lang)
+                            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                         end)
                     end,
                 })
