@@ -96,6 +96,15 @@ Rectangle {
             }
         }
 
+        PrimaryOnly {
+            show: root.primary
+            sourceComponent: Component {
+                NotificationBox {
+                    panelWindow: root.panelWindow
+                }
+            }
+        }
+
         Clock {
             panelWindow: root.panelWindow
         }

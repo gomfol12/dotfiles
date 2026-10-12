@@ -72,7 +72,8 @@ BarBox {
 
     readonly property int hiddenCount: windows.length - shownWindows.length
 
-    fillColor: "transparent"
+    fillColor: (root.monitorFocused && shownWindows.length == 0) ? Colors.color1 : "transparent"
+
     implicitHeight: Config.bar.height
     Layout.fillWidth: true
 

@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Io
 import qs.bar
 import qs.services
+import qs.bar.widgets
 
 Scope {
     id: root
