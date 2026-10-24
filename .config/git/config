@@ -6,7 +6,7 @@
 [interactive]
     diffFilter = delta --color-only
 [pull]
-    ff = only
+    ff = true
     rebase = true
 [init]
     defaultBranch = master

@@ -292,7 +292,7 @@ END {
         if [ "${1: -1}" = "f" ]; then
             lf.sh
 
-            last_dir_file="/tmp/lf_last_dir"
+            last_dir_file="/tmp/lf_last_dir_$UID"
             if [ -f "$last_dir_file" ]; then
                 newdir="$(cat "$last_dir_file")"
                 if [ -d "$newdir" ]; then
