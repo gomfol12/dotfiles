@@ -290,15 +290,24 @@ on-cd
 %[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
 
 # dynamically set number of columns
-cmd recol ${{
-    w=$(tput cols)
-    if [ $w -le 80 ]; then
+cmd recol %{{
+    if [ "$lf_width" -le 80 ]; then
         lf -remote "send $id set ratios 1:2"
     else
         lf -remote "send $id set ratios 1:2:3"
     fi
 }}
-recol
+
+set user_cols 0
+cmd on-redraw %{{
+    if [ "$lf_width" -le 80 ]; then
+        want=1:2
+    else
+        want=1:2:3
+    fi
+    [ "$want" = "$lf_user_cols" ] && exit
+    lf -remote "send $id :set ratios $want; set user_cols $want"
+}}
 
 cmd pdfmerge ${{
     pdfmerge.sh "$fx"
@@ -306,7 +315,7 @@ cmd pdfmerge ${{
 
 cmd on-quit ${{
     # save last directory
-    echo "$PWD" > "/tmp/lf_last_dir"
+    echo "$PWD" > "/tmp/lf_last_dir_$UID"
 }}
 
 # key bindings
