@@ -21,6 +21,10 @@ Rectangle {
         anchors.rightMargin: Config.bar.spacing
         spacing: Config.bar.spacing
 
+        MonitorPrompt {
+            anchorWindow: root.panelWindow
+        }
+
         BarBox {
             id: workspaceGroup
 
