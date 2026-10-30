@@ -9,7 +9,7 @@ import Quickshell.Hyprland
 Singleton {
     id: root
 
-    property bool ignoreHeadless: true
+    property bool ignoreHeadless: false
 
     property string pendingName: ""
     property string pendingDescription: ""
@@ -45,7 +45,11 @@ Singleton {
         startMirror([monitorRule(pendingName, "highres", "auto", 1, workingMonitor)], {
             output: pendingName,
             target: workingMonitor,
-            restorePosition: "auto"
+            restore: {
+                mode: "highres",
+                scale: 1,
+                position: "auto"
+            }
         });
     }
 
@@ -56,10 +60,12 @@ Singleton {
 
         const working = workingMonitor;
 
-        startMirror([monitorRule(pendingName, "highres", "0x0", 1, ""), monitorRule(working, currentMode(working), "auto", currentScale(working), pendingName)], {
+        const saved = snapshot(working, "0x0");
+
+        startMirror([monitorRule(pendingName, "highres", "0x0", 1, ""), monitorRule(working, saved.mode, "auto", saved.scale, pendingName)], {
             output: working,
             target: pendingName,
-            restorePosition: "0x0"
+            resotre: saved
         });
     }
 
@@ -82,7 +88,7 @@ Singleton {
     }
 
     function restoreRule(mirror: var): string {
-        return monitorRule(mirror.output, currentMode(mirror.output), mirror.restorePosition, currentScale(mirror.output), "");
+        return monitorRule(mirror.output, mirror.restore.mode, mirror.restore.position, mirror.restore.scale, "");
     }
 
     function liveMonitor(name: string): var {
@@ -94,16 +100,20 @@ Singleton {
         return null;
     }
 
-    function currentMode(name: string): string {
+    function snapshot(name: string, fallbackPosition: string): var {
         const ipc = liveMonitor(name)?.lastIpcObject;
         if (!ipc?.width)
-            return "highres";
+            return {
+                mode: "highres",
+                scale: 1,
+                position: fallbackPosition
+            };
 
-        return `${ipc.width}x${ipc.height}@${Number(ipc.refreshRate).toFixed(3)}`;
-    }
-
-    function currentScale(name: string): real {
-        return liveMonitor(name)?.lastIpcObject?.scale ?? 1;
+        return {
+            mode: `${ipc.width}x${ipc.height}@${Number(ipc.refreshRate).toFixed(3)}`,
+            scale: Math.round(ipc.scale * 1000) / 1000,
+            position: `${ipc.x}x${ipc.y}`
+        };
     }
 
     function monitorRule(output: string, mode: string, position: string, scale: real, mirrorOf: string): string {
