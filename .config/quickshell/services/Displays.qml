@@ -65,7 +65,7 @@ Singleton {
         startMirror([monitorRule(pendingName, "highres", "0x0", 1, ""), monitorRule(working, saved.mode, "auto", saved.scale, pendingName)], {
             output: working,
             target: pendingName,
-            resotre: saved
+            restore: saved
         });
     }
 
