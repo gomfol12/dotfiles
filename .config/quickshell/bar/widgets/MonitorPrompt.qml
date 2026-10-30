@@ -15,7 +15,7 @@ Popup {
     readonly property int gap: 8
 
     readonly property string screenName: root.anchorWindow?.screen?.name ?? ""
-    readonly property bool wanted: Displays.hasPending && screenName !== "" && screenName === Displays.mirrorSource
+    readonly property bool wanted: Displays.hasPending && screenName !== "" && screenName === Displays.workingMonitor
 
     implicitWidth: 360
     implicitHeight: layout.implicitHeight + pad * 2
@@ -41,6 +41,7 @@ Popup {
             show();
     }
 
+    // closed some other way
     onPopupOpenChanged: {
         if (!popupOpen && wanted)
             Displays.dismiss();
@@ -51,14 +52,13 @@ Popup {
 
         required property string title
         required property string hint
-        property bool enabled: true
 
         signal clicked
 
         Layout.fillWidth: true
         Layout.preferredHeight: 52
         opacity: enabled ? 1 : 0.4
-        color: mouse.containsMouse && enabled ? Qt.alpha(root.accentColor, 0.25) : "transparent"
+        color: mouse.containsMouse ? Qt.alpha(root.accentColor, 0.25) : "transparent"
         border.width: 2
         border.color: root.accentColor
 
@@ -73,10 +73,12 @@ Popup {
             }
 
             Text {
+                Layout.fillWidth: true
                 text: btn.title
                 color: root.fgColor
                 font.bold: true
                 font.pixelSize: 14
+                elide: Text.ElideRight
             }
 
             Text {
@@ -97,11 +99,8 @@ Popup {
 
             anchors.fill: parent
             hoverEnabled: true
-            cursorShape: btn.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-            onClicked: {
-                if (btn.enabled)
-                    btn.clicked();
-            }
+            cursorShape: Qt.PointingHandCursor
+            onClicked: btn.clicked()
         }
     }
 
@@ -134,21 +133,22 @@ Popup {
             }
 
             ActionButton {
-                title: "Extend"
-                hint: "Use as separate monitor"
-                onClicked: Displays.extend()
+                title: `${Displays.workingMonitor} → ${Displays.pendingName}`
+                hint: "Show this screen on the new display"
+                enabled: Displays.canMirror
+                onClicked: Displays.mirrorWorkingToNew()
             }
 
             ActionButton {
-                title: "Mirror"
-                hint: Displays.mirrorSource !== "" ? `Mirror: duplicate ${Displays.mirrorSource}` : "No other monitor to mirror"
-                enabled: Displays.mirrorSource !== ""
-                onClicked: Displays.mirror()
+                title: `${Displays.pendingName} → ${Displays.workingMonitor}`
+                hint: "New display at full resolution, mirrored here"
+                enabled: Displays.canMirror
+                onClicked: Displays.mirrorNewToWorking()
             }
 
             Text {
                 Layout.alignment: Qt.AlignRight
-                text: "Dismiss"
+                text: "Keep extended"
                 color: root.mutedColor
                 font.pixelSize: 12
 
