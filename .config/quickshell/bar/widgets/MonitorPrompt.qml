@@ -15,7 +15,7 @@ Popup {
     readonly property int gap: 8
 
     readonly property string screenName: root.anchorWindow?.screen?.name ?? ""
-    readonly property bool wanted: Displays.hasPending && screenName !== "" && screenName === Displays.workingMonitor
+    readonly property bool wanted: Hypr.hasPendingMonitor && screenName !== "" && screenName === Hypr.workingMonitor
 
     implicitWidth: 360
     implicitHeight: layout.implicitHeight + pad * 2
@@ -44,7 +44,7 @@ Popup {
     // closed some other way
     onPopupOpenChanged: {
         if (!popupOpen && wanted)
-            Displays.dismiss();
+            Hypr.dismissMonitorPrompt();
     }
 
     component ActionButton: Rectangle {
@@ -126,24 +126,24 @@ Popup {
 
             Text {
                 Layout.fillWidth: true
-                text: Displays.pendingDescription !== "" ? `${Displays.pendingName} · ${Displays.pendingDescription}` : Displays.pendingName
+                text: Hypr.pendingDescription !== "" ? `${Hypr.pendingMonitor} · ${Hypr.pendingDescription}` : Hypr.pendingMonitor
                 color: root.mutedColor
                 font.pixelSize: 12
                 elide: Text.ElideRight
             }
 
             ActionButton {
-                title: `${Displays.workingMonitor} → ${Displays.pendingName}`
+                title: `${Hypr.workingMonitor} → ${Hypr.pendingMonitor}`
                 hint: "Show this screen on the new display"
-                enabled: Displays.canMirror
-                onClicked: Displays.mirrorWorkingToNew()
+                enabled: Hypr.canMirror
+                onClicked: Hypr.mirrorWorkingToNew()
             }
 
             ActionButton {
-                title: `${Displays.pendingName} → ${Displays.workingMonitor}`
+                title: `${Hypr.pendingMonitor} → ${Hypr.workingMonitor}`
                 hint: "New display at full resolution, mirrored here"
-                enabled: Displays.canMirror
-                onClicked: Displays.mirrorNewToWorking()
+                enabled: Hypr.canMirror
+                onClicked: Hypr.mirrorNewToWorking()
             }
 
             Text {
@@ -155,7 +155,7 @@ Popup {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Displays.dismiss()
+                    onClicked: Hypr.dismissMonitorPrompt()
                 }
             }
         }
