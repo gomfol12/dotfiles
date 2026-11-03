@@ -135,7 +135,7 @@ hl.config({
         inactive_timeout = 5,
         default_monitor = PRIMARY,
         no_warps = true,
-        -- warp_on_monitor_change = 2,
+        warp_on_monitor_change = 2,
     },
     input = {
         -- keyboard
