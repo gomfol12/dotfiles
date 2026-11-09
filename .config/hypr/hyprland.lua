@@ -306,7 +306,12 @@ bind({ mainMod, "c" }, hl.dsp.exec_cmd("dmenu_calc.sh"))
 bind({ mainMod, "m" }, hl.dsp.exec_cmd("tearing.sh ask"))
 -- bind({ mainMod, "SHIFT", "m" }, hl.dsp.exec_cmd("tearing.sh toggle_steam"))
 bind({ superMod, "W" }, hl.dsp.exec_cmd('${TERMINAL:-st} -e nvim "+:VimwikiIndex"'))
-bind({ mainMod, "y" }, hl.dsp.exec_cmd("clip_manager -l | dmenu -l 10 | clip_manager -g | wl-copy"))
+bind(
+    { mainMod, "y" },
+    hl.dsp.exec_cmd(
+        'selected=$(clip_manager -l | dmenu -l 10) && [ -n "$selected" ] && echo "$selected" | clip_manager -g | wl-copy'
+    )
+)
 bind({ mainMod, "B" }, hl.dsp.exec_cmd("qs ipc call bars toggleTop"))
 bind({ mainMod, "SHIFT", "B" }, hl.dsp.exec_cmd("qs ipc call bars toggleBottom"))
 

@@ -75,7 +75,7 @@ vim.opt.smartindent = true -- Autoindent new lines
 
 -- ========== Performance ========== --
 vim.opt.history = 1000 -- Remember N lines in history
-vim.opt.lazyredraw = true -- Faster scrolling
+-- vim.opt.lazyredraw = true -- Faster scrolling
 vim.opt.synmaxcol = 320 -- Max column for syntax highlight
 vim.opt.updatetime = 250 -- ms to wait for trigger an event
 vim.opt.ttimeoutlen = 100 -- ms to wait for a key code sequence to complete

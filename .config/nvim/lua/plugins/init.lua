@@ -10,7 +10,7 @@
 return {
     { "tpope/vim-sleuth" }, -- Detect tabstop and shiftwidth automatically
     { "tpope/vim-fugitive" }, -- Git wrapper
-    { "sindrets/diffview.nvim" },
+    { "dlyongemallo/diffview-plus.nvim" },
     { "tpope/vim-surround" },
     { "tpope/vim-unimpaired" },
     { "Konfekt/vim-CtrlXA" },
@@ -138,6 +138,7 @@ SpeedDatingFormat %H %M %S
     },
     {
         "GCBallesteros/jupytext.nvim",
+        ft = { "markdown", "vimwiki", "pandoc" },
         opts = {
             style = "hydrogen",
             output_extension = "auto", -- don't change

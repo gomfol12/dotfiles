@@ -13,8 +13,8 @@ return {
 
         "disrupted/blink-cmp-conventional-commits",
         "Kaiser-Yang/blink-cmp-git",
-        "MahanRahmati/blink-nerdfont.nvim",
-        "moyiz/blink-emoji.nvim",
+        -- "MahanRahmati/blink-nerdfont.nvim",
+        -- "moyiz/blink-emoji.nvim",
         "ribru17/blink-cmp-spell",
 
         {
@@ -217,8 +217,8 @@ return {
                 "spell",
                 "buffer",
                 "calc",
-                "nerdfont",
-                "emoji",
+                -- "nerdfont",
+                -- "emoji",
             },
             providers = {
                 cmdline = {
@@ -287,31 +287,31 @@ return {
                     name = "[Calc]",
                     module = "blink.compat.source",
                 },
-                nerdfont = {
-                    name = "[Nerd]",
-                    module = "blink-nerdfont",
-                    score_offset = 15,
-                    opts = {
-                        insert = true, -- Insert nerdfont icon (default) or complete its name
-                        trigger = ":",
-                    },
-                    should_show_items = function()
-                        return vim.tbl_contains({ "gitcommit", "markdown" }, vim.o.filetype)
-                    end,
-                },
-                emoji = {
-                    name = "[Emoji]",
-                    module = "blink-emoji",
-                    score_offset = 15,
-                    opts = {
-                        insert = true, -- Insert emoji (default) or complete its name
-                        ---@type string|table|fun():table
-                        trigger = ":",
-                    },
-                    should_show_items = function()
-                        return vim.tbl_contains({ "gitcommit", "markdown" }, vim.o.filetype)
-                    end,
-                },
+                -- nerdfont = {
+                --     name = "[Nerd]",
+                --     module = "blink-nerdfont",
+                --     score_offset = 15,
+                --     opts = {
+                --         insert = true, -- Insert nerdfont icon (default) or complete its name
+                --         trigger = ":",
+                --     },
+                --     should_show_items = function()
+                --         return vim.tbl_contains({ "gitcommit", "markdown" }, vim.o.filetype)
+                --     end,
+                -- },
+                -- emoji = {
+                --     name = "[Emoji]",
+                --     module = "blink-emoji",
+                --     score_offset = 15,
+                --     opts = {
+                --         insert = true, -- Insert emoji (default) or complete its name
+                --         ---@type string|table|fun():table
+                --         trigger = ":",
+                --     },
+                --     should_show_items = function()
+                --         return vim.tbl_contains({ "gitcommit", "markdown" }, vim.o.filetype)
+                --     end,
+                -- },
             },
         },
 

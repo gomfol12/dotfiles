@@ -235,7 +235,7 @@ parfin()
     # Install pacman packages
     if [[ ${#pacman_packages[@]} -gt 0 ]]; then
         echo "Pacman: Installing"
-        paru --fm lf.sh "$@" -S "${pacman_packages[@]}"
+        paru --sudo doas_retry.sh --fm lf.sh "$@" -S "${pacman_packages[@]}"
     fi
 }
 
@@ -308,7 +308,7 @@ parfdel()
 
     if [[ ${#pacman_packages[@]} -gt 0 ]]; then
         echo "Pacman: Uninstalling"
-        paru --fm lf.sh -Rns "${pacman_packages[@]}"
+        paru --sudo doas_retry.sh --fm lf.sh -Rns "${pacman_packages[@]}"
     fi
 }
 
