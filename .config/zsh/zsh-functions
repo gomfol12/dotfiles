@@ -697,3 +697,5 @@ with_inhibit()
     #     --method org.freedesktop.ScreenSaver.UnInhibit \
     #     "$cookie" >/dev/null
 }
+
+osc52() { printf '\e]52;c;%s\a' "$(base64 | tr -d '\n')"; }
