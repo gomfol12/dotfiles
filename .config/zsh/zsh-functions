@@ -699,3 +699,36 @@ with_inhibit()
 }
 
 osc52() { printf '\e]52;c;%s\a' "$(base64 | tr -d '\n')"; }
+
+osc52_paste() {
+  local old_stty response
+  old_stty=$(stty -g < /dev/tty)
+  stty raw -echo min 0 time 50 < /dev/tty   # raw mode, 5s timeout
+
+  # request clipboard
+  printf '\033]52;c;?\033\\' > /dev/tty
+
+  # read until the terminator (ST = ESC \  or BEL)
+  response=""
+  local ch
+  while IFS= read -r -k 1 -u 0 ch < /dev/tty 2>/dev/null; do
+    response+="$ch"
+    [[ "$ch" == $'\a' ]] && break
+    [[ "$response" == *$'\033\\' ]] && break
+  done
+
+  stty "$old_stty" < /dev/tty
+
+  # strip everything but the base64 payload
+  local data="${response#*52;c;}"
+  data="${data%$'\033\\'}"
+  data="${data%$'\a'}"
+  data="${data//[^A-Za-z0-9+\/=]/}"
+
+  if [[ -z "$data" ]]; then
+    print -u2 "Error: Terminal did not respond or clipboard read is disabled."
+    return 1
+  fi
+
+  print -rn -- "$data" | base64 -d
+}

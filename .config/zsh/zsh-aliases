@@ -137,7 +137,7 @@ if [ $WAYLAND_DISPLAY ]; then
     alias cpaste="wl-paste"
 elif [ $SSH_CLIENT ]; then
     alias ccopy="osc52"
-    alias cpaste="wl-paste"
+    alias cpaste="osc52_paste"
 else
     alias ccopy="xclip -selection clipboard"
     alias cpaste="xclip -selection clipboard -o"
