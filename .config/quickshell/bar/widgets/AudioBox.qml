@@ -52,8 +52,8 @@ BarBox {
                     }
                 }
                 onWheel: wheel => {
-                    const delta = wheel.angleDelta.y > 0 ? 0.05 : -0.05;
-                    Audio.setVolume(Audio.volume + delta);
+                    const delta = (wheel.angleDelta.y / 120) * 0.05;
+                    Audio.setVolume(Math.max(0, Math.min(1, Audio.volume + delta)));
                 }
             }
         }
