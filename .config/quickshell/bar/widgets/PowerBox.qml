@@ -53,7 +53,7 @@ BarBox {
                 width: 18
                 height: 10
 
-                radius: 2
+                radius: 1
                 color: "transparent"
                 border.color: root.stateColor
                 border.width: 1
@@ -63,7 +63,7 @@ BarBox {
                     anchors.verticalCenter: parent.verticalCenter
 
                     width: Math.max(0, parent.width * Math.min(Power.percentage, 100) / 100)
-                    height: parent.height - 2
+                    height: parent.height
 
                     radius: 1
                     color: root.stateColor

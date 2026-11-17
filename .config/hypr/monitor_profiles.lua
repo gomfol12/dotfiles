@@ -80,9 +80,9 @@ end)
 -- default
 hl.monitor({
     output = "",
-    mode = "highres",
+    mode = "preferred",
     position = "auto",
-    scale = "auto",
+    scale = "1",
 })
 
 return M

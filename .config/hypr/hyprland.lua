@@ -49,7 +49,7 @@ local profiles = {
                 output = "eDP-1",
                 mode = "highres",
                 position = "auto",
-                scale = 1.57,
+                scale = 1.33,
             },
         },
     },
